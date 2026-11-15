@@ -131,6 +131,9 @@
   .form-actions { display: flex; gap: 8px; justify-content: flex-end; padding-top: 16px; border-top: 1px solid var(--border); margin-top: 8px; }
   [data-show] { display: none; }
 
+  .opt { display: inline-flex; gap: 8px; align-items: center; border: 1px solid var(--border-strong); border-radius: var(--radius); padding: 8px 16px; cursor: pointer; background: var(--surface); }
+  .opt:has(input:checked) { border-color: var(--primary); background: var(--primary-tint); color: var(--primary); font-weight: 500; }
+
   /* Calendar (attendance) */
   .cal-head { display: grid; grid-template-columns: repeat(7, 1fr); background: #fafbfc; border-bottom: 1px solid var(--border); }
   .cal-head div { padding: 8px 12px; font-size: 12px; font-weight: 600; color: var(--text-3); text-transform: uppercase; }

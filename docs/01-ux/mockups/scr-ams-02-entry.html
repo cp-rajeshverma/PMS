@@ -39,6 +39,7 @@
     <div class="alert info" style="display:flex;justify-content:space-between;align-items:center">
       <span>Hours worked</span><b id="hrs" style="font-size:18px">—</b>
     </div>
+    <div class="alert warn" id="longWarn" hidden style="margin-top:12px">Over 12 hours — please check the times before submitting.</div>
     <div class="form-actions">
       <a class="btn" href="scr-ams-01-my-attendance.html">Cancel</a>
       <button type="button" class="btn" id="draft">Save draft</button>
@@ -48,7 +49,8 @@
   <div class="card">
     <h2>Before you submit</h2>
     <ul class="small" style="margin:0;padding-left:18px;color:var(--text-2);line-height:1.8">
-      <li>One entry per day; no future dates.</li>
+      <li>One entry per day; no future dates. Times in 15-minute steps.</li>
+      <li>You cannot withdraw a submitted entry; ask your manager to reject it if it is wrong.</li>
       <li>From time must be before To time; overnight shifts are not supported.</li>
       <li>Not allowed on a day with submitted or approved leave.</li>
       <li>After approval the entry is locked and your salary record for the day is generated automatically.</li>
@@ -98,7 +100,7 @@ function load(iso, fix) {
   if (a && a.st === 'Approved') { b.className = 'alert ok'; b.textContent = 'Approved by Rahul Mehta. Locked. Your salary record for this day has been generated.'; b.style.display = ''; }
   calc();
 }
-function calc() { const h = hrs($('ft').value, $('tt').value); $('hrs').textContent = h > 0 ? fmtH(h) : '—'; }
+function calc() { const h = hrs($('ft').value, $('tt').value); $('hrs').textContent = h > 0 ? fmtH(h) : '—'; $('longWarn').hidden = !(h > 12); }
 ['ft', 'tt'].forEach(i => $(i).addEventListener('input', calc));
 $('dt').addEventListener('change', () => { const iso = $('dt').value; if (ATT[iso]) { $('dtErr').hidden = false; $('dtErr').innerHTML = 'Attendance for ' + nice(iso) + ' already exists. <a href="scr-ams-02-entry.html?date=' + iso + '">Open it</a>'; } else $('dtErr').hidden = true; });
 function err(id, msg, box) { const f = $(id), t = box || f.parentElement.querySelector('.err-text'); f.classList.toggle('invalid', !!msg); t.hidden = !msg; if (msg) t.innerHTML = msg; return !!msg; }

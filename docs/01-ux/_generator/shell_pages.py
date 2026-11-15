@@ -107,7 +107,7 @@ SH03_BODY = r"""
         <h2>Waiting for your approval</h2>
         <div class="list-row"><div class="t1">Profiles</div><div><span class="badge b-submitted">1</span></div></div>
         <div class="list-row"><div class="t1">Attendance</div><div><span class="badge b-submitted">3</span></div></div>
-        <div class="list-row"><div class="t1">Leave</div><div><span class="badge b-submitted">1</span></div></div>
+        <div class="list-row"><div class="t1">Leave</div><div><span class="badge b-submitted">2</span></div></div>
         <div class="list-row"><div class="t1">Salary (incl. 1 dispute)</div><div><span class="badge b-submitted">1</span></div></div>
         <div style="margin-top:14px"><a class="btn primary" href="scr-sh-04-approvals.html">Open approvals inbox</a></div>
       </div>
@@ -220,6 +220,7 @@ const ITEMS = {
     { id: 2, type: 'Attendance', emp: 'Anita Sharma', eid: 'EMP0007', det: 'Fri 13 Nov · 09:00–17:30 · 8.5 h', sub: '13 Nov, 18:02', st: 'Submitted', open: 'scr-ams-03-team-review.html' },
     { id: 3, type: 'Attendance', emp: 'Vikram Singh', eid: 'EMP0008', det: 'Fri 13 Nov · 10:00–18:00 · 8.0 h', sub: '13 Nov, 18:15', st: 'Submitted', open: 'scr-ams-03-team-review.html' },
     { id: 4, type: 'Attendance', emp: 'Neha Gupta', eid: 'EMP0009', det: 'Mon 16 Nov · 08:30–13:00 · 4.5 h', sub: '16 Nov, 13:05', st: 'Submitted', open: 'scr-ams-03-team-review.html' },
+    { id: 8, type: 'Leave', emp: 'Anita Sharma', eid: 'EMP0007', det: 'Casual · 23–24 Nov · 2 days', sub: '14 Nov, 17:05', st: 'Submitted', open: 'scr-lms-03-team-review.html' },
     { id: 5, type: 'Leave', emp: 'Arjun Rao', eid: 'EMP0010', det: 'Casual · 20–21 Nov · 2 days', sub: '14 Nov, 11:30', st: 'Submitted', open: 'scr-lms-03-team-review.html' },
     { id: 6, type: 'Salary', emp: 'Vikram Singh', eid: 'EMP0008', det: 'Tue 10 Nov · 9.0 h × ₹ 250 = ₹ 2,250', sub: 'Employee remark: "I left at 17:00, not 18:00."', st: 'Disputed', open: 'scr-sms-02-team-review.html' }
   ],

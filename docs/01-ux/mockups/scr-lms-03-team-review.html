@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SCR-LMS-03 · Team leave review · PMS mockup</title>
+<link rel="stylesheet" href="assets/pms-mockup.css">
+</head>
+<body>
+<div class="mock-bar" role="region" aria-label="Mockup controls"><strong>Mockup controls</strong>View as: <label><input type="radio" name="role" value="manager" checked> Manager</label><span class="mock-id">SCR-LMS-03 · Team leave review · v0.1</span></div>
+<div class="app">
+  <header class="header">
+    <div class="brand"><div class="brand-mark" aria-hidden="true">P</div>PMS <small>Payroll Management System</small></div>
+    <div class="user">
+      <button class="user-btn" id="userBtn" aria-haspopup="menu" aria-expanded="false">
+        <div class="avatar" id="avatar">AS</div>
+        <div class="user-meta"><b id="userName">Anita Sharma</b><span id="userRole">Employee · EMP0007</span></div>
+        <span aria-hidden="true">▾</span>
+      </button>
+      <div class="menu-pop" id="userMenu" role="menu">
+        <a href="scr-sh-02-set-password.html" role="menuitem">Change password</a><hr>
+        <a href="scr-sh-01-login.html" role="menuitem">Log out</a>
+      </div>
+    </div>
+  </header>
+  <nav class="side" aria-label="Main menu"><div class="nav"><a href="scr-sh-03-dashboard.html" data-roles="employee manager admin">Home</a><a href="scr-sh-04-approvals.html" data-roles="manager admin">Approvals <span class="count" id="pending">0</span></a><div class="nav-label" data-roles="employee manager">My work</div><a href="scr-eims-03-my-profile.html" data-roles="employee manager">My Profile</a><a href="scr-ams-01-my-attendance.html" data-roles="employee manager">Attendance</a><a href="scr-lms-01-my-leave.html" class="active" data-roles="employee manager">Leave</a><a href="scr-sms-01-my-salary.html" data-roles="employee manager">Salary</a><div class="nav-label" data-roles="manager admin">People</div><a href="scr-eims-01-directory.html" id="empLink" data-roles="manager admin">Employees</a></div></nav>
+  <main class="main">
+    <div class="crumbs">My work / Leave / Team</div>
+    <div class="page-head"><div><h1>Team leave</h1><p class="lead">Approve your direct reports' leave. See who else is away before deciding.</p></div></div>
+
+<div class="tabs"><a href="scr-lms-01-my-leave.html">My leave</a><a href="#" class="on">Team</a></div>
+<div class="tabs" id="sub" style="border-bottom:0;margin-bottom:8px"><a href="#" class="on" data-t="pending">Pending<span class="count" id="cP"></span></a><a href="#" data-t="history">History</a></div>
+<div class="toolbar">
+  <select class="in" id="fEmp" style="width:220px" aria-label="Employee"><option value="">All team members</option><option>Anita Sharma</option><option>Vikram Singh</option><option>Neha Gupta</option><option>Arjun Rao</option></select>
+  <select class="in" id="fType" style="width:170px" aria-label="Leave type"><option value="">All types</option><option>Casual</option><option>Sick</option><option>Earned</option></select>
+</div>
+<div class="bulk" id="bulk"><b id="selCount">0 selected</b><button class="btn primary sm" id="bulkApprove">Approve selected</button><button class="btn sm" id="bulkClear">Clear</button><span class="small muted">Reject one at a time — remarks are required.</span></div>
+<div class="tbl-wrap" id="wrap"><table class="t"><thead id="thead"></thead><tbody id="rows"></tbody></table></div>
+<div class="card empty" id="empty" style="display:none"><b>Nothing pending</b>All leave requests have been decided.</div>
+
+    <div class="footer">PMS POC · v0.1</div>
+  </main>
+</div>
+
+<div class="modal-bg" id="rjModal" role="dialog" aria-modal="true" aria-labelledby="rjT"><div class="modal"><h2 id="rjT">Reject leave request</h2><p class="small muted" id="rjWhat" style="margin-top:-6px"></p>
+  <div class="field"><label for="rjText" class="req">Remarks for the employee</label><textarea class="in" id="rjText" placeholder="Explain why, or suggest other dates"></textarea><div class="err-text" id="rjErr" hidden>Remarks are required to reject.</div></div>
+  <div class="actions"><button class="btn" id="rjNo">Cancel</button><button class="btn danger" id="rjYes">Reject</button></div></div></div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<script src="assets/pms-mockup.js"></script>
+<script>
+
+const TODAY = '2026-11-16', DOJ = '2025-07-01';
+const MON = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+const DOW = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+const d2 = iso => { const d = new Date(iso + 'T00:00:00'); return String(d.getDate()).padStart(2, '0') + ' ' + MON[d.getMonth()] + ' ' + d.getFullYear(); };
+const sh = iso => { const d = new Date(iso + 'T00:00:00'); return DOW[d.getDay()] + ' ' + String(d.getDate()).padStart(2, '0') + ' ' + MON[d.getMonth()]; };
+const days = (f, t) => Math.round((new Date(t) - new Date(f)) / 864e5) + 1;
+const range = (f, t) => f === t ? sh(f) : sh(f) + ' – ' + sh(t);
+const badge = s => '<span class="badge b-' + s.toLowerCase() + '">' + s + '</span>';
+
+const $ = id => document.getElementById(id);
+let tab = 'pending';
+const R = [
+  { id: 1, emp: 'Arjun Rao', eid: 'EMP0010', type: 'Casual', f: '2026-11-20', t: '2026-11-21', st: 'Submitted', req: '2026-11-14' },
+  { id: 2, emp: 'Anita Sharma', eid: 'EMP0007', type: 'Casual', f: '2026-11-23', t: '2026-11-24', st: 'Submitted', req: '2026-11-14' },
+  { id: 3, emp: 'Vikram Singh', eid: 'EMP0008', type: 'Earned', f: '2026-11-24', t: '2026-11-27', st: 'Approved', req: '2026-11-01', by: 'Rahul Mehta, 03 Nov' },
+  { id: 4, emp: 'Anita Sharma', eid: 'EMP0007', type: 'Casual', f: '2026-11-05', t: '2026-11-06', st: 'Approved', req: '2026-11-02', by: 'Rahul Mehta, 03 Nov' },
+  { id: 5, emp: 'Anita Sharma', eid: 'EMP0007', type: 'Earned', f: '2026-12-22', t: '2026-12-26', st: 'Rejected', req: '2026-10-28', by: 'Rahul Mehta, 30 Oct', rm: 'Year-end release week — please pick dates in January.' },
+  { id: 6, emp: 'Neha Gupta', eid: 'EMP0009', type: 'Sick', f: '2026-11-04', t: '2026-11-04', st: 'Approved', req: '2026-11-05', by: 'Rahul Mehta, 05 Nov' }
+];
+function overlaps(r) { return R.filter(o => o.id !== r.id && (o.st === 'Approved' || o.st === 'Submitted') && !(r.t < o.f || r.f > o.t)).map(o => o.emp.split(' ')[0] + ' (' + range(o.f, o.t) + (o.st === 'Submitted' ? ', pending' : '') + ')'); }
+function render() {
+  const e = $('fEmp').value, ty = $('fType').value, pend = tab === 'pending';
+  const rows = R.filter(r => (pend ? r.st === 'Submitted' : r.st !== 'Submitted') && (!e || r.emp === e) && (!ty || r.type === ty)).sort((a, b) => pend ? a.f.localeCompare(b.f) : b.f.localeCompare(a.f));
+  $('cP').textContent = R.filter(r => r.st === 'Submitted').length;
+  $('thead').innerHTML = '<tr>' + (pend ? '<th style="width:36px"><input type="checkbox" id="all" aria-label="Select all"></th>' : '') + '<th>Employee</th><th>Type</th><th>Dates</th><th class="num">Days</th>' + (pend ? '<th>Also away</th><th>Requested</th>' : '<th>Decision</th>') + '<th>Status</th><th class="act">Actions</th></tr>';
+  $('rows').innerHTML = rows.map(r => { const ov = overlaps(r);
+    return '<tr data-id="' + r.id + '">' + (pend ? '<td><input type="checkbox" class="sel" aria-label="Select ' + r.emp + '"></td>' : '') +
+    '<td style="white-space:nowrap"><div style="font-weight:500">' + r.emp + '</div><div class="small muted">' + r.eid + '</div></td><td>' + r.type + '</td><td style="white-space:nowrap">' + range(r.f, r.t) + '</td><td class="num">' + days(r.f, r.t) + '</td>' +
+    (pend ? '<td class="small">' + (ov.length ? '<span class="badge b-warn">' + ov.length + '</span> ' + ov.join(', ') : '<span class="muted">No one</span>') + '</td><td class="small muted">' + d2(r.req) + '</td>'
+          : '<td class="small muted">' + r.by + (r.rm ? '<br>"' + r.rm + '"' : '') + '</td>') +
+    '<td>' + badge(r.st) + '</td><td class="act">' + (pend ? '<button class="btn primary sm" data-a="ok">Approve</button><button class="btn danger sm" data-a="rj">Reject</button>' : '<span class="muted small">—</span>') + '</td></tr>'; }).join('');
+  $('wrap').style.display = rows.length ? '' : 'none'; $('empty').style.display = rows.length ? 'none' : '';
+  const all = $('all'); if (all) all.onchange = ev => { document.querySelectorAll('.sel').forEach(c => c.checked = ev.target.checked); sync(); };
+  sync();
+}
+function sync() { const n = document.querySelectorAll('.sel:checked').length; $('selCount').textContent = n + ' selected'; $('bulk').classList.toggle('show', n > 0); }
+function decide(ids, st, rm) { ids.forEach(id => { const r = R.find(x => x.id === id); r.st = st; r.by = 'Rahul Mehta, 16 Nov'; if (rm) r.rm = rm; }); render(); }
+$('sub').addEventListener('click', e => { const a = e.target.closest('a'); if (!a) return; e.preventDefault(); tab = a.dataset.t; document.querySelectorAll('#sub a').forEach(x => x.classList.toggle('on', x === a)); render(); });
+['fEmp', 'fType'].forEach(i => $(i).addEventListener('input', render));
+$('rows').addEventListener('change', e => { if (e.target.classList.contains('sel')) sync(); });
+$('bulkClear').onclick = () => { document.querySelectorAll('.sel').forEach(c => c.checked = false); sync(); };
+$('bulkApprove').onclick = () => { const ids = [...document.querySelectorAll('.sel:checked')].map(c => +c.closest('tr').dataset.id); decide(ids, 'Approved'); toast(ids.length + ' leave request(s) approved.'); };
+let cur;
+$('rows').addEventListener('click', e => { const b = e.target.closest('button[data-a]'); if (!b) return; cur = R.find(x => x.id === +b.closest('tr').dataset.id);
+  if (b.dataset.a === 'ok') { decide([cur.id], 'Approved'); toast('Leave for ' + cur.emp + ' approved.'); }
+  else { $('rjWhat').textContent = cur.emp + ' · ' + cur.type + ' · ' + range(cur.f, cur.t); $('rjText').value = ''; $('rjErr').hidden = true; $('rjModal').classList.add('open'); $('rjText').focus(); } });
+$('rjNo').onclick = () => $('rjModal').classList.remove('open');
+$('rjYes').onclick = () => { if (!$('rjText').value.trim()) { $('rjErr').hidden = false; return; } $('rjModal').classList.remove('open'); decide([cur.id], 'Rejected', $('rjText').value.trim()); toast('Leave rejected and returned to ' + cur.emp + '.'); };
+render();
+
+applyRole('manager');
+</script>
+</body>
+</html>

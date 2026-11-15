@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SCR-LMS-02 · Leave request · PMS mockup</title>
+<link rel="stylesheet" href="assets/pms-mockup.css">
+</head>
+<body>
+<div class="mock-bar" role="region" aria-label="Mockup controls"><strong>Mockup controls</strong>View as: <label><input type="radio" name="role" value="employee" checked> Employee</label><label><input type="radio" name="role" value="manager"> Manager</label> Case: <select id="case" aria-label="Case"><option value="new">New request</option><option value="fix">Fix rejected (Earned, 22–26 Dec)</option><option value="overlap">Overlap with pending leave (submit)</option><option value="att">Clash with attendance (submit)</option></select><span class="mock-id">SCR-LMS-02 · Leave request · v0.1</span></div>
+<div class="app">
+  <header class="header">
+    <div class="brand"><div class="brand-mark" aria-hidden="true">P</div>PMS <small>Payroll Management System</small></div>
+    <div class="user">
+      <button class="user-btn" id="userBtn" aria-haspopup="menu" aria-expanded="false">
+        <div class="avatar" id="avatar">AS</div>
+        <div class="user-meta"><b id="userName">Anita Sharma</b><span id="userRole">Employee · EMP0007</span></div>
+        <span aria-hidden="true">▾</span>
+      </button>
+      <div class="menu-pop" id="userMenu" role="menu">
+        <a href="scr-sh-02-set-password.html" role="menuitem">Change password</a><hr>
+        <a href="scr-sh-01-login.html" role="menuitem">Log out</a>
+      </div>
+    </div>
+  </header>
+  <nav class="side" aria-label="Main menu"><div class="nav"><a href="scr-sh-03-dashboard.html" data-roles="employee manager admin">Home</a><a href="scr-sh-04-approvals.html" data-roles="manager admin">Approvals <span class="count" id="pending">0</span></a><div class="nav-label" data-roles="employee manager">My work</div><a href="scr-eims-03-my-profile.html" data-roles="employee manager">My Profile</a><a href="scr-ams-01-my-attendance.html" data-roles="employee manager">Attendance</a><a href="scr-lms-01-my-leave.html" class="active" data-roles="employee manager">Leave</a><a href="scr-sms-01-my-salary.html" data-roles="employee manager">Salary</a><div class="nav-label" data-roles="manager admin">People</div><a href="scr-eims-01-directory.html" id="empLink" data-roles="manager admin">Employees</a></div></nav>
+  <main class="main">
+    <div class="crumbs">My work / Leave / Request</div>
+    <div class="page-head"><div><h1 id="ttl">Request leave</h1><p class="lead">Full days only. Past dates are allowed, for example for sick leave.</p></div><div id="stBadge"></div></div>
+
+<div class="alert error" id="banner" style="margin-bottom:16px;display:none" role="status"></div>
+<div class="grid" style="grid-template-columns: 2fr 1fr;align-items:start">
+  <form class="card" id="form" novalidate>
+    <div class="field">
+      <span class="lbl req" id="typeLbl">Leave type</span>
+      <div role="radiogroup" aria-labelledby="typeLbl" style="display:flex;gap:12px" id="types">
+        <label class="opt"><input type="radio" name="type" value="Casual" checked> Casual</label>
+        <label class="opt"><input type="radio" name="type" value="Sick"> Sick</label>
+        <label class="opt"><input type="radio" name="type" value="Earned"> Earned</label>
+      </div>
+    </div>
+    <div class="form-grid" style="grid-template-columns:repeat(2,1fr)">
+      <div class="field"><label for="fd" class="req">From date</label><input class="in" type="date" id="fd" min="2025-07-01"><div class="err-text" id="fdErr" hidden></div></div>
+      <div class="field"><label for="td" class="req">To date</label><input class="in" type="date" id="td" min="2025-07-01"><div class="err-text" id="tdErr" hidden></div></div>
+    </div>
+    <div class="alert info" style="display:flex;justify-content:space-between;align-items:center"><span id="sumTxt">Leave days</span><b id="cnt" style="font-size:18px">—</b></div>
+    <div class="form-actions">
+      <a class="btn" href="scr-lms-01-my-leave.html">Cancel</a>
+      <button type="submit" class="btn primary">Submit for approval</button>
+    </div>
+  </form>
+  <div class="card">
+    <h2>Before you submit</h2>
+    <ul class="small" style="margin:0;padding-left:18px;color:var(--text-2);line-height:1.8">
+      <li>Casual, Sick or Earned; full days only.</li>
+      <li>Days are calendar days, from and to inclusive. Balances are not checked.</li>
+      <li>Cannot overlap your other submitted or approved leave.</li>
+      <li>Cannot include a day that already has submitted or approved attendance.</li>
+      <li>You can cancel a request until your manager decides.</li>
+    </ul>
+  </div>
+</div>
+
+    <div class="footer">PMS POC · v0.1</div>
+  </main>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<script src="assets/pms-mockup.js"></script>
+<script>
+
+const TODAY = '2026-11-16', DOJ = '2025-07-01';
+const MON = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+const DOW = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+const d2 = iso => { const d = new Date(iso + 'T00:00:00'); return String(d.getDate()).padStart(2, '0') + ' ' + MON[d.getMonth()] + ' ' + d.getFullYear(); };
+const sh = iso => { const d = new Date(iso + 'T00:00:00'); return DOW[d.getDay()] + ' ' + String(d.getDate()).padStart(2, '0') + ' ' + MON[d.getMonth()]; };
+const days = (f, t) => Math.round((new Date(t) - new Date(f)) / 864e5) + 1;
+const range = (f, t) => f === t ? sh(f) : sh(f) + ' – ' + sh(t);
+const badge = s => '<span class="badge b-' + s.toLowerCase() + '">' + s + '</span>';
+
+const LV = [
+  { id: 1, req: '2026-11-14', type: 'Casual', f: '2026-11-23', t: '2026-11-24', st: 'Submitted' },
+  { id: 2, req: '2026-10-28', type: 'Earned', f: '2026-12-22', t: '2026-12-26', st: 'Rejected', rm: 'Year-end release week — please pick dates in January.' },
+  { id: 3, req: '2026-11-02', type: 'Casual', f: '2026-11-05', t: '2026-11-06', st: 'Approved', by: 'Rahul Mehta' },
+  { id: 4, req: '2026-09-15', type: 'Sick', f: '2026-09-14', t: '2026-09-14', st: 'Approved', by: 'Rahul Mehta' },
+  { id: 5, req: '2026-08-20', type: 'Earned', f: '2026-10-05', t: '2026-10-07', st: 'Cancelled' },
+  { id: 6, req: '2026-07-25', type: 'Earned', f: '2026-08-10', t: '2026-08-14', st: 'Approved', by: 'Rahul Mehta' }
+];
+
+const $ = id => document.getElementById(id);
+const ATT_DAYS = ['2026-11-02', '2026-11-03', '2026-11-09', '2026-11-10', '2026-11-11', '2026-11-13'];
+function calc() { const f = $('fd').value, t = $('td').value; const n = f && t && t >= f ? days(f, t) : null; $('cnt').textContent = n ? n + (n === 1 ? ' day' : ' days') : '—'; $('sumTxt').textContent = n ? 'Leave days · ' + range(f, t) : 'Leave days'; }
+['fd', 'td'].forEach(i => $(i).addEventListener('input', () => { if (i === 'fd' && !$('td').value) $('td').value = $('fd').value; calc(); }));
+function err(box, field, msg) { $(field).classList.toggle('invalid', !!msg); $(box).hidden = !msg; if (msg) $(box).textContent = msg; return !!msg; }
+$('form').addEventListener('submit', e => {
+  e.preventDefault();
+  const f = $('fd').value, t = $('td').value; let bad = false;
+  bad = err('fdErr', 'fd', !f ? 'Select a from date.' : f < DOJ ? 'From date cannot be before your date of joining (01 Jul 2025).' : '') || bad;
+  bad = err('tdErr', 'td', !t ? 'Select a to date.' : f && t < f ? 'To date must be on or after From date.' : '') || bad;
+  if (!bad) {
+    const ov = LV.find(l => (l.st === 'Submitted' || l.st === 'Approved') && l.id !== editingId && !(t < l.f || f > l.t));
+    const att = ATT_DAYS.filter(d => d >= f && d <= t);
+    if (ov) bad = err('fdErr', 'fd', 'Overlaps your ' + ov.st.toLowerCase() + ' ' + ov.type + ' leave (' + range(ov.f, ov.t) + ').');
+    else if (att.length) bad = err('fdErr', 'fd', 'You already have attendance on ' + att.map(sh).join(', ') + '. Remove those days from the range.');
+  }
+  if (bad) return;
+  toast(document.querySelector('input[name=type]:checked').value + ' leave ' + range(f, t) + ' submitted to Rahul Mehta.');
+  setTimeout(() => location.href = 'scr-lms-01-my-leave.html', 1100);
+});
+let editingId = null;
+function setCase(c) {
+  $('case').value = c; editingId = c === 'fix' ? 2 : null;
+  $('banner').style.display = c === 'fix' ? '' : 'none';
+  $('banner').textContent = 'Rejected by Rahul Mehta on 30 Oct 2026: "Year-end release week — please pick dates in January." Change the dates and submit again.';
+  $('ttl').textContent = c === 'fix' ? 'Edit leave request' : 'Request leave';
+  $('stBadge').innerHTML = c === 'fix' ? badge('Rejected') : '';
+  if (c === 'fix') { document.querySelector('input[value=Earned]').checked = true; $('fd').value = '2026-12-22'; $('td').value = '2026-12-26'; }
+  else if (c === 'overlap') { $('fd').value = '2026-11-24'; $('td').value = '2026-11-25'; }
+  else if (c === 'att') { document.querySelector('input[value=Sick]').checked = true; $('fd').value = '2026-11-10'; $('td').value = '2026-11-10'; }
+  else { $('fd').value = ''; $('td').value = ''; }
+  calc();
+}
+$('case').addEventListener('change', e => setCase(e.target.value));
+setCase(new URLSearchParams(location.search).get('case') || 'new');
+
+applyRole('employee');
+</script>
+</body>
+</html>

@@ -133,6 +133,9 @@ CSS = r"""
   .form-actions { display: flex; gap: 8px; justify-content: flex-end; padding-top: 16px; border-top: 1px solid var(--border); margin-top: 8px; }
   [data-show] { display: none; }
 
+  .opt { display: inline-flex; gap: 8px; align-items: center; border: 1px solid var(--border-strong); border-radius: var(--radius); padding: 8px 16px; cursor: pointer; background: var(--surface); }
+  .opt:has(input:checked) { border-color: var(--primary); background: var(--primary-tint); color: var(--primary); font-weight: 500; }
+
   /* Calendar (attendance) */
   .cal-head { display: grid; grid-template-columns: repeat(7, 1fr); background: #fafbfc; border-bottom: 1px solid var(--border); }
   .cal-head div { padding: 8px 12px; font-size: 12px; font-weight: 600; color: var(--text-3); text-transform: uppercase; }
@@ -162,7 +165,7 @@ CSS = r"""
 JS = r"""/* PMS mockup shared behaviour: role switcher, user menu, toast. Mockup-only. */
 const USERS = {
   employee: { name: 'Anita Sharma', initials: 'AS', meta: 'Employee · EMP0007', pending: 0 },
-  manager:  { name: 'Rahul Mehta',  initials: 'RM', meta: 'Manager · EMP0002', pending: 6 },
+  manager:  { name: 'Rahul Mehta',  initials: 'RM', meta: 'Manager · EMP0002', pending: 7 },
   admin:    { name: 'Priya Nair',   initials: 'PN', meta: 'Administrator · system account',   pending: 1 }
 };
 let ROLE = 'employee';

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SCR-LMS-01 · My leave · PMS mockup</title>
+<link rel="stylesheet" href="assets/pms-mockup.css">
+</head>
+<body>
+<div class="mock-bar" role="region" aria-label="Mockup controls"><strong>Mockup controls</strong>View as: <label><input type="radio" name="role" value="employee" checked> Employee</label><label><input type="radio" name="role" value="manager"> Manager</label><span class="mock-id">SCR-LMS-01 · My leave · v0.1</span></div>
+<div class="app">
+  <header class="header">
+    <div class="brand"><div class="brand-mark" aria-hidden="true">P</div>PMS <small>Payroll Management System</small></div>
+    <div class="user">
+      <button class="user-btn" id="userBtn" aria-haspopup="menu" aria-expanded="false">
+        <div class="avatar" id="avatar">AS</div>
+        <div class="user-meta"><b id="userName">Anita Sharma</b><span id="userRole">Employee · EMP0007</span></div>
+        <span aria-hidden="true">▾</span>
+      </button>
+      <div class="menu-pop" id="userMenu" role="menu">
+        <a href="scr-sh-02-set-password.html" role="menuitem">Change password</a><hr>
+        <a href="scr-sh-01-login.html" role="menuitem">Log out</a>
+      </div>
+    </div>
+  </header>
+  <nav class="side" aria-label="Main menu"><div class="nav"><a href="scr-sh-03-dashboard.html" data-roles="employee manager admin">Home</a><a href="scr-sh-04-approvals.html" data-roles="manager admin">Approvals <span class="count" id="pending">0</span></a><div class="nav-label" data-roles="employee manager">My work</div><a href="scr-eims-03-my-profile.html" data-roles="employee manager">My Profile</a><a href="scr-ams-01-my-attendance.html" data-roles="employee manager">Attendance</a><a href="scr-lms-01-my-leave.html" class="active" data-roles="employee manager">Leave</a><a href="scr-sms-01-my-salary.html" data-roles="employee manager">Salary</a><div class="nav-label" data-roles="manager admin">People</div><a href="scr-eims-01-directory.html" id="empLink" data-roles="manager admin">Employees</a></div></nav>
+  <main class="main">
+    <div class="crumbs">My work / Leave</div>
+    <div class="page-head"><div><h1>Leave</h1><p class="lead">Your leave requests. Each request needs your manager's approval.</p></div>
+<div><a class="btn primary" href="scr-lms-02-request.html">+ Request leave</a></div></div>
+
+<div class="tabs" data-roles="manager"><a href="scr-lms-01-my-leave.html" class="on">My leave</a><a href="scr-lms-03-team-review.html">Team<span class="count">2</span></a></div>
+<div class="grid g4" style="margin-bottom:16px">
+  <div class="card tile"><div class="k">Casual taken (2026)</div><div class="v" id="tC"></div><div class="s">Approved days</div></div>
+  <div class="card tile"><div class="k">Sick taken (2026)</div><div class="v" id="tS"></div><div class="s">Approved days</div></div>
+  <div class="card tile"><div class="k">Earned taken (2026)</div><div class="v" id="tE"></div><div class="s">Approved days</div></div>
+  <div class="card tile"><div class="k">Pending requests</div><div class="v" id="tP"></div><div class="s">Waiting for Rahul Mehta</div></div>
+</div>
+<div class="alert info" style="margin-bottom:12px">Leave balances are not tracked in this version. Days are counted as calendar days, from and to inclusive.</div>
+<div class="toolbar">
+  <select class="in" id="fs" style="width:200px" aria-label="Status"><option value="">All statuses</option><option>Submitted</option><option>Approved</option><option>Rejected</option><option>Cancelled</option></select>
+  <select class="in" id="ft" style="width:180px" aria-label="Leave type"><option value="">All types</option><option>Casual</option><option>Sick</option><option>Earned</option></select>
+</div>
+<div class="tbl-wrap"><table class="t"><thead><tr><th>Dates</th><th>Type</th><th class="num">Days</th><th>Requested</th><th>Status</th><th>Manager remarks</th><th class="act">Actions</th></tr></thead><tbody id="rows"></tbody></table></div>
+<div class="card empty" id="empty" style="display:none"><b>No leave requests</b>Use "+ Request leave" to apply.</div>
+
+    <div class="footer">PMS POC · v0.1</div>
+  </main>
+</div>
+
+<div class="modal-bg" id="cModal" role="dialog" aria-modal="true" aria-labelledby="cT"><div class="modal"><h2 id="cT">Cancel leave request?</h2><p id="cWhat"></p>
+  <p class="small muted">The request is withdrawn before your manager decides. This cannot be undone; you can submit a new request.</p>
+  <div class="actions"><button class="btn" id="cNo">Keep request</button><button class="btn danger" id="cYes">Cancel request</button></div></div></div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<script src="assets/pms-mockup.js"></script>
+<script>
+
+const TODAY = '2026-11-16', DOJ = '2025-07-01';
+const MON = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+const DOW = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+const d2 = iso => { const d = new Date(iso + 'T00:00:00'); return String(d.getDate()).padStart(2, '0') + ' ' + MON[d.getMonth()] + ' ' + d.getFullYear(); };
+const sh = iso => { const d = new Date(iso + 'T00:00:00'); return DOW[d.getDay()] + ' ' + String(d.getDate()).padStart(2, '0') + ' ' + MON[d.getMonth()]; };
+const days = (f, t) => Math.round((new Date(t) - new Date(f)) / 864e5) + 1;
+const range = (f, t) => f === t ? sh(f) : sh(f) + ' – ' + sh(t);
+const badge = s => '<span class="badge b-' + s.toLowerCase() + '">' + s + '</span>';
+
+const LV = [
+  { id: 1, req: '2026-11-14', type: 'Casual', f: '2026-11-23', t: '2026-11-24', st: 'Submitted' },
+  { id: 2, req: '2026-10-28', type: 'Earned', f: '2026-12-22', t: '2026-12-26', st: 'Rejected', rm: 'Year-end release week — please pick dates in January.' },
+  { id: 3, req: '2026-11-02', type: 'Casual', f: '2026-11-05', t: '2026-11-06', st: 'Approved', by: 'Rahul Mehta' },
+  { id: 4, req: '2026-09-15', type: 'Sick', f: '2026-09-14', t: '2026-09-14', st: 'Approved', by: 'Rahul Mehta' },
+  { id: 5, req: '2026-08-20', type: 'Earned', f: '2026-10-05', t: '2026-10-07', st: 'Cancelled' },
+  { id: 6, req: '2026-07-25', type: 'Earned', f: '2026-08-10', t: '2026-08-14', st: 'Approved', by: 'Rahul Mehta' }
+];
+
+const $ = id => document.getElementById(id);
+function render() {
+  const fs = $('fs').value, ft = $('ft').value;
+  const rows = LV.filter(l => (!fs || l.st === fs) && (!ft || l.type === ft)).sort((a, b) => b.f.localeCompare(a.f));
+  $('rows').innerHTML = rows.map(l => '<tr data-id="' + l.id + '"' + (l.st === 'Cancelled' ? ' style="opacity:.6"' : '') + '><td style="white-space:nowrap;font-weight:500">' + range(l.f, l.t) + ' ' + l.f.slice(0, 4) + '</td><td>' + l.type + '</td><td class="num">' + days(l.f, l.t) + '</td><td class="small muted">' + d2(l.req) + '</td><td>' + badge(l.st) + '</td><td class="small">' + (l.rm ? '"' + l.rm + '"' : '<span class="muted">' + (l.by ? 'Approved by ' + l.by : '—') + '</span>') + '</td><td class="act">' +
+    (l.st === 'Submitted' ? '<button class="btn danger sm" data-c>Cancel</button>' : l.st === 'Rejected' ? '<a class="btn sm" href="scr-lms-02-request.html?case=fix">Edit</a>' : '<span class="muted small">—</span>') + '</td></tr>').join('');
+  $('empty').style.display = rows.length ? 'none' : ''; document.querySelector('.tbl-wrap').style.display = rows.length ? '' : 'none';
+  const sum = t => LV.filter(l => l.type === t && l.st === 'Approved' && l.f >= '2026-01-01').reduce((n, l) => n + days(l.f, l.t), 0);
+  $('tC').textContent = sum('Casual'); $('tS').textContent = sum('Sick'); $('tE').textContent = sum('Earned'); $('tP').textContent = LV.filter(l => l.st === 'Submitted').length;
+}
+let cur;
+$('rows').addEventListener('click', e => { if (!e.target.closest('[data-c]')) return; cur = LV.find(l => l.id === +e.target.closest('tr').dataset.id); $('cWhat').textContent = cur.type + ' leave · ' + range(cur.f, cur.t) + ' · ' + days(cur.f, cur.t) + ' days'; $('cModal').classList.add('open'); });
+$('cNo').onclick = () => $('cModal').classList.remove('open');
+$('cYes').onclick = () => { $('cModal').classList.remove('open'); cur.st = 'Cancelled'; render(); toast('Leave request cancelled.'); };
+['fs', 'ft'].forEach(i => $(i).addEventListener('input', render));
+render();
+
+applyRole('employee');
+</script>
+</body>
+</html>
