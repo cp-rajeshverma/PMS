@@ -131,6 +131,21 @@
   .form-actions { display: flex; gap: 8px; justify-content: flex-end; padding-top: 16px; border-top: 1px solid var(--border); margin-top: 8px; }
   [data-show] { display: none; }
 
+  /* Calendar (attendance) */
+  .cal-head { display: grid; grid-template-columns: repeat(7, 1fr); background: #fafbfc; border-bottom: 1px solid var(--border); }
+  .cal-head div { padding: 8px 12px; font-size: 12px; font-weight: 600; color: var(--text-3); text-transform: uppercase; }
+  .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); }
+  .cell { min-height: 92px; border-right: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 8px 10px; display: flex; flex-direction: column; gap: 4px; text-align: left; background: var(--surface); font: inherit; color: inherit; border-top: 0; border-left: 0; }
+  .cell:nth-child(7n) { border-right: 0; }
+  button.cell { cursor: pointer; } button.cell:hover { background: #f7faff; }
+  .cell .d { font-weight: 600; font-size: 13px; }
+  .cell.out { background: #fafbfc; color: var(--text-3); }
+  .cell.future { background: #fafbfc; color: var(--text-3); cursor: default; }
+  .cell.today .d { color: #fff; background: var(--primary); border-radius: 10px; padding: 0 7px; align-self: flex-start; }
+  .cell.missing { box-shadow: inset 0 0 0 2px #f3d29a; }
+  .cell .h { font-size: 12px; color: var(--text-2); }
+  .b-leave { background: #efe9fb; color: #5b3fa8; }
+
   /* Auth pages (Keycloak theme): login, set password */
   .wrap { min-height: calc(100vh - 31px); display: grid; place-items: center; padding: 32px; }
   .auth { width: 420px; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 36px 36px 28px; box-shadow: var(--shadow); }

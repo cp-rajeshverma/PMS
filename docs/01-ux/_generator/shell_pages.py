@@ -89,16 +89,16 @@ SH03_BODY = r"""
 <!-- Employee + Manager: my work -->
 <div data-roles="employee manager">
   <div class="grid g4" style="margin-bottom:16px">
-    <div class="card tile"><div class="k">Hours this month</div><div class="v">72.5 h</div><div class="s">9 approved days</div></div>
-    <div class="card tile"><div class="k">Earnings this month</div><div class="v">₹ 18,125</div><div class="s">Accepted + approved, excl. voided</div></div>
+    <div class="card tile"><div class="k">Hours this month</div><div class="v">41.5 h</div><div class="s">5 approved days</div></div>
+    <div class="card tile"><div class="k">Earnings this month</div><div class="v">₹ 4,125</div><div class="s">Accepted + manager approved, excl. voided</div></div>
     <div class="card tile"><div class="k">Leave this month</div><div class="v">2 days</div><div class="s">1 request pending</div></div>
     <div class="card tile"><div class="k">Profile</div><div class="v" style="font-size:18px;margin-top:8px"><span class="badge b-approved">Approved</span></div><div class="s">Last updated 02 Nov 2026</div></div>
   </div>
   <div class="grid g2">
     <div class="card">
       <h2>Things to do <span class="badge b-warn" style="margin-left:6px">4</span></h2>
-      <div class="list-row"><div><div class="t1"><span class="dot" style="background:var(--danger)"></span>Attendance for Thu 12 Nov was rejected</div><div class="t2">Manager remark: "Out time looks wrong, please check."</div></div><a class="btn sm" href="scr-ams-02-entry.html">Fix</a></div>
-      <div class="list-row"><div><div class="t1"><span class="dot" style="background:var(--warning)"></span>Attendance not entered for Fri 13 Nov</div><div class="t2">Working day with no attendance or leave</div></div><a class="btn sm" href="scr-ams-02-entry.html">Enter</a></div>
+      <div class="list-row"><div><div class="t1"><span class="dot" style="background:var(--danger)"></span>Attendance for Thu 12 Nov was rejected</div><div class="t2">Manager remark: "Out time looks wrong, please check."</div></div><a class="btn sm" href="scr-ams-02-entry.html?case=fix">Fix</a></div>
+      <div class="list-row"><div><div class="t1"><span class="dot" style="background:var(--warning)"></span>Attendance not entered for Wed 04 Nov</div><div class="t2">Working day with no attendance or leave</div></div><a class="btn sm" href="scr-ams-02-entry.html?date=2026-11-04">Enter</a></div>
       <div class="list-row"><div><div class="t1"><span class="dot" style="background:var(--primary)"></span>3 salary records waiting for your review</div><div class="t2">₹ 6,250 · 09–11 Nov</div></div><a class="btn sm" href="scr-sms-01-my-salary.html">Review</a></div>
       <div class="list-row"><div><div class="t1"><span class="dot" style="background:var(--primary)"></span>Leave request 23–24 Nov is waiting for approval</div><div class="t2">Casual leave · submitted 14 Nov</div></div><a class="btn sm" href="scr-lms-01-my-leave.html">View</a></div>
     </div>

@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SCR-AMS-01 · My attendance · PMS mockup</title>
+<link rel="stylesheet" href="assets/pms-mockup.css">
+</head>
+<body>
+<div class="mock-bar" role="region" aria-label="Mockup controls"><strong>Mockup controls</strong>View as: <label><input type="radio" name="role" value="employee" checked> Employee</label><label><input type="radio" name="role" value="manager"> Manager</label><span class="mock-id">SCR-AMS-01 · My attendance · v0.1</span></div>
+<div class="app">
+  <header class="header">
+    <div class="brand"><div class="brand-mark" aria-hidden="true">P</div>PMS <small>Payroll Management System</small></div>
+    <div class="user">
+      <button class="user-btn" id="userBtn" aria-haspopup="menu" aria-expanded="false">
+        <div class="avatar" id="avatar">AS</div>
+        <div class="user-meta"><b id="userName">Anita Sharma</b><span id="userRole">Employee · EMP0007</span></div>
+        <span aria-hidden="true">▾</span>
+      </button>
+      <div class="menu-pop" id="userMenu" role="menu">
+        <a href="scr-sh-02-set-password.html" role="menuitem">Change password</a><hr>
+        <a href="scr-sh-01-login.html" role="menuitem">Log out</a>
+      </div>
+    </div>
+  </header>
+  <nav class="side" aria-label="Main menu"><div class="nav"><a href="scr-sh-03-dashboard.html" data-roles="employee manager admin">Home</a><a href="scr-sh-04-approvals.html" data-roles="manager admin">Approvals <span class="count" id="pending">0</span></a><div class="nav-label" data-roles="employee manager">My work</div><a href="scr-eims-03-my-profile.html" data-roles="employee manager">My Profile</a><a href="scr-ams-01-my-attendance.html" class="active" data-roles="employee manager">Attendance</a><a href="scr-lms-01-my-leave.html" data-roles="employee manager">Leave</a><a href="scr-sms-01-my-salary.html" data-roles="employee manager">Salary</a><div class="nav-label" data-roles="manager admin">People</div><a href="scr-eims-01-directory.html" id="empLink" data-roles="manager admin">Employees</a></div></nav>
+  <main class="main">
+    <div class="crumbs">My work / Attendance</div>
+    <div class="page-head"><div><h1>Attendance</h1><p class="lead">Your daily attendance. Each day needs your manager's approval.</p></div>
+<div><a class="btn primary" href="scr-ams-02-entry.html">+ Enter attendance</a></div></div>
+
+<div class="tabs" data-roles="manager"><a href="scr-ams-01-my-attendance.html" class="on">My attendance</a><a href="scr-ams-03-team-review.html">Team<span class="count">3</span></a></div>
+<div class="grid g4" style="margin-bottom:16px">
+  <div class="card tile"><div class="k">Approved hours</div><div class="v" id="tH"></div><div class="s" id="tD"></div></div>
+  <div class="card tile"><div class="k">Waiting for approval</div><div class="v" id="tS"></div><div class="s">Submitted days</div></div>
+  <div class="card tile"><div class="k">Needs your action</div><div class="v" id="tR" style="color:var(--danger)"></div><div class="s">Rejected or draft days</div></div>
+  <div class="card tile"><div class="k">Missing weekdays</div><div class="v" id="tM" style="color:var(--warning)"></div><div class="s">No attendance or leave (reminder)</div></div>
+</div>
+<div class="toolbar">
+  <button class="btn sm" aria-label="Previous month" onclick="toast('Mockup: only November 2026 has sample data.')">‹</button>
+  <b style="font-size:16px;min-width:130px;text-align:center">November 2026</b>
+  <button class="btn sm" aria-label="Next month" disabled>›</button>
+  <div style="margin-left:auto;display:flex;gap:4px" role="group" aria-label="View">
+    <button class="btn sm" id="vCal" aria-pressed="true">Calendar</button><button class="btn sm" id="vList" aria-pressed="false">List</button>
+  </div>
+</div>
+<div id="cal" class="card" style="padding:0;overflow:hidden">
+  <div class="cal-head"><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div><div>Sun</div></div>
+  <div class="cal-grid" id="grid"></div>
+</div>
+<div class="small muted" id="legend" style="margin-top:10px;display:flex;gap:16px;flex-wrap:wrap">
+  <span><span class="badge b-approved">Approved</span></span><span><span class="badge b-submitted">Submitted</span></span>
+  <span><span class="badge b-rejected">Rejected</span></span><span><span class="badge b-draft">Draft</span></span>
+  <span><span class="badge b-leave">Leave</span></span><span><span class="badge b-warn">Missing</span> weekday reminder</span>
+</div>
+<div id="list" class="tbl-wrap" style="display:none">
+  <table class="t"><thead><tr><th>Date</th><th>From</th><th>To</th><th class="num">Hours</th><th>Status</th><th>Manager remarks</th><th class="act">Actions</th></tr></thead><tbody id="rows"></tbody></table>
+</div>
+
+    <div class="footer">PMS POC · v0.1</div>
+  </main>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<script src="assets/pms-mockup.js"></script>
+<script>
+
+const TODAY = '2026-11-16', DOJ = '2025-07-01';
+const ATT = {
+  '2026-11-02': { f: '09:00', t: '17:30', st: 'Approved' },
+  '2026-11-03': { f: '09:00', t: '17:00', st: 'Approved' },
+  '2026-11-09': { f: '09:00', t: '18:00', st: 'Approved' },
+  '2026-11-10': { f: '09:30', t: '17:30', st: 'Approved' },
+  '2026-11-11': { f: '09:00', t: '17:00', st: 'Approved' },
+  '2026-11-12': { f: '09:00', t: '19:30', st: 'Rejected', rm: 'Out time looks wrong, please check.' },
+  '2026-11-13': { f: '09:00', t: '17:30', st: 'Submitted' },
+  '2026-11-16': { f: '09:00', t: '', st: 'Draft' }
+};
+const LEAVE = { '2026-11-05': 'Casual', '2026-11-06': 'Casual', '2026-11-23': 'Casual (pending)', '2026-11-24': 'Casual (pending)' };
+const hrs = (f, t) => { if (!f || !t) return null; const [a, b] = f.split(':').map(Number), [c, d] = t.split(':').map(Number); return ((c * 60 + d) - (a * 60 + b)) / 60; };
+const fmtH = h => h == null ? '—' : h.toFixed(2).replace(/\.00$/, '.0').replace(/(\.\d)0$/, '$1') + ' h';
+const DOW = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'], MON = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+const nice = iso => { const d = new Date(iso + 'T00:00:00'); return DOW[d.getDay()] + ' ' + String(d.getDate()).padStart(2, '0') + ' ' + MON[d.getMonth()]; };
+
+const $ = id => document.getElementById(id);
+function build() {
+  let html = '', apH = 0, apD = 0, sub = 0, act = 0, miss = 0;
+  // Nov 2026 starts on Sunday -> 6 leading cells (Mon-start grid)
+  for (let i = 0; i < 6; i++) html += '<div class="cell out"><span class="d">' + (26 + i) + '</span></div>';
+  for (let day = 1; day <= 30; day++) {
+    const iso = '2026-11-' + String(day).padStart(2, '0'), dow = new Date(iso + 'T00:00:00').getDay();
+    const a = ATT[iso], lv = LEAVE[iso], future = iso > TODAY, weekday = dow > 0 && dow < 6;
+    let inner = '', cls = 'cell';
+    if (iso === TODAY) cls += ' today';
+    if (a) { const h = hrs(a.f, a.t); inner = '<span class="badge b-' + a.st.toLowerCase() + '">' + a.st + '</span><span class="h">' + a.f + '–' + (a.t || '…') + (h ? ' · ' + fmtH(h) : '') + '</span>';
+      if (a.st === 'Approved') { apH += h; apD++; } if (a.st === 'Submitted') sub++; if (a.st === 'Rejected' || a.st === 'Draft') act++; }
+    else if (lv) inner = '<span class="badge b-leave">Leave</span><span class="h">' + lv + '</span>';
+    else if (!future && weekday && iso < TODAY) { inner = '<span class="badge b-warn">Missing</span><span class="h">Click to enter</span>'; cls += ' missing'; miss++; }
+    if (future && !a) { cls += ' future'; html += '<div class="' + cls + '"><span class="d">' + day + '</span>' + inner + '</div>'; continue; }
+    if (lv && !a) { html += '<div class="' + cls + '"><span class="d">' + day + '</span>' + inner + '</div>'; continue; }
+    html += '<button class="' + cls + '" data-iso="' + iso + '" aria-label="' + nice(iso) + (a ? ', ' + a.st : '') + '"><span class="d">' + day + '</span>' + inner + '</button>';
+  }
+  for (let i = 1; i <= 6; i++) html += '<div class="cell out"><span class="d">' + i + '</span></div>';
+  $('grid').innerHTML = html;
+  $('tH').textContent = fmtH(apH); $('tD').textContent = apD + ' approved days'; $('tS').textContent = sub; $('tR').textContent = act; $('tM').textContent = miss;
+  const days = Object.keys(ATT).sort().reverse();
+  $('rows').innerHTML = days.map(iso => { const a = ATT[iso], edit = a.st === 'Rejected' || a.st === 'Draft';
+    return '<tr><td style="white-space:nowrap">' + nice(iso) + '</td><td>' + a.f + '</td><td>' + (a.t || '—') + '</td><td class="num">' + fmtH(hrs(a.f, a.t)) + '</td><td><span class="badge b-' + a.st.toLowerCase() + '">' + a.st + '</span></td><td class="small">' + (a.rm || '<span class="muted">—</span>') + '</td><td class="act"><a class="btn sm" href="scr-ams-02-entry.html?date=' + iso + (a.st === 'Rejected' ? '&case=fix' : '') + '">' + (edit ? 'Edit' : 'View') + '</a></td></tr>'; }).join('');
+}
+build();
+$('grid').addEventListener('click', e => { const c = e.target.closest('button.cell'); if (!c) return; const iso = c.dataset.iso; location.href = 'scr-ams-02-entry.html?date=' + iso + (ATT[iso] && ATT[iso].st === 'Rejected' ? '&case=fix' : ''); });
+function view(v) { const cal = v === 'cal'; $('cal').style.display = cal ? '' : 'none'; $('legend').style.display = cal ? 'flex' : 'none'; $('list').style.display = cal ? 'none' : '';
+  $('vCal').setAttribute('aria-pressed', cal); $('vList').setAttribute('aria-pressed', !cal); $('vCal').classList.toggle('primary', cal); $('vList').classList.toggle('primary', !cal); }
+$('vCal').onclick = () => view('cal'); $('vList').onclick = () => view('list'); view('cal');
+
+applyRole('employee');
+</script>
+</body>
+</html>

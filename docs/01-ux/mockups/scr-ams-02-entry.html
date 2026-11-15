@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SCR-AMS-02 · Attendance entry · PMS mockup</title>
+<link rel="stylesheet" href="assets/pms-mockup.css">
+</head>
+<body>
+<div class="mock-bar" role="region" aria-label="Mockup controls"><strong>Mockup controls</strong>View as: <label><input type="radio" name="role" value="employee" checked> Employee</label><label><input type="radio" name="role" value="manager"> Manager</label> Case: <select id="case" aria-label="Case"><option value="new">New entry</option><option value="fix">Fix rejected (Thu 12 Nov)</option><option value="approved">View approved (Tue 10 Nov)</option><option value="leave">Leave clash (pick Thu 05 Nov, submit)</option></select><span class="mock-id">SCR-AMS-02 · Attendance entry · v0.1</span></div>
+<div class="app">
+  <header class="header">
+    <div class="brand"><div class="brand-mark" aria-hidden="true">P</div>PMS <small>Payroll Management System</small></div>
+    <div class="user">
+      <button class="user-btn" id="userBtn" aria-haspopup="menu" aria-expanded="false">
+        <div class="avatar" id="avatar">AS</div>
+        <div class="user-meta"><b id="userName">Anita Sharma</b><span id="userRole">Employee · EMP0007</span></div>
+        <span aria-hidden="true">▾</span>
+      </button>
+      <div class="menu-pop" id="userMenu" role="menu">
+        <a href="scr-sh-02-set-password.html" role="menuitem">Change password</a><hr>
+        <a href="scr-sh-01-login.html" role="menuitem">Log out</a>
+      </div>
+    </div>
+  </header>
+  <nav class="side" aria-label="Main menu"><div class="nav"><a href="scr-sh-03-dashboard.html" data-roles="employee manager admin">Home</a><a href="scr-sh-04-approvals.html" data-roles="manager admin">Approvals <span class="count" id="pending">0</span></a><div class="nav-label" data-roles="employee manager">My work</div><a href="scr-eims-03-my-profile.html" data-roles="employee manager">My Profile</a><a href="scr-ams-01-my-attendance.html" class="active" data-roles="employee manager">Attendance</a><a href="scr-lms-01-my-leave.html" data-roles="employee manager">Leave</a><a href="scr-sms-01-my-salary.html" data-roles="employee manager">Salary</a><div class="nav-label" data-roles="manager admin">People</div><a href="scr-eims-01-directory.html" id="empLink" data-roles="manager admin">Employees</a></div></nav>
+  <main class="main">
+    <div class="crumbs">My work / Attendance / Entry</div>
+    <div class="page-head"><div><h1 id="ttl">Enter attendance</h1><p class="lead">One entry per day. Times are in IST, same day only.</p></div><div id="stBadge"></div></div>
+
+<div class="alert" id="banner" style="margin-bottom:16px;display:none" role="status"></div>
+<div class="grid" style="grid-template-columns: 2fr 1fr;align-items:start">
+  <form class="card" id="form" novalidate>
+    <div class="form-grid">
+      <div class="field"><label for="dt" class="req">Date</label><input class="in" type="date" id="dt" min="2025-07-01" max="2026-11-16"><div class="err-text" id="dtErr" hidden></div></div>
+      <div class="field"><label for="ft" class="req">From time</label><input class="in" type="time" id="ft" step="900"><div class="err-text" hidden></div></div>
+      <div class="field"><label for="tt" class="req">To time</label><input class="in" type="time" id="tt" step="900"><div class="err-text" id="ttErr" hidden></div></div>
+    </div>
+    <div class="alert info" style="display:flex;justify-content:space-between;align-items:center">
+      <span>Hours worked</span><b id="hrs" style="font-size:18px">—</b>
+    </div>
+    <div class="form-actions">
+      <a class="btn" href="scr-ams-01-my-attendance.html">Cancel</a>
+      <button type="button" class="btn" id="draft">Save draft</button>
+      <button type="submit" class="btn primary" id="submit">Submit for approval</button>
+    </div>
+  </form>
+  <div class="card">
+    <h2>Before you submit</h2>
+    <ul class="small" style="margin:0;padding-left:18px;color:var(--text-2);line-height:1.8">
+      <li>One entry per day; no future dates.</li>
+      <li>From time must be before To time; overnight shifts are not supported.</li>
+      <li>Not allowed on a day with submitted or approved leave.</li>
+      <li>After approval the entry is locked and your salary record for the day is generated automatically.</li>
+    </ul>
+  </div>
+</div>
+
+    <div class="footer">PMS POC · v0.1</div>
+  </main>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<script src="assets/pms-mockup.js"></script>
+<script>
+
+const TODAY = '2026-11-16', DOJ = '2025-07-01';
+const ATT = {
+  '2026-11-02': { f: '09:00', t: '17:30', st: 'Approved' },
+  '2026-11-03': { f: '09:00', t: '17:00', st: 'Approved' },
+  '2026-11-09': { f: '09:00', t: '18:00', st: 'Approved' },
+  '2026-11-10': { f: '09:30', t: '17:30', st: 'Approved' },
+  '2026-11-11': { f: '09:00', t: '17:00', st: 'Approved' },
+  '2026-11-12': { f: '09:00', t: '19:30', st: 'Rejected', rm: 'Out time looks wrong, please check.' },
+  '2026-11-13': { f: '09:00', t: '17:30', st: 'Submitted' },
+  '2026-11-16': { f: '09:00', t: '', st: 'Draft' }
+};
+const LEAVE = { '2026-11-05': 'Casual', '2026-11-06': 'Casual', '2026-11-23': 'Casual (pending)', '2026-11-24': 'Casual (pending)' };
+const hrs = (f, t) => { if (!f || !t) return null; const [a, b] = f.split(':').map(Number), [c, d] = t.split(':').map(Number); return ((c * 60 + d) - (a * 60 + b)) / 60; };
+const fmtH = h => h == null ? '—' : h.toFixed(2).replace(/\.00$/, '.0').replace(/(\.\d)0$/, '$1') + ' h';
+const DOW = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'], MON = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+const nice = iso => { const d = new Date(iso + 'T00:00:00'); return DOW[d.getDay()] + ' ' + String(d.getDate()).padStart(2, '0') + ' ' + MON[d.getMonth()]; };
+
+const $ = id => document.getElementById(id);
+const P = new URLSearchParams(location.search);
+function load(iso, fix) {
+  const a = ATT[iso];
+  $('dt').value = iso || ''; $('ft').value = a ? a.f : '09:00'; $('tt').value = a ? a.t : '';
+  const locked = a && (a.st === 'Approved' || a.st === 'Submitted');
+  [$('dt'), $('ft'), $('tt')].forEach(x => x.readOnly = locked);
+  $('dt').readOnly = !!a;
+  $('submit').style.display = $('draft').style.display = locked ? 'none' : '';
+  $('ttl').textContent = a ? (locked ? 'Attendance · ' + nice(iso) : 'Edit attendance · ' + nice(iso)) : 'Enter attendance';
+  $('stBadge').innerHTML = a ? '<span class="badge b-' + a.st.toLowerCase() + '">' + a.st + '</span>' : '';
+  const b = $('banner'); b.style.display = 'none';
+  if (a && a.st === 'Rejected') { b.className = 'alert error'; b.textContent = 'Rejected by Rahul Mehta on 13 Nov 2026: "' + a.rm + '" Correct it and submit again.'; b.style.display = ''; }
+  if (a && a.st === 'Submitted') { b.className = 'alert info'; b.textContent = 'Submitted — waiting for Rahul Mehta to approve. It cannot be changed now.'; b.style.display = ''; }
+  if (a && a.st === 'Approved') { b.className = 'alert ok'; b.textContent = 'Approved by Rahul Mehta. Locked. Your salary record for this day has been generated.'; b.style.display = ''; }
+  calc();
+}
+function calc() { const h = hrs($('ft').value, $('tt').value); $('hrs').textContent = h > 0 ? fmtH(h) : '—'; }
+['ft', 'tt'].forEach(i => $(i).addEventListener('input', calc));
+$('dt').addEventListener('change', () => { const iso = $('dt').value; if (ATT[iso]) { $('dtErr').hidden = false; $('dtErr').innerHTML = 'Attendance for ' + nice(iso) + ' already exists. <a href="scr-ams-02-entry.html?date=' + iso + '">Open it</a>'; } else $('dtErr').hidden = true; });
+function err(id, msg, box) { const f = $(id), t = box || f.parentElement.querySelector('.err-text'); f.classList.toggle('invalid', !!msg); t.hidden = !msg; if (msg) t.innerHTML = msg; return !!msg; }
+function validate() {
+  const iso = $('dt').value, existing = ATT[iso] && P.get('date') !== iso;
+  let bad = false;
+  bad = err('dt', !iso ? 'Select a date.' : iso > TODAY ? 'Date cannot be in the future.' : iso < DOJ ? 'Date cannot be before your date of joining (01 Jul 2025).' :
+        existing ? 'Attendance for ' + nice(iso) + ' already exists. <a href="scr-ams-02-entry.html?date=' + iso + '">Open it</a>' :
+        LEAVE[iso] ? 'You have leave on ' + nice(iso) + ' (' + LEAVE[iso] + '). Attendance is not allowed on a leave day.' : '', $('dtErr')) || bad;
+  bad = err('ft', $('ft').value ? '' : 'Enter a from time.') || bad;
+  bad = err('tt', !$('tt').value ? 'Enter a to time.' : hrs($('ft').value, $('tt').value) <= 0 ? 'To time must be after From time (same day).' : '', $('ttErr')) || bad;
+  return !bad;
+}
+$('draft').onclick = () => { toast('Draft saved.'); };
+$('form').addEventListener('submit', e => { e.preventDefault(); if (!validate()) return; toast('Attendance for ' + nice($('dt').value) + ' submitted to Rahul Mehta.'); setTimeout(() => location.href = 'scr-ams-01-my-attendance.html', 1100); });
+const cs = $('case');
+cs.addEventListener('change', () => { const v = cs.value; load(v === 'new' ? '' : v === 'fix' ? '2026-11-12' : v === 'leave' ? '' : '2026-11-10'); if (v === 'leave') { $('dt').value = '2026-11-05'; } });
+const initial = P.get('case') === 'fix' ? '2026-11-12' : (P.get('date') || '');
+cs.value = P.get('case') === 'fix' ? 'fix' : (ATT[initial] && ATT[initial].st === 'Approved' ? 'approved' : 'new');
+load(initial);
+if (!ATT[initial] && initial) $('dt').value = initial;
+
+applyRole('employee');
+</script>
+</body>
+</html>
