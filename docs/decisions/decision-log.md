@@ -4,6 +4,7 @@ Every approved project decision, newest first. Approver for all entries: Rajesh 
 
 | Id | Date | Area | Decision |
 | --- | --- | --- | --- |
+| D-32 | 16 Nov 2026 | LMS | Leave days are calendar days incl. weekends (UXQ-19); new status Cancelled for withdrawn requests (UXQ-20); no Reason field (UXQ-21); no draft for leave, submit directly (UXQ-22) |
 | D-31 | 16 Nov 2026 | AMS | No withdrawal of Submitted attendance; manager rejects instead (UXQ-16). Times in 15-minute steps (UXQ-17). Warn, not block, above 12 hours a day (UXQ-18) |
 | D-30 | 16 Nov 2026 | UX | Mockup styles and shared behaviour live in one stylesheet and one script (`docs/01-ux/mockups/assets/pms-mockup.css`, `pms-mockup.js`), linked by every mockup; seed for the future design-system package |
 | D-29 | 16 Nov 2026 | EIMS | Role (Employee/Manager) chosen by Admin at onboarding, stored in Keycloak (UXQ-12); deactivating a manager with direct reports is blocked until reports are reassigned (UXQ-13); during re-approval other modules use the last approved profile (UXQ-14); last approved profile version is stored for change comparison, to be designed in HLD (UXQ-15) |

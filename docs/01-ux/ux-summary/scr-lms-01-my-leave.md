@@ -70,5 +70,5 @@ Status shown as text badges; cancel dialog states the consequence; table headers
 
 | Id | Question | Owner | Status |
 | --- | --- | --- | --- |
-| UXQ-19 | Leave days count every calendar day, including weekends (follows D-08: no weekend rules). OK for the POC? | Product owner | Open – proposed: yes |
-| UXQ-20 | New status **Cancelled** for withdrawn requests (O4 allowed cancelling but named no status). OK? | Product owner | Open – proposed: yes |
+| UXQ-19 | Leave days count every calendar day, including weekends (follows D-08: no weekend rules). OK for the POC? | Product owner | Accepted (D-32) – yes |
+| UXQ-20 | New status **Cancelled** for withdrawn requests (O4 allowed cancelling but named no status). OK? | Product owner | Accepted (D-32) – yes |

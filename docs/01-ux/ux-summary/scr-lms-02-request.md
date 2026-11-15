@@ -67,5 +67,5 @@ Leave type is a labelled radio group; errors linked to the date fields; day coun
 
 | Id | Question | Owner | Status |
 | --- | --- | --- | --- |
-| UXQ-21 | Add an optional "Reason" text for the manager? The Leave entity has no such field today. | Product owner | Open – proposed: no, keep the agreed entity for the POC |
-| UXQ-22 | Save as draft for leave? | Product owner | Open – proposed: no; leave is short to fill, submit directly |
+| UXQ-21 | Add an optional "Reason" text for the manager? The Leave entity has no such field today. | Product owner | Accepted (D-32) – no, keep the agreed entity for the POC |
+| UXQ-22 | Save as draft for leave? | Product owner | Accepted (D-32) – no; leave is short to fill, submit directly |
