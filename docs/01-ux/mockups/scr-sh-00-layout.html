@@ -4,137 +4,43 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>SCR-SH-00 · Shell layout · PMS mockup</title>
-<style>
-  /* PMS mockup design tokens (shared by all mockups) */
-  :root {
-    --bg: #f5f7fa; --surface: #ffffff; --border: #dde3ea; --border-strong: #c3ccd7;
-    --text: #1f2933; --text-2: #52606d; --text-3: #7b8794;
-    --primary: #1f5fae; --primary-hover: #184d8e; --primary-tint: #e8f0fa;
-    --success: #1e7b4f; --success-tint: #e3f4ea; --warning: #a35f00; --warning-tint: #fdf1dc;
-    --danger: #b42318; --danger-tint: #fdeceb; --muted-tint: #eef1f4;
-    --radius: 8px; --shadow: 0 1px 2px rgba(16,24,40,.06);
-    --font: "Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif;
-  }
-  * { box-sizing: border-box; }
-  html, body { margin: 0; height: 100%; }
-  body { font: 14px/1.5 var(--font); color: var(--text); background: var(--bg); }
-  a { color: var(--primary); text-decoration: none; }
-  a:hover { text-decoration: underline; }
-  button { font: inherit; cursor: pointer; }
-  :focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
-
-  /* Mockup-only control bar: not part of the product */
-  .mock-bar { background: #fff8db; border-bottom: 1px dashed #d4a800; padding: 6px 24px; font-size: 12px; color: #5c4a00; display: flex; gap: 16px; align-items: center; }
-  .mock-bar strong { letter-spacing: .04em; text-transform: uppercase; font-size: 11px; }
-  .mock-bar label { display: inline-flex; gap: 4px; align-items: center; cursor: pointer; }
-
-  /* Shell */
-  .app { display: grid; grid-template-columns: 232px 1fr; grid-template-rows: 56px 1fr; min-height: calc(100vh - 31px); }
-  .header { grid-column: 1 / -1; display: flex; align-items: center; justify-content: space-between; padding: 0 24px; background: var(--surface); border-bottom: 1px solid var(--border); }
-  .brand { display: flex; align-items: center; gap: 10px; font-weight: 600; font-size: 16px; }
-  .brand-mark { width: 28px; height: 28px; border-radius: 6px; background: var(--primary); color: #fff; display: grid; place-items: center; font-size: 13px; font-weight: 700; }
-  .brand small { font-weight: 400; color: var(--text-3); font-size: 13px; }
-  .user { position: relative; }
-  .user-btn { display: flex; align-items: center; gap: 10px; background: none; border: 1px solid transparent; border-radius: var(--radius); padding: 4px 8px; }
-  .user-btn:hover { border-color: var(--border); }
-  .avatar { width: 32px; height: 32px; border-radius: 50%; background: var(--primary-tint); color: var(--primary); display: grid; place-items: center; font-weight: 600; font-size: 13px; }
-  .user-meta { text-align: left; line-height: 1.2; }
-  .user-meta span { display: block; font-size: 12px; color: var(--text-3); }
-  .menu-pop { position: absolute; right: 0; top: 46px; width: 200px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: 0 8px 24px rgba(16,24,40,.12); padding: 6px; display: none; z-index: 10; }
-  .menu-pop.open { display: block; }
-  .menu-pop a { display: block; padding: 8px 10px; border-radius: 6px; color: var(--text); }
-  .menu-pop a:hover { background: var(--bg); text-decoration: none; }
-  .menu-pop hr { border: 0; border-top: 1px solid var(--border); margin: 6px 0; }
-
-  .side { background: var(--surface); border-right: 1px solid var(--border); padding: 16px 12px; }
-  .nav a { display: flex; align-items: center; justify-content: space-between; padding: 9px 12px; border-radius: var(--radius); color: var(--text-2); font-weight: 500; margin-bottom: 2px; }
-  .nav a:hover { background: var(--bg); text-decoration: none; color: var(--text); }
-  .nav a.active { background: var(--primary-tint); color: var(--primary); }
-  .count { background: var(--danger); color: #fff; border-radius: 10px; font-size: 11px; font-weight: 600; padding: 1px 7px; }
-  .nav-label { font-size: 11px; text-transform: uppercase; letter-spacing: .06em; color: var(--text-3); padding: 14px 12px 6px; }
-  [data-roles] { display: none; }
-
-  .main { padding: 24px 32px; }
-  .crumbs { font-size: 12px; color: var(--text-3); margin-bottom: 4px; }
-  h1 { font-size: 22px; font-weight: 600; margin: 0 0 20px; }
-  .placeholder { border: 2px dashed var(--border-strong); border-radius: var(--radius); background: var(--surface); height: 420px; display: grid; place-items: center; color: var(--text-3); text-align: center; }
-  .placeholder b { display: block; color: var(--text-2); font-size: 15px; margin-bottom: 4px; }
-  .footer { font-size: 12px; color: var(--text-3); margin-top: 24px; }
-</style>
+<link rel="stylesheet" href="assets/pms-mockup.css">
 </head>
 <body>
-  <div class="mock-bar" role="region" aria-label="Mockup controls">
-    <strong>Mockup controls</strong>
-    View as:
-    <label><input type="radio" name="role" value="employee" checked> Employee</label>
-    <label><input type="radio" name="role" value="manager"> Manager</label>
-    <label><input type="radio" name="role" value="admin"> Admin</label>
-    <span style="margin-left:auto">SCR-SH-00 · Shell layout · v0.1</span>
-  </div>
-
-  <div class="app">
-    <header class="header">
-      <div class="brand"><div class="brand-mark" aria-hidden="true">P</div>PMS <small>Payroll Management System</small></div>
-      <div class="user">
-        <button class="user-btn" id="userBtn" aria-haspopup="menu" aria-expanded="false">
-          <div class="avatar" id="avatar">AS</div>
-          <div class="user-meta"><b id="userName">Anita Sharma</b><span id="userRole">Employee · EMP0007</span></div>
-          <span aria-hidden="true">▾</span>
-        </button>
-        <div class="menu-pop" id="userMenu" role="menu">
-          <a href="scr-sh-02-set-password.html" role="menuitem">Change password</a>
-          <hr>
-          <a href="scr-sh-01-login.html" role="menuitem">Log out</a>
-        </div>
+<div class="mock-bar" role="region" aria-label="Mockup controls"><strong>Mockup controls</strong>View as: <label><input type="radio" name="role" value="employee" checked> Employee</label><label><input type="radio" name="role" value="manager"> Manager</label><label><input type="radio" name="role" value="admin"> Admin</label><span class="mock-id">SCR-SH-00 · Shell layout · v0.1</span></div>
+<div class="app">
+  <header class="header">
+    <div class="brand"><div class="brand-mark" aria-hidden="true">P</div>PMS <small>Payroll Management System</small></div>
+    <div class="user">
+      <button class="user-btn" id="userBtn" aria-haspopup="menu" aria-expanded="false">
+        <div class="avatar" id="avatar">AS</div>
+        <div class="user-meta"><b id="userName">Anita Sharma</b><span id="userRole">Employee · EMP0007</span></div>
+        <span aria-hidden="true">▾</span>
+      </button>
+      <div class="menu-pop" id="userMenu" role="menu">
+        <a href="scr-sh-02-set-password.html" role="menuitem">Change password</a><hr>
+        <a href="scr-sh-01-login.html" role="menuitem">Log out</a>
       </div>
-    </header>
+    </div>
+  </header>
+  <nav class="side" aria-label="Main menu"><div class="nav"><a href="scr-sh-03-dashboard.html" class="active" data-roles="employee manager admin">Home</a><a href="scr-sh-04-approvals.html" data-roles="manager admin">Approvals <span class="count" id="pending">0</span></a><div class="nav-label" data-roles="employee manager">My work</div><a href="scr-eims-03-my-profile.html" data-roles="employee manager">My Profile</a><a href="scr-ams-01-my-attendance.html" data-roles="employee manager">Attendance</a><a href="scr-lms-01-my-leave.html" data-roles="employee manager">Leave</a><a href="scr-sms-01-my-salary.html" data-roles="employee manager">Salary</a><div class="nav-label" data-roles="manager admin">People</div><a href="scr-eims-01-directory.html" id="empLink" data-roles="manager admin">Employees</a></div></nav>
+  <main class="main">
+    <div class="crumbs">Home</div>
+    <div class="page-head"><h1>Page title</h1></div>
 
-    <nav class="side" aria-label="Main menu">
-      <div class="nav">
-        <a href="scr-sh-03-dashboard.html" class="active" data-roles="employee manager admin">Home</a>
-        <a href="scr-sh-04-approvals.html" data-roles="manager admin">Approvals <span class="count" id="pending">5</span></a>
-        <div class="nav-label" data-roles="employee manager">My work</div>
-        <a href="scr-eims-03-my-profile.html" data-roles="employee manager">My Profile</a>
-        <a href="scr-ams-01-my-attendance.html" data-roles="employee manager">Attendance</a>
-        <a href="scr-lms-01-my-leave.html" data-roles="employee manager">Leave</a>
-        <a href="scr-sms-01-my-salary.html" data-roles="employee manager">Salary</a>
-        <div class="nav-label" data-roles="manager admin">People</div>
-        <a href="scr-eims-01-directory.html" data-roles="manager admin" id="empLink">Employees</a>
-      </div>
-    </nav>
+<div class="card" style="border:2px dashed var(--border-strong);box-shadow:none;height:420px;display:grid;place-items:center;text-align:center;color:var(--text-3)">
+  <div><b style="display:block;color:var(--text-2);font-size:15px;margin-bottom:4px">Page content area</b>Each module screen renders here inside the shell.<br>Width 1366 px desktop; sidebar 232 px; content padding 32 px.</div>
+</div>
 
-    <main class="main" id="content">
-      <div class="crumbs">Home</div>
-      <h1>Page title</h1>
-      <div class="placeholder"><div><b>Page content area</b>Each module screen renders here inside the shell.<br>Width 1366 px desktop; sidebar 232 px; content padding 32 px.</div></div>
-      <div class="footer">PMS POC · v0.1</div>
-    </main>
-  </div>
+    <div class="footer">PMS POC · v0.1</div>
+  </main>
+</div>
 
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<script src="assets/pms-mockup.js"></script>
 <script>
-  const users = {
-    employee: { name: 'Anita Sharma', initials: 'AS', meta: 'Employee · EMP0007', pending: 0 },
-    manager:  { name: 'Rahul Mehta',  initials: 'RM', meta: 'Manager · EMP0002', pending: 5 },
-    admin:    { name: 'Priya Nair',   initials: 'PN', meta: 'Administrator · system account',   pending: 1 }
-  };
-  function applyRole(role) {
-    document.querySelectorAll('[data-roles]').forEach(el => {
-      el.style.display = el.dataset.roles.split(' ').includes(role) ? '' : 'none';
-    });
-    const u = users[role];
-    document.getElementById('userName').textContent = u.name;
-    document.getElementById('avatar').textContent = u.initials;
-    document.getElementById('userRole').textContent = u.meta;
-    document.getElementById('pending').textContent = u.pending;
-    document.getElementById('pending').style.display = u.pending ? '' : 'none';
-    document.getElementById('empLink').firstChild.textContent = role === 'manager' ? 'My Team' : 'Employees';
-  }
-  document.querySelectorAll('input[name=role]').forEach(r => r.addEventListener('change', e => applyRole(e.target.value)));
-  applyRole('employee');
 
-  const btn = document.getElementById('userBtn'), menu = document.getElementById('userMenu');
-  btn.addEventListener('click', () => { const o = menu.classList.toggle('open'); btn.setAttribute('aria-expanded', o); });
-  document.addEventListener('click', e => { if (!btn.contains(e.target)) { menu.classList.remove('open'); btn.setAttribute('aria-expanded', false); } });
+applyRole('employee');
 </script>
 </body>
 </html>

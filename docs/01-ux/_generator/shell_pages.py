@@ -279,7 +279,93 @@ def sh04():
                  roles=("manager", "admin"), default="manager", modal=SH04_MODAL)
 
 
+
+# ---------------------------------------------------------------- SCR-SH-00
+SH00_BODY = r"""
+<div class="card" style="border:2px dashed var(--border-strong);box-shadow:none;height:420px;display:grid;place-items:center;text-align:center;color:var(--text-3)">
+  <div><b style="display:block;color:var(--text-2);font-size:15px;margin-bottom:4px">Page content area</b>Each module screen renders here inside the shell.<br>Width 1366 px desktop; sidebar 232 px; content padding 32 px.</div>
+</div>
+"""
+
+
+def sh00():
+    return shell("SCR-SH-00", "Shell layout", "home", "Home", "<h1>Page title</h1>", SH00_BODY)
+
+
+# ---------------------------------------------------------------- SCR-SH-01
+SH01_BODY = r"""
+<div class="wrap">
+  <form class="auth" id="form" novalidate>
+    <div class="brand"><div class="brand-mark" aria-hidden="true">P</div><div><b>PMS</b><span>Payroll Management System</span></div></div>
+    <h1>Sign in</h1>
+    <p class="lead" style="margin-bottom:22px">Use your Employee Id and password.</p>
+    <div class="alert error" id="alertError" role="alert" style="display:none;margin-bottom:18px"></div>
+    <div class="alert warn" id="alertWarn" role="alert" style="display:none;margin-bottom:18px"></div>
+    <div class="field">
+      <label for="empId">Employee Id</label>
+      <input class="in" type="text" id="empId" placeholder="e.g. EMP0007" autocomplete="username" autofocus style="height:40px">
+      <div class="err-text" id="empErr" hidden>Enter your Employee Id.</div>
+    </div>
+    <div class="field">
+      <label for="pwd">Password</label>
+      <div class="pw-wrap">
+        <input class="in" type="password" id="pwd" autocomplete="current-password" style="height:40px">
+        <button type="button" class="pw-toggle" id="toggle" aria-label="Show password">Show</button>
+      </div>
+      <div class="err-text" id="pwdErr" hidden>Enter your password.</div>
+    </div>
+    <button class="btn primary" id="submit" type="submit" style="width:100%;height:42px;justify-content:center;margin-top:4px">Sign in</button>
+    <p class="small" style="text-align:center;color:var(--text-2);margin:18px 0 0">Forgot your password? Contact your PMS administrator.</p>
+    <p class="small muted" style="text-align:center;margin:18px 0 0">PMS POC · v0.1</p>
+  </form>
+</div>
+"""
+
+SH01_SCRIPT = r"""
+const $ = id => document.getElementById(id);
+$('toggle').addEventListener('click', () => {
+  const show = $('pwd').type === 'password';
+  $('pwd').type = show ? 'text' : 'password';
+  $('toggle').textContent = show ? 'Hide' : 'Show';
+  $('toggle').setAttribute('aria-label', show ? 'Hide password' : 'Show password');
+});
+function reset() {
+  ['alertError', 'alertWarn'].forEach(i => $(i).style.display = 'none');
+  ['empErr', 'pwdErr'].forEach(i => $(i).hidden = true);
+  ['empId', 'pwd'].forEach(i => $(i).classList.remove('invalid'));
+}
+$('form').addEventListener('submit', e => {
+  e.preventDefault(); reset();
+  let ok = true;
+  if (!$('empId').value.trim()) { $('empErr').hidden = false; $('empId').classList.add('invalid'); ok = false; }
+  if (!$('pwd').value) { $('pwdErr').hidden = false; $('pwd').classList.add('invalid'); ok = false; }
+  if (!ok) return;
+  const s = $('scenario').value, btn = $('submit');
+  btn.disabled = true; btn.textContent = 'Signing in…';
+  setTimeout(() => {
+    btn.disabled = false; btn.textContent = 'Sign in';
+    if (s === 'ok') location.href = 'scr-sh-03-dashboard.html';
+    else if (s === 'first') location.href = 'scr-sh-02-set-password.html?first=1';
+    else if (s === 'bad') { $('alertError').textContent = 'Employee Id or password is incorrect. Please try again.'; $('alertError').style.display = 'block'; $('pwd').value = ''; $('pwd').focus(); }
+    else if (s === 'inactive') { $('alertError').textContent = 'Your account is inactive. Contact your PMS administrator.'; $('alertError').style.display = 'block'; }
+    else { $('alertWarn').textContent = 'Too many failed attempts. Your account is locked for 15 minutes.'; $('alertWarn').style.display = 'block'; }
+  }, 600);
+});
+"""
+
+SH01_CTRL = r"""Scenario on Sign in: <select id="scenario" aria-label="Scenario">
+<option value="ok">Valid credentials → Dashboard</option><option value="first">First login (temporary password) → Set password</option>
+<option value="bad">Wrong Employee Id or password</option><option value="inactive">Account deactivated</option>
+<option value="locked">Too many attempts (locked 15 min)</option></select>"""
+
+
+def sh01():
+    return standalone("SCR-SH-01", "Login", SH01_BODY, SH01_SCRIPT, SH01_CTRL)
+
+
 PAGES = {
+    "scr-sh-00-layout.html": sh00,
+    "scr-sh-01-login.html": sh01,
     "scr-sh-02-set-password.html": sh02,
     "scr-sh-03-dashboard.html": sh03,
     "scr-sh-04-approvals.html": sh04,

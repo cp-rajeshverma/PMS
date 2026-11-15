@@ -132,15 +132,25 @@ CSS = r"""
   .form-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0 20px; }
   .form-actions { display: flex; gap: 8px; justify-content: flex-end; padding-top: 16px; border-top: 1px solid var(--border); margin-top: 8px; }
   [data-show] { display: none; }
+
+  /* Auth pages (Keycloak theme): login, set password */
+  .wrap { min-height: calc(100vh - 31px); display: grid; place-items: center; padding: 32px; }
+  .auth { width: 420px; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 36px 36px 28px; box-shadow: var(--shadow); }
+  .auth .brand { margin-bottom: 28px; }
+  .auth .brand-mark { width: 36px; height: 36px; border-radius: 8px; font-size: 16px; }
+  .auth .brand b { display: block; font-size: 17px; } .auth .brand span { font-size: 13px; color: var(--text-3); font-weight: 400; }
+  .auth h1 { font-size: 20px; margin-bottom: 4px; }
+  .pw-wrap { position: relative; }
+  .pw-toggle { position: absolute; right: 8px; top: 7px; background: none; border: 0; color: var(--primary); font-size: 12px; padding: 2px 4px; }
 """
 
-USERS_JS = r"""
+JS = r"""/* PMS mockup shared behaviour: role switcher, user menu, toast. Mockup-only. */
 const USERS = {
   employee: { name: 'Anita Sharma', initials: 'AS', meta: 'Employee · EMP0007', pending: 0 },
   manager:  { name: 'Rahul Mehta',  initials: 'RM', meta: 'Manager · EMP0002', pending: 6 },
   admin:    { name: 'Priya Nair',   initials: 'PN', meta: 'Administrator · system account',   pending: 1 }
 };
-let ROLE = '%(role)s';
+let ROLE = 'employee';
 function applyRole(role) {
   ROLE = role;
   document.querySelectorAll('[data-roles]').forEach(el => {
@@ -162,6 +172,7 @@ if (ub) {
   document.addEventListener('click', e => { if (!ub.contains(e.target)) { um.classList.remove('open'); ub.setAttribute('aria-expanded', false); } });
 }
 function toast(msg) { const t = document.getElementById('toast'); t.textContent = msg; t.classList.add('show'); clearTimeout(t._h); t._h = setTimeout(() => t.classList.remove('show'), 2600); }
+
 """
 
 NAV = [
@@ -202,7 +213,7 @@ def shell(screen_id, title, active, crumbs, head, body, script="", roles=("emplo
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{screen_id} · {title} · PMS mockup</title>
-<style>{CSS}</style>
+<link rel="stylesheet" href="assets/pms-mockup.css">
 </head>
 <body>
 {mock_bar(screen_id, title, roles, default, extra_controls)}
@@ -231,8 +242,8 @@ def shell(screen_id, title, active, crumbs, head, body, script="", roles=("emplo
 </div>
 {modal}
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
+<script src="assets/pms-mockup.js"></script>
 <script>
-{USERS_JS % {'role': default}}
 {script}
 applyRole('{default}');
 </script>
@@ -248,21 +259,14 @@ def standalone(screen_id, title, body, script="", extra_controls=""):
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{screen_id} · {title} · PMS mockup</title>
-<style>{CSS}
-  .wrap {{ min-height: calc(100vh - 31px); display: grid; place-items: center; padding: 32px; }}
-  .auth {{ width: 420px; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 36px 36px 28px; box-shadow: var(--shadow); }}
-  .auth .brand {{ margin-bottom: 28px; }}
-  .auth .brand-mark {{ width: 36px; height: 36px; border-radius: 8px; font-size: 16px; }}
-  .auth .brand b {{ display: block; font-size: 17px; }} .auth .brand span {{ font-size: 13px; color: var(--text-3); font-weight: 400; }}
-  .auth h1 {{ font-size: 20px; margin-bottom: 4px; }}
-</style>
+<link rel="stylesheet" href="assets/pms-mockup.css">
 </head>
 <body>
 {mock_bar(screen_id, title, roles=(), extra=extra_controls)}
 {body}
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
+<script src="assets/pms-mockup.js"></script>
 <script>
-function toast(msg) {{ const t = document.getElementById('toast'); t.textContent = msg; t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 2600); }}
 {script}
 </script>
 </body>
