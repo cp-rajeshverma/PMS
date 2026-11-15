@@ -2,8 +2,8 @@
 
 | Field | Value |
 | --- | --- |
-| Version | 0.2 |
-| Status | Complete – all 17 mockups and UX summaries drafted; ready for sign-off |
+| Version | 1.0 |
+| Status | Approved (D-34) |
 | Owner | Rajesh Verma (product owner) |
 | Inputs | BRD v1.0 baseline, decisions D-01 to D-32 |
 | Last updated | 2026-11-16 |
@@ -134,5 +134,5 @@ Shell menu by role (all screens open inside the shell layout, SCR-SH-00):
 
 | Role | Name | Date | Decision |
 | --- | --- | --- | --- |
-| Product owner | Rajesh Verma | | |
+| Product owner | Rajesh Verma | 16 Nov 2026 | Approved (D-34) |
 | Business stakeholder | | | |
