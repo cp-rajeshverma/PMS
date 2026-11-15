@@ -4,6 +4,7 @@ Every approved project decision, newest first. Approver for all entries: Rajesh 
 
 | Id | Date | Area | Decision |
 | --- | --- | --- | --- |
+| D-23 | 15 Nov 2026 | Architecture | Frontend composition for the POC: build-time packages. Each module frontend is a library imported and built into `platform/shell-ui`; move to runtime micro-frontends (Module Federation) after the POC (ADR-001) |
 | D-22 | 15 Nov 2026 | AI tooling | `.claude/settings.json` (machine-specific bmad-loop hooks) moved to `.claude/settings.local.json` and git-ignored, per the user-level memory layer |
 | D-21 | 15 Nov 2026 | Architecture | Message broker edition: Apache ActiveMQ Artemis |
 | D-20 | 15 Nov 2026 | Tooling | Git repository initialised locally; remote on GitHub under account `cp-rajeshverma` |
@@ -29,6 +30,4 @@ Every approved project decision, newest first. Approver for all entries: Rajesh 
 
 ## Pending decisions
 
-| Id | Question | Recommendation |
-| --- | --- | --- |
-| P-01 | How do module frontends combine? | Micro-frontends loaded into `platform/shell-ui` (Module Federation) |
+None.
