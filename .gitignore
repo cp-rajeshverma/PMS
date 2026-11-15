@@ -1,0 +1,26 @@
+.bmad-loop/runs/
+.bmad-loop/cache/
+.bmad-loop/policy.toml
+_bmad/render/
+
+# Build outputs
+target/
+build/
+dist/
+node_modules/
+coverage/
+
+# IDE and OS
+.idea/
+*.iml
+.vscode/*
+!.vscode/extensions.json
+.DS_Store
+Thumbs.db
+
+# Secrets and local config
+.env
+.env.*
+!.env.example
+*.log
+_bmad/config.user.toml
