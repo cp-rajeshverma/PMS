@@ -76,6 +76,6 @@ Native date and time inputs (keyboard-entry friendly); errors linked to fields; 
 
 | Id | Question | Owner | Status |
 | --- | --- | --- | --- |
-| UXQ-16 | Can an employee withdraw a Submitted attendance before the manager decides? | Product owner | Open – proposed: no; ask the manager to reject it (keeps AMS simple) |
-| UXQ-17 | Time precision | Product owner | Open – proposed: 15-minute steps (e.g. 09:15), so hours are clean (8.25 h) |
-| UXQ-18 | Very long days | Product owner | Open – proposed: warn (not block) above 12 hours: "Over 12 hours — please confirm the times." |
+| UXQ-16 | Can an employee withdraw a Submitted attendance before the manager decides? | Product owner | Accepted (D-31) – no; ask the manager to reject it (keeps AMS simple) |
+| UXQ-17 | Time precision | Product owner | Accepted (D-31) – 15-minute steps (e.g. 09:15), so hours are clean (8.25 h) |
+| UXQ-18 | Very long days | Product owner | Accepted (D-31) – warn (not block) above 12 hours: "Over 12 hours — please confirm the times." |
