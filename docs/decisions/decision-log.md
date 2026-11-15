@@ -4,6 +4,7 @@ Every approved project decision, newest first. Approver for all entries: Rajesh 
 
 | Id | Date | Area | Decision |
 | --- | --- | --- | --- |
+| D-25 | 15 Nov 2026 | SMS | New salary status **Voided**, set only by the system when linked attendance is reopened (UJ-SYS-03). Voided records stay visible (hidden by default, "Show voided" toggle), are excluded from totals, and the void reason is kept in Remarks. Rule becomes: one non-voided salary record per attendance |
 | D-24 | 15 Nov 2026 | UX | UXQ-01–05, 07 accepted: multi-select approve (reject one at a time); attendance month calendar + list toggle; shell approvals inbox + module team tabs; Admin is system-only; reconciliation 01:00 IST; clean neutral light theme at 1366 px |
 | D-23 | 15 Nov 2026 | Architecture | Frontend composition for the POC: build-time packages. Each module frontend is a library imported and built into `platform/shell-ui`; move to runtime micro-frontends (Module Federation) after the POC (ADR-001) |
 | D-22 | 15 Nov 2026 | AI tooling | `.claude/settings.json` (machine-specific bmad-loop hooks) moved to `.claude/settings.local.json` and git-ignored, per the user-level memory layer |
