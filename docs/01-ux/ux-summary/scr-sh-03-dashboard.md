@@ -58,7 +58,7 @@ Shows each user, right after login, what needs their action and where they stand
 | --- | --- |
 | D-25 | Voided salary excluded from earnings |
 | D-24 / UXQ-04 | Admin has no personal tiles |
-| UXQ-11 (proposed) | "Missing attendance" reminder for Mon–Fri days with no attendance or leave, from date of joining |
+| UXQ-11 / D-28 | "Missing attendance" reminder for Mon–Fri days with no attendance or leave, from date of joining |
 
 ## 7. Screen states
 
@@ -78,4 +78,4 @@ Tiles have text labels (not colour only); to-do priority dots are decorative, th
 
 | Id | Question | Owner | Status |
 | --- | --- | --- | --- |
-| UXQ-11 | Show a "missing attendance" reminder for Mon–Fri days with no attendance or leave? (Reminder only; weekends stay allowed per D-08) | Product owner | Open |
+| UXQ-11 | Show a "missing attendance" reminder for Mon–Fri days with no attendance or leave? (Reminder only; weekends stay allowed per D-08) | Product owner | Accepted (D-28) |

@@ -4,6 +4,7 @@ Every approved project decision, newest first. Approver for all entries: Rajesh 
 
 | Id | Date | Area | Decision |
 | --- | --- | --- | --- |
+| D-28 | 16 Nov 2026 | Security / UX | Password policy: at least 8 characters, upper and lower case, a number, a special character, not the Employee Id (UXQ-10). Dashboard reminder for Mon–Fri days with no attendance or leave, reminder only (UXQ-11) |
 | D-27 | 16 Nov 2026 | UX | Visual design of SCR-SH-00 and SCR-SH-01 approved as the style for all remaining mockups |
 | D-26 | 16 Nov 2026 | Security | Session idle timeout 30 minutes (UXQ-08); account locked 15 minutes after 5 failed sign-ins, via Keycloak brute-force detection (UXQ-09) |
 | D-25 | 15 Nov 2026 | SMS | New salary status **Voided**, set only by the system when linked attendance is reopened (UJ-SYS-03). Voided records stay visible (hidden by default, "Show voided" toggle), are excluded from totals, and the void reason is kept in Remarks. Rule becomes: one non-voided salary record per attendance |

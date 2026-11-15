@@ -47,7 +47,7 @@ A centred card in the login style. Two modes: **First login** (new + confirm pas
 | --- | --- |
 | E1 / D-02 | Admin issues a temporary password at onboarding |
 | D-07 / O6 | Admin reset issues a new temporary password |
-| UXQ-10 (proposed) | Policy: at least 8 characters, upper and lower case, a number, a special character, not the Employee Id |
+| UXQ-10 / D-28 | Policy: at least 8 characters, upper and lower case, a number, a special character, not the Employee Id |
 
 ## 7. Screen states
 
@@ -66,4 +66,4 @@ Checklist is linked to the field with `aria-describedby`; rule state is conveyed
 
 | Id | Question | Owner | Status |
 | --- | --- | --- | --- |
-| UXQ-10 | Password policy as listed above? | Product owner | Open |
+| UXQ-10 | Password policy as listed above? | Product owner | Accepted (D-28) |
