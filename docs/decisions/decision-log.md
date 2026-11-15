@@ -4,6 +4,7 @@ Every approved project decision, newest first. Approver for all entries: Rajesh 
 
 | Id | Date | Area | Decision |
 | --- | --- | --- | --- |
+| D-33 | 16 Nov 2026 | SMS | Employees can accept several salary records at once (UXQ-23); no auto-accept, dashboard keeps reminding (UXQ-24); manager can close a dispute with **Keep as is** + required explanation, record returns to Manager Approved (UXQ-25) |
 | D-32 | 16 Nov 2026 | LMS | Leave days are calendar days incl. weekends (UXQ-19); new status Cancelled for withdrawn requests (UXQ-20); no Reason field (UXQ-21); no draft for leave, submit directly (UXQ-22) |
 | D-31 | 16 Nov 2026 | AMS | No withdrawal of Submitted attendance; manager rejects instead (UXQ-16). Times in 15-minute steps (UXQ-17). Warn, not block, above 12 hours a day (UXQ-18) |
 | D-30 | 16 Nov 2026 | UX | Mockup styles and shared behaviour live in one stylesheet and one script (`docs/01-ux/mockups/assets/pms-mockup.css`, `pms-mockup.js`), linked by every mockup; seed for the future design-system package |

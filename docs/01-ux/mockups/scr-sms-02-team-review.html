@@ -45,6 +45,10 @@
   </main>
 </div>
 
+<div class="modal-bg" id="kModal" role="dialog" aria-modal="true" aria-labelledby="kT"><div class="modal"><h2 id="kT">Resolve dispute: keep as is</h2><p id="kWhat"></p>
+  <div class="alert info" style="margin-bottom:16px">Use this when the attendance, and so the wage, is correct. The record goes back to <b>Manager Approved</b> and the employee is asked to accept it again, with your explanation.</div>
+  <div class="field"><label for="kText" class="req">Explanation for the employee</label><textarea class="in" id="kText" placeholder="e.g. Badge logs show you left at 18:00."></textarea><div class="err-text" id="kErr" hidden>An explanation is required.</div></div>
+  <div class="actions"><button class="btn" id="kNo">Cancel</button><button class="btn primary" id="kYes">Keep as is</button></div></div></div>
 <div class="modal-bg" id="roModal" role="dialog" aria-modal="true" aria-labelledby="roT"><div class="modal"><h2 id="roT">Resolve dispute: reopen attendance</h2><p id="roWhat"></p>
   <div class="alert info" style="margin-bottom:16px">The attendance goes back to the employee as <b>Rejected</b> to correct. This salary record becomes <b>Voided</b>; a new one is generated when the corrected attendance is approved.</div>
   <div class="field"><label for="roText" class="req">Remarks for the employee</label><textarea class="in" id="roText">Please correct the out time and resubmit.</textarea></div>
@@ -85,7 +89,7 @@ function render() {
     return '<tr data-id="' + s.id + '"' + (v ? ' style="color:var(--text-3)"' : '') + '><td>' + (s.st === 'Generated' ? '<input type="checkbox" class="sel" aria-label="Select ' + s.emp + ' ' + sh(s.d) + '">' : '') + '</td>' +
     '<td style="white-space:nowrap"><div style="font-weight:500">' + s.emp + '</div><div class="small muted">' + s.eid + '</div></td><td style="white-space:nowrap">' + sh(s.d) + '</td><td class="num">' + s.h.toFixed(2) + '</td><td class="num">' + s.r.toFixed(2) + '</td>' +
     '<td class="num"' + (v ? ' style="text-decoration:line-through"' : '') + '>' + inr(s.h * s.r) + '</td><td>' + badge(s.st) + '</td><td class="small" style="max-width:220px">' + (s.rm ? 'Employee: "' + s.rm + '"' : s.note || '<span class="muted">—</span>') + '</td><td class="act">' +
-    (s.st === 'Generated' ? '<button class="btn primary sm" data-a="ok">Approve</button>' : s.st === 'Disputed' ? '<button class="btn primary sm" data-a="ro">Reopen attendance</button>' : '<span class="muted small">—</span>') + '</td></tr>'; }).join('');
+    (s.st === 'Generated' ? '<button class="btn primary sm" data-a="ok">Approve</button>' : s.st === 'Disputed' ? '<button class="btn sm" data-a="keep">Keep as is</button><button class="btn primary sm" data-a="ro">Reopen attendance</button>' : '<span class="muted small">—</span>') + '</td></tr>'; }).join('');
   $('wrap').style.display = rows.length ? '' : 'none'; $('empty').style.display = rows.length ? 'none' : '';
   const emps = [...new Set(S.map(s => s.emp))].filter(n => !e || n === e).sort();
   $('sumRows').innerHTML = emps.map(n => { const m = inP.filter(s => s.emp === n && (s.st === 'Accepted' || s.st === 'Manager Approved'));
@@ -102,7 +106,10 @@ $('bulkApprove').onclick = () => { const ids = [...document.querySelectorAll('.s
 let cur;
 $('rows').addEventListener('click', e => { const b = e.target.closest('button[data-a]'); if (!b) return; cur = S.find(s => s.id === +b.closest('tr').dataset.id);
   if (b.dataset.a === 'ok') { cur.st = 'Manager Approved'; render(); toast('Approved. ' + cur.emp + ' can now review it.'); }
+  else if (b.dataset.a === 'keep') { $('kWhat').textContent = cur.emp + ' · ' + sh(cur.d) + ' · ' + inr(cur.h * cur.r) + ' · Employee: "' + cur.rm + '"'; $('kText').value = ''; $('kErr').hidden = true; $('kModal').classList.add('open'); $('kText').focus(); }
   else { $('roWhat').textContent = cur.emp + ' · ' + sh(cur.d) + ' · ' + cur.h.toFixed(2) + ' h = ' + inr(cur.h * cur.r) + ' · Employee: "' + cur.rm + '"'; $('roModal').classList.add('open'); } });
+$('kNo').onclick = () => $('kModal').classList.remove('open');
+$('kYes').onclick = () => { if (!$('kText').value.trim()) { $('kErr').hidden = false; return; } $('kModal').classList.remove('open'); cur.st = 'Manager Approved'; cur.note = 'Kept as is: "' + $('kText').value.trim() + '"'; cur.rm = null; render(); toast('Dispute closed. ' + cur.emp + ' can accept the record.'); };
 $('roNo').onclick = () => $('roModal').classList.remove('open');
 $('roYes').onclick = () => { $('roModal').classList.remove('open'); cur.st = 'Voided'; cur.note = 'Attendance reopened after dispute'; cur.rm = null; render(); toast('Attendance reopened. Salary record voided.'); };
 render();

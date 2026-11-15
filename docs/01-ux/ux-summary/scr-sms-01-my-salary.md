@@ -74,5 +74,5 @@ Amounts right-aligned with tabular numbers; struck-through voided amounts also c
 
 | Id | Question | Owner | Status |
 | --- | --- | --- | --- |
-| UXQ-23 | Employee can **Accept selected** (several at once), like managers' bulk approve? | Product owner | Open – proposed: yes |
-| UXQ-24 | Should records left in Manager Approved be auto-accepted after some days if the employee does nothing? | Product owner | Open – proposed: no auto-accept in the POC; dashboard keeps reminding |
+| UXQ-23 | Employee can **Accept selected** (several at once), like managers' bulk approve? | Product owner | Accepted (D-33) – yes |
+| UXQ-24 | Should records left in Manager Approved be auto-accepted after some days if the employee does nothing? | Product owner | Accepted (D-33) – no auto-accept in the POC; dashboard keeps reminding |

@@ -60,7 +60,7 @@ PMS has **30 user journeys** (26 user-facing, 4 backend jobs) across **17 screen
 | --- | --- | --- | --- | --- | --- |
 | UJ-SMS-01 | Approve generated salary records | Manager | Pending approval | SCR-SH-04 → SCR-SMS-02 | Manager Approved |
 | UJ-SMS-02 | Accept or dispute my salary | Employee | Records awaiting review | SCR-SH-03 → SCR-SMS-01 | Accepted, or Disputed with remark |
-| UJ-SMS-03 | Resolve a dispute | Manager | Disputed record | SCR-SMS-02 → SCR-AMS-03 (UJ-AMS-04) | Attendance reopened for correction |
+| UJ-SMS-03 | Resolve a dispute | Manager | Disputed record | SCR-SMS-02 or SCR-SH-04 | Either kept as is (back to Manager Approved, D-33) or attendance reopened for correction (UJ-AMS-04) |
 | UJ-SMS-04 | See my earnings for a period | Employee | Menu | SCR-SMS-01 | Total wages for date range shown |
 
 ### Backend jobs (no screens)

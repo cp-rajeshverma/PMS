@@ -43,6 +43,7 @@ Tabs filter by module (All, Profiles, Attendance, Leave, Salary) with counts. A 
 | Approve (row) | Manager, Admin | Item removed from inbox (salary rows have Approve only, no Reject) | Submitted → Approved; Salary Generated → Manager Approved | "<Type> for <name> approved." (+ "Salary record will be generated." for attendance) |
 | Approve selected | Manager, Admin | Items removed | As above | "<n> item(s) approved." |
 | Reject | Manager, Admin | Dialog → item returned to employee | Submitted → Rejected | "… rejected and returned to the employee." |
+| Keep as is (dispute) | Manager | Dialog → explanation required | Salary Disputed → Manager Approved | "Dispute closed. <name> can accept the record." |
 | Reopen attendance (dispute) | Manager | Dialog → attendance returned to employee | Attendance Approved → Rejected; Salary → Voided | "Attendance reopened. Salary record voided." |
 | Open | Manager, Admin | Opens module review screen | – | – |
 

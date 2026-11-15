@@ -16,7 +16,7 @@ Lets a manager approve the team's generated wages and resolve disputes, with tea
 
 ## 2. Description
 
-Under Salary, a "Team" tab with **Needs action** (Generated + Disputed, disputes first) and **All records** sub-tabs; filters for team member, date range and "Show voided". Generated rows: Approve (row or selected). Disputed rows: the employee's remark and **Reopen attendance**, with a dialog explaining the effect. There is no Reject for salary (D-07 / O2). A "Team totals in period" table shows approved hours, earned amount and open items per employee.
+Under Salary, a "Team" tab with **Needs action** (Generated + Disputed, disputes first) and **All records** sub-tabs; filters for team member, date range and "Show voided". Generated rows: Approve (row or selected). Disputed rows: the employee's remark, **Keep as is** (wage was correct; explanation required) and **Reopen attendance** (wage was wrong), each with a dialog explaining the effect. There is no Reject for salary (D-07 / O2). A "Team totals in period" table shows approved hours, earned amount and open items per employee.
 
 ## 3. Navigation
 
@@ -39,6 +39,7 @@ Under Salary, a "Team" tab with **Needs action** (Generated + Disputed, disputes
 | Action | Who | Result | Status change | Message shown |
 | --- | --- | --- | --- | --- |
 | Approve (row or selected) | Manager | Employee can review | Generated → Manager Approved | "Approved. <name> can now review it." |
+| Keep as is (disputed) | Manager | Dialog → explanation required; employee asked to accept again | Disputed → Manager Approved | "Dispute closed. <name> can accept the record." |
 | Reopen attendance (disputed) | Manager | `AttendanceReopened` → attendance back to employee | Attendance Approved → Rejected; Salary Disputed → Voided | "Attendance reopened. Salary record voided." |
 
 ## 6. Business rules applied
@@ -58,7 +59,7 @@ Under Salary, a "Team" tab with **Needs action** (Generated + Disputed, disputes
 | Loading | Table skeleton |
 | Validation error | Remarks required in reopen dialog |
 | System error | Alert; failed bulk items stay selected |
-| Dispute where attendance was right | See UXQ-25 |
+| Dispute where attendance was right | Keep as is (D-33) |
 
 ## 8. Accessibility
 
@@ -68,4 +69,4 @@ Disputes are sorted first and labelled with text; amounts right-aligned; dialog 
 
 | Id | Question | Owner | Status |
 | --- | --- | --- | --- |
-| UXQ-25 | If the manager believes the attendance (and so the wage) was correct, how is a dispute closed without reopening? | Product owner | Open – proposed: add **Keep as is** with a remark; record goes back to Manager Approved for the employee to accept |
+| UXQ-25 | If the manager believes the attendance (and so the wage) was correct, how is a dispute closed without reopening? | Product owner | Accepted (D-33) – add **Keep as is** with a remark; record goes back to Manager Approved for the employee to accept |

@@ -39,7 +39,7 @@
   <b id="selCount">0 selected</b>
   <button class="btn primary sm" id="bulkApprove">Approve selected</button>
   <button class="btn sm" id="bulkClear">Clear</button>
-  <span class="small muted">Reject one at a time — remarks are required. Salary records cannot be rejected; disputes are resolved by reopening attendance.</span>
+  <span class="small muted">Reject one at a time — remarks are required. Salary records cannot be rejected; disputes are resolved by keeping as is or reopening attendance.</span>
 </div>
 <div class="tbl-wrap" id="tblWrap">
   <table class="t">
@@ -66,6 +66,19 @@
       <div class="err-text" id="rjErr" style="display:none">Remarks are required to reject.</div>
     </div>
     <div class="actions"><button class="btn" id="rjCancel">Cancel</button><button class="btn danger" id="rjOk">Reject</button></div>
+  </div>
+</div>
+<div class="modal-bg" id="keepModal" role="dialog" aria-modal="true" aria-labelledby="kTitle">
+  <div class="modal">
+    <h2 id="kTitle">Resolve dispute: keep as is</h2>
+    <p id="kWhat"></p>
+    <div class="alert info" style="margin-bottom:16px">Use this when the attendance, and so the wage, is correct. The record goes back to <b>Manager Approved</b> and the employee is asked to accept it again, with your explanation.</div>
+    <div class="field">
+      <label for="kText" class="req">Explanation for the employee</label>
+      <textarea class="in" id="kText" placeholder="e.g. Badge logs show you left at 18:00."></textarea>
+      <div class="err-text" id="kErr" style="display:none">An explanation is required.</div>
+    </div>
+    <div class="actions"><button class="btn" id="kCancel">Cancel</button><button class="btn primary" id="kOk">Keep as is</button></div>
   </div>
 </div>
 <div class="modal-bg" id="reopenModal" role="dialog" aria-modal="true" aria-labelledby="roTitle">
@@ -116,7 +129,7 @@ function render() {
       '<td>' + i.det + '</td><td class="small ' + (disputed ? '' : 'muted') + '" style="max-width:220px">' + i.sub + '</td>' +
       '<td>' + badge(i.st) + '</td><td class="act">' +
       (disputed
-        ? '<button class="btn primary sm" data-a="reopen">Reopen attendance</button><a class="btn sm" href="' + i.open + '">Open</a>'
+        ? '<button class="btn sm" data-a="keep">Keep as is</button><button class="btn primary sm" data-a="reopen">Reopen attendance</button>'
         : i.type === 'Salary' ? '<button class="btn primary sm" data-a="approve">Approve</button><a class="btn sm" href="' + i.open + '">Open</a>'
         : '<button class="btn primary sm" data-a="approve">Approve</button><button class="btn danger sm" data-a="reject">Reject</button><a class="btn sm" href="' + i.open + '">Open</a>') +
       '</td></tr>';
@@ -140,10 +153,13 @@ document.getElementById('rows').addEventListener('click', e => {
   current = data.find(i => i.id === +b.closest('tr').dataset.id);
   if (b.dataset.a === 'approve') { remove([current.id]); toast(current.type + ' for ' + current.emp + ' approved.' + (current.type === 'Attendance' ? ' Salary record will be generated.' : '')); }
   if (b.dataset.a === 'reject') { document.getElementById('rjWhat').textContent = current.type + ' · ' + current.emp + ' · ' + current.det; document.getElementById('rjText').value = ''; document.getElementById('rjErr').style.display = 'none'; document.getElementById('rejectModal').classList.add('open'); document.getElementById('rjText').focus(); }
+  if (b.dataset.a === 'keep') { document.getElementById('kWhat').textContent = current.emp + ' · ' + current.det; document.getElementById('kText').value = ''; document.getElementById('kErr').style.display = 'none'; document.getElementById('keepModal').classList.add('open'); }
   if (b.dataset.a === 'reopen') { document.getElementById('roWhat').textContent = current.emp + ' · ' + current.det; document.getElementById('reopenModal').classList.add('open'); }
 });
 document.getElementById('rjCancel').onclick = () => document.getElementById('rejectModal').classList.remove('open');
 document.getElementById('rjOk').onclick = () => { if (!document.getElementById('rjText').value.trim()) { document.getElementById('rjErr').style.display = 'block'; return; } document.getElementById('rejectModal').classList.remove('open'); remove([current.id]); toast(current.type + ' for ' + current.emp + ' rejected and returned to the employee.'); };
+document.getElementById('kCancel').onclick = () => document.getElementById('keepModal').classList.remove('open');
+document.getElementById('kOk').onclick = () => { if (!document.getElementById('kText').value.trim()) { document.getElementById('kErr').style.display = 'block'; return; } document.getElementById('keepModal').classList.remove('open'); remove([current.id]); toast('Dispute closed. ' + current.emp + ' can accept the record.'); };
 document.getElementById('roCancel').onclick = () => document.getElementById('reopenModal').classList.remove('open');
 document.getElementById('roOk').onclick = () => { document.getElementById('reopenModal').classList.remove('open'); remove([current.id]); toast('Attendance reopened. Salary record voided.'); };
 
