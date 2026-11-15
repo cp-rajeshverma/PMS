@@ -1,0 +1,286 @@
+from base import shell, standalone
+
+# ---------------------------------------------------------------- SCR-SH-02
+SH02_BODY = r"""
+<div class="wrap">
+  <form class="auth" id="form" novalidate>
+    <div class="brand"><div class="brand-mark" aria-hidden="true">P</div><div><b>PMS</b><span>Payroll Management System</span></div></div>
+    <h1 id="title">Set your password</h1>
+    <p class="lead" id="lead" style="margin-bottom:20px">You signed in with a temporary password. Choose your own password to continue.</p>
+    <div class="alert error" id="alert" role="alert" style="display:none;margin-bottom:16px"></div>
+
+    <div class="field" id="curWrap" style="display:none">
+      <label for="cur" class="req">Current password</label>
+      <input class="in" type="password" id="cur" autocomplete="current-password">
+    </div>
+    <div class="field">
+      <label for="np" class="req">New password</label>
+      <input class="in" type="password" id="np" autocomplete="new-password" aria-describedby="rules">
+    </div>
+    <ul id="rules" class="small" style="list-style:none;padding:0;margin:-6px 0 16px;color:var(--text-3)">
+      <li data-r="len">○ At least 8 characters</li>
+      <li data-r="up">○ An uppercase and a lowercase letter</li>
+      <li data-r="num">○ A number</li>
+      <li data-r="sp">○ A special character (e.g. ! @ # $)</li>
+      <li data-r="id">○ Not your Employee Id</li>
+    </ul>
+    <div class="field">
+      <label for="cp" class="req">Confirm new password</label>
+      <input class="in" type="password" id="cp" autocomplete="new-password">
+      <div class="err-text" id="cpErr" style="display:none">Passwords do not match.</div>
+    </div>
+    <button class="btn primary" style="width:100%;height:42px;justify-content:center" type="submit">Save password</button>
+    <p class="small muted" style="text-align:center;margin:16px 0 0" id="backWrap"><a href="scr-sh-03-dashboard.html">Cancel and go back</a></p>
+    <p class="small muted" style="text-align:center;margin:16px 0 0">PMS POC · v0.1</p>
+  </form>
+</div>
+"""
+
+SH02_SCRIPT = r"""
+const $ = id => document.getElementById(id);
+const EMP = 'EMP0007';
+function setMode(m) {
+  const first = m === 'first';
+  $('title').textContent = first ? 'Set your password' : 'Change password';
+  $('lead').textContent = first ? 'You signed in with a temporary password. Choose your own password to continue.' : 'Enter your current password, then choose a new one.';
+  $('curWrap').style.display = first ? 'none' : '';
+  $('backWrap').style.display = first ? 'none' : '';
+  $('mode').value = m;
+}
+$('mode').addEventListener('change', e => setMode(e.target.value));
+setMode(new URLSearchParams(location.search).get('first') ? 'first' : 'change');
+const tests = {
+  len: v => v.length >= 8, up: v => /[A-Z]/.test(v) && /[a-z]/.test(v), num: v => /\d/.test(v),
+  sp: v => /[^A-Za-z0-9]/.test(v), id: v => v && v.toUpperCase() !== EMP
+};
+function check() {
+  const v = $('np').value; let all = true;
+  document.querySelectorAll('#rules li').forEach(li => {
+    const ok = tests[li.dataset.r](v); all = all && ok;
+    li.textContent = (ok ? '✓ ' : '○ ') + li.textContent.slice(2);
+    li.style.color = ok ? 'var(--success)' : 'var(--text-3)';
+  });
+  return all;
+}
+$('np').addEventListener('input', check);
+$('form').addEventListener('submit', e => {
+  e.preventDefault(); $('alert').style.display = 'none'; $('cpErr').style.display = 'none';
+  if ($('mode').value === 'change' && $('cur').value === 'wrong') { $('alert').textContent = 'Current password is incorrect.'; $('alert').style.display = 'block'; return; }
+  if (!check()) { $('alert').textContent = 'The new password does not meet all the rules below.'; $('alert').style.display = 'block'; return; }
+  if ($('np').value !== $('cp').value) { $('cpErr').style.display = 'block'; $('cp').classList.add('invalid'); return; }
+  toast('Password saved.');
+  setTimeout(() => location.href = 'scr-sh-03-dashboard.html', 900);
+});
+"""
+
+SH02_CONTROLS = r"""Mode: <select id="mode" aria-label="Mode"><option value="first">First login (temporary password)</option><option value="change">Change password (from user menu)</option></select>
+<span>Tip: type <b>wrong</b> as current password to see the error</span>"""
+
+
+def sh02():
+    return standalone("SCR-SH-02", "Set password", SH02_BODY, SH02_SCRIPT, SH02_CONTROLS)
+
+
+# ---------------------------------------------------------------- SCR-SH-03
+SH03_HEAD = r"""<div><h1 id="greet">Good morning, Anita</h1><p class="lead">Monday, 16 November 2026</p></div>
+<div data-roles="admin"><a class="btn primary" href="scr-eims-02-admin-form.html">+ Onboard employee</a></div>"""
+
+SH03_BODY = r"""
+<!-- Employee + Manager: my work -->
+<div data-roles="employee manager">
+  <div class="grid g4" style="margin-bottom:16px">
+    <div class="card tile"><div class="k">Hours this month</div><div class="v">72.5 h</div><div class="s">9 approved days</div></div>
+    <div class="card tile"><div class="k">Earnings this month</div><div class="v">₹ 18,125</div><div class="s">Accepted + approved, excl. voided</div></div>
+    <div class="card tile"><div class="k">Leave this month</div><div class="v">2 days</div><div class="s">1 request pending</div></div>
+    <div class="card tile"><div class="k">Profile</div><div class="v" style="font-size:18px;margin-top:8px"><span class="badge b-approved">Approved</span></div><div class="s">Last updated 02 Nov 2026</div></div>
+  </div>
+  <div class="grid g2">
+    <div class="card">
+      <h2>Things to do <span class="badge b-warn" style="margin-left:6px">4</span></h2>
+      <div class="list-row"><div><div class="t1"><span class="dot" style="background:var(--danger)"></span>Attendance for Thu 12 Nov was rejected</div><div class="t2">Manager remark: "Out time looks wrong, please check."</div></div><a class="btn sm" href="scr-ams-02-entry.html">Fix</a></div>
+      <div class="list-row"><div><div class="t1"><span class="dot" style="background:var(--warning)"></span>Attendance not entered for Fri 13 Nov</div><div class="t2">Working day with no attendance or leave</div></div><a class="btn sm" href="scr-ams-02-entry.html">Enter</a></div>
+      <div class="list-row"><div><div class="t1"><span class="dot" style="background:var(--primary)"></span>3 salary records waiting for your review</div><div class="t2">₹ 6,250 · 09–11 Nov</div></div><a class="btn sm" href="scr-sms-01-my-salary.html">Review</a></div>
+      <div class="list-row"><div><div class="t1"><span class="dot" style="background:var(--primary)"></span>Leave request 23–24 Nov is waiting for approval</div><div class="t2">Casual leave · submitted 14 Nov</div></div><a class="btn sm" href="scr-lms-01-my-leave.html">View</a></div>
+    </div>
+    <div class="card">
+      <div data-roles="manager">
+        <h2>Waiting for your approval</h2>
+        <div class="list-row"><div class="t1">Profiles</div><div><span class="badge b-submitted">1</span></div></div>
+        <div class="list-row"><div class="t1">Attendance</div><div><span class="badge b-submitted">3</span></div></div>
+        <div class="list-row"><div class="t1">Leave</div><div><span class="badge b-submitted">1</span></div></div>
+        <div class="list-row"><div class="t1">Salary (incl. 1 dispute)</div><div><span class="badge b-submitted">1</span></div></div>
+        <div style="margin-top:14px"><a class="btn primary" href="scr-sh-04-approvals.html">Open approvals inbox</a></div>
+      </div>
+      <div data-roles="employee">
+        <h2>Recent activity</h2>
+        <div class="list-row"><div><div class="t1">Attendance 11 Nov approved</div><div class="t2">by Rahul Mehta · 13 Nov, 10:42</div></div><span class="badge b-approved">Approved</span></div>
+        <div class="list-row"><div><div class="t1">Salary record 11 Nov generated</div><div class="t2">8.0 h × ₹ 250 = ₹ 2,000</div></div><span class="badge b-generated">Generated</span></div>
+        <div class="list-row"><div><div class="t1">Attendance 12 Nov rejected</div><div class="t2">by Rahul Mehta · 13 Nov, 10:43</div></div><span class="badge b-rejected">Rejected</span></div>
+        <div class="list-row"><div><div class="t1">Leave 23–24 Nov submitted</div><div class="t2">14 Nov, 17:05</div></div><span class="badge b-submitted">Submitted</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Admin -->
+<div data-roles="admin">
+  <div class="grid g4" style="margin-bottom:16px">
+    <div class="card tile"><div class="k">Active employees</div><div class="v">19</div><div class="s">1 inactive</div></div>
+    <div class="card tile"><div class="k">Profiles not yet approved</div><div class="v">3</div><div class="s">2 Draft · 1 Submitted</div></div>
+    <div class="card tile"><div class="k">Waiting for you</div><div class="v">1</div><div class="s">Top-level profile approval</div></div>
+    <div class="card tile"><div class="k">Last reconciliation</div><div class="v" style="font-size:18px;margin-top:8px"><span class="badge b-approved">OK</span></div><div class="s">Today 01:00 IST · 0 missing records</div></div>
+  </div>
+  <div class="grid g2">
+    <div class="card">
+      <h2>Recently onboarded</h2>
+      <div class="list-row"><div><div class="t1">Kavya Iyer · EMP0020</div><div class="t2">Joined 16 Nov 2026 · Manager: Rahul Mehta</div></div><span class="badge b-draft">Draft</span></div>
+      <div class="list-row"><div><div class="t1">Sameer Khan · EMP0019</div><div class="t2">Joined 09 Nov 2026 · Manager: Rahul Mehta</div></div><span class="badge b-draft">Draft</span></div>
+      <div class="list-row"><div><div class="t1">Meera Joshi · EMP0018</div><div class="t2">Joined 02 Nov 2026 · Manager: Rahul Mehta</div></div><span class="badge b-submitted">Submitted</span></div>
+      <div style="margin-top:14px"><a href="scr-eims-01-directory.html">View all employees →</a></div>
+    </div>
+    <div class="card">
+      <h2>Waiting for your approval</h2>
+      <div class="list-row"><div><div class="t1">Profile update · Rahul Mehta (EMP0002)</div><div class="t2">Top-level employee · submitted 15 Nov</div></div><a class="btn sm" href="scr-sh-04-approvals.html">Review</a></div>
+      <h2 style="margin-top:20px">System jobs</h2>
+      <div class="list-row"><div><div class="t1">Nightly salary reconciliation</div><div class="t2">Runs daily 01:00 IST · last run today, 4 s</div></div><span class="badge b-approved">Succeeded</span></div>
+    </div>
+  </div>
+</div>
+"""
+
+SH03_SCRIPT = r"""
+function onRole(r) { document.getElementById('greet').textContent = 'Good morning, ' + USERS[r].name.split(' ')[0]; }
+"""
+
+
+def sh03():
+    return shell("SCR-SH-03", "Dashboard", "home", "Home", SH03_HEAD, SH03_BODY, SH03_SCRIPT)
+
+
+# ---------------------------------------------------------------- SCR-SH-04
+SH04_HEAD = r"""<div><h1>Approvals</h1><p class="lead">Everything waiting for your decision, across all modules.</p></div>"""
+
+SH04_BODY = r"""
+<div class="tabs" role="tablist" id="tabs">
+  <a href="#" class="on" data-f="all">All<span class="count" data-c="all"></span></a>
+  <a href="#" data-f="Profile">Profiles<span class="count" data-c="Profile"></span></a>
+  <a href="#" data-f="Attendance">Attendance<span class="count" data-c="Attendance"></span></a>
+  <a href="#" data-f="Leave">Leave<span class="count" data-c="Leave"></span></a>
+  <a href="#" data-f="Salary">Salary<span class="count" data-c="Salary"></span></a>
+</div>
+<div class="bulk" id="bulk" role="region" aria-label="Bulk actions">
+  <b id="selCount">0 selected</b>
+  <button class="btn primary sm" id="bulkApprove">Approve selected</button>
+  <button class="btn sm" id="bulkClear">Clear</button>
+  <span class="small muted">Reject one at a time — remarks are required.</span>
+</div>
+<div class="tbl-wrap" id="tblWrap">
+  <table class="t">
+    <thead><tr>
+      <th style="width:36px"><input type="checkbox" id="all" aria-label="Select all approvable items"></th>
+      <th>Type</th><th>Employee</th><th>Details</th><th>Submitted / note</th><th>Status</th><th class="act">Actions</th>
+    </tr></thead>
+    <tbody id="rows"></tbody>
+  </table>
+</div>
+<div class="card empty" id="empty" style="display:none"><b>All caught up</b>Nothing is waiting for your approval.</div>
+"""
+
+SH04_MODAL = r"""
+<div class="modal-bg" id="rejectModal" role="dialog" aria-modal="true" aria-labelledby="rjTitle">
+  <div class="modal">
+    <h2 id="rjTitle">Reject item</h2>
+    <p class="small muted" id="rjWhat" style="margin-top:-6px"></p>
+    <div class="field">
+      <label for="rjText" class="req">Remarks for the employee</label>
+      <textarea class="in" id="rjText" placeholder="Explain what needs to be corrected"></textarea>
+      <div class="err-text" id="rjErr" style="display:none">Remarks are required to reject.</div>
+    </div>
+    <div class="actions"><button class="btn" id="rjCancel">Cancel</button><button class="btn danger" id="rjOk">Reject</button></div>
+  </div>
+</div>
+<div class="modal-bg" id="reopenModal" role="dialog" aria-modal="true" aria-labelledby="roTitle">
+  <div class="modal">
+    <h2 id="roTitle">Resolve dispute: reopen attendance</h2>
+    <p id="roWhat"></p>
+    <div class="alert info" style="margin-bottom:16px">Reopening sends the attendance back to the employee as <b>Rejected</b> to correct. This salary record becomes <b>Voided</b>; a new one is generated when the corrected attendance is approved.</div>
+    <div class="field">
+      <label for="roText" class="req">Remarks for the employee</label>
+      <textarea class="in" id="roText">Please correct the out time and resubmit.</textarea>
+    </div>
+    <div class="actions"><button class="btn" id="roCancel">Cancel</button><button class="btn primary" id="roOk">Reopen attendance</button></div>
+  </div>
+</div>
+"""
+
+SH04_SCRIPT = r"""
+const ITEMS = {
+  manager: [
+    { id: 1, type: 'Profile', emp: 'Meera Joshi', eid: 'EMP0018', det: 'New profile · joined 02 Nov 2026', sub: '15 Nov, 09:12', st: 'Submitted', open: 'scr-eims-04-profile-review.html' },
+    { id: 2, type: 'Attendance', emp: 'Anita Sharma', eid: 'EMP0007', det: 'Fri 13 Nov · 09:00–17:30 · 8.5 h', sub: '13 Nov, 18:02', st: 'Submitted', open: 'scr-ams-03-team-review.html' },
+    { id: 3, type: 'Attendance', emp: 'Vikram Singh', eid: 'EMP0008', det: 'Fri 13 Nov · 10:00–18:00 · 8.0 h', sub: '13 Nov, 18:15', st: 'Submitted', open: 'scr-ams-03-team-review.html' },
+    { id: 4, type: 'Attendance', emp: 'Neha Gupta', eid: 'EMP0009', det: 'Mon 16 Nov · 08:30–13:00 · 4.5 h', sub: '16 Nov, 13:05', st: 'Submitted', open: 'scr-ams-03-team-review.html' },
+    { id: 5, type: 'Leave', emp: 'Arjun Rao', eid: 'EMP0010', det: 'Casual · 20–21 Nov · 2 days', sub: '14 Nov, 11:30', st: 'Submitted', open: 'scr-lms-03-team-review.html' },
+    { id: 6, type: 'Salary', emp: 'Vikram Singh', eid: 'EMP0008', det: 'Tue 10 Nov · 9.0 h × ₹ 250 = ₹ 2,250', sub: 'Employee remark: "I left at 17:00, not 18:00."', st: 'Disputed', open: 'scr-sms-02-team-review.html' }
+  ],
+  admin: [
+    { id: 7, type: 'Profile', emp: 'Rahul Mehta', eid: 'EMP0002', det: 'Profile update · address changed', sub: '15 Nov, 16:40', st: 'Submitted', open: 'scr-eims-04-profile-review.html' }
+  ],
+  employee: []
+};
+let filter = 'all', data = [];
+const badge = s => '<span class="badge b-' + s.toLowerCase().replace(/ /g, '') + '">' + s + '</span>';
+function render() {
+  const rows = data.filter(i => filter === 'all' || i.type === filter);
+  document.querySelectorAll('[data-c]').forEach(c => { const n = data.filter(i => c.dataset.c === 'all' || i.type === c.dataset.c).length; c.textContent = n; });
+  document.getElementById('rows').innerHTML = rows.map(i => {
+    const disputed = i.st === 'Disputed';
+    return '<tr data-id="' + i.id + '">' +
+      '<td>' + (disputed ? '' : '<input type="checkbox" class="sel" aria-label="Select ' + i.type + ' of ' + i.emp + '">') + '</td>' +
+      '<td><span class="chip">' + i.type.toUpperCase() + '</span></td>' +
+      '<td><div style="font-weight:500;white-space:nowrap">' + i.emp + '</div><div class="small muted">' + i.eid + '</div></td>' +
+      '<td>' + i.det + '</td><td class="small ' + (disputed ? '' : 'muted') + '" style="max-width:220px">' + i.sub + '</td>' +
+      '<td>' + badge(i.st) + '</td><td class="act">' +
+      (disputed
+        ? '<button class="btn primary sm" data-a="reopen">Reopen attendance</button><a class="btn sm" href="' + i.open + '">Open</a>'
+        : '<button class="btn primary sm" data-a="approve">Approve</button><button class="btn danger sm" data-a="reject">Reject</button><a class="btn sm" href="' + i.open + '">Open</a>') +
+      '</td></tr>';
+  }).join('');
+  document.getElementById('tblWrap').style.display = rows.length ? '' : 'none';
+  document.getElementById('empty').style.display = rows.length ? 'none' : '';
+  document.getElementById('all').checked = false; syncBulk();
+  const p = document.getElementById('pending'); if (p) { p.textContent = data.length; p.style.display = data.length ? '' : 'none'; }
+}
+function syncBulk() { const n = document.querySelectorAll('.sel:checked').length; document.getElementById('selCount').textContent = n + ' selected'; document.getElementById('bulk').classList.toggle('show', n > 0); }
+function remove(ids) { data = data.filter(i => !ids.includes(i.id)); render(); }
+function onRole(r) { data = ITEMS[r].slice(); render(); }
+document.getElementById('tabs').addEventListener('click', e => { const a = e.target.closest('a'); if (!a) return; e.preventDefault(); document.querySelectorAll('#tabs a').forEach(x => x.classList.toggle('on', x === a)); filter = a.dataset.f; render(); });
+document.getElementById('all').addEventListener('change', e => { document.querySelectorAll('.sel').forEach(c => c.checked = e.target.checked); syncBulk(); });
+document.getElementById('rows').addEventListener('change', e => { if (e.target.classList.contains('sel')) syncBulk(); });
+document.getElementById('bulkClear').addEventListener('click', () => { document.querySelectorAll('.sel').forEach(c => c.checked = false); syncBulk(); });
+document.getElementById('bulkApprove').addEventListener('click', () => { const ids = [...document.querySelectorAll('.sel:checked')].map(c => +c.closest('tr').dataset.id); remove(ids); toast(ids.length + ' item(s) approved.'); });
+let current = null;
+document.getElementById('rows').addEventListener('click', e => {
+  const b = e.target.closest('button[data-a]'); if (!b) return;
+  current = data.find(i => i.id === +b.closest('tr').dataset.id);
+  if (b.dataset.a === 'approve') { remove([current.id]); toast(current.type + ' for ' + current.emp + ' approved.' + (current.type === 'Attendance' ? ' Salary record will be generated.' : '')); }
+  if (b.dataset.a === 'reject') { document.getElementById('rjWhat').textContent = current.type + ' · ' + current.emp + ' · ' + current.det; document.getElementById('rjText').value = ''; document.getElementById('rjErr').style.display = 'none'; document.getElementById('rejectModal').classList.add('open'); document.getElementById('rjText').focus(); }
+  if (b.dataset.a === 'reopen') { document.getElementById('roWhat').textContent = current.emp + ' · ' + current.det; document.getElementById('reopenModal').classList.add('open'); }
+});
+document.getElementById('rjCancel').onclick = () => document.getElementById('rejectModal').classList.remove('open');
+document.getElementById('rjOk').onclick = () => { if (!document.getElementById('rjText').value.trim()) { document.getElementById('rjErr').style.display = 'block'; return; } document.getElementById('rejectModal').classList.remove('open'); remove([current.id]); toast(current.type + ' for ' + current.emp + ' rejected and returned to the employee.'); };
+document.getElementById('roCancel').onclick = () => document.getElementById('reopenModal').classList.remove('open');
+document.getElementById('roOk').onclick = () => { document.getElementById('reopenModal').classList.remove('open'); remove([current.id]); toast('Attendance reopened. Salary record voided.'); };
+"""
+
+
+def sh04():
+    return shell("SCR-SH-04", "Approvals inbox", "approvals", "Home / Approvals", SH04_HEAD, SH04_BODY, SH04_SCRIPT,
+                 roles=("manager", "admin"), default="manager", modal=SH04_MODAL)
+
+
+PAGES = {
+    "scr-sh-02-set-password.html": sh02,
+    "scr-sh-03-dashboard.html": sh03,
+    "scr-sh-04-approvals.html": sh04,
+}
