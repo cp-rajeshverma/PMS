@@ -4,6 +4,8 @@ Every approved project decision, newest first. Approver for all entries: Rajesh 
 
 | Id | Date | Area | Decision |
 | --- | --- | --- | --- |
+| D-22 | 15 Nov 2026 | AI tooling | `.claude/settings.json` (machine-specific bmad-loop hooks) moved to `.claude/settings.local.json` and git-ignored, per the user-level memory layer |
+| D-21 | 15 Nov 2026 | Architecture | Message broker edition: Apache ActiveMQ Artemis |
 | D-20 | 15 Nov 2026 | Tooling | Git repository initialised locally; remote on GitHub under account `cp-rajeshverma` |
 | D-19 | 15 Nov 2026 | Templates | Template outlines approved: UX journey index, UX summary, BRD, HLD, ADR (Markdown, in `templates/`) |
 | D-18 | 15 Nov 2026 | Repository | Single repository `PMS` (D:\POC\PMS) with one BMAD install; services stay independent via separate builds, path-filtered pipelines, database per service, contracts-only sharing |
@@ -30,4 +32,3 @@ Every approved project decision, newest first. Approver for all entries: Rajesh 
 | Id | Question | Recommendation |
 | --- | --- | --- |
 | P-01 | How do module frontends combine? | Micro-frontends loaded into `platform/shell-ui` (Module Federation) |
-| P-02 | ActiveMQ edition | ActiveMQ Artemis |

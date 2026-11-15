@@ -24,3 +24,6 @@ Thumbs.db
 !.env.example
 *.log
 _bmad/config.user.toml
+
+# Claude Code user-level settings (machine-specific)
+.claude/settings.local.json
