@@ -113,13 +113,13 @@ Shell menu by role (all screens open inside the shell layout, SCR-SH-00):
 
 | Id | Question | Proposed answer | Status |
 | --- | --- | --- | --- |
-| UXQ-01 | Should managers approve several records at once? | Yes: multi-select approve on SCR-AMS-03, SCR-LMS-03, SCR-SMS-02 and SCR-SH-04; reject stays one at a time (needs remarks) | Open |
-| UXQ-02 | Attendance view as a list or a month calendar? | Month calendar with status colours, plus list view toggle | Open |
-| UXQ-03 | One approvals inbox in the shell, or only per-module team tabs? | Both: inbox for the daily routine, team tabs for history | Open |
-| UXQ-04 | Does Admin also have personal records (profile, attendance)? | No: Admin is a system role only in the POC | Open |
-| UXQ-05 | Time of the nightly reconciliation job | 01:00 IST | Open |
+| UXQ-01 | Should managers approve several records at once? | Yes: multi-select approve on SCR-AMS-03, SCR-LMS-03, SCR-SMS-02 and SCR-SH-04; reject stays one at a time (needs remarks) | Accepted (D-24) |
+| UXQ-02 | Attendance view as a list or a month calendar? | Month calendar with status colours, plus list view toggle | Accepted (D-24) |
+| UXQ-03 | One approvals inbox in the shell, or only per-module team tabs? | Both: inbox for the daily routine, team tabs for history | Accepted (D-24) |
+| UXQ-04 | Does Admin also have personal records (profile, attendance)? | No: Admin is a system role only in the POC | Accepted (D-24) |
+| UXQ-05 | Time of the nightly reconciliation job | 01:00 IST | Accepted (D-24) |
 | UXQ-06 | Add a "Voided" salary status for reopened attendance (UJ-SYS-03)? | Yes, so the history stays visible | Open |
-| UXQ-07 | Visual style for mockups | Clean enterprise style, Infogain-neutral (no logo), light theme, desktop 1366 px | Open |
+| UXQ-07 | Visual style for mockups | Clean enterprise style, Infogain-neutral (no logo), light theme, desktop 1366 px | Accepted (D-24) |
 
 ## Sign-off
 
