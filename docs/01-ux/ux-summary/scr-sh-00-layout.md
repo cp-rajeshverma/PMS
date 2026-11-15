@@ -75,4 +75,4 @@ Landmarks (`header`, `nav`, `main`); user menu is a keyboard-operable menu butto
 
 | Id | Question | Owner | Status |
 | --- | --- | --- | --- |
-| UXQ-08 | Session idle timeout length | Product owner | Open – proposed 30 minutes |
+| UXQ-08 | Session idle timeout length | Product owner | Accepted (D-26) – 30 minutes |

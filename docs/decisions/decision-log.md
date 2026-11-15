@@ -4,6 +4,8 @@ Every approved project decision, newest first. Approver for all entries: Rajesh 
 
 | Id | Date | Area | Decision |
 | --- | --- | --- | --- |
+| D-27 | 16 Nov 2026 | UX | Visual design of SCR-SH-00 and SCR-SH-01 approved as the style for all remaining mockups |
+| D-26 | 16 Nov 2026 | Security | Session idle timeout 30 minutes (UXQ-08); account locked 15 minutes after 5 failed sign-ins, via Keycloak brute-force detection (UXQ-09) |
 | D-25 | 15 Nov 2026 | SMS | New salary status **Voided**, set only by the system when linked attendance is reopened (UJ-SYS-03). Voided records stay visible (hidden by default, "Show voided" toggle), are excluded from totals, and the void reason is kept in Remarks. Rule becomes: one non-voided salary record per attendance |
 | D-24 | 15 Nov 2026 | UX | UXQ-01–05, 07 accepted: multi-select approve (reject one at a time); attendance month calendar + list toggle; shell approvals inbox + module team tabs; Admin is system-only; reconciliation 01:00 IST; clean neutral light theme at 1366 px |
 | D-23 | 15 Nov 2026 | Architecture | Frontend composition for the POC: build-time packages. Each module frontend is a library imported and built into `platform/shell-ui`; move to runtime micro-frontends (Module Federation) after the POC (ADR-001) |

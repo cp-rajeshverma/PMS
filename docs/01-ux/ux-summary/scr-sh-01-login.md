@@ -71,4 +71,4 @@ Labels bound to inputs; alerts use `role="alert"`; correct `autocomplete` (usern
 
 | Id | Question | Owner | Status |
 | --- | --- | --- | --- |
-| UXQ-09 | Lock the account after failed attempts? | Product owner | Open – proposed: lock 15 minutes after 5 failed attempts (Keycloak brute-force detection) |
+| UXQ-09 | Lock the account after failed attempts? | Product owner | Accepted (D-26) –: lock 15 minutes after 5 failed attempts (Keycloak brute-force detection) |
