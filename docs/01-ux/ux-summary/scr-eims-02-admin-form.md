@@ -76,5 +76,5 @@ Required fields marked with * and `required`; errors linked to fields; the tempo
 
 | Id | Question | Owner | Status |
 | --- | --- | --- | --- |
-| UXQ-12 | Role (Employee / Manager) is chosen by Admin on this form and stored in Keycloak, not in the Employee table. OK? | Product owner | Open |
-| UXQ-13 | If a manager is deactivated while they still have direct reports, block it until Admin reassigns the reports? | Product owner | Open – proposed: block with message listing the reports |
+| UXQ-12 | Role (Employee / Manager) is chosen by Admin on this form and stored in Keycloak, not in the Employee table. OK? | Product owner | Accepted (D-29) |
+| UXQ-13 | If a manager is deactivated while they still have direct reports, block it until Admin reassigns the reports? | Product owner | Accepted (D-29) – block with message listing the reports |

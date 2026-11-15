@@ -4,6 +4,7 @@ Every approved project decision, newest first. Approver for all entries: Rajesh 
 
 | Id | Date | Area | Decision |
 | --- | --- | --- | --- |
+| D-29 | 16 Nov 2026 | EIMS | Role (Employee/Manager) chosen by Admin at onboarding, stored in Keycloak (UXQ-12); deactivating a manager with direct reports is blocked until reports are reassigned (UXQ-13); during re-approval other modules use the last approved profile (UXQ-14); last approved profile version is stored for change comparison, to be designed in HLD (UXQ-15) |
 | D-28 | 16 Nov 2026 | Security / UX | Password policy: at least 8 characters, upper and lower case, a number, a special character, not the Employee Id (UXQ-10). Dashboard reminder for Mon–Fri days with no attendance or leave, reminder only (UXQ-11) |
 | D-27 | 16 Nov 2026 | UX | Visual design of SCR-SH-00 and SCR-SH-01 approved as the style for all remaining mockups |
 | D-26 | 16 Nov 2026 | Security | Session idle timeout 30 minutes (UXQ-08); account locked 15 minutes after 5 failed sign-ins, via Keycloak brute-force detection (UXQ-09) |

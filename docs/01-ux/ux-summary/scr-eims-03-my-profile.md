@@ -84,4 +84,4 @@ Sections use headings; every input has a label; errors are linked to inputs and 
 
 | Id | Question | Owner | Status |
 | --- | --- | --- | --- |
-| UXQ-14 | While an approved profile is being re-approved, other modules keep using the last approved data and the employee keeps working normally. OK? | Product owner | Open – proposed: yes |
+| UXQ-14 | While an approved profile is being re-approved, other modules keep using the last approved data and the employee keeps working normally. OK? | Product owner | Accepted (D-29) – yes |

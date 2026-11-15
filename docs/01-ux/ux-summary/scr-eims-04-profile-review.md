@@ -73,4 +73,4 @@ Changed rows are marked by a text badge, not only colour; struck-through old val
 
 | Id | Question | Owner | Status |
 | --- | --- | --- | --- |
-| UXQ-15 | Showing the comparison needs the last approved version kept alongside the submitted one (e.g. an approved-snapshot of the Employee record). Accept this storage need for HLD? | Product owner | Open – proposed: yes |
+| UXQ-15 | Showing the comparison needs the last approved version kept alongside the submitted one (e.g. an approved-snapshot of the Employee record). Accept this storage need for HLD? | Product owner | Accepted (D-29) – yes |
