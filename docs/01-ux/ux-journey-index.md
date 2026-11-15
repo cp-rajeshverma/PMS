@@ -8,7 +8,7 @@
 | Inputs | BRD v1.0 baseline, decisions D-01 to D-23 |
 | Last updated | 2026-11-15 |
 
-PMS has **25 user journeys** (21 user-facing, 4 backend jobs) across **17 screens**. Every screen sits inside one shell app (ADR-001).
+PMS has **30 user journeys** (26 user-facing, 4 backend jobs) across **17 screens**. Every screen sits inside one shell app (ADR-001).
 
 ## Journeys
 
