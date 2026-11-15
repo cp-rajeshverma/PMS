@@ -2,11 +2,11 @@
 
 | Field | Value |
 | --- | --- |
-| Version | 0.1 |
-| Status | Draft – in review |
+| Version | 0.2 |
+| Status | Complete – all 17 mockups and UX summaries drafted; ready for sign-off |
 | Owner | Rajesh Verma (product owner) |
-| Inputs | BRD v1.0 baseline, decisions D-01 to D-23 |
-| Last updated | 2026-11-15 |
+| Inputs | BRD v1.0 baseline, decisions D-01 to D-32 |
+| Last updated | 2026-11-16 |
 
 PMS has **30 user journeys** (26 user-facing, 4 backend jobs) across **17 screens**. Every screen sits inside one shell app (ADR-001).
 
@@ -93,6 +93,15 @@ PMS has **30 user journeys** (26 user-facing, 4 backend jobs) across **17 screen
 | SCR-SMS-01 | My salary | SMS | All | `mockups/scr-sms-01-my-salary.html` | `ux-summary/scr-sms-01-my-salary.md` |
 | SCR-SMS-02 | Team salary review | SMS | Manager | `mockups/scr-sms-02-team-review.html` | `ux-summary/scr-sms-02-team-review.md` |
 | SCR-SH-00 | Shell layout (header, menu, user menu) | Shell | All | `mockups/scr-sh-00-layout.html` | `ux-summary/scr-sh-00-layout.md` |
+
+## Status lists (from the mockups)
+
+| Entity | Statuses |
+| --- | --- |
+| Employee profile | Draft, Submitted, Approved, Rejected; plus Active / Inactive |
+| Attendance | Draft, Submitted, Approved, Rejected |
+| Leave | Submitted, Approved, Rejected, Cancelled (D-32) |
+| Salary | Generated, Manager Approved, Accepted, Disputed, Voided (D-25) |
 
 ## Navigation map
 

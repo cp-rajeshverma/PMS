@@ -39,7 +39,7 @@
   <b id="selCount">0 selected</b>
   <button class="btn primary sm" id="bulkApprove">Approve selected</button>
   <button class="btn sm" id="bulkClear">Clear</button>
-  <span class="small muted">Reject one at a time — remarks are required.</span>
+  <span class="small muted">Reject one at a time — remarks are required. Salary records cannot be rejected; disputes are resolved by reopening attendance.</span>
 </div>
 <div class="tbl-wrap" id="tblWrap">
   <table class="t">
@@ -93,6 +93,8 @@ const ITEMS = {
     { id: 4, type: 'Attendance', emp: 'Neha Gupta', eid: 'EMP0009', det: 'Mon 16 Nov · 08:30–13:00 · 4.5 h', sub: '16 Nov, 13:05', st: 'Submitted', open: 'scr-ams-03-team-review.html' },
     { id: 8, type: 'Leave', emp: 'Anita Sharma', eid: 'EMP0007', det: 'Casual · 23–24 Nov · 2 days', sub: '14 Nov, 17:05', st: 'Submitted', open: 'scr-lms-03-team-review.html' },
     { id: 5, type: 'Leave', emp: 'Arjun Rao', eid: 'EMP0010', det: 'Casual · 20–21 Nov · 2 days', sub: '14 Nov, 11:30', st: 'Submitted', open: 'scr-lms-03-team-review.html' },
+    { id: 9, type: 'Salary', emp: 'Neha Gupta', eid: 'EMP0009', det: 'Wed 11 Nov · 8.5 h × ₹ 275 = ₹ 2,337.50', sub: 'Generated 12 Nov, 10:01', st: 'Generated', open: 'scr-sms-02-team-review.html' },
+    { id: 10, type: 'Salary', emp: 'Arjun Rao', eid: 'EMP0010', det: 'Wed 11 Nov · 6.0 h × ₹ 250 = ₹ 1,500', sub: 'Generated 12 Nov, 10:01', st: 'Generated', open: 'scr-sms-02-team-review.html' },
     { id: 6, type: 'Salary', emp: 'Vikram Singh', eid: 'EMP0008', det: 'Tue 10 Nov · 9.0 h × ₹ 250 = ₹ 2,250', sub: 'Employee remark: "I left at 17:00, not 18:00."', st: 'Disputed', open: 'scr-sms-02-team-review.html' }
   ],
   admin: [
@@ -115,6 +117,7 @@ function render() {
       '<td>' + badge(i.st) + '</td><td class="act">' +
       (disputed
         ? '<button class="btn primary sm" data-a="reopen">Reopen attendance</button><a class="btn sm" href="' + i.open + '">Open</a>'
+        : i.type === 'Salary' ? '<button class="btn primary sm" data-a="approve">Approve</button><a class="btn sm" href="' + i.open + '">Open</a>'
         : '<button class="btn primary sm" data-a="approve">Approve</button><button class="btn danger sm" data-a="reject">Reject</button><a class="btn sm" href="' + i.open + '">Open</a>') +
       '</td></tr>';
   }).join('');

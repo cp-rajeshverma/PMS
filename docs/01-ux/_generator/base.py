@@ -165,7 +165,7 @@ CSS = r"""
 JS = r"""/* PMS mockup shared behaviour: role switcher, user menu, toast. Mockup-only. */
 const USERS = {
   employee: { name: 'Anita Sharma', initials: 'AS', meta: 'Employee · EMP0007', pending: 0 },
-  manager:  { name: 'Rahul Mehta',  initials: 'RM', meta: 'Manager · EMP0002', pending: 7 },
+  manager:  { name: 'Rahul Mehta',  initials: 'RM', meta: 'Manager · EMP0002', pending: 9 },
   admin:    { name: 'Priya Nair',   initials: 'PN', meta: 'Administrator · system account',   pending: 1 }
 };
 let ROLE = 'employee';

@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SCR-SMS-02 · Team salary review · PMS mockup</title>
+<link rel="stylesheet" href="assets/pms-mockup.css">
+</head>
+<body>
+<div class="mock-bar" role="region" aria-label="Mockup controls"><strong>Mockup controls</strong>View as: <label><input type="radio" name="role" value="manager" checked> Manager</label><span class="mock-id">SCR-SMS-02 · Team salary review · v0.1</span></div>
+<div class="app">
+  <header class="header">
+    <div class="brand"><div class="brand-mark" aria-hidden="true">P</div>PMS <small>Payroll Management System</small></div>
+    <div class="user">
+      <button class="user-btn" id="userBtn" aria-haspopup="menu" aria-expanded="false">
+        <div class="avatar" id="avatar">AS</div>
+        <div class="user-meta"><b id="userName">Anita Sharma</b><span id="userRole">Employee · EMP0007</span></div>
+        <span aria-hidden="true">▾</span>
+      </button>
+      <div class="menu-pop" id="userMenu" role="menu">
+        <a href="scr-sh-02-set-password.html" role="menuitem">Change password</a><hr>
+        <a href="scr-sh-01-login.html" role="menuitem">Log out</a>
+      </div>
+    </div>
+  </header>
+  <nav class="side" aria-label="Main menu"><div class="nav"><a href="scr-sh-03-dashboard.html" data-roles="employee manager admin">Home</a><a href="scr-sh-04-approvals.html" data-roles="manager admin">Approvals <span class="count" id="pending">0</span></a><div class="nav-label" data-roles="employee manager">My work</div><a href="scr-eims-03-my-profile.html" data-roles="employee manager">My Profile</a><a href="scr-ams-01-my-attendance.html" data-roles="employee manager">Attendance</a><a href="scr-lms-01-my-leave.html" data-roles="employee manager">Leave</a><a href="scr-sms-01-my-salary.html" class="active" data-roles="employee manager">Salary</a><div class="nav-label" data-roles="manager admin">People</div><a href="scr-eims-01-directory.html" id="empLink" data-roles="manager admin">Employees</a></div></nav>
+  <main class="main">
+    <div class="crumbs">My work / Salary / Team</div>
+    <div class="page-head"><div><h1>Team salary</h1><p class="lead">Approve your team's generated wages and resolve disputes.</p></div></div>
+
+<div class="tabs"><a href="scr-sms-01-my-salary.html">My salary</a><a href="#" class="on">Team</a></div>
+<div class="tabs" id="sub" style="border-bottom:0;margin-bottom:8px"><a href="#" class="on" data-t="pending">Needs action<span class="count" id="cP"></span></a><a href="#" data-t="all">All records</a></div>
+<div class="toolbar">
+  <select class="in" id="fEmp" style="width:220px" aria-label="Employee"><option value="">All team members</option><option>Anita Sharma</option><option>Vikram Singh</option><option>Neha Gupta</option><option>Arjun Rao</option></select>
+  <input class="in" type="date" id="fFrom" value="2026-11-01" style="width:170px" aria-label="From date"><span class="muted">to</span>
+  <input class="in" type="date" id="fTo" value="2026-11-16" style="width:170px" aria-label="To date">
+  <label class="small" style="display:inline-flex;gap:6px;align-items:center"><input type="checkbox" id="showV"> Show voided</label>
+</div>
+<div class="bulk" id="bulk"><b id="selCount">0 selected</b><button class="btn primary sm" id="bulkApprove">Approve selected</button><button class="btn sm" id="bulkClear">Clear</button><span class="small muted">Generated records can only be approved. If a wage looks wrong, the attendance is the source — fix it there.</span></div>
+<div class="tbl-wrap" id="wrap"><table class="t"><thead><tr><th style="width:36px"><input type="checkbox" id="all" aria-label="Select all generated records"></th><th>Employee</th><th>Date</th><th class="num">Hours</th><th class="num">Rate (₹/h)</th><th class="num">Amount</th><th>Status</th><th>Notes</th><th class="act">Actions</th></tr></thead><tbody id="rows"></tbody></table></div>
+<div class="card empty" id="empty" style="display:none"><b>Nothing needs action</b>All generated records are approved and there are no open disputes.</div>
+<div class="card" style="margin-top:16px" id="sumCard"><h2>Team totals in period</h2><div class="tbl-wrap" style="box-shadow:none"><table class="t"><thead><tr><th>Employee</th><th class="num">Approved hours</th><th class="num">Earned (accepted + manager approved)</th><th class="num">Open items</th></tr></thead><tbody id="sumRows"></tbody></table></div></div>
+
+    <div class="footer">PMS POC · v0.1</div>
+  </main>
+</div>
+
+<div class="modal-bg" id="roModal" role="dialog" aria-modal="true" aria-labelledby="roT"><div class="modal"><h2 id="roT">Resolve dispute: reopen attendance</h2><p id="roWhat"></p>
+  <div class="alert info" style="margin-bottom:16px">The attendance goes back to the employee as <b>Rejected</b> to correct. This salary record becomes <b>Voided</b>; a new one is generated when the corrected attendance is approved.</div>
+  <div class="field"><label for="roText" class="req">Remarks for the employee</label><textarea class="in" id="roText">Please correct the out time and resubmit.</textarea></div>
+  <div class="actions"><button class="btn" id="roNo">Cancel</button><button class="btn primary" id="roYes">Reopen attendance</button></div></div></div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<script src="assets/pms-mockup.js"></script>
+<script>
+
+const MON = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'], DOW = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+const sh = iso => { const d = new Date(iso + 'T00:00:00'); return DOW[d.getDay()] + ' ' + String(d.getDate()).padStart(2, '0') + ' ' + MON[d.getMonth()]; };
+const inr = n => '₹ ' + n.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+const STC = { 'Generated': 'generated', 'Manager Approved': 'mgrapproved', 'Accepted': 'accepted', 'Disputed': 'disputed', 'Voided': 'voided' };
+const badge = s => '<span class="badge b-' + STC[s] + '">' + s + '</span>';
+
+const $ = id => document.getElementById(id);
+let tab = 'pending';
+const S = [
+  { id: 1, emp: 'Vikram Singh', eid: 'EMP0008', d: '2026-11-10', h: 9.0, r: 250, st: 'Disputed', rm: 'I left at 17:00, not 18:00.' },
+  { id: 2, emp: 'Neha Gupta', eid: 'EMP0009', d: '2026-11-11', h: 8.5, r: 275, st: 'Generated' },
+  { id: 3, emp: 'Arjun Rao', eid: 'EMP0010', d: '2026-11-11', h: 6.0, r: 250, st: 'Generated' },
+  { id: 4, emp: 'Anita Sharma', eid: 'EMP0007', d: '2026-11-11', h: 8.0, r: 250, st: 'Manager Approved' },
+  { id: 5, emp: 'Anita Sharma', eid: 'EMP0007', d: '2026-11-10', h: 8.0, r: 250, st: 'Manager Approved' },
+  { id: 6, emp: 'Anita Sharma', eid: 'EMP0007', d: '2026-11-09', h: 9.0, r: 250, st: 'Manager Approved' },
+  { id: 7, emp: 'Vikram Singh', eid: 'EMP0008', d: '2026-11-09', h: 8.0, r: 250, st: 'Accepted' },
+  { id: 8, emp: 'Anita Sharma', eid: 'EMP0007', d: '2026-11-03', h: 8.0, r: 250, st: 'Accepted' },
+  { id: 9, emp: 'Anita Sharma', eid: 'EMP0007', d: '2026-11-03', h: 9.0, r: 250, st: 'Voided', note: 'Attendance reopened after dispute' },
+  { id: 10, emp: 'Anita Sharma', eid: 'EMP0007', d: '2026-11-02', h: 8.5, r: 250, st: 'Accepted' },
+  { id: 11, emp: 'Neha Gupta', eid: 'EMP0009', d: '2026-11-02', h: 8.0, r: 275, st: 'Accepted' }
+];
+const needs = s => s.st === 'Generated' || s.st === 'Disputed';
+function render() {
+  const e = $('fEmp').value, fr = $('fFrom').value, to = $('fTo').value, sv = $('showV').checked;
+  const inP = S.filter(s => (!e || s.emp === e) && s.d >= fr && s.d <= to);
+  const rows = inP.filter(s => (tab === 'pending' ? needs(s) : (sv || s.st !== 'Voided'))).sort((a, b) => (b.st === 'Disputed') - (a.st === 'Disputed') || b.d.localeCompare(a.d));
+  $('cP').textContent = S.filter(needs).length;
+  $('rows').innerHTML = rows.map(s => { const v = s.st === 'Voided';
+    return '<tr data-id="' + s.id + '"' + (v ? ' style="color:var(--text-3)"' : '') + '><td>' + (s.st === 'Generated' ? '<input type="checkbox" class="sel" aria-label="Select ' + s.emp + ' ' + sh(s.d) + '">' : '') + '</td>' +
+    '<td style="white-space:nowrap"><div style="font-weight:500">' + s.emp + '</div><div class="small muted">' + s.eid + '</div></td><td style="white-space:nowrap">' + sh(s.d) + '</td><td class="num">' + s.h.toFixed(2) + '</td><td class="num">' + s.r.toFixed(2) + '</td>' +
+    '<td class="num"' + (v ? ' style="text-decoration:line-through"' : '') + '>' + inr(s.h * s.r) + '</td><td>' + badge(s.st) + '</td><td class="small" style="max-width:220px">' + (s.rm ? 'Employee: "' + s.rm + '"' : s.note || '<span class="muted">—</span>') + '</td><td class="act">' +
+    (s.st === 'Generated' ? '<button class="btn primary sm" data-a="ok">Approve</button>' : s.st === 'Disputed' ? '<button class="btn primary sm" data-a="ro">Reopen attendance</button>' : '<span class="muted small">—</span>') + '</td></tr>'; }).join('');
+  $('wrap').style.display = rows.length ? '' : 'none'; $('empty').style.display = rows.length ? 'none' : '';
+  const emps = [...new Set(S.map(s => s.emp))].filter(n => !e || n === e).sort();
+  $('sumRows').innerHTML = emps.map(n => { const m = inP.filter(s => s.emp === n && (s.st === 'Accepted' || s.st === 'Manager Approved'));
+    return '<tr><td>' + n + '</td><td class="num">' + m.reduce((a, s) => a + s.h, 0).toFixed(2) + '</td><td class="num">' + inr(m.reduce((a, s) => a + s.h * s.r, 0)) + '</td><td class="num">' + inP.filter(s => s.emp === n && needs(s)).length + '</td></tr>'; }).join('');
+  $('all').checked = false; sync();
+}
+function sync() { const n = document.querySelectorAll('.sel:checked').length; $('selCount').textContent = n + ' selected'; $('bulk').classList.toggle('show', n > 0); }
+$('sub').addEventListener('click', e => { const a = e.target.closest('a'); if (!a) return; e.preventDefault(); tab = a.dataset.t; document.querySelectorAll('#sub a').forEach(x => x.classList.toggle('on', x === a)); render(); });
+['fEmp', 'fFrom', 'fTo', 'showV'].forEach(i => $(i).addEventListener('input', render));
+$('all').onchange = e => { document.querySelectorAll('.sel').forEach(c => c.checked = e.target.checked); sync(); };
+$('rows').addEventListener('change', e => { if (e.target.classList.contains('sel')) sync(); });
+$('bulkClear').onclick = () => { document.querySelectorAll('.sel').forEach(c => c.checked = false); sync(); };
+$('bulkApprove').onclick = () => { const ids = [...document.querySelectorAll('.sel:checked')].map(c => +c.closest('tr').dataset.id); ids.forEach(id => S.find(s => s.id === id).st = 'Manager Approved'); render(); toast(ids.length + ' salary record(s) approved. Employees can now review them.'); };
+let cur;
+$('rows').addEventListener('click', e => { const b = e.target.closest('button[data-a]'); if (!b) return; cur = S.find(s => s.id === +b.closest('tr').dataset.id);
+  if (b.dataset.a === 'ok') { cur.st = 'Manager Approved'; render(); toast('Approved. ' + cur.emp + ' can now review it.'); }
+  else { $('roWhat').textContent = cur.emp + ' · ' + sh(cur.d) + ' · ' + cur.h.toFixed(2) + ' h = ' + inr(cur.h * cur.r) + ' · Employee: "' + cur.rm + '"'; $('roModal').classList.add('open'); } });
+$('roNo').onclick = () => $('roModal').classList.remove('open');
+$('roYes').onclick = () => { $('roModal').classList.remove('open'); cur.st = 'Voided'; cur.note = 'Attendance reopened after dispute'; cur.rm = null; render(); toast('Attendance reopened. Salary record voided.'); };
+render();
+
+applyRole('manager');
+</script>
+</body>
+</html>

@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SCR-SMS-01 · My salary · PMS mockup</title>
+<link rel="stylesheet" href="assets/pms-mockup.css">
+</head>
+<body>
+<div class="mock-bar" role="region" aria-label="Mockup controls"><strong>Mockup controls</strong>View as: <label><input type="radio" name="role" value="employee" checked> Employee</label><label><input type="radio" name="role" value="manager"> Manager</label><span class="mock-id">SCR-SMS-01 · My salary · v0.1</span></div>
+<div class="app">
+  <header class="header">
+    <div class="brand"><div class="brand-mark" aria-hidden="true">P</div>PMS <small>Payroll Management System</small></div>
+    <div class="user">
+      <button class="user-btn" id="userBtn" aria-haspopup="menu" aria-expanded="false">
+        <div class="avatar" id="avatar">AS</div>
+        <div class="user-meta"><b id="userName">Anita Sharma</b><span id="userRole">Employee · EMP0007</span></div>
+        <span aria-hidden="true">▾</span>
+      </button>
+      <div class="menu-pop" id="userMenu" role="menu">
+        <a href="scr-sh-02-set-password.html" role="menuitem">Change password</a><hr>
+        <a href="scr-sh-01-login.html" role="menuitem">Log out</a>
+      </div>
+    </div>
+  </header>
+  <nav class="side" aria-label="Main menu"><div class="nav"><a href="scr-sh-03-dashboard.html" data-roles="employee manager admin">Home</a><a href="scr-sh-04-approvals.html" data-roles="manager admin">Approvals <span class="count" id="pending">0</span></a><div class="nav-label" data-roles="employee manager">My work</div><a href="scr-eims-03-my-profile.html" data-roles="employee manager">My Profile</a><a href="scr-ams-01-my-attendance.html" data-roles="employee manager">Attendance</a><a href="scr-lms-01-my-leave.html" data-roles="employee manager">Leave</a><a href="scr-sms-01-my-salary.html" class="active" data-roles="employee manager">Salary</a><div class="nav-label" data-roles="manager admin">People</div><a href="scr-eims-01-directory.html" id="empLink" data-roles="manager admin">Employees</a></div></nav>
+  <main class="main">
+    <div class="crumbs">My work / Salary</div>
+    <div class="page-head"><div><h1>Salary</h1><p class="lead">Your daily wages, calculated automatically from approved attendance.</p></div></div>
+
+<div class="tabs" data-roles="manager"><a href="scr-sms-01-my-salary.html" class="on">My salary</a><a href="scr-sms-02-team-review.html">Team<span class="count">3</span></a></div>
+<div class="grid g4" style="margin-bottom:16px">
+  <div class="card tile"><div class="k">Earned in period</div><div class="v" id="tE"></div><div class="s">Accepted + manager approved</div></div>
+  <div class="card tile"><div class="k">To review</div><div class="v" id="tR" style="color:var(--primary)"></div><div class="s" id="tRs"></div></div>
+  <div class="card tile"><div class="k">Waiting for manager</div><div class="v" id="tG"></div><div class="s">Generated, not yet approved</div></div>
+  <div class="card tile"><div class="k">Disputed</div><div class="v" id="tD" style="color:var(--danger)"></div><div class="s">With your manager</div></div>
+</div>
+<div class="toolbar">
+  <input class="in" type="date" id="fFrom" value="2026-11-01" style="width:170px" aria-label="From date"><span class="muted">to</span>
+  <input class="in" type="date" id="fTo" value="2026-11-16" style="width:170px" aria-label="To date">
+  <label class="small" style="display:inline-flex;gap:6px;align-items:center"><input type="checkbox" id="showV"> Show voided</label>
+  <span class="small muted" style="margin-left:auto">Rate: ₹ 250.00 / hour</span>
+</div>
+<div class="bulk" id="bulk"><b id="selCount">0 selected</b><button class="btn primary sm" id="bulkAccept">Accept selected</button><button class="btn sm" id="bulkClear">Clear</button><span class="small muted">Dispute one at a time — a remark is required.</span></div>
+<div class="tbl-wrap"><table class="t"><thead><tr><th style="width:36px"><input type="checkbox" id="all" aria-label="Select all records to review"></th><th>Date</th><th>Attendance</th><th class="num">Hours</th><th class="num">Rate (₹/h)</th><th class="num">Amount</th><th>Status</th><th>Notes</th><th class="act">Actions</th></tr></thead>
+<tbody id="rows"></tbody><tfoot><tr><td></td><td colspan="4" style="padding:11px 12px;font-weight:600">Total earned in period (excl. voided, disputed, generated)</td><td class="num" id="tot" style="padding:11px 12px;font-weight:600"></td><td colspan="3"></td></tr></tfoot></table></div>
+
+    <div class="footer">PMS POC · v0.1</div>
+  </main>
+</div>
+
+<div class="modal-bg" id="dModal" role="dialog" aria-modal="true" aria-labelledby="dT"><div class="modal"><h2 id="dT">Dispute salary record</h2><p class="small muted" id="dWhat" style="margin-top:-6px"></p>
+  <div class="alert info" style="margin-bottom:16px">Your manager will review it. If the attendance was wrong, they reopen it so you can correct it; this record is then voided and a new one is generated.</div>
+  <div class="field"><label for="dText" class="req">What is wrong?</label><textarea class="in" id="dText" placeholder="e.g. I left at 17:00, not 18:00."></textarea><div class="err-text" id="dErr" hidden>A remark is required to dispute.</div></div>
+  <div class="actions"><button class="btn" id="dNo">Cancel</button><button class="btn danger" id="dYes">Dispute</button></div></div></div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<script src="assets/pms-mockup.js"></script>
+<script>
+
+const MON = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'], DOW = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+const sh = iso => { const d = new Date(iso + 'T00:00:00'); return DOW[d.getDay()] + ' ' + String(d.getDate()).padStart(2, '0') + ' ' + MON[d.getMonth()]; };
+const inr = n => '₹ ' + n.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+const STC = { 'Generated': 'generated', 'Manager Approved': 'mgrapproved', 'Accepted': 'accepted', 'Disputed': 'disputed', 'Voided': 'voided' };
+const badge = s => '<span class="badge b-' + STC[s] + '">' + s + '</span>';
+
+const $ = id => document.getElementById(id);
+const S = [
+  { id: 1, d: '2026-11-02', f: '09:00', t: '17:30', h: 8.5, r: 250, st: 'Accepted' },
+  { id: 2, d: '2026-11-03', f: '09:00', t: '18:00', h: 9.0, r: 250, st: 'Voided', note: 'Attendance reopened after dispute (05 Nov). Replaced by the record below.' },
+  { id: 3, d: '2026-11-03', f: '09:00', t: '17:00', h: 8.0, r: 250, st: 'Accepted', note: 'Regenerated after correction' },
+  { id: 4, d: '2026-11-09', f: '09:00', t: '18:00', h: 9.0, r: 250, st: 'Manager Approved' },
+  { id: 5, d: '2026-11-10', f: '09:30', t: '17:30', h: 8.0, r: 250, st: 'Manager Approved' },
+  { id: 6, d: '2026-11-11', f: '09:00', t: '17:00', h: 8.0, r: 250, st: 'Manager Approved' }
+];
+function render() {
+  const fr = $('fFrom').value, to = $('fTo').value, sv = $('showV').checked;
+  const inP = S.filter(s => s.d >= fr && s.d <= to);
+  const rows = inP.filter(s => sv || s.st !== 'Voided').sort((a, b) => b.d.localeCompare(a.d) || a.id - b.id);
+  $('rows').innerHTML = rows.map(s => { const v = s.st === 'Voided', rev = s.st === 'Manager Approved';
+    return '<tr data-id="' + s.id + '"' + (v ? ' style="color:var(--text-3)"' : '') + '><td>' + (rev ? '<input type="checkbox" class="sel" aria-label="Select ' + sh(s.d) + '">' : '') + '</td>' +
+    '<td style="white-space:nowrap;font-weight:500">' + sh(s.d) + '</td><td>' + s.f + '–' + s.t + '</td><td class="num">' + s.h.toFixed(2) + '</td><td class="num">' + s.r.toFixed(2) + '</td>' +
+    '<td class="num"' + (v ? ' style="text-decoration:line-through"' : '') + '>' + inr(s.h * s.r) + '</td><td>' + badge(s.st) + '</td><td class="small" style="max-width:240px">' + (s.note || (s.rm ? 'Your remark: "' + s.rm + '"' : '<span class="muted">—</span>')) + '</td><td class="act">' +
+    (rev ? '<button class="btn primary sm" data-a="ok">Accept</button><button class="btn danger sm" data-a="dp">Dispute</button>' : '<span class="muted small">—</span>') + '</td></tr>'; }).join('');
+  const sum = st => inP.filter(s => st.includes(s.st)).reduce((n, s) => n + s.h * s.r, 0), cnt = st => inP.filter(s => s.st === st).length;
+  $('tE').textContent = inr(sum(['Accepted', 'Manager Approved'])); $('tot').textContent = inr(sum(['Accepted', 'Manager Approved']));
+  $('tR').textContent = cnt('Manager Approved'); $('tRs').textContent = inr(sum(['Manager Approved'])) + ' to accept or dispute';
+  $('tG').textContent = cnt('Generated'); $('tD').textContent = cnt('Disputed');
+  $('all').checked = false; sync();
+}
+function sync() { const n = document.querySelectorAll('.sel:checked').length; $('selCount').textContent = n + ' selected'; $('bulk').classList.toggle('show', n > 0); }
+['fFrom', 'fTo', 'showV'].forEach(i => $(i).addEventListener('input', render));
+$('all').onchange = e => { document.querySelectorAll('.sel').forEach(c => c.checked = e.target.checked); sync(); };
+$('rows').addEventListener('change', e => { if (e.target.classList.contains('sel')) sync(); });
+$('bulkClear').onclick = () => { document.querySelectorAll('.sel').forEach(c => c.checked = false); sync(); };
+$('bulkAccept').onclick = () => { const ids = [...document.querySelectorAll('.sel:checked')].map(c => +c.closest('tr').dataset.id); ids.forEach(id => S.find(s => s.id === id).st = 'Accepted'); render(); toast(ids.length + ' salary record(s) accepted.'); };
+let cur;
+$('rows').addEventListener('click', e => { const b = e.target.closest('button[data-a]'); if (!b) return; cur = S.find(s => s.id === +b.closest('tr').dataset.id);
+  if (b.dataset.a === 'ok') { cur.st = 'Accepted'; render(); toast('Salary for ' + sh(cur.d) + ' accepted.'); }
+  else { $('dWhat').textContent = sh(cur.d) + ' · ' + cur.f + '–' + cur.t + ' · ' + cur.h.toFixed(2) + ' h × ₹ ' + cur.r + ' = ' + inr(cur.h * cur.r); $('dText').value = ''; $('dErr').hidden = true; $('dModal').classList.add('open'); $('dText').focus(); } });
+$('dNo').onclick = () => $('dModal').classList.remove('open');
+$('dYes').onclick = () => { if (!$('dText').value.trim()) { $('dErr').hidden = false; return; } $('dModal').classList.remove('open'); cur.st = 'Disputed'; cur.rm = $('dText').value.trim(); render(); toast('Dispute sent to Rahul Mehta.'); };
+render();
+
+applyRole('employee');
+</script>
+</body>
+</html>

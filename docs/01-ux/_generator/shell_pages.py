@@ -90,7 +90,7 @@ SH03_BODY = r"""
 <div data-roles="employee manager">
   <div class="grid g4" style="margin-bottom:16px">
     <div class="card tile"><div class="k">Hours this month</div><div class="v">41.5 h</div><div class="s">5 approved days</div></div>
-    <div class="card tile"><div class="k">Earnings this month</div><div class="v">₹ 4,125</div><div class="s">Accepted + manager approved, excl. voided</div></div>
+    <div class="card tile"><div class="k">Earnings this month</div><div class="v">₹ 10,375</div><div class="s">Accepted + manager approved, excl. voided</div></div>
     <div class="card tile"><div class="k">Leave this month</div><div class="v">2 days</div><div class="s">1 request pending</div></div>
     <div class="card tile"><div class="k">Profile</div><div class="v" style="font-size:18px;margin-top:8px"><span class="badge b-approved">Approved</span></div><div class="s">Last updated 02 Nov 2026</div></div>
   </div>
@@ -108,13 +108,13 @@ SH03_BODY = r"""
         <div class="list-row"><div class="t1">Profiles</div><div><span class="badge b-submitted">1</span></div></div>
         <div class="list-row"><div class="t1">Attendance</div><div><span class="badge b-submitted">3</span></div></div>
         <div class="list-row"><div class="t1">Leave</div><div><span class="badge b-submitted">2</span></div></div>
-        <div class="list-row"><div class="t1">Salary (incl. 1 dispute)</div><div><span class="badge b-submitted">1</span></div></div>
+        <div class="list-row"><div class="t1">Salary (incl. 1 dispute)</div><div><span class="badge b-submitted">3</span></div></div>
         <div style="margin-top:14px"><a class="btn primary" href="scr-sh-04-approvals.html">Open approvals inbox</a></div>
       </div>
       <div data-roles="employee">
         <h2>Recent activity</h2>
         <div class="list-row"><div><div class="t1">Attendance 11 Nov approved</div><div class="t2">by Rahul Mehta · 13 Nov, 10:42</div></div><span class="badge b-approved">Approved</span></div>
-        <div class="list-row"><div><div class="t1">Salary record 11 Nov generated</div><div class="t2">8.0 h × ₹ 250 = ₹ 2,000</div></div><span class="badge b-generated">Generated</span></div>
+        <div class="list-row"><div><div class="t1">Salary record 11 Nov approved by manager</div><div class="t2">8.0 h × ₹ 250 = ₹ 2,000 · waiting for your review</div></div><span class="badge b-mgrapproved">Manager Approved</span></div>
         <div class="list-row"><div><div class="t1">Attendance 12 Nov rejected</div><div class="t2">by Rahul Mehta · 13 Nov, 10:43</div></div><span class="badge b-rejected">Rejected</span></div>
         <div class="list-row"><div><div class="t1">Leave 23–24 Nov submitted</div><div class="t2">14 Nov, 17:05</div></div><span class="badge b-submitted">Submitted</span></div>
       </div>
@@ -172,7 +172,7 @@ SH04_BODY = r"""
   <b id="selCount">0 selected</b>
   <button class="btn primary sm" id="bulkApprove">Approve selected</button>
   <button class="btn sm" id="bulkClear">Clear</button>
-  <span class="small muted">Reject one at a time — remarks are required.</span>
+  <span class="small muted">Reject one at a time — remarks are required. Salary records cannot be rejected; disputes are resolved by reopening attendance.</span>
 </div>
 <div class="tbl-wrap" id="tblWrap">
   <table class="t">
@@ -222,6 +222,8 @@ const ITEMS = {
     { id: 4, type: 'Attendance', emp: 'Neha Gupta', eid: 'EMP0009', det: 'Mon 16 Nov · 08:30–13:00 · 4.5 h', sub: '16 Nov, 13:05', st: 'Submitted', open: 'scr-ams-03-team-review.html' },
     { id: 8, type: 'Leave', emp: 'Anita Sharma', eid: 'EMP0007', det: 'Casual · 23–24 Nov · 2 days', sub: '14 Nov, 17:05', st: 'Submitted', open: 'scr-lms-03-team-review.html' },
     { id: 5, type: 'Leave', emp: 'Arjun Rao', eid: 'EMP0010', det: 'Casual · 20–21 Nov · 2 days', sub: '14 Nov, 11:30', st: 'Submitted', open: 'scr-lms-03-team-review.html' },
+    { id: 9, type: 'Salary', emp: 'Neha Gupta', eid: 'EMP0009', det: 'Wed 11 Nov · 8.5 h × ₹ 275 = ₹ 2,337.50', sub: 'Generated 12 Nov, 10:01', st: 'Generated', open: 'scr-sms-02-team-review.html' },
+    { id: 10, type: 'Salary', emp: 'Arjun Rao', eid: 'EMP0010', det: 'Wed 11 Nov · 6.0 h × ₹ 250 = ₹ 1,500', sub: 'Generated 12 Nov, 10:01', st: 'Generated', open: 'scr-sms-02-team-review.html' },
     { id: 6, type: 'Salary', emp: 'Vikram Singh', eid: 'EMP0008', det: 'Tue 10 Nov · 9.0 h × ₹ 250 = ₹ 2,250', sub: 'Employee remark: "I left at 17:00, not 18:00."', st: 'Disputed', open: 'scr-sms-02-team-review.html' }
   ],
   admin: [
@@ -244,6 +246,7 @@ function render() {
       '<td>' + badge(i.st) + '</td><td class="act">' +
       (disputed
         ? '<button class="btn primary sm" data-a="reopen">Reopen attendance</button><a class="btn sm" href="' + i.open + '">Open</a>'
+        : i.type === 'Salary' ? '<button class="btn primary sm" data-a="approve">Approve</button><a class="btn sm" href="' + i.open + '">Open</a>'
         : '<button class="btn primary sm" data-a="approve">Approve</button><button class="btn danger sm" data-a="reject">Reject</button><a class="btn sm" href="' + i.open + '">Open</a>') +
       '</td></tr>';
   }).join('');
