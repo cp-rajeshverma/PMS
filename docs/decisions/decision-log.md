@@ -5,6 +5,8 @@ Every approved project decision, newest first. Approver for all entries: Rajesh 
 | Id | Date | Area | Decision |
 | --- | --- | --- | --- |
 | D-34 | 16 Nov 2026 | Gate | **Step 2 (UX) approved**: UX journey index v1.0, 17 mockups, 17 UX summaries. Next: Step 3 (BRD) |
+| D-36 | 16 Nov 2026 | Templates | BRD template v2 approved (document ID, reference documents, requirement ID conventions, role × screen matrix, entity status lifecycles, notifications, jobs, volumetrics) |
+| D-35 | 16 Nov 2026 | Process | Design artifact set: PMS-BRD; PMS-HLD-Part01-AnD; PMS-HLD-Part02-M1..M4 (EIMS, AMS, LMS, SMS) Functional; PMS-HLD-Part02-M5-SUP-Functional; PMS-HLD-Part03-Datamodel. Single HLD template retired (supersedes D-15 template list). NPQMS reference PDFs stay in the Claude Project only until templates are frozen, then removed; never copied into the repo |
 | D-33 | 16 Nov 2026 | SMS | Employees can accept several salary records at once (UXQ-23); no auto-accept, dashboard keeps reminding (UXQ-24); manager can close a dispute with **Keep as is** + required explanation, record returns to Manager Approved (UXQ-25) |
 | D-32 | 16 Nov 2026 | LMS | Leave days are calendar days incl. weekends (UXQ-19); new status Cancelled for withdrawn requests (UXQ-20); no Reason field (UXQ-21); no draft for leave, submit directly (UXQ-22) |
 | D-31 | 16 Nov 2026 | AMS | No withdrawal of Submitted attendance; manager rejects instead (UXQ-16). Times in 15-minute steps (UXQ-17). Warn, not block, above 12 hours a day (UXQ-18) |
