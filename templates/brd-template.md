@@ -1,100 +1,203 @@
 # <Project> – Business Requirements Document (BRD)
 
+Document ID: <PRJ>-BRD-v<x.y>
+Project: <project name and phase>
+Author: <name>
+Date: <Month YYYY>
+
 ## 1. Document control
 
-| Field | Value |
-| --- | --- |
-| Document | Business Requirements Document |
-| Version | 0.1 |
-| Status | Draft / In review / Approved |
-| Product owner | <name> |
-| Business analyst | <name> |
-| Inputs | UX Journey Index v<x>, UX summaries v<x> |
-| Last updated | <yyyy-mm-dd> |
+### 1.1 Version / revision history
 
-| Version | Date | Author | Change |
+| Version | Revision | Date | Author | Change remark |
+| --- | --- | --- | --- | --- |
+| 1.0 | 0.1 | <dd-Mon-yyyy> | <name> | First draft from UX v<x> |
+
+### 1.2 Review and approval
+
+| Role | Name | Date | Decision |
 | --- | --- | --- | --- |
-| 0.1 | <date> | <name> | First draft |
+| Product owner | | | |
+| Business analyst | | | |
+| Business stakeholder | | | |
 
-## 2. Purpose and objectives
+## 2. Introduction
 
-<Why the system is being built. Numbered business objectives, each measurable where possible.>
+### 2.1 Purpose
 
-## 3. Scope
+<What this document defines and who uses it (design team, BMAD agents, QA).>
 
-### 3.1 In scope
+### 2.2 Reference documents
 
-| Module | Capabilities |
+**Input documents**
+
+| # | Document | Version | Use |
+| --- | --- | --- | --- |
+| 1 | UX Journey Index | v<x> | Journeys, screens, navigation |
+| 2 | UX Summaries (per screen) | v<x> | Fields, actions, rules per screen |
+| 3 | Decision log | D-01 to D-<nn> | Approved decisions |
+
+**Downstream documents (consume this BRD)**
+
+| # | Document | Purpose |
+| --- | --- | --- |
+| 1 | <PRJ>-HLD-Part01-AnD | Overall architecture and design |
+| 2 | <PRJ>-HLD-Part02-M<n>-<MOD>-Functional | Solution approach per functional module |
+| 3 | <PRJ>-HLD-Part02-M<n>-SUP-Functional | Solution approach for supporting modules |
+| 4 | <PRJ>-HLD-Part03-Datamodel | Data model |
+
+### 2.3 Glossary and abbreviations
+
+| Term | Meaning |
 | --- | --- |
 
-### 3.2 Out of scope
+### 2.4 Requirement ID conventions
 
-- <item, with reason or target phase>
+| Prefix | Meaning | Example |
+| --- | --- | --- |
+| FR-<MOD>-<NNN> | Functional requirement of a module | FR-AMS-004 |
+| BR-<MOD>-<NN> | Business rule (BR-CMN for cross-module) | BR-CMN-03 |
+| VR-<MOD>-<NN> | Validation rule | VR-EIMS-02 |
+| NFR-<NN> | Non-functional requirement | NFR-05 |
+| NOT-<NN> | Notification requirement | NOT-03 |
+| JOB-<NN> | Scheduled / backend job | JOB-02 |
+| UJ-…, SCR-… | User journey / screen ids from UX | UJ-AMS-01, SCR-AMS-02 |
 
-## 4. Stakeholders and roles
+Priority uses MoSCoW (Must / Should / Could / Won't). Delivery phase: POC / Phase 2 / Future.
 
-| Stakeholder / role | Responsibility | Interest |
+## 3. Business overview
+
+### 3.1 Business background
+
+<Business problem, current situation, why the system is needed.>
+
+### 3.2 Business objectives
+
+| # | Objective | Measure of success |
 | --- | --- | --- |
 
-### 4.1 Permissions matrix
+### 3.3 Scope
 
-| Action | <Role 1> | <Role 2> | <Role 3> |
+| Module | In scope (POC) | Phase 2 / Future |
+| --- | --- | --- |
+
+**Out of scope**
+
+- <item – reason>
+
+## 4. Stakeholders, roles and access
+
+### 4.1 Stakeholders
+
+| Stakeholder | Interest / responsibility |
+| --- | --- |
+
+### 4.2 Roles
+
+| Role id | Role name | Type (internal / system) | Description |
 | --- | --- | --- | --- |
 
-## 5. User journeys
+### 4.3 Role × screen access matrix
 
-| Journey Id | Journey | Actor | Screens | Requirement Ids |
+R = read, R/W = read and write, A = approve, — = no access.
+
+| Screen id | Screen | <Role 1> | <Role 2> | <Role 3> |
 | --- | --- | --- | --- | --- |
 
-## 6. Functional requirements
+## 5. Business process and user journeys
 
-Repeat 6.n for each module.
+### 5.1 End-to-end business process
 
-### 6.1 <Module name>
+<Diagram: main flow across modules, from onboarding to salary acceptance.>
+
+### 5.2 User journeys
+
+| Journey id | Journey | Actor | Screens | Requirement ids |
+| --- | --- | --- | --- | --- |
+
+## 6. Entity status lifecycles
+
+Repeat 6.n per business entity. HLDs refer to this chapter for statuses.
+
+### 6.1 <Entity> lifecycle
+
+<State diagram.>
+
+| Status code | Status | Business meaning | Set by |
+| --- | --- | --- | --- |
+
+| From | To | Action | Actor | Condition / rule |
+| --- | --- | --- | --- | --- |
+
+## 7. Functional requirements
+
+Repeat 7.n per module and 7.n.m per screen or system function.
+
+### 7.1 <Module code> – <Module name>
 
 **Overview:** <one paragraph>
 
-| Req Id | Requirement | Priority (MoSCoW) | UX ref | Acceptance criteria (Given / When / Then) |
-| --- | --- | --- | --- | --- |
-| FR-<MOD>-01 | | Must | SCR-<MOD>-01 | |
+#### 7.1.1 <SCR-id> – <Screen / function name>
+
+| Req id | Requirement | Priority | Phase | UX ref | Acceptance criteria (Given / When / Then) |
+| --- | --- | --- | --- | --- | --- |
+| FR-<MOD>-001 | | Must | POC | SCR-<MOD>-01 | |
 
 **User stories**
 
 | Id | As a | I want to | So that |
 | --- | --- | --- | --- |
 
-## 7. Business rules
+## 8. Business rules
 
-| Rule Id | Rule | Applies to | Source |
+| Rule id | Rule | Applies to (module / screen) | Source (decision / UX) |
 | --- | --- | --- | --- |
-| BR-<AREA>-01 | | | |
 
-## 8. Data requirements
+## 9. Data requirements
 
-Repeat 8.n per entity.
+Repeat 9.n per entity.
 
-### 8.1 <Entity>
+### 9.1 <Entity>
 
-| Attribute | Description | Type | Required | Validation | Owner (who sets it) |
+| Attribute | Description | Type / format | Mandatory | Validation (VR id) | Set by |
 | --- | --- | --- | --- | --- | --- |
 
-## 9. Non-functional requirements
+## 10. Notifications and alerts
 
-| NFR Id | Category | Requirement | Measure / target |
-| --- | --- | --- | --- |
-| NFR-01 | Performance | | <e.g. p95 API < 500 ms> |
-| NFR-02 | Security | | |
-| NFR-03 | Availability | | |
-| NFR-04 | Usability / accessibility | | |
-| NFR-05 | Audit and compliance | | |
-| NFR-06 | Scalability | | |
-
-## 10. Integrations and scheduled jobs
-
-| Id | Name | Type (event / API / scheduled) | Trigger | Producer → consumer | Business outcome |
+| Id | Event / trigger | Recipient(s) | Channel (in-app / email) | Timing | Message summary |
 | --- | --- | --- | --- | --- | --- |
 
-## 11. Assumptions, constraints and dependencies
+## 11. Integrations and scheduled jobs
+
+| Id | Name | Type (event / API / scheduled) | Trigger / schedule | Source → target | Business outcome |
+| --- | --- | --- | --- | --- | --- |
+
+## 12. Reporting and dashboard
+
+| Id | Report / widget | Audience | Content | Filters |
+| --- | --- | --- | --- | --- |
+
+## 13. Non-functional requirements
+
+| NFR id | Category | Requirement | Measure / target |
+| --- | --- | --- | --- |
+| NFR-01 | Performance | | |
+| NFR-02 | Availability | | |
+| NFR-03 | Security | | |
+| NFR-04 | Usability and accessibility | | |
+| NFR-05 | Auditability | | |
+| NFR-06 | Data integrity | | |
+| NFR-07 | Scalability | | |
+| NFR-08 | Maintainability / configurability | | |
+
+### 13.1 Business volumetrics (input to HLD)
+
+| Volume type | Year 1 | Growth % per year |
+| --- | --- | --- |
+| Users | | |
+| Transactions per year (by entity) | | |
+
+## 14. Assumptions, constraints and dependencies
 
 | Type | Id | Statement |
 | --- | --- | --- |
@@ -102,31 +205,26 @@ Repeat 8.n per entity.
 | Constraint | C-01 | |
 | Dependency | DEP-01 | |
 
-## 12. Risks
+## 15. Risks
 
-| Risk Id | Risk | Likelihood | Impact | Mitigation | Owner |
+| Risk id | Risk | Likelihood | Impact | Mitigation | Owner |
 | --- | --- | --- | --- | --- | --- |
 
-## 13. Traceability matrix
+## 16. Traceability matrix
 
-| Journey Id | Screen Id | Req Id | Business rule Ids | Test ref (later) |
+| Journey id | Screen id | Req id | Rule ids | Test ref (later) |
 | --- | --- | --- | --- | --- |
 
-## 14. Glossary
-
-| Term | Meaning |
-| --- | --- |
-
-## 15. Open items
+## 17. Open items
 
 | Id | Question | Owner | Due | Status / decision |
 | --- | --- | --- | --- | --- |
 
-Decisions are recorded in `docs/decisions/decision-log.md`.
+Approved decisions are kept in `docs/decisions/decision-log.md`.
 
-## 16. Sign-off
+## 18. Appendix
 
-| Role | Name | Date | Decision |
-| --- | --- | --- | --- |
-| Product owner | | | |
-| Business analyst | | | |
+### 18.1 Future scope (not in this phase)
+
+| Area | Requirement ref | Note |
+| --- | --- | --- |
