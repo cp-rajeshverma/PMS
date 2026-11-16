@@ -20,9 +20,9 @@ Date: <Month YYYY>
 | Architect | | | |
 | Product owner | | | |
 
-## 2. Introduction: Architecture & Design
+## 2. Introduction
 
-This document describes the overall architecture and design of <application>.
+This document describes the overall architecture and design of <application>. It is a Big Design Up Front (BDUF) artifact: it must be approved before implementation starts.
 
 ### 2.1 Reference documents
 
@@ -39,10 +39,12 @@ This document describes the overall architecture and design of <application>.
 | # | Document | Purpose |
 | --- | --- | --- |
 | 1 | <PRJ>-HLD-Part01-AnD | Overall architecture and design (this document) |
-| 2 | <PRJ>-HLD-Part02-M<n>-<MOD>-Functional | Solution approach for system functions of each functional module |
-| 3 | <PRJ>-HLD-Part02-M<n>-SUP-Functional | Solution approach for supporting modules |
-| 4 | <PRJ>-HLD-Part03-Datamodel | Data model |
-| 5 | Standards and guardrails (`docs/04-standards/`) | Coding, API, database, security, testing rules |
+| 2 | <PRJ>-HLD-Part01a-Principles-Patterns | Catalogue of principles and patterns with applicability and realization |
+| 3 | <PRJ>-HLD-Part01b-AnA | Authentication & authorization design |
+| 4 | <PRJ>-HLD-Part02-M<n>-<MOD>-Functional | Solution approach for system functions of each functional module |
+| 5 | <PRJ>-HLD-Part02-M<n>-SUP-Functional | Solution approach for supporting modules |
+| 6 | <PRJ>-HLD-Part03-Datamodel | Data model |
+| 7 | Standards and guardrails (`docs/04-standards/`) | Coding, API, database, security, testing rules |
 
 ### 2.2 Application overview
 
@@ -52,156 +54,355 @@ This document describes the overall architecture and design of <application>.
 
 #### 2.2.2 Application background
 
-<Modules and their purpose; supporting capabilities shared across modules; architecture in one paragraph (style, frontend, backend, data, identity, messaging, hosting); peripheral systems in one sentence each.>
+<Modules and their purpose; supporting capabilities; architecture in one paragraph (style, frontend, backend, data, identity, messaging, hosting); peripheral systems in one sentence each.>
 
-## 3. Architecture & Design
+## 3. Architecture approach & governance (BDUF)
 
-### 3.1 Key architecture and design principles
+### 3.1 Design-before-build artifact checklist
 
-| # | Principle | Description | Realization / remark |
+Implementation starts only when every mandatory artifact below is approved.
+
+| # | Artifact | Document / section | Mandatory before build | Stakeholders to align | Status | Approved on |
+| --- | --- | --- | --- | --- | --- | --- |
+| 1 | Functional architecture | §5 | Yes | Product owner, BA | | |
+| 2 | System architecture | §6 | Yes | Architect, infra, security | | |
+| 3 | Deployment architecture | §7 | Yes | Architect, infra, DevOps | | |
+| 4 | Integration architecture | §8 | Yes | Architect, integration owners | | |
+| 5 | Authentication & authorization | Part01b | Yes | Security, architect | | |
+| 6 | Logging & observability | §10 | Yes | Operations, architect | | |
+| 7 | Principles & patterns compliance | Part01a | Yes | Architect | | |
+| 8 | Functional HLDs per module | Part02 | Yes | BA, dev leads | | |
+| 9 | Data model | Part03 | Yes | Architect, DBA | | |
+| 10 | API and event contracts | `contracts/` | Yes | Dev leads | | |
+| 11 | Performance test strategy & plan | §14 | Before PT | QA, operations | | |
+| 12 | Standards & guardrails | `docs/04-standards/` | Yes | Architect, dev leads | | |
+
+### 3.2 Stakeholder alignment log
+
+| Date | Topic / artifact | Stakeholders | Outcome | Decision ref |
+| --- | --- | --- | --- | --- |
+
+## 4. Architecture principles & patterns
+
+The full catalogue (Part01a) assesses every principle and pattern. This chapter summarizes compliance.
+
+### 4.1 Compliance summary by group
+
+| Group (Part01a) | Applied | Partial | Deferred | N/A | Key items |
+| --- | --- | --- | --- | --- | --- |
+
+### 4.2 X-First principles
+
+| Principle | How the design complies | Ref |
+| --- | --- | --- |
+| UX first | | |
+| API first | | |
+| Security first | | |
+| Performance first | | |
+| Cloud first | | |
+| <others> | | |
+
+### 4.3 Well-architected compliance
+
+| Quality | Design response | Ref |
+| --- | --- | --- |
+| Resiliency | | |
+| Availability | | |
+| Decentralized | | |
+| Independent & autonomous | | |
+| Auto provisioning | | |
+| Scalability | | |
+| Security | | |
+| Continuous delivery | | |
+| Failure isolation | | |
+| Observability | | |
+
+### 4.4 Patterns applied
+
+| Category | Patterns applied (Part01a ids) | Where |
+| --- | --- | --- |
+| Microservice design patterns | | |
+| Cloud design patterns | | |
+| Enterprise integration patterns | | |
+
+## 5. Functional architecture
+
+### 5.1 Functional building blocks
+
+<Diagram: business modules, supporting modules and shared capabilities.>
+
+| Building block | Type (business / supporting / shared) | Capabilities | Owning service |
 | --- | --- | --- | --- |
-| 1 | Robustness | | |
-| 2 | Scalability | | |
-| 3 | High availability | | |
-| 4 | Extendibility | | |
-| 5 | Observability | | |
-| 6 | Activity and audit log | | |
-| 7 | Multi-tenancy | | <applicable / not applicable, why> |
-| 8 | Localization and internationalization | | |
-| 9 | API-first (contract-first OpenAPI) | | |
-| 10 | Security-first (OWASP) | | |
-| 11 | Decoupled architecture (sync API + async events) | | |
-| 12 | Headless frontend / SPA | | |
-| 13 | Cache layer for frequent reads | | |
-| 14 | Database per service / data ownership | | |
-| 15 | Read-write and read-only data access | | |
-| 16 | Authentication and authorization | | |
-| 17 | Code and test coverage | | <targets> |
-| 18 | Soft delete | | |
-| 19 | Pagination | | |
-| 20 | Business-key traceability | | |
-| 21 | Referential integrity approach (DB FK vs application) | | |
-| 22 | Secrets and key management | | |
-| 23 | Replatforming readiness (language-neutral contracts) | | |
 
-### 3.2 Functional building blocks
+### 5.2 End-to-end business process
 
-<Diagram: business modules, supporting modules and shared capabilities as building blocks.>
+<Diagram: main business flow across modules, decision points and backend jobs.>
 
-### 3.3 End-to-end business process
+### 5.3 Domain / sub-domain based micro-application identification
 
-<Diagram: main business flow across modules, with decision points and backend jobs.>
-
-### 3.4 Domain / sub-domain based micro-application identification
-
-<Grid diagram: one column per domain; rows = Frontend (micro-frontend), Backend (service APIs), Database.>
-
-**List of microservices**
+<Grid diagram: one column per domain; rows = Frontend, Backend (service APIs), Database.>
 
 | Seq | Domain / sub-domain | Context path | Purpose | Owned data | Publishes / consumes events |
 | --- | --- | --- | --- | --- | --- |
-| 1 | | /<ctx>/ | | | |
 
-### 3.5 System architecture
+### 5.4 Stakeholder alignment
 
-#### 3.5.1 System architecture (standardized, technology-neutral)
-
-<Layered diagram: channel, security/DMZ, load balancer, API gateway, web server, application API layer, queue layer, cache layer, database layer, identity provider, observability, backup and recovery, CI/CD, environments, peripheral systems.>
-
-| Seq | Component | Purpose |
+| Stakeholder | Date | Outcome |
 | --- | --- | --- |
-| 1 | Load balancer | |
-| 2 | API gateway | |
-| 3 | Identity provider | |
-| 4 | Web server / static hosting | |
-| 5 | Application layer (services) | |
-| 6 | Queue / message broker | |
-| 7 | Cache layer | |
-| 8 | Database layer | |
-| 9 | Observability layer | |
 
-#### 3.5.2 System architecture (<cloud provider>)
+## 6. System architecture
 
-<Deployment diagram on the chosen cloud; network diagram (zones, subnets, availability zones).>
+### 6.1 Logical system architecture (technology-neutral)
+
+<Layered diagram: channel, security/DMZ, load balancer, API gateway, identity provider, web/static hosting, application services, message broker, cache, database, observability, backup and recovery, CI/CD.>
+
+| Seq | Component | Purpose | Technology | Instances / sizing |
+| --- | --- | --- | --- | --- |
+| 1 | Load balancer | | | |
+| 2 | API gateway | | | |
+| 3 | Identity provider | | | |
+| 4 | Web server / static hosting | | | |
+| 5 | Application services | | | |
+| 6 | Message broker / queue | | | |
+| 7 | Cache server | | | |
+| 8 | Database server | | | |
+| 9 | Scheduler / batch | | | |
+| 10 | Log and monitoring stack | | | |
+| 11 | Backup and recovery | | | |
+
+### 6.2 Cloud system architecture (<cloud provider>)
+
+<Diagram of the components mapped to cloud services.>
 
 | Seq | Cloud service | Purpose | HA and scalability assurance |
 | --- | --- | --- | --- |
 
-**Per-tier redundancy for high availability**
+### 6.3 Per-tier redundancy
 
 | Tier | Zone count | Redundancy model | Failover behaviour |
 | --- | --- | --- | --- |
 
-### 3.6 Integration architecture
+### 6.4 Stakeholder alignment
 
-<One paragraph per external party / internal integration style.>
-
-#### 3.6.1 Functional integration architecture diagram
-
-<Diagram: systems and the data flowing between them.>
-
-#### 3.6.2 Integration list
-
-| Seq | Source / provider | Target / consumer | Direction | Connectivity type (REST / event / batch) | Data object | Key data parameters |
-| --- | --- | --- | --- | --- | --- | --- |
-
-#### 3.6.3 Technical integration architecture diagram
-
-<Diagram: gateway, services, broker, topics/queues, outbox, scheduled jobs.>
-
-#### 3.6.4 Integration resilience defaults
-
-| Integration | Timeout | Retry policy | Circuit breaker | Idempotency | Dead-letter handling |
-| --- | --- | --- | --- | --- | --- |
-| Internal REST APIs (default) | | | | | |
-| Async events (default) | | | | | |
-
-### 3.7 Technology stack
-
-#### 3.7.1 Development
-
-**Frontend**
-
-| Seq | Component | Technology | Version | Remark |
-| --- | --- | --- | --- | --- |
-
-**Backend**
-
-| Seq | Component | Technology | Version | Remark |
-| --- | --- | --- | --- | --- |
-
-**Database and cache**
-
-| Seq | Component | Technology | Version | Remark |
-| --- | --- | --- | --- | --- |
-
-#### 3.7.2 Deployment
-
-| Seq | Layer | Technology | Remark |
-| --- | --- | --- | --- |
-
-#### 3.7.3 AI / ML (if applicable)
-
-| Seq | Component | Technology | Remark |
-| --- | --- | --- | --- |
-
-## 4. Data migration strategy
-
-<Master vs transaction data; what is migrated; approach; cutover; open questions. "Not applicable – greenfield" with seed-data approach if no legacy.>
-
-## 5. Performance strategy
-
-1. **Target KPIs:** <response time, throughput, error rate per tier>
-2. **High-usage transactions and traffic mix:** <process – % of load>
-3. **Test types:** <load, stress, soak, spike>
-4. **Test data readiness:** <owner, volume, generation approach>
-5. **Execution and analysis:** <environment readiness, schedule, tuning loop>
-6. **Assumptions:** <what is outside the system's control>
-
-| Process | Share of load % | Target p95 response |
+| Stakeholder | Date | Outcome |
 | --- | --- | --- |
 
-## 6. Environment strategy
+## 7. Deployment architecture
+
+Shows how and where the system runs: nodes (hardware or software execution environments), the artifacts deployed on them and the middleware connecting them.
+
+### 7.1 Deployment diagram
+
+<UML-style deployment diagram per environment: nodes, execution environments, deployed artifacts, communication paths.>
+
+### 7.2 Nodes and execution environments
+
+| Node | Type (VM / container / PaaS / SaaS) | Execution environment (runtime, version) | Deployed artifacts | Zone / subnet | Scaling |
+| --- | --- | --- | --- | --- | --- |
+
+### 7.3 Middleware and communication paths
+
+| From node | To node | Middleware / protocol | Port | Security (TLS, auth) |
+| --- | --- | --- | --- | --- |
+
+### 7.4 Deployment per environment
+
+| Environment | Nodes and sizing | Differences from production |
+| --- | --- | --- |
+
+### 7.5 Stakeholder alignment
+
+| Stakeholder | Date | Outcome |
+| --- | --- | --- |
+
+## 8. Integration architecture
+
+All integrations between components in the ecosystem: internal service-to-service, frontend-to-backend, and external systems.
+
+### 8.1 Functional integration diagram
+
+<Diagram: systems and data flowing between them.>
+
+### 8.2 Integration catalogue
+
+| Seq | Source | Target | Data object | Style (sync / async / batch) | Integration pattern (Part01a id) | Protocol | Message format | Authentication | Connection mechanism | Error handling |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+
+### 8.3 Technical integration diagram
+
+<Diagram: gateway, services, broker queues/topics, outbox relay, scheduled jobs, external endpoints.>
+
+### 8.4 Protocol and pattern selection guide
+
+| Need | Chosen protocol / pattern | Reason |
+| --- | --- | --- |
+| Query from UI | | |
+| Command from UI | | |
+| State change to other services | | |
+| Bulk / periodic data | | |
+| Long-running process | | |
+
+### 8.5 Integration resilience defaults
+
+| Integration type | Timeout | Retry policy | Circuit breaker | Idempotency | Dead-letter handling |
+| --- | --- | --- | --- | --- | --- |
+| Internal REST APIs | | | | | |
+| Async events | | | | | |
+| External APIs | | | | | |
+
+### 8.6 Stakeholder alignment
+
+| Stakeholder | Date | Outcome |
+| --- | --- | --- |
+
+## 9. Authentication & authorization (summary)
+
+Full design in <PRJ>-HLD-Part01b-AnA. Summary:
+
+| Topic | Decision |
+| --- | --- |
+| Identity provider / auth server | |
+| User types and roles | |
+| Authentication flow (OAuth2 / OIDC) | |
+| MFA approach | |
+| Token type, lifetime, refresh | |
+| Session and idle timeout, lockout | |
+| API-level security (gateway, service) | |
+| Service-to-service authentication | |
+
+## 10. Unified & centralized logging and observability
+
+### 10.1 Logging architecture
+
+<Diagram: each node → log shipper/agent → central log platform → dashboards and alerts.>
+
+### 10.2 Log types
+
+| Log type | Purpose | Produced by | Store | Retention |
+| --- | --- | --- | --- | --- |
+| Application log | | | | |
+| Access log (gateway, web) | | | | |
+| Business event log | | | | |
+| Security log | | | | |
+| Audit trail (business) | | | | |
+| Infrastructure / platform log | | | | |
+
+### 10.3 Standard log record
+
+| Field | Description | Mandatory |
+| --- | --- | --- |
+| timestamp (UTC, ISO-8601) | | Y |
+| level | | Y |
+| service / node | | Y |
+| environment | | Y |
+| correlation_id | | Y |
+| trace_id / span_id | | Y |
+| user_id (no personal data) | | N |
+| event_type | | Y |
+| message | | Y |
+| business keys (e.g. entity id) | | N |
+| error code / stack (errors only) | | N |
+
+### 10.4 Logging per node
+
+| Node / component | Events logged | Level policy | Shipping method |
+| --- | --- | --- | --- |
+
+### 10.5 Correlation and tracing
+
+<How the correlation id is created at the edge and propagated through HTTP headers, message headers and jobs; tracing standard.>
+
+### 10.6 KPIs derived from logs
+
+| KPI | Type (business / system) | Source events | Dashboard |
+| --- | --- | --- | --- |
+
+### 10.7 Metrics, dashboards and alerts
+
+| Signal | Threshold / SLO | Alert channel | Owner |
+| --- | --- | --- | --- |
+
+### 10.8 Privacy and retention
+
+<Personal data masking rules; retention per log type; access to logs.>
+
+## 11. Technology stack
+
+### 11.1 Development
+
+| Layer | Component | Technology | Version | Remark |
+| --- | --- | --- | --- | --- |
+
+### 11.2 Deployment and operations
+
+| Layer | Technology | Remark |
+| --- | --- | --- |
+
+### 11.3 AI / ML (if applicable)
+
+| Component | Technology | Remark |
+| --- | --- | --- |
+
+## 12. Data architecture (summary)
+
+Full design in <PRJ>-HLD-Part03-Datamodel. Summary: database per service, data ownership, caching, retention, backup (RPO/RTO).
+
+| Service | Database / schema | Main entities | Cached data | RPO / RTO |
+| --- | --- | --- | --- | --- |
+
+## 13. Data migration strategy
+
+<Master vs transaction data; what is migrated; approach; cutover; open questions. Or "Not applicable – greenfield" with seed-data approach.>
+
+## 14. Performance test strategy and plan
+
+### 14.1 Performance targets (SLAs)
+
+| Tier / transaction type | p95 response | Throughput | Error rate |
+| --- | --- | --- | --- |
+
+### 14.2 Use cases for load testing
+
+| Use case id | Business use case | Journey / API | Why included (volume / criticality) |
+| --- | --- | --- | --- |
+
+### 14.3 Load distribution (business mix)
+
+| Use case id | Share of load % | Peak concurrent users | Transactions per hour | Think time |
+| --- | --- | --- | --- | --- |
+
+### 14.4 Test types and scenarios
+
+| Test type | Objective | Load profile | Duration |
+| --- | --- | --- | --- |
+| Load | | | |
+| Stress | | | |
+| Soak / endurance | | | |
+| Spike | | | |
+
+### 14.5 Test data strategy
+
+<Volume, generation approach, owner, reset between runs.>
+
+### 14.6 Environment and tools
+
+<PT environment sizing vs production; tools; monitoring during tests.>
+
+### 14.7 Entry and exit criteria
+
+| Criteria | Entry | Exit |
+| --- | --- | --- |
+
+### 14.8 Schedule and responsibilities
+
+| Activity | Owner | Planned date |
+| --- | --- | --- |
+
+### 14.9 Analysis and tuning
+
+<How results are analysed, bottlenecks fixed and tests re-run; reporting format.>
+
+## 15. Environment strategy
 
 <Diagram: non-prod environments, CI/CD, production.>
 
@@ -210,26 +411,25 @@ This document describes the overall architecture and design of <application>.
 
 **Security posture per environment:** <production vs non-production controls; no unmasked personal data outside production.>
 
-**CI/CD infrastructure:** <tooling, pipeline stages, quality gates.>
+**CI/CD:** <tooling, pipeline stages, quality gates.>
 
 **Testing and deployment flow:** <environment → test phase → owning team.>
 
-## 7. Security & NFR
+## 16. Security & NFR
 
-### 7.1 Security guidelines
+### 16.1 Security guidelines
 
 | Seq | Security type | Description | Realization |
 | --- | --- | --- | --- |
 | 1 | Infrastructure-level security | | |
 | 2 | Application-level security | | |
-| 3 | Access tokens (user and service) | | |
-| 4 | Data at rest | | |
-| 5 | Data in transit | | |
-| 6 | Secure environment access | | |
-| 7 | Safe coding and deployment | | |
-| 8 | Secrets and key management | | |
+| 3 | Data at rest | | |
+| 4 | Data in transit | | |
+| 5 | Secure environment access | | |
+| 6 | Safe coding and deployment | | |
+| 7 | Secrets and key management | | |
 
-**OWASP Top 10 control mapping**
+### 16.2 OWASP Top 10 control mapping
 
 | OWASP category | Control |
 | --- | --- |
@@ -244,16 +444,12 @@ This document describes the overall architecture and design of <application>.
 | A09 Security Logging and Monitoring Failures | |
 | A10 Server-Side Request Forgery | |
 
-### 7.2 Authentication and authorization
+### 16.3 Non-functional requirements realization
 
-<Identity provider, login flow, token type and lifetime, session and idle timeout, lockout, role model, service-to-service authentication.>
-
-### 7.3 Non-functional requirements (NFR)
-
-| Seq | NFR id (BRD) | NFR | Description | Realization |
+| Seq | NFR id (BRD) | NFR | Realization | Verification |
 | --- | --- | --- | --- | --- |
 
-### 7.4 Volumetrics
+## 17. Volumetrics
 
 **Current volume:** <users, transactions per year, by entity>
 
@@ -262,21 +458,19 @@ This document describes the overall architecture and design of <application>.
 | Users | | | | | | |
 | Transactions | | | | | | |
 
-**Storage estimate**
-
 | Entity | Rows per year | Avg row size | Year-5 size |
 | --- | --- | --- | --- |
 
-## 8. Architecture decisions
+## 18. Architecture decisions
 
 | ADR | Title | Status | Decision log ref |
 | --- | --- | --- | --- |
 
-## 9. Risks and technical debt
+## 19. Risks and technical debt
 
 | Id | Item | Impact | Mitigation / plan |
 | --- | --- | --- | --- |
 
-## 10. Appendix
+## 20. Appendix
 
 <Open items, glossary, future scope.>
