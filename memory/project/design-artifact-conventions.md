@@ -1,0 +1,34 @@
+# Design artifact set and template conventions
+
+Status: templates frozen 17 Nov 2026 (D-35 to D-42). Templates live in `templates/`.
+
+## Artifact set (per project)
+
+| Artifact | Template | One per |
+| --- | --- | --- |
+| <PRJ>-BRD | brd-template.md | project |
+| <PRJ>-HLD-Part01-AnD | hld-part01-and-template.md | project (includes A&A architecture in §9; no separate A&A document, D-40) |
+| <PRJ>-HLD-Part01a-Principles-Patterns | hld-part01a-principles-patterns-template.md | project (330 items, 18 groups) |
+| <PRJ>-HLD-Part02-M<n>-<MOD>-Functional | hld-part02-functional-template.md | functional module |
+| <PRJ>-HLD-Part02-M<n>-SUP-Functional | hld-part02-sup-functional-template.md | project (supporting modules) |
+| <PRJ>-HLD-Part03-Datamodel | hld-part03-datamodel-template.md | project |
+| UX journey index / UX summaries | ux-*-template.md | project / screen |
+| ADR | adr-template.md | decision |
+
+## Conventions adopted
+
+- Document ID pattern `<PRJ>-<DOC>-v<x.y>`; version / revision history and review-approval table in every document.
+- Function ids `<MOD>0010`, step 10; supporting prefixes ADM, UM, AUTH, NM, DM.
+- Per-function chapter (Part02 §3.2.1, D-38): purpose / trigger / conditions → actor & data scope → traceability (incl. related functions) → navigation & prototype → solution approach (design description, design notes, sequence & orchestration, frontend, backend, database, validation & errors, security & privacy, notifications & audit, scenarios) → notes.
+- SUP functions reuse the Part02 §3.2.1 structure; no appendix copy.
+- Design / entity status values: Draft, In review, Approved, Deferred, Moved, Removed (stub kept with reason or new location).
+- API references `[API-<MOD>-nn : METHOD /ctx/resource (Purpose : ...)]`; API inventory is a roll-up keyed by API id.
+- Business statuses live in BRD §6; HLD and data model hold only technical handling.
+- Validation rules reference BRD VR / BR ids; frontend records only what the UX summary does not.
+- Every diagram keeps a text-version table.
+- Designs stay technology-neutral to support replatforming (Java → Node.js / Python FastAPI).
+- Data model: database per service, no cross-database FK; supporting-module entities modelled on a need basis only, skipped when an existing capability provides them (D-42).
+
+## Reference material
+
+NPQMS-HLD PDFs were used only as structural references in the Claude Project. They are never copied into the repo or `docs/`, and can be removed from the Project now that templates are frozen.

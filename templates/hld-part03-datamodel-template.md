@@ -132,7 +132,12 @@ Rules: no foreign keys or joins across service databases; a reference to another
 
 ### 3.<n> Supporting modules
 
-Typical groups (keep those the SUP document requires; mark others Not applicable):
+Model supporting-module entities on a need basis only. Where a capability is provided by an existing platform or product (e.g. identity provider for users / roles / sessions, an enterprise notification or document service), do not model its entities; keep the group heading with "Provided by <product / service> – not modelled here" and list only the local entities the project still needs (e.g. a local user reference or mapping table).
+
+| Group | Needed? (Yes / No / Partial) | Provided by (existing capability) | Local entities modelled |
+| --- | --- | --- | --- |
+
+Typical groups, when they are needed:
 
 - **User & access management** – USER, ROLE, FEATURE, USER_ROLE_MAP, ROLE_FEATURE_MAP, USER_HIERARCHY, USER_DELEGATION; state which attributes are mastered by the identity provider.
 - **Notification** – NOTIFICATION_TEMPLATE, NOTIFICATION_RULE, NOTIFICATION_TXN.
