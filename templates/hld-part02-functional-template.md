@@ -83,13 +83,33 @@ Repeat 3.2.n for every function in the index.
 
 #### 3.2.1 <MOD>0010 – <Function name> (Module: <MOD>, <Design status>)
 
-##### 3.2.1.1 Purpose
+> Guidance
+> - Design status: Draft / In review / Approved / Deferred.
+> - Keep the design technology-neutral (no framework-specific terms such as Spring annotations) so it holds across replatforming (Java → Node.js / Python FastAPI).
+> - Do not restate what lives elsewhere: business rules and validations reference BRD ids; screen behaviour already in the UX summary is referenced, not copied.
+
+##### 3.2.1.1 Purpose, trigger and conditions
 
 <One or two sentences: what the function lets the user / system do.>
 
-Delivery phase: <POC / Phase 2>
+| Item | Detail |
+| --- | --- |
+| Delivery phase | POC / Phase 2 |
+| Trigger | <user action / event / schedule> |
+| Pre-conditions | <state that must hold before the function runs> |
+| Post-conditions | <resulting state, statuses, events emitted> |
 
-##### 3.2.1.2 Requirement traceability
+##### 3.2.1.2 Actor & data scope
+
+Per role × screen access matrix (BRD §4.3):
+
+| Role | Access (Read / Read-write / Approve / None) | Data scope (row-level) |
+| --- | --- | --- |
+| Employee | | Own records only |
+| Manager | | Own + direct reportees |
+| Admin | | All |
+
+##### 3.2.1.3 Requirement traceability
 
 | Source | References |
 | --- | --- |
@@ -98,16 +118,18 @@ Delivery phase: <POC / Phase 2>
 | BRD NFRs | NFR-… |
 | UX | UJ-…, SCR-… |
 | Decisions | D-…, ADR-… |
+| Related functions – depends on | <MOD>00nn … |
+| Related functions – used by | <MOD>00nn … |
 
-##### 3.2.1.3 Navigation & prototype reference
+##### 3.2.1.4 Navigation & prototype reference
 
 **Navigation:** <Menu > Screen > Tab>
 
 **Prototype:** `docs/01-ux/mockups/<file>.html` · UX summary `docs/01-ux/ux-summary/<file>.md`
 
-##### 3.2.1.4 Solution approach
+##### 3.2.1.5 Solution approach
 
-###### 3.2.1.4.1 Design description
+###### 3.2.1.5.1 Design description
 
 The [<Function name>] function lets users work with the following sections / activities:
 
@@ -117,65 +139,70 @@ The [<Function name>] function lets users work with the following sections / act
 **<Section / activity name>**
 
 1. <What the section shows or captures.>
-2. Data is fetched / saved via API: [API : <METHOD> /<ctx>/<resource> (Purpose : …)]
+2. Data is fetched / saved via API: [API-<MOD>-nn : <METHOD> /<ctx>/<resource> (Purpose : …)]
 3. DB entity: [<ENTITY>]
 4. <Rules applied (BR / VR ids), query vs edit mode, defaults.>
 
-###### 3.2.1.4.2 Design notes
+###### 3.2.1.5.2 Design notes
 
-1. <Design choices, options considered and why, ids / sequences, caching, concurrency.>
+1. <Design choices, options considered and why, ids / sequences, caching, pagination, concurrency.>
 
-###### 3.2.1.4.3 Actor
-
-Per role × screen access matrix (BRD §4.3):
-
-| Role | Access |
-| --- | --- |
-| <Role> | Read / Read-write / Approve |
-
-###### 3.2.1.4.4 Sequence flow
+###### 3.2.1.5.3 Sequence & orchestration
 
 <Sequence diagram (e.g. Mermaid) for the main flow; alt / opt blocks for alternative and error paths. Participants: User, Frontend, Gateway, <Service>, other services, Broker, DB.>
 
-###### 3.2.1.4.5 Orchestration & events
+Cross-service and asynchronous steps only (omit for a single-service synchronous function):
 
 | Step | Type (sync call / event / job / workflow) | Producer → consumer | Event / API | Consistency (local tx / outbox / saga / compensation) |
 | --- | --- | --- | --- | --- |
 
-###### 3.2.1.4.6 Frontend
+###### 3.2.1.5.4 Frontend
 
-1. <Layout, components, states (empty / loading / error / read-only), client-side validation, navigation.>
+Only what is not already in the UX summary:
 
-###### 3.2.1.4.7 Backend
+1. <Components, state handling, API call mapping, client-side validation, empty / loading / error / read-only states, accessibility notes.>
 
-| # | API name | Method & endpoint | Purpose | Request (key fields) | Response (key fields) | Roles |
+###### 3.2.1.5.5 Backend
+
+| API id | API name | Method & endpoint | Purpose | Request (key fields) | Response (key fields) | Roles |
 | --- | --- | --- | --- | --- | --- | --- |
+| API-<MOD>-01 | | | | | | |
 
-<Server-side validation, authorization checks, transaction boundary, idempotency, events published, jobs.>
+<Server-side validation, transaction boundary, idempotency, events published, jobs.>
 
-###### 3.2.1.4.8 Database
+###### 3.2.1.5.6 Database
 
 | Entity | Operation (C / R / U / soft-D) | Purpose in this function |
 | --- | --- | --- |
 
-###### 3.2.1.4.9 Validation & error handling
+###### 3.2.1.5.7 Validation & error handling
 
-| Rule id | Check | Layer (UI / API / DB) | Error code | HTTP status | Message |
-| --- | --- | --- | --- | --- | --- |
+| Rule ref (BRD VR / BR) | Layer (UI / API / DB) | Error code | HTTP status | Message |
+| --- | --- | --- | --- | --- |
 
-###### 3.2.1.4.10 Notifications, audit & activity log
+###### 3.2.1.5.8 Security & data privacy
+
+| Item | Detail |
+| --- | --- |
+| Authorization check per API | API-<MOD>-nn: role + data-scope rule |
+| Sensitive fields | <e.g. salary, bank account, PAN> |
+| Masking (UI / API response) | |
+| Encryption (in transit / at rest / field-level) | |
+| Logging rule | <never log / mask in logs> |
+
+###### 3.2.1.5.9 Notifications, audit & activity log
 
 | Trigger | Notification (NOT id) | Activity log entry | Audit fields captured |
 | --- | --- | --- | --- |
 
-###### 3.2.1.4.11 Scenarios
+###### 3.2.1.5.10 Scenarios
 
 Business and technical scenarios the design must satisfy; basis for test cases.
 
-| Scenario id | Scenario | Type (positive / negative / edge / concurrency / failure) | Pre-condition | Expected result |
-| --- | --- | --- | --- | --- |
+| Scenario id | Scenario | Type (positive / negative / edge / concurrency / failure) | Requirement ref | Pre-condition | Expected result | Test level (unit / API / E2E) |
+| --- | --- | --- | --- | --- | --- | --- |
 
-##### 3.2.1.5 Notes, issues & assumptions
+##### 3.2.1.6 Notes, issues & assumptions
 
 1. Note / Issue / Assumption / Q: <text>
 
@@ -190,8 +217,10 @@ NFR detail is kept out of each function's design description; functions referenc
 
 ### 4.2 API inventory
 
-| Seq | API name | Purpose | Method & endpoint | Request (key fields) | Roles | Idempotent | Function |
-| --- | --- | --- | --- | --- | --- | --- | --- |
+Roll-up of the per-function API tables (§3.2.n.5.5); the API id is the key.
+
+| API id | API name | Purpose | Method & endpoint | Request (key fields) | Roles | Idempotent | Function |
+| --- | --- | --- | --- | --- | --- | --- |
 
 Resilience defaults (timeouts, retries, circuit breaker, idempotency): Part01 §8.5.
 
