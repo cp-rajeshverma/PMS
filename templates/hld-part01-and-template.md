@@ -129,21 +129,37 @@ The full catalogue (Part01a) assesses every principle and pattern. This chapter 
 
 ### 5.1 Functional building blocks
 
-<Diagram: business modules, supporting modules and shared capabilities.>
+A representational block diagram of the application's functional architecture. It shows every functional component of the application (business modules and supporting modules) and the peripheral systems that integrate with it.
 
-| Building block | Type (business / supporting / shared) | Capabilities | Owning service |
+<Block diagram: application boundary containing business modules and supporting modules; peripheral systems outside the boundary, connected to the components they integrate with.>
+
+**Text version of the diagram** (for readers and AI agents)
+
+| Building block | Type (business module / supporting module / peripheral system) | Key capabilities | Integrates with |
 | --- | --- | --- | --- |
 
-### 5.2 End-to-end business process
+### 5.2 End-to-end functional process
 
-<Diagram: main business flow across modules, decision points and backend jobs.>
+A high-level business process diagram showing how each functional component and peripheral system takes part in the process, from the first business event to the final outcome.
+
+<Process diagram: swimlane per functional component / peripheral system; steps, decision points, handovers between components and backend jobs.>
+
+**Text version of the diagram**
+
+| Step | Functional component / peripheral system | Activity | Output / next step |
+| --- | --- | --- | --- |
 
 ### 5.3 Domain / sub-domain based micro-application identification
 
-<Grid diagram: one column per domain; rows = Frontend, Backend (service APIs), Database.>
+A tower diagram. Each tower cuts across all three layers – Frontend, Backend API and Backend DB – and represents one micro-application, equivalent to one microservice. Towers are grouped under the domain / sub-domain they belong to.
 
-| Seq | Domain / sub-domain | Context path | Purpose | Owned data | Publishes / consumes events |
-| --- | --- | --- | --- | --- | --- |
+<Tower diagram: columns = towers grouped by domain / sub-domain; rows = Frontend, Backend API, Backend DB; each cell names that tower's component in the layer.>
+
+**List of microservices**
+
+| Seq | Domain / sub-domain name | Domain context | Purpose |
+| --- | --- | --- | --- |
+| 1 | | /<context>/ | |
 
 ### 5.4 Stakeholder alignment
 

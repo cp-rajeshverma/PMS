@@ -29,7 +29,14 @@ This catalogue lists the architecture principles and patterns the design is asse
 
 Rows are never deleted; mark them N/A with a reason. Add project-specific rows at the end of a group.
 
-**Sources:** Cloud design patterns – Azure Architecture Center (https://learn.microsoft.com/en-us/azure/architecture/patterns/); Enterprise Integration Patterns – Hohpe & Woolf (https://www.enterpriseintegrationpatterns.com/patterns/messaging/); Microservice patterns – microservices.io (C. Richardson); Twelve-Factor App (12factor.net); Azure Well-Architected Framework; OWASP Top 10.
+**Sources:** 
+
+- Cloud design patterns – Azure Architecture Center (https://learn.microsoft.com/en-us/azure/architecture/patterns/); 
+- Enterprise Integration Patterns – Hohpe & Woolf (https://www.enterpriseintegrationpatterns.com/patterns/messaging/); 
+- Microservice patterns – microservices.io (C. Richardson); 
+- Twelve-Factor App (12factor.net); 
+- Well-Architected Framework; 
+- OWASP Top 10.
 
 ## 3. Group summary
 
