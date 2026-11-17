@@ -42,11 +42,10 @@ This document describes the high-level solution approach for each system functio
 | --- | --- | --- |
 | 1 | <PRJ>-HLD-Part01-AnD | Overall architecture and design |
 | 2 | <PRJ>-HLD-Part01a-Principles-Patterns | Principles and patterns catalogue |
-| 3 | <PRJ>-HLD-Part01b-AnA | Authentication & authorization |
-| 4 | <PRJ>-HLD-Part02-M<n>-<MOD>-Functional | Solution approach per functional module (one per module) |
-| 5 | <PRJ>-HLD-Part02-M<n>-SUP-Functional | Solution approach for supporting modules |
-| 6 | <PRJ>-HLD-Part03-Datamodel | Data model |
-| 7 | API / event contracts (`contracts/`) | OpenAPI and event schemas |
+| 3 | <PRJ>-HLD-Part02-M<n>-<MOD>-Functional | Solution approach per functional module (one per module) |
+| 4 | <PRJ>-HLD-Part02-M<n>-SUP-Functional | Solution approach for supporting modules |
+| 5 | <PRJ>-HLD-Part03-Datamodel | Data model |
+| 6 | API / event contracts (`contracts/`) | OpenAPI and event schemas |
 
 ## 3. Module: <Module name>
 

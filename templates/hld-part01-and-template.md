@@ -40,11 +40,10 @@ This document describes the overall architecture and design of <application>. It
 | --- | --- | --- |
 | 1 | <PRJ>-HLD-Part01-AnD | Overall architecture and design (this document) |
 | 2 | <PRJ>-HLD-Part01a-Principles-Patterns | Catalogue of principles and patterns with applicability and realization |
-| 3 | <PRJ>-HLD-Part01b-AnA | Authentication & authorization design |
-| 4 | <PRJ>-HLD-Part02-M<n>-<MOD>-Functional | Solution approach for system functions of each functional module |
-| 5 | <PRJ>-HLD-Part02-M<n>-SUP-Functional | Solution approach for supporting modules |
-| 6 | <PRJ>-HLD-Part03-Datamodel | Data model |
-| 7 | Standards and guardrails (`docs/04-standards/`) | Coding, API, database, security, testing rules |
+| 3 | <PRJ>-HLD-Part02-M<n>-<MOD>-Functional | Solution approach for system functions of each functional module |
+| 4 | <PRJ>-HLD-Part02-M<n>-SUP-Functional | Solution approach for supporting modules |
+| 5 | <PRJ>-HLD-Part03-Datamodel | Data model |
+| 6 | Standards and guardrails (`docs/04-standards/`) | Coding, API, database, security, testing rules |
 
 ### 2.2 Application overview
 
@@ -68,7 +67,7 @@ Implementation starts only when every mandatory artifact below is approved.
 | 2 | System architecture | §6 | Yes | Architect, infra, security | | |
 | 3 | Deployment architecture | §7 | Yes | Architect, infra, DevOps | | |
 | 4 | Integration architecture | §8 | Yes | Architect, integration owners | | |
-| 5 | Authentication & authorization | Part01b | Yes | Security, architect | | |
+| 5 | Authentication & authorization | §9 | Yes | Security, architect | | |
 | 6 | Logging & observability | §10 | Yes | Operations, architect | | |
 | 7 | Principles & patterns compliance | Part01a | Yes | Architect | | |
 | 8 | Functional HLDs per module | Part02 | Yes | BA, dev leads | | |
@@ -294,20 +293,98 @@ All integrations between components in the ecosystem: internal service-to-servic
 | Stakeholder | Date | Outcome |
 | --- | --- | --- |
 
-## 9. Authentication & authorization (summary)
+## 9. Authentication & authorization
 
-Full design in <PRJ>-HLD-Part01b-AnA. Summary:
+Architecture-level design of identity, access and API security. User-facing functions (sign-in, sign-out, onboarding, user / role administration) are designed in Part02-SUP §4.1–4.2.
 
-| Topic | Decision |
+### 9.1 Users, user categories and roles
+
+| User category | Description | Authentication path | MFA |
+| --- | --- | --- | --- |
+
+| Role id | Role name | Role type (business / system / external) | Data scope |
+| --- | --- | --- | --- |
+
+### 9.2 Identity provider / authorization server
+
+| Item | Decision |
 | --- | --- |
-| Identity provider / auth server | |
-| User types and roles | |
-| Authentication flow (OAuth2 / OIDC) | |
-| MFA approach | |
-| Token type, lifetime, refresh | |
-| Session and idle timeout, lockout | |
-| API-level security (gateway, service) | |
-| Service-to-service authentication | |
+| Product / service | |
+| Realm / tenant design | |
+| User store (IdP-managed / federated / application) | |
+| Clients (per frontend, per service) | |
+| Environments (one realm per environment / shared) | |
+
+### 9.3 Authentication flows
+
+| Flow | Used by | Protocol / grant (e.g. OIDC Authorization Code + PKCE, Client Credentials) | Notes |
+| --- | --- | --- | --- |
+| Interactive user sign-in | | | |
+| Token refresh | | | |
+| Sign-out / single logout | | | |
+| Service-to-service | | | |
+
+<Sequence diagram of the interactive sign-in flow: Browser, Frontend, Gateway, IdP, Service.>
+
+### 9.4 MFA approach
+
+<Which users / roles / actions require MFA, factors allowed, enrolment and recovery, step-up for sensitive actions.>
+
+### 9.5 Token design
+
+| Item | Decision |
+| --- | --- |
+| Token type and format (JWT) | |
+| Signing algorithm and key rotation | |
+| Access token lifetime | |
+| Refresh token lifetime and rotation | |
+| Claims (sub, roles, scopes, data-scope attributes, tenant) | |
+| Audience per service | |
+| Revocation / forced logout | |
+| Token storage in the browser | |
+
+### 9.6 Session management
+
+| Item | Decision |
+| --- | --- |
+| Session idle timeout | |
+| Absolute session timeout | |
+| Concurrent sessions | |
+| Account lockout policy | |
+
+### 9.7 Authorization model
+
+| Layer | Mechanism | Enforced at |
+| --- | --- | --- |
+| Coarse-grained (role → API / route) | RBAC | Gateway |
+| Fine-grained (role → feature / action) | Permission | Service |
+| Data scope (own / reportees / all) | Row-level rule | Service / query |
+| UI (menu, button visibility) | Claims-driven | Frontend (never the only check) |
+
+### 9.8 API-level security
+
+| Control | Decision |
+| --- | --- |
+| Token validation (signature, issuer, audience, expiry) | |
+| Scopes per API | |
+| Rate limiting / throttling | |
+| CORS policy | |
+| Input validation and payload limits | |
+| Security headers | |
+| Public (unauthenticated) endpoints | |
+
+### 9.9 Service-to-service authentication
+
+<Client credentials / mTLS / token exchange; how the user identity propagates in calls and events (correlation id, on-behalf-of).>
+
+### 9.10 Secrets and key management
+
+<Secret store, rotation, who can read; no secrets in code, images or logs.>
+
+### 9.11 Stakeholder alignment
+
+| Item | Stakeholder | Date | Outcome |
+| --- | --- | --- | --- |
 
 ## 10. Unified & centralized logging and observability
 
