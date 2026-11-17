@@ -193,12 +193,35 @@ A tower diagram. Each tower cuts across all three layers – Frontend, Backend A
 | Seq | Cloud service | Purpose | HA and scalability assurance |
 | --- | --- | --- | --- |
 
-### 6.3 Per-tier redundancy
+### 6.3 Network topology (<cloud / on-premises>)
+
+How the system's components are placed and connected on the network – cloud or on-premises, whichever applies. Shows network boundaries, zones / subnets, availability zones or data centres, entry points and the controls between them.
+
+<Network topology diagram.
+Cloud: virtual network (VNet / VPC), public, private and data subnets, availability zones, internet entry (DNS, WAF, load balancer / application gateway), NAT / egress, private endpoints for PaaS services, peering / VPN / ExpressRoute to other networks.
+On-premises: internet edge, DMZ, firewalls, VLANs / segments, load balancers, server farms, database segment, management network, links to other sites.>
+
+**Network zones / subnets**
+
+| Zone / subnet | Address range (CIDR) | Purpose | Components placed | Exposure (public / private) |
+| --- | --- | --- | --- | --- |
+
+**Allowed traffic flows**
+
+| Source zone | Destination zone | Protocol / port | Purpose | Control (NSG / firewall rule / private endpoint) |
+| --- | --- | --- | --- | --- |
+
+**External connectivity**
+
+| Connection | Type (internet / VPN / private link / peering) | Purpose | Security |
+| --- | --- | --- | --- |
+
+### 6.4 Per-tier redundancy
 
 | Tier | Zone count | Redundancy model | Failover behaviour |
 | --- | --- | --- | --- |
 
-### 6.4 Stakeholder alignment
+### 6.5 Stakeholder alignment
 
 | Stakeholder | Date | Outcome |
 | --- | --- | --- |
