@@ -5,6 +5,7 @@ Every approved project decision, newest first. Approver for all entries: Rajesh 
 | Id | Date | Area | Decision |
 | --- | --- | --- | --- |
 | D-34 | 16 Nov 2026 | Gate | **Step 2 (UX) approved**: UX journey index v1.0, 17 mockups, 17 UX summaries. Next: Step 3 (BRD) |
+| D-41 | 17 Nov 2026 | Templates | HLD Part02 supporting modules (SUP) template approved |
 | D-40 | 17 Nov 2026 | Templates | No separate Part01b A&A document: A&A architecture becomes a full chapter in AnD §9 (users / roles, IdP, OAuth/OIDC flows, MFA, JWT design, sessions, authorization model, API-level and service-to-service security, secrets); references in Part02 and SUP templates updated. SUP template has no per-function appendix; it refers to the Part02 functional template §3.2.1 |
 | D-39 | 17 Nov 2026 | Templates | HLD Part02 functional module template approved (with D-38 refinements) |
 | D-38 | 17 Nov 2026 | Templates | Part02 functional template, per-function chapter refined: Actor & data scope moved up; trigger / pre- / post-conditions; related functions in traceability; sequence and orchestration merged; new Security & data privacy subsection; scenarios carry requirement ref and test level; API ids with §4.2 as roll-up; reference BRD/UX instead of restating; design status values and technology-neutral guidance |
