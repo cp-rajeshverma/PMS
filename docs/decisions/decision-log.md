@@ -4,6 +4,7 @@ Every approved project decision, newest first. Approver for all entries: Rajesh 
 
 | Id | Date | Area | Decision |
 | --- | --- | --- | --- |
+| D-67 | 18 Nov 2026 | BRD | PMS-BRD §8 approved: system-wide NFR-01 to NFR-08 (incl. NFR-03 measure "0 access-control defects in security testing") and §8.1 volumetrics with year-1 estimates as drafted; open item OI-05 |
 | D-66 | 18 Nov 2026 | BRD | PMS-BRD §7 approved: integrations INT-01 to INT-08 and job JOB-CMN-01; INT-<NN> prefix added to §2.5 |
 | D-65 | 18 Nov 2026 | BRD | PMS-BRD §6 approved: cross-module rules BR-CMN-01 to BR-CMN-18 (baseline BR-C1 to BR-C8 kept in order as BR-CMN-01 to 08; single-module rules stay in module BRDs); open item OI-04 (pending approvals on manager change) |
 | D-64 | 18 Nov 2026 | BRD | PMS-BRD §5 approved. Shell requirements split: log in, set password, log out (UJ-SH-01/02/05) in PMS-BRD-M5-SUP (AUTH); dashboard and approvals inbox (UJ-SH-03/04) in the anchor as FR-CMN (§5.3); module BRDs list only the tiles, to-dos and inbox items they supply; §2.5 gains the CMN prefix for functional requirements |

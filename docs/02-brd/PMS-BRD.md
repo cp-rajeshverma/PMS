@@ -384,7 +384,34 @@ Business view of how modules hand over to each other. Message formats, API contr
 
 ## 8. System-wide non-functional requirements
 
-_Pending._
+Module-specific NFRs are in each module BRD §13. Targets are sized for about 100 employees in year 1 (D-59).
+
+| NFR id | Category | Requirement | Measure / target |
+| --- | --- | --- | --- |
+| NFR-01 | Performance | Screens and services respond quickly under normal peak load; salary records appear soon after attendance approval; the nightly reconciliation finishes well before the working day. | Page load p95 ≤ 2 s and service response p95 ≤ 500 ms at 25 concurrent users; salary record generated within 1 minute of attendance approval; reconciliation run < 5 minutes (D-59) |
+| NFR-02 | Availability | PMS is available during business hours; data can be restored after a failure; one module being down does not stop the others (FR-CMN-008). | 99 % in Production, 08:00–20:00 IST, Monday to Saturday; daily backup; RPO 24 h; RTO 8 h (D-59) |
+| NFR-03 | Security | Sign-in with Employee Id and password; temporary passwords must be replaced at first sign-in; password policy: at least 8 characters, upper and lower case, a number, a special character, not the Employee Id; account locked for 15 minutes after 5 failed sign-ins; session ends after 30 minutes idle; sign-in messages never reveal whether an Employee Id exists; passwords are never stored or shown in readable form; every request is checked against the user's role and data scope (§4.3), so personal data is visible only to the employee, their manager and the Admin. | D-26, D-28, D-58, SCR-SH-01, SCR-SH-02; 0 access-control defects in security testing |
+| NFR-04 | Usability and accessibility | English-only web interface for desktop browsers; consistent layout on every screen (FR-CMN-015); every action and status understandable without colour alone; keyboard operable. | Latest Chrome and Edge; designed for 1366 px wide screens; WCAG 2.1 AA, text contrast at least 4.5:1 (D-08, D-24, D-59, UX summaries §8) |
+| NFR-05 | Auditability | Every record shows who created and last changed it and when (BR-CMN-07), and who approved it, when and with which remarks (BR-CMN-02); void reasons, dispute remarks and Keep as is explanations are kept; the last approved profile is kept for comparison (D-29); every reconciliation run is logged. | 100 % of records with complete audit fields (KPI-03) |
+| NFR-06 | Data integrity | Records are never physically deleted (BR-CMN-06); one attendance entry per employee per day; exactly one non-voided salary record per approved attendance; the hourly wage rate is copied at generation (BR-CMN-13); a change by another user is detected rather than overwritten (FR-CMN-014); amounts kept to 2 decimals in INR. | 0 mismatches after nightly reconciliation (KPI-04); 100 % wage accuracy (KPI-02) |
+| NFR-07 | Scalability | Each module can scale on its own as the number of employees grows, without redesign. | 100 employees in year 1; scale out per module to 10×; load-tested to 2× (200 employees, 50 concurrent users) (D-59) |
+| NFR-08 | Maintainability / configurability | Each module can be changed, tested and deployed on its own; the design stays technology-neutral so the backend can later move to another platform; separate Development, QA and Production environments. | D-10, D-11, D-12, D-18 |
+
+### 8.1 Business volumetrics (input to HLD)
+
+Year-1 figures are planning estimates derived from about 100 employees (D-59). Growth is 0 % for the POC; the HLD plans 20 % headroom. Test and demo data use about 20 sample employees (D-08).
+
+| Volume type | Year 1 | Growth % per year |
+| --- | --- | --- |
+| Users – Employees (including managers) | About 100 | 0 % (20 % headroom) |
+| Users – Managers | About 10 (1 manager per 10 employees) | 0 % |
+| Users – PMS Administrator | 1 | 0 % |
+| Peak concurrent users | 25 | 0 % |
+| Attendance records per year (AMS) | About 26,400 (100 × 22 working days × 12) | 0 % |
+| Salary records per year (SMS) | About 26,400 (one per approved attendance), plus voided records after reopens | 0 % |
+| Leave requests per year (LMS) | About 1,200 (about 1 per employee per month) | 0 % |
+| Profile approvals per year (EIMS) | About 150 (100 onboarding + about 50 profile changes) | 0 % |
+| Peak periods | Daily: 09:00–10:00 and 17:00–19:00 IST (attendance entry and approvals); month-end approval catch-up | – |
 
 ## 9. Assumptions, constraints and dependencies
 
@@ -408,6 +435,7 @@ Running list, completed as the anchor is drafted.
 | OI-02 | What happens to a deactivated employee's pending items (own submissions, and items waiting for their approval as manager)? | HR Manager | Before PMS-BRD-M1-EIMS | Open |
 | OI-03 | Missing attendance reminder (FR-CMN-004): does it include today, or only days up to yesterday? | HR Manager | Before PMS-BRD-M2-AMS | Open |
 | OI-04 | When the Admin changes an employee's manager (BR-CMN-13), who decides the items already waiting for approval – the old or the new manager? | HR Manager | Before PMS-BRD-M1-EIMS | Open |
+| OI-05 | Which business values must the PMS Administrator be able to change without a release (for example idle timeout, lockout limits, reconciliation time, remarks length)? Today all are fixed by decisions. | Product owner | Before PMS-BRD-M5-SUP (ADM is Phase 2) | Open |
 
 Approved decisions are kept in `docs/decisions/decision-log.md`.
 
