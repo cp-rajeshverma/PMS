@@ -4,6 +4,7 @@ Every approved project decision, newest first. Approver for all entries: Rajesh 
 
 | Id | Date | Area | Decision |
 | --- | --- | --- | --- |
+| D-75 | 18 Nov 2026 | BRD | PMS-BRD-M1-EIMS §8 and §9 approved: VR-EIMS-01 to 10, BR-EIMS-01 to 10, Employee and Profile change request data; Submitted Date added to both entities |
 | D-74 | 18 Nov 2026 | BRD | PMS-BRD-M1-EIMS §7 approved: FR-EIMS-001 to FR-EIMS-041 with acceptance criteria; user stories US-EIMS-01 to US-EIMS-10 |
 | D-73 | 18 Nov 2026 | BRD | PMS-BRD-M1-EIMS §1–§6 approved (status codes as drafted); anchor gains INT-09 (AMS, LMS → EIMS check for records before a new joining date) |
 | D-72 | 18 Nov 2026 | EIMS | Profile change request details: the employee can withdraw a request in Draft, Submitted (before decision) or Rejected; a request needs at least one changed value to be submitted; a request pending when the Admin changes the manager follows open item OI-04 |
