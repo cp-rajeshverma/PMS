@@ -342,7 +342,28 @@ The dashboard (SCR-SH-03), approvals inbox (SCR-SH-04) and shell layout (SCR-SH-
 
 ## 6. Cross-module business rules
 
-_Pending._
+Rules that affect two or more modules are defined here once and referenced by id from the module BRDs. Rules that affect one module only are in that module BRD. BR-CMN-01 to BR-CMN-08 are the baseline rules BR-C1 to BR-C8, in the same order.
+
+| Rule id | Rule | Modules affected | Source (decision / UX) |
+| --- | --- | --- | --- |
+| BR-CMN-01 | Every employee has a Manager Id, set by the Admin. A manager approves the records of their direct reports only. The top-level employee (no manager) has all records approved by the Admin. | EIMS, AMS, LMS, SMS | D-01 (C1), D-07 (O3), D-58; baseline BR-C1 |
+| BR-CMN-02 | Every business record carries Status, Approver Id, Approved Date and Remarks. | EIMS, AMS, LMS, SMS | D-01 (C2); baseline BR-C2 |
+| BR-CMN-03 | Remarks are required to reject a record, to reopen attendance and to close a dispute with Keep as is; maximum 500 characters. | EIMS, AMS, LMS, SMS | D-01, D-33, SCR-SH-04; baseline BR-C3 |
+| BR-CMN-04 | A rejected record goes back to its owner, who can correct and resubmit it. | EIMS, AMS, LMS | D-01 (C4); baseline BR-C4 |
+| BR-CMN-05 | Approved attendance and leave records are locked. An approved profile can be edited, and the edit sends it back to Submitted for re-approval. The only way to change approved attendance is a reopen after a salary dispute (BR-CMN-15). | EIMS, AMS, LMS | D-02 (E2); baseline BR-C5 |
+| BR-CMN-06 | Records are never physically deleted; an Is Active flag marks soft-deleted records. An inactive employee cannot sign in, and their history is kept. | EIMS, AMS, LMS, SMS, SUP | D-01 (C5), EIMS-US6; baseline BR-C6 |
+| BR-CMN-07 | Every record carries Created By, Created Date, Updated By and Updated Date, set by the system. | EIMS, AMS, LMS, SMS | D-01; baseline BR-C7 |
+| BR-CMN-08 | No one approves their own records. A manager's own records are approved by their own manager (or by the Admin if the manager is the top-level employee). | EIMS, AMS, LMS, SMS | D-01; baseline BR-C8 |
+| BR-CMN-09 | Only an employee with an approved profile can enter attendance or request leave. | EIMS, AMS, LMS | Baseline AMS-V5, LMS-V6; SCR-SH-03 |
+| BR-CMN-10 | A date cannot carry both attendance and leave: attendance is not allowed on a date covered by the employee's submitted or approved leave, and leave is not allowed on a date that has submitted or approved attendance. | AMS, LMS | D-03 (A3), D-04 (L4); baseline AMS-V4, LMS-V4 |
+| BR-CMN-11 | While an approved profile is being re-approved, the other modules keep using the last approved profile, and the employee keeps working normally. | EIMS, AMS, LMS, SMS | D-29 (UXQ-14, UXQ-15) |
+| BR-CMN-12 | An approver can approve several records at once; rejection is one record at a time. | EIMS, AMS, LMS, SMS | D-24 (UXQ-01) |
+| BR-CMN-13 | Admin-owned details (role, manager, hourly wage rate, date of joining) change without profile re-approval. A new hourly wage rate applies only to salary records generated after the change; existing salary records keep the rate copied when they were generated. | EIMS, SMS | D-05 (S1), SCR-EIMS-02; baseline SMS-R2 |
+| BR-CMN-14 | A manager who still has active direct reports cannot be deactivated until the Admin reassigns those reports. | EIMS, AMS, LMS, SMS | D-29 (UXQ-13) |
+| BR-CMN-15 | Approved attendance can be reopened only to resolve a disputed salary record. Reopening sets the attendance back to Rejected and the system sets the linked salary record to Voided; the employee corrects and resubmits, and a new salary record is generated when the attendance is approved again. | AMS, SMS | D-07 (O1, O2), D-25 |
+| BR-CMN-16 | Voided salary records are excluded from every total and earnings figure (dashboard and salary screens); they stay visible on request. | SMS, Shell | D-25 |
+| BR-CMN-17 | Wages come only from approved attendance; approved leave earns no wage. | LMS, SMS | D-05 (S6); baseline SMS-R3 |
+| BR-CMN-18 | All dates and times are Indian Standard Time; all amounts are in INR with 2 decimals. | All | D-08 |
 
 ## 7. Integrations and cross-module jobs
 
@@ -373,6 +394,7 @@ Running list, completed as the anchor is drafted.
 | OI-01 | Update the UX summaries so Admin can open the review screen for the top-level employee's records (SCR-SH-04 roles text, SCR-AMS-03, SCR-LMS-03, SCR-SMS-02), read limited to those records (D-58) | Product owner | Before HLD Part02 | Open |
 | OI-02 | What happens to a deactivated employee's pending items (own submissions, and items waiting for their approval as manager)? | HR Manager | Before PMS-BRD-M1-EIMS | Open |
 | OI-03 | Missing attendance reminder (FR-CMN-004): does it include today, or only days up to yesterday? | HR Manager | Before PMS-BRD-M2-AMS | Open |
+| OI-04 | When the Admin changes an employee's manager (BR-CMN-13), who decides the items already waiting for approval – the old or the new manager? | HR Manager | Before PMS-BRD-M1-EIMS | Open |
 
 Approved decisions are kept in `docs/decisions/decision-log.md`.
 
