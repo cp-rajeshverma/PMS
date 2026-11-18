@@ -5,6 +5,7 @@ Every approved project decision, newest first. Approver for all entries: Rajesh 
 | Id | Date | Area | Decision |
 | --- | --- | --- | --- |
 | D-34 | 16 Nov 2026 | Gate | **Step 2 (UX) approved**: UX journey index v1.0, 17 mockups, 17 UX summaries. Next: Step 3 (BRD) |
+| D-53 | 18 Nov 2026 | BRD | Step 3 approach: BRD set written as markdown in docs/02-brd/ (repo is master; Claude Docs BRD v1.0 is input only); order anchor → EIMS → AMS → LMS → SMS → SUP; SUP need-basis assessment after the module BRDs; each document reviewed section by section before the next starts |
 | D-52 | 18 Nov 2026 | Templates | Template set final (13 templates in templates/01-ux, 02-brd, 03-hld). Next: Step 3 BRD in the BRD templates; NPQMS reference PDFs can be removed from the Claude Project |
 | D-51 | 18 Nov 2026 | Templates | templates/ organised like docs/: 01-ux, 02-brd, 03-hld; Part02 and Part03 anchors renamed hld-part02-anchor-functional-template.md and hld-part03-anchor-datamodel-template.md; file names otherwise unchanged; later-stage folders (e.g. 04-standards) added when their first template exists |
 | D-50 | 18 Nov 2026 | Templates | brd-template.md renamed brd-anchor-template.md so the anchor sorts first; document ID <PRJ>-BRD unchanged |
