@@ -7,7 +7,7 @@ Status: templates frozen 17 Nov 2026 (D-35 to D-42); data model split 18 Nov 202
 | Artifact | Template | One per |
 | --- | --- | --- |
 | <PRJ>-BRD | brd-template.md | project |
-| <PRJ>-HLD-Part01-AnD | hld-part01-and-template.md | project (includes A&A architecture in §9; no separate A&A document, D-40) |
+| <PRJ>-HLD-Part01-AnD | hld-part01-architecture-and-design-template.md | project (includes A&A architecture in §9; no separate A&A document, D-40) |
 | <PRJ>-HLD-Part01a-Principles-Patterns-Decisions | hld-part01a-principles-patterns-decisions-template.md | project (330-item catalogue in 18 groups; ADR register §5 and ADR format §6, D-45) |
 | <PRJ>-HLD-Part02-M<n>-<MOD>-Functional | hld-part02-functional-template.md | functional module |
 | <PRJ>-HLD-Part02-M<n>-SUP-Functional | hld-part02-sup-functional-template.md | project (supporting modules) |
