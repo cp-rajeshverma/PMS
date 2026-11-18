@@ -17,7 +17,7 @@ Status: templates frozen 17 Nov 2026 (D-35 to D-42); data model split 18 Nov 202
 | <PRJ>-HLD-Part03-Datamodel (anchor) | templates/03-hld/hld-part03-anchor-datamodel-template.md | project (conventions, ownership, entity index, master ER, cross-service, roll-ups) |
 | <PRJ>-HLD-Part03-M<n>-<MOD>-Datamodel | templates/03-hld/hld-part03-module-datamodel-template.md | functional module (entity definitions) |
 | <PRJ>-HLD-Part03-M<n>-SUP-Datamodel | templates/03-hld/hld-part03-sup-datamodel-template.md | project (supporting modules, need basis; entity structure per module template §3.1) |
-| UX journey index / UX summaries | 01-ux/ux-*-template.md | project / screen |
+| UX journey index / UX summaries | templates/01-ux/ux-*-template.md | project / screen |
 | ADR file | format in Part01a §6 | significant architecture decision (`docs/decisions/adr/ADR-<NNN>-*.md`) |
 
 ## Conventions adopted
