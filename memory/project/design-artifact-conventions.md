@@ -1,12 +1,14 @@
 # Design artifact set and template conventions
 
-Status: templates frozen 17 Nov 2026 (D-35 to D-42); data model split 18 Nov 2026 (D-43, D-44); ADR template merged into Part01a 18 Nov 2026 (D-45); Part02 split into anchor + module + SUP (D-48). Templates live in `templates/`.
+Status: templates frozen 17 Nov 2026 (D-35 to D-42); data model split 18 Nov 2026 (D-43, D-44); ADR template merged into Part01a 18 Nov 2026 (D-45); Part02 split into anchor + module + SUP (D-48); BRD split likewise (D-49). Templates live in `templates/`.
 
 ## Artifact set (per project)
 
 | Artifact | Template | One per |
 | --- | --- | --- |
-| <PRJ>-BRD | brd-template.md | project |
+| <PRJ>-BRD (anchor) | brd-template.md | project (context, roles, end-to-end process, cross-module rules, system-wide NFRs) |
+| <PRJ>-BRD-M<n>-<MOD> | brd-module-template.md | functional module |
+| <PRJ>-BRD-M<n>-SUP | brd-sup-template.md | project (supporting functions, need basis) |
 | <PRJ>-HLD-Part01-Architecture-and-Design | hld-part01-architecture-and-design-template.md | project (includes A&A architecture in §9; no separate A&A document, D-40) |
 | <PRJ>-HLD-Part01a-Principles-Patterns-Decisions | hld-part01a-principles-patterns-decisions-template.md | project (330-item catalogue in 18 groups; ADR register §5 and ADR format §6, D-45) |
 | <PRJ>-HLD-Part02-Functional (anchor) | hld-part02-functional-template.md | project (module index, function index, cross-module flows, common API / event / error conventions, roll-up inventories, requirement coverage) |
@@ -26,7 +28,8 @@ Status: templates frozen 17 Nov 2026 (D-35 to D-42); data model split 18 Nov 202
 - SUP functions reuse the Part02 §3.2.1 structure; no appendix copy.
 - Design / entity status values: Draft, In review, Approved, Deferred, Moved, Removed (stub kept with reason or new location).
 - API references `[API-<MOD>-nn : METHOD /ctx/resource (Purpose : ...)]`; API inventory is a roll-up keyed by API id.
-- Business statuses live in BRD §6; HLD and data model hold only technical handling.
+- Every layer (BRD, Part02, Part03) = anchor + module documents + SUP document (D-43, D-48, D-49).
+- Business statuses live in module BRD §6; HLD and data model hold only technical handling.
 - Validation rules reference BRD VR / BR ids; frontend records only what the UX summary does not.
 - Every diagram keeps a text-version table.
 - Designs stay technology-neutral to support replatforming (Java → Node.js / Python FastAPI).

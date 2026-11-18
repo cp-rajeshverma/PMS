@@ -38,7 +38,7 @@ This document defines the entities of the supporting modules that the project ne
 
 | # | Document | Purpose |
 | --- | --- | --- |
-| 1 | <PRJ>-BRD (§4, §9, §10) | Roles, data requirements, notifications |
+| 1 | <PRJ>-BRD (anchor §4) and <PRJ>-BRD-M<n>-SUP (§3–§11) | Roles, supporting requirements, data requirements |
 | 2 | <PRJ>-HLD-Part03-Datamodel (anchor) | Conventions, common columns, ownership, cross-service consistency |
 | 3 | <PRJ>-HLD-Part02-M<n>-SUP-Functional | Supporting functions that use these entities |
 | 4 | <PRJ>-HLD-Part01-Architecture-and-Design (§9 A&A, §10 logging) | Identity, audit and logging architecture |

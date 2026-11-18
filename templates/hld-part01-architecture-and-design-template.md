@@ -30,7 +30,7 @@ This document describes the overall architecture and design of <application>. It
 
 | # | Document | Version |
 | --- | --- | --- |
-| 1 | <PRJ>-BRD | v<x> |
+| 1 | <PRJ>-BRD (anchor), <PRJ>-BRD-M<n>-<MOD>, <PRJ>-BRD-M<n>-SUP | v<x> |
 | 2 | UX Journey Index and UX Summaries | v<x> |
 | 3 | Decision log / ADRs | D-01 to D-<nn> |
 
@@ -49,7 +49,7 @@ This document describes the overall architecture and design of <application>. It
 
 #### 2.2.1 Business background
 
-<Business problem, users, main business flow, in 2–3 short paragraphs. Source: BRD §3.>
+<Business problem, users, main business flow, in 2–3 short paragraphs. Source: BRD anchor §3.>
 
 #### 2.2.2 Application background
 

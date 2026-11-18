@@ -32,7 +32,7 @@ This document describes the high-level solution approach for each system functio
 
 | # | Document | Version |
 | --- | --- | --- |
-| 1 | <PRJ>-BRD | v<x> |
+| 1 | <PRJ>-BRD (anchor), <PRJ>-BRD-M<n>-<MOD>, <PRJ>-BRD-M<n>-SUP | v<x> |
 | 2 | UX Journey Index and UX Summaries | v<x> |
 | 3 | Decision log / ADRs | D-01 to D-<nn> |
 
@@ -66,7 +66,7 @@ This document describes the high-level solution approach for each system functio
 
 #### 3.1.4 Status lifecycle
 
-Business statuses and transitions are defined in BRD §6.<n>. This section records only the technical handling: where status is stored, how transitions are enforced, events emitted per transition.
+Business statuses and transitions are defined in the module BRD (<PRJ>-BRD-M<n>-<MOD>) §6.<n>. This section records only the technical handling: where status is stored, how transitions are enforced, events emitted per transition.
 
 | Transition | Enforced in | Event emitted | Audit / activity entry |
 | --- | --- | --- | --- |
@@ -101,7 +101,7 @@ Repeat 3.2.n for every function in the index.
 
 ##### 3.2.1.2 Actor & data scope
 
-Per role × screen access matrix (BRD §4.3):
+Per role × screen access matrix (module BRD §4.2):
 
 | Role | Access (Read / Read-write / Approve / None) | Data scope (row-level) |
 | --- | --- | --- |

@@ -1,9 +1,15 @@
-# <Project> – Business Requirements Document (BRD)
+# <Project> – Business Requirements Document (BRD) – Anchor
 
 Document ID: <PRJ>-BRD-v<x.y>
+Scope: business context, roles, end-to-end process, cross-module rules and system-wide NFRs; module requirements are in the module BRDs
 Project: <project name and phase>
 Author: <name>
 Date: <Month YYYY>
+
+> Template guidance
+> - This anchor holds what spans modules. Module requirements live only in <PRJ>-BRD-M<n>-<MOD> (one per functional module) and <PRJ>-BRD-M<n>-SUP (supporting functions); the anchor never repeats them.
+> - Glossary, roles, cross-module rules (BR-CMN) and system-wide NFRs are defined here once and referenced from module BRDs.
+> - The end-to-end business process stays whole and readable in §5.
 
 ## 1. Document control
 
@@ -25,7 +31,7 @@ Date: <Month YYYY>
 
 ### 2.1 Purpose
 
-<What this document defines and who uses it (design team, BMAD agents, QA).>
+<What the BRD set defines and who uses it (business stakeholders, design team, BMAD agents, QA).>
 
 ### 2.2 Reference documents
 
@@ -37,30 +43,37 @@ Date: <Month YYYY>
 | 2 | UX Summaries (per screen) | v<x> | Fields, actions, rules per screen |
 | 3 | Decision log | D-01 to D-<nn> | Approved decisions |
 
-**Downstream documents (consume this BRD)**
+**Downstream documents (consume the BRD set)**
 
 | # | Document | Purpose |
 | --- | --- | --- |
 | 1 | <PRJ>-HLD-Part01-Architecture-and-Design | Overall architecture and design |
-| 2 | <PRJ>-HLD-Part02-M<n>-<MOD>-Functional | Solution approach per functional module |
-| 3 | <PRJ>-HLD-Part02-M<n>-SUP-Functional | Solution approach for supporting modules |
-| 4 | <PRJ>-HLD-Part03-Datamodel | Data model |
+| 2 | <PRJ>-HLD-Part02-Functional (anchor) and module / SUP documents | Functional design |
+| 3 | <PRJ>-HLD-Part03-Datamodel (anchor) and module / SUP documents | Data model |
 
-### 2.3 Glossary and abbreviations
+### 2.3 Module BRD documents
+
+| Module | Document | Business owner / SME | Version | Status |
+| --- | --- | --- | --- | --- |
+| <MOD1> | <PRJ>-BRD-M1-<MOD1> | | | |
+| SUP | <PRJ>-BRD-M<n>-SUP | | | |
+
+### 2.4 Glossary and abbreviations
 
 | Term | Meaning |
 | --- | --- |
 
-### 2.4 Requirement ID conventions
+### 2.5 Requirement ID conventions
 
 | Prefix | Meaning | Example |
 | --- | --- | --- |
-| FR-<MOD>-<NNN> | Functional requirement of a module | FR-AMS-004 |
-| BR-<MOD>-<NN> | Business rule (BR-CMN for cross-module) | BR-CMN-03 |
+| FR-<MOD>-<NNN> | Functional requirement of a module (supporting: ADM, UM, AUTH, NM, DM) | FR-AMS-004 |
+| BR-<MOD>-<NN> | Business rule (BR-CMN for cross-module, defined in this anchor) | BR-CMN-03 |
 | VR-<MOD>-<NN> | Validation rule | VR-EIMS-02 |
-| NFR-<NN> | Non-functional requirement | NFR-05 |
-| NOT-<NN> | Notification requirement | NOT-03 |
-| JOB-<NN> | Scheduled / backend job | JOB-02 |
+| NFR-<NN> | System-wide non-functional requirement (this anchor) | NFR-05 |
+| NFR-<MOD>-<NN> | Module-specific non-functional requirement | NFR-SMS-01 |
+| NOT-<MOD>-<NN> | Notification requirement | NOT-LMS-03 |
+| JOB-<MOD>-<NN> | Scheduled / backend job (JOB-CMN for cross-module) | JOB-CMN-01 |
 | UJ-…, SCR-… | User journey / screen ids from UX | UJ-AMS-01, SCR-AMS-02 |
 
 Priority uses MoSCoW (Must / Should / Could / Won't). Delivery phase: POC / Phase 2 / Future.
@@ -85,99 +98,53 @@ Priority uses MoSCoW (Must / Should / Could / Won't). Delivery phase: POC / Phas
 
 - <item – reason>
 
-## 4. Stakeholders, roles and access
+## 4. Stakeholders and roles
 
 ### 4.1 Stakeholders
 
 | Stakeholder | Interest / responsibility |
 | --- | --- |
 
-### 4.2 Roles
+### 4.2 Role catalogue
 
-| Role id | Role name | Type (internal / system) | Description |
-| --- | --- | --- | --- |
-
-### 4.3 Role × screen access matrix
-
-R = read, R/W = read and write, A = approve, — = no access.
-
-| Screen id | Screen | <Role 1> | <Role 2> | <Role 3> |
+| Role id | Role name | Type (internal / system) | Description | Data scope (own / reportees / all) |
 | --- | --- | --- | --- | --- |
 
-## 5. Business process and user journeys
+### 4.3 Role × module access
+
+Screen-level access is in each module BRD §4.2. R = read, R/W = read and write, A = approve, — = no access.
+
+| Module | <Role 1> | <Role 2> | <Role 3> |
+| --- | --- | --- | --- |
+
+## 5. End-to-end business process and journeys
 
 ### 5.1 End-to-end business process
 
-<Diagram: main flow across modules, from onboarding to salary acceptance.>
+<Diagram: the main business flow across modules, e.g. from onboarding to salary acceptance, showing which module owns each step.>
 
-### 5.2 User journeys
+| Step | Business activity | Module | Actor | Outcome / hand-over | Module BRD ref |
+| --- | --- | --- | --- | --- | --- |
 
-| Journey id | Journey | Actor | Screens | Requirement ids |
+### 5.2 Journey index
+
+| Journey id | Journey | Actor | Module(s) | Module BRD ref |
 | --- | --- | --- | --- | --- |
 
-## 6. Entity status lifecycles
+## 6. Cross-module business rules
 
-Repeat 6.n per business entity. HLDs refer to this chapter for statuses.
-
-### 6.1 <Entity> lifecycle
-
-<State diagram.>
-
-| Status code | Status | Business meaning | Set by |
+| Rule id | Rule | Modules affected | Source (decision / UX) |
 | --- | --- | --- | --- |
+| BR-CMN-01 | | | |
 
-| From | To | Action | Actor | Condition / rule |
-| --- | --- | --- | --- | --- |
+## 7. Integrations and cross-module jobs
 
-## 7. Functional requirements
-
-Repeat 7.n per module and 7.n.m per screen or system function.
-
-### 7.1 <Module code> – <Module name>
-
-**Overview:** <one paragraph>
-
-#### 7.1.1 <SCR-id> – <Screen / function name>
-
-| Req id | Requirement | Priority | Phase | UX ref | Acceptance criteria (Given / When / Then) |
-| --- | --- | --- | --- | --- | --- |
-| FR-<MOD>-001 | | Must | POC | SCR-<MOD>-01 | |
-
-**User stories**
-
-| Id | As a | I want to | So that |
-| --- | --- | --- | --- |
-
-## 8. Business rules
-
-| Rule id | Rule | Applies to (module / screen) | Source (decision / UX) |
-| --- | --- | --- | --- |
-
-## 9. Data requirements
-
-Repeat 9.n per entity.
-
-### 9.1 <Entity>
-
-| Attribute | Description | Type / format | Mandatory | Validation (VR id) | Set by |
+| Id | Name | Type (event / API / scheduled / external system) | Trigger / schedule | Source → target | Business outcome |
 | --- | --- | --- | --- | --- | --- |
 
-## 10. Notifications and alerts
+## 8. System-wide non-functional requirements
 
-| Id | Event / trigger | Recipient(s) | Channel (in-app / email) | Timing | Message summary |
-| --- | --- | --- | --- | --- | --- |
-
-## 11. Integrations and scheduled jobs
-
-| Id | Name | Type (event / API / scheduled) | Trigger / schedule | Source → target | Business outcome |
-| --- | --- | --- | --- | --- | --- |
-
-## 12. Reporting and dashboard
-
-| Id | Report / widget | Audience | Content | Filters |
-| --- | --- | --- | --- | --- |
-
-## 13. Non-functional requirements
+Module-specific NFRs are in each module BRD §13.
 
 | NFR id | Category | Requirement | Measure / target |
 | --- | --- | --- | --- |
@@ -190,14 +157,15 @@ Repeat 9.n per entity.
 | NFR-07 | Scalability | | |
 | NFR-08 | Maintainability / configurability | | |
 
-### 13.1 Business volumetrics (input to HLD)
+### 8.1 Business volumetrics (input to HLD)
 
 | Volume type | Year 1 | Growth % per year |
 | --- | --- | --- |
-| Users | | |
-| Transactions per year (by entity) | | |
+| Users (by role) | | |
+| Transactions per year (by module) | | |
+| Peak periods (e.g. month-end payroll) | | |
 
-## 14. Assumptions, constraints and dependencies
+## 9. Assumptions, constraints and dependencies
 
 | Type | Id | Statement |
 | --- | --- | --- |
@@ -205,26 +173,26 @@ Repeat 9.n per entity.
 | Constraint | C-01 | |
 | Dependency | DEP-01 | |
 
-## 15. Risks
+## 10. Risks
 
 | Risk id | Risk | Likelihood | Impact | Mitigation | Owner |
 | --- | --- | --- | --- | --- | --- |
 
-## 16. Traceability matrix
+## 11. Traceability roll-up
 
-| Journey id | Screen id | Req id | Rule ids | Test ref (later) |
-| --- | --- | --- | --- | --- |
+| Module | Journeys | Screens | Functional requirements | Rules | Coverage status |
+| --- | --- | --- | --- | --- | --- |
 
-## 17. Open items
+## 12. Open items
 
 | Id | Question | Owner | Due | Status / decision |
 | --- | --- | --- | --- | --- |
 
 Approved decisions are kept in `docs/decisions/decision-log.md`.
 
-## 18. Appendix
+## 13. Appendix
 
-### 18.1 Future scope (not in this phase)
+### 13.1 Future scope (not in this phase)
 
 | Area | Requirement ref | Note |
 | --- | --- | --- |

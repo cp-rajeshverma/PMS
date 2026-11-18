@@ -9,7 +9,7 @@ Date: <Month YYYY>
 > Template guidance
 > - This anchor document holds what is common to all services. Entity definitions live only in the module data model documents (<PRJ>-HLD-Part03-M<n>-<MOD>-Datamodel, one per module, plus <PRJ>-HLD-Part03-M<n>-SUP-Datamodel); the anchor never repeats columns.
 > - Entity status values: Draft / In review / Approved / Removed / Moved (keep a one-line stub with the reason or new location).
-> - Business statuses and their transitions come from BRD §6; this document defines only how they are stored.
+> - Business statuses and their transitions come from the module BRDs §6; this document defines only how they are stored.
 > - Keep the model technology-neutral where possible; engine-specific types (e.g. `jsonb`, `uuid`) are allowed only for the chosen database (Part01 §11).
 > - Every diagram keeps a text-version table beneath it.
 
@@ -40,7 +40,7 @@ This document is the anchor of the [<Project>] data model: modelling conventions
 
 | # | Document | Version |
 | --- | --- | --- |
-| 1 | <PRJ>-BRD (§6 status lifecycles, §9 data requirements, §13 volumetrics) | v<x> |
+| 1 | <PRJ>-BRD (anchor §8.1 volumetrics) and module BRDs (§6 status lifecycles, §9 data requirements, §13 volumetrics) | v<x> |
 | 2 | Decision log / ADRs | D-01 to D-<nn> |
 
 **Design documents**
@@ -72,7 +72,7 @@ Rules: no foreign keys or joins across service databases; a reference to another
 | User references | <type and length used for every *_user_id / *_by column> |
 | Date / time | <timestamp with time zone, stored in UTC; display time zone> |
 | Money | <numeric(precision, scale); currency handling> |
-| Enumerations / statuses | <lookup table or check constraint; values from BRD §6> |
+| Enumerations / statuses | <lookup table or check constraint; values from module BRDs §6> |
 | Soft delete | <is_deleted / status = Inactive; no hard delete of referenced rows> |
 | Optimistic locking | <row_version column on entities edited concurrently> |
 | Semi-structured data | <when JSON columns are allowed> |

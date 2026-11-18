@@ -36,7 +36,7 @@ This document is the anchor of the [<Project>] functional design: it indexes the
 
 | # | Document | Purpose |
 | --- | --- | --- |
-| 1 | <PRJ>-BRD | Requirements |
+| 1 | <PRJ>-BRD (anchor), <PRJ>-BRD-M<n>-<MOD>, <PRJ>-BRD-M<n>-SUP | Requirements |
 | 2 | UX Journey Index and UX Summaries | Experience design |
 | 3 | <PRJ>-HLD-Part01-Architecture-and-Design | Overall architecture and design |
 | 4 | <PRJ>-HLD-Part01a-Principles-Patterns-Decisions | Principles and patterns catalogue; ADR register |

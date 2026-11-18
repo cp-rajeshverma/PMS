@@ -40,7 +40,7 @@ This document describes the high-level solution approach for the supporting syst
 
 | # | Document | Version |
 | --- | --- | --- |
-| 1 | <PRJ>-BRD | v<x> |
+| 1 | <PRJ>-BRD (anchor), <PRJ>-BRD-M<n>-<MOD>, <PRJ>-BRD-M<n>-SUP | v<x> |
 | 2 | UX Journey Index and UX Summaries | v<x> |
 | 3 | Decision log / ADRs | D-01 to D-<nn> |
 
@@ -87,7 +87,7 @@ This document describes the high-level solution approach for the supporting syst
 
 ### 3.2 Master data
 
-Typical functions (keep those the BRD requires; mark others Not applicable):
+Typical functions (keep those the SUP BRD requires; mark others Not applicable):
 
 | Function | Purpose |
 | --- | --- |
@@ -117,7 +117,7 @@ Typical functions (keep those the BRD requires; mark others Not applicable):
 | Seq | Role id | Role name | Role type (business / system / external) | Description |
 | --- | --- | --- | --- | --- |
 
-**Role × feature matrix** (or reference BRD §4.3)
+**Role × feature matrix** (or reference BRD anchor §4.3 and module BRDs §4.2)
 
 | Feature / screen | <Role 1> | <Role 2> | <Role 3> |
 | --- | --- | --- | --- |
@@ -178,7 +178,7 @@ Architecture, token design, OAuth / OIDC flows, MFA approach and API-level secur
 
 <Channels (in-app, email, SMS – in / out of scope), modes (real-time / batch), deep links, template and placeholder approach, delivery architecture (event → notification service → channel), retry and dead-letter handling.>
 
-**Notification catalogue** (BRD §10 NOT ids)
+**Notification catalogue** (NOT ids from module BRDs §10; engine requirements in SUP BRD §7)
 
 | NOT id | Notification type | Trigger (event / schedule) | Mode (real-time / batch) | Recipients | In-app | Email | Template id |
 | --- | --- | --- | --- | --- | --- | --- | --- |

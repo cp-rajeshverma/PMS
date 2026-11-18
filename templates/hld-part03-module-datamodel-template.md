@@ -10,7 +10,7 @@ Date: <Month YYYY>
 > - One document per functional module. The supporting-module data model uses hld-part03-sup-datamodel-template.md.
 > - Conventions, common columns, ownership rules and cross-service consistency are in the anchor <PRJ>-HLD-Part03-Datamodel; do not repeat them.
 > - Entity status values: Draft / In review / Approved / Removed / Moved (keep a one-line stub with the reason or new location).
-> - Business statuses and transitions come from BRD §6; this document defines only how they are stored.
+> - Business statuses and transitions come from the module BRD §6; this document defines only how they are stored.
 > - Every diagram keeps a text-version table beneath it.
 
 ## 1. Document control
@@ -37,7 +37,7 @@ This document defines the entities owned by the [<Module name>] service: columns
 
 | # | Document | Purpose |
 | --- | --- | --- |
-| 1 | <PRJ>-BRD (§6, §9, §13) | Status lifecycles, data requirements, volumetrics |
+| 1 | <PRJ>-BRD-M<n>-<MOD> (§6, §9, §13) | Status lifecycles, data requirements, volumetrics |
 | 2 | <PRJ>-HLD-Part03-Datamodel (anchor) | Conventions, common columns, ownership, cross-service consistency |
 | 3 | <PRJ>-HLD-Part02-M<n>-<MOD>-Functional | Functions that use these entities |
 | 4 | Contracts (`contracts/`) | API and event schemas |
@@ -57,7 +57,7 @@ This document defines the entities owned by the [<Module name>] service: columns
 | --- | --- | --- | --- | --- | --- |
 | id | | N | PK | | surrogate key |
 | <business_key> | | N | UK | | e.g. EMP-2026-0001 |
-| status | | N | IDX | | values per BRD §6.<n> |
+| status | | N | IDX | | values per module BRD §6.<n> |
 | audit columns | | | | | §2.4 |
 
 **Constraints & indexes**

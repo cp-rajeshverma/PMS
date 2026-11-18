@@ -5,6 +5,7 @@ Every approved project decision, newest first. Approver for all entries: Rajesh 
 | Id | Date | Area | Decision |
 | --- | --- | --- | --- |
 | D-34 | 16 Nov 2026 | Gate | **Step 2 (UX) approved**: UX journey index v1.0, 17 mockups, 17 UX summaries. Next: Step 3 (BRD) |
+| D-49 | 18 Nov 2026 | Templates | BRD split: anchor <PRJ>-BRD (context, module BRD index, glossary, ID conventions, roles and role × module access, end-to-end process and journey index, BR-CMN rules, integrations, system-wide NFRs and volumetrics, risks, traceability roll-up) + <PRJ>-BRD-M<n>-<MOD> per module (keeps §4 access, §6 lifecycle, §7–§10, §13 numbering) + <PRJ>-BRD-M<n>-SUP (need basis); HLD template references updated |
 | D-48 | 18 Nov 2026 | Templates | Part02 split: anchor <PRJ>-HLD-Part02-Functional (module index, function index, cross-module flows XF-nn, common API / event / error / audit / frontend conventions, roll-up inventories, cross-module NFRs, requirement coverage) in hld-part02-functional-template.md; per-module template renamed hld-part02-module-functional-template.md; SUP template unchanged apart from references |
 | D-47 | 18 Nov 2026 | Templates | Part01 document ID spelled out: <PRJ>-HLD-Part01-Architecture-and-Design (was <PRJ>-HLD-Part01-AnD); references in all templates, project memory and README updated; section references use "Part01 §n" |
 | D-46 | 18 Nov 2026 | Templates | Template file hld-part01-and-template.md renamed to hld-part01-architecture-and-design-template.md; document ID <PRJ>-HLD-Part01-AnD unchanged |
