@@ -104,7 +104,7 @@ Users of the BRD set:
 
 | Prefix | Meaning | Example |
 | --- | --- | --- |
-| FR-<MOD>-<NNN> | Functional requirement of a module (supporting: ADM, UM, AUTH, NM, DM) | FR-AMS-004 |
+| FR-<MOD>-<NNN> | Functional requirement of a module (supporting: ADM, UM, AUTH, NM, DM; CMN for the shared dashboard and approvals inbox in this anchor §5.3) | FR-AMS-004 |
 | BR-<MOD>-<NN> | Business rule (BR-CMN for cross-module, defined in this anchor) | BR-CMN-03 |
 | VR-<MOD>-<NN> | Validation rule | VR-EIMS-02 |
 | NFR-<NN> | System-wide non-functional requirement (this anchor) | NFR-05 |
@@ -238,7 +238,107 @@ Notes:
 
 ## 5. End-to-end business process and journeys
 
-_Pending._
+### 5.1 End-to-end business process
+
+The main flow runs from onboarding a new employee to the employee accepting a salary record. Each step is owned by one module; the hand-over column shows what moves the flow to the next step.
+
+```mermaid
+flowchart TD
+    S1["1 Onboard employee<br/>EIMS – Admin"] --> S2["2 First sign-in, set own password<br/>SUP – Employee"]
+    S2 --> S3["3 Complete and submit profile<br/>EIMS – Employee"]
+    S3 --> S4{"4 Review profile<br/>EIMS – Manager / Admin"}
+    S4 -- Rejected --> S3
+    S4 -- Approved --> S5["5 Request leave<br/>LMS – Employee"]
+    S4 -- Approved --> S7["7 Enter daily attendance<br/>AMS – Employee"]
+    S5 --> S6{"6 Review leave<br/>LMS – Manager"}
+    S6 -- Rejected --> S5
+    S7 --> S8{"8 Review attendance<br/>AMS – Manager"}
+    S8 -- Rejected --> S7
+    S8 -- Approved --> S9["9 Generate salary record<br/>SMS – System"]
+    S9 --> S10["10 Approve salary record<br/>SMS – Manager"]
+    S10 --> S11{"11 Review salary record<br/>SMS – Employee"}
+    S11 -- Accepted --> S13["13 Earnings available<br/>SMS – Employee"]
+    S11 -- Disputed --> S12{"12 Resolve dispute<br/>SMS / AMS – Manager"}
+    S12 -- Keep as is --> S11
+    S12 -- Reopen attendance --> S7
+```
+
+| Step | Business activity | Module | Actor | Outcome / hand-over | Module BRD ref |
+| --- | --- | --- | --- | --- | --- |
+| 1 | Onboard a new employee with basic details, role, manager and hourly wage rate | EIMS | Admin | Employee created as Draft; system issues Employee Id and temporary password (UJ-EIMS-01, UJ-SYS-04) | M1-EIMS |
+| 2 | Sign in with the temporary password and set an own password | SUP (AUTH) | Employee | Own password set; dashboard shows "complete your profile" (UJ-SH-01, UJ-SH-02) | M5-SUP |
+| 3 | Complete and submit the profile | EIMS | Employee | Profile Submitted (UJ-EIMS-02) | M1-EIMS |
+| 4 | Review the profile | EIMS | Manager (Admin for the top-level employee) | Approved: employee can enter attendance and leave (BR-CMN). Rejected with remarks: back to step 3 (UJ-EIMS-03, UJ-EIMS-04) | M1-EIMS |
+| 5 | Request full-day leave (past or future dates); cancel while Submitted | LMS | Employee | Leave Submitted or Cancelled (UJ-LMS-01, UJ-LMS-02) | M3-LMS |
+| 6 | Review the leave request | LMS | Manager (Admin for the top-level employee) | Approved: the dates cannot carry attendance and earn no wage. Rejected with remarks: back to step 5 (UJ-LMS-04, UJ-LMS-03) | M3-LMS |
+| 7 | Enter and submit daily attendance (from / to time) | AMS | Employee | Attendance Submitted (UJ-AMS-01, UJ-AMS-02) | M2-AMS |
+| 8 | Review the attendance | AMS | Manager (Admin for the top-level employee) | Approved: attendance locked and handed to SMS. Rejected with remarks: back to step 7 (UJ-AMS-03) | M2-AMS |
+| 9 | Generate the salary record (hours × hourly wage rate) | SMS | System | Salary record Generated; nightly reconciliation creates any record that was missed (UJ-SYS-01, UJ-SYS-02) | M4-SMS |
+| 10 | Approve the generated salary record | SMS | Manager (Admin for the top-level employee) | Manager Approved (UJ-SMS-01); no reject (D-07) | M4-SMS |
+| 11 | Accept or dispute the salary record (one or several at once) | SMS | Employee | Accepted: flow ends. Disputed with remark: step 12 (UJ-SMS-02) | M4-SMS |
+| 12 | Resolve the dispute | SMS, AMS | Manager (Admin for the top-level employee) | Keep as is with explanation: back to Manager Approved, step 11 (D-33). Reopen attendance: attendance Rejected, salary record Voided, back to step 7 (UJ-SMS-03, UJ-AMS-04, UJ-SYS-03) | M4-SMS, M2-AMS |
+| 13 | See earnings for a period | SMS | Employee | Total wages shown, voided records excluded (UJ-SMS-04) | M4-SMS |
+
+Alongside the main flow: the dashboard and approvals inbox guide every user to the next action (UJ-SH-03, UJ-SH-04, §5.3); the employee may update an approved profile, which goes back for re-approval while other modules keep using the last approved profile (UJ-EIMS-05, D-29); the Admin maintains manager, rate and role, deactivates leavers and resets passwords (UJ-EIMS-06 to UJ-EIMS-08).
+
+### 5.2 Journey index
+
+PMS has 30 journeys (26 user-facing, 4 system) across 17 screens, as approved in the UX Journey Index v1.0.
+
+| Journey id | Journey | Actor | Module(s) | Module BRD ref |
+| --- | --- | --- | --- | --- |
+| UJ-SH-01 | Log in | All roles | Shell, SUP | M5-SUP (AUTH) |
+| UJ-SH-02 | Set password on first login | All roles | Shell, SUP | M5-SUP (AUTH) |
+| UJ-SH-03 | See my tasks and status at a glance | All roles | Shell (all modules) | This anchor §5.3 |
+| UJ-SH-04 | Work through pending approvals | Manager, Admin | Shell (all modules) | This anchor §5.3 |
+| UJ-SH-05 | Log out | All roles | Shell, SUP | M5-SUP (AUTH) |
+| UJ-EIMS-01 | Onboard a new employee | Admin | EIMS | M1-EIMS |
+| UJ-EIMS-02 | Complete and submit my profile | Employee | EIMS | M1-EIMS |
+| UJ-EIMS-03 | Review a team member's profile | Manager (Admin for top-level) | EIMS | M1-EIMS |
+| UJ-EIMS-04 | Fix and resubmit a rejected profile | Employee | EIMS | M1-EIMS |
+| UJ-EIMS-05 | Update my approved profile | Employee | EIMS | M1-EIMS |
+| UJ-EIMS-06 | Change manager or hourly wage rate | Admin | EIMS (affects SMS) | M1-EIMS |
+| UJ-EIMS-07 | Deactivate an employee | Admin | EIMS, SUP (UM) | M1-EIMS |
+| UJ-EIMS-08 | Reset an employee's password | Admin | EIMS, SUP (UM) | M1-EIMS |
+| UJ-EIMS-09 | View my team / all employees | Manager, Admin | EIMS | M1-EIMS |
+| UJ-AMS-01 | Enter and submit daily attendance | Employee | AMS | M2-AMS |
+| UJ-AMS-02 | Fix and resubmit rejected attendance | Employee | AMS | M2-AMS |
+| UJ-AMS-03 | Approve or reject team attendance | Manager (Admin for top-level) | AMS (hands over to SMS) | M2-AMS |
+| UJ-AMS-04 | Reopen attendance after a salary dispute | Manager (Admin for top-level) | AMS, SMS | M2-AMS |
+| UJ-LMS-01 | Request leave | Employee | LMS | M3-LMS |
+| UJ-LMS-02 | Cancel a pending request | Employee | LMS | M3-LMS |
+| UJ-LMS-03 | Fix and resubmit a rejected request | Employee | LMS | M3-LMS |
+| UJ-LMS-04 | Approve or reject team leave | Manager (Admin for top-level) | LMS | M3-LMS |
+| UJ-SMS-01 | Approve generated salary records | Manager (Admin for top-level) | SMS | M4-SMS |
+| UJ-SMS-02 | Accept or dispute my salary | Employee | SMS | M4-SMS |
+| UJ-SMS-03 | Resolve a dispute | Manager (Admin for top-level) | SMS, AMS | M4-SMS |
+| UJ-SMS-04 | See my earnings for a period | Employee | SMS | M4-SMS |
+| UJ-SYS-01 | Generate salary record | System (salary service) | AMS → SMS | M4-SMS |
+| UJ-SYS-02 | Nightly salary reconciliation (01:00 IST) | System (reconciliation job) | AMS, SMS | M4-SMS; JOB-CMN-01 in §7 |
+| UJ-SYS-03 | Void salary on reopened attendance | System (salary service) | AMS → SMS | M4-SMS |
+| UJ-SYS-04 | Generate Employee Id and temporary password | System (employee service) | EIMS | M1-EIMS |
+
+### 5.3 Shared screens: dashboard and approvals inbox
+
+The dashboard (SCR-SH-03), approvals inbox (SCR-SH-04) and shell layout (SCR-SH-00) show items from all modules. Their common behaviour is defined here once; each module BRD lists only the tiles, to-do items and inbox items it supplies. Sign-in, password and log-out requirements are in PMS-BRD-M5-SUP (AUTH).
+
+| Req id | Requirement | Priority | Phase | Source |
+| --- | --- | --- | --- | --- |
+| FR-CMN-001 | After sign-in, every user lands on a dashboard whose content depends on the role (Employee, Manager, Admin). | Must | POC | UJ-SH-01, UJ-SH-03, SCR-SH-03 |
+| FR-CMN-002 | Employees and managers see tiles for: hours this month (approved attendance), earnings this month (Manager Approved and Accepted salary records, excluding Voided and Disputed), leave this month (approved days and pending count) and profile status. | Must | POC | SCR-SH-03, D-25 |
+| FR-CMN-003 | Employees and managers see a "Things to do" list: rejected items to fix, missing attendance days, salary records to review and pending requests. Each item opens the screen where the user can act. With nothing to do, the list shows "You're all caught up." | Must | POC | SCR-SH-03 |
+| FR-CMN-004 | A missing attendance day is a Monday to Friday date, from the date of joining, with no attendance and no leave. It is a reminder only; weekend entries stay allowed. | Must | POC | D-28, D-08 |
+| FR-CMN-005 | Until the profile is approved, the dashboard shows a banner asking the employee to complete the profile before entering attendance and leave, with a link to My Profile. | Must | POC | SCR-SH-03 |
+| FR-CMN-006 | Managers also see "Waiting for your approval" with counts per module and a link to the approvals inbox; the card is hidden when nothing is waiting. | Must | POC | SCR-SH-03 |
+| FR-CMN-007 | The Admin sees tiles for active employees, profiles not yet approved, items waiting for the Admin and the last reconciliation run, a list of recently onboarded employees and an "Onboard employee" action. The Admin has no personal tiles. | Must | POC | SCR-SH-03, D-24 |
+| FR-CMN-008 | Each dashboard card loads on its own: if one module is unavailable, only its card shows "Couldn't load" with Retry, and the rest of the page works. | Must | POC | SCR-SH-03 |
+| FR-CMN-010 | The approvals inbox lists every item waiting for the user's decision across modules – submitted profiles, attendance and leave, generated and disputed salary records – with tabs per module and counts. A manager sees direct reports' items only; the Admin sees the top-level employee's items only. | Must | POC | UJ-SH-04, SCR-SH-04, D-58 |
+| FR-CMN-011 | The approver can approve one item or several selected items at once; reject is one item at a time and needs remarks. Generated salary records can be approved but not rejected. | Must | POC | D-24, D-07 |
+| FR-CMN-012 | For a disputed salary record the approver can choose Keep as is (explanation required; record returns to Manager Approved) or Reopen attendance (after confirming the effect: attendance back to Rejected, salary record Voided). | Must | POC | D-33, D-07, D-25 |
+| FR-CMN-013 | Each inbox item can be opened in its module review screen for full detail. | Must | POC | SCR-SH-04 |
+| FR-CMN-014 | If an item was changed by someone else meanwhile, the user is told to refresh. In a bulk approval, items that fail stay selected with their own error; the others are approved. | Must | POC | SCR-SH-04 |
+| FR-CMN-015 | Every screen opens inside one layout: header with the user's name, role and Employee Id; a menu filtered by role (navigation map in the UX Journey Index); an Approvals menu item with the pending count; a user menu with Change password and Log out. | Must | POC | SCR-SH-00 |
+| FR-CMN-016 | When the session has expired, the user returns to the sign-in page with the message "Your session has expired. Please sign in again." | Must | POC | SCR-SH-00, D-26 |
 
 ## 6. Cross-module business rules
 
@@ -272,6 +372,7 @@ Running list, completed as the anchor is drafted.
 | --- | --- | --- | --- | --- |
 | OI-01 | Update the UX summaries so Admin can open the review screen for the top-level employee's records (SCR-SH-04 roles text, SCR-AMS-03, SCR-LMS-03, SCR-SMS-02), read limited to those records (D-58) | Product owner | Before HLD Part02 | Open |
 | OI-02 | What happens to a deactivated employee's pending items (own submissions, and items waiting for their approval as manager)? | HR Manager | Before PMS-BRD-M1-EIMS | Open |
+| OI-03 | Missing attendance reminder (FR-CMN-004): does it include today, or only days up to yesterday? | HR Manager | Before PMS-BRD-M2-AMS | Open |
 
 Approved decisions are kept in `docs/decisions/decision-log.md`.
 

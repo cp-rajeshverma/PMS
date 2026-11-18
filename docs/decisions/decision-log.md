@@ -4,6 +4,7 @@ Every approved project decision, newest first. Approver for all entries: Rajesh 
 
 | Id | Date | Area | Decision |
 | --- | --- | --- | --- |
+| D-64 | 18 Nov 2026 | BRD | PMS-BRD §5 approved. Shell requirements split: log in, set password, log out (UJ-SH-01/02/05) in PMS-BRD-M5-SUP (AUTH); dashboard and approvals inbox (UJ-SH-03/04) in the anchor as FR-CMN (§5.3); module BRDs list only the tiles, to-dos and inbox items they supply; §2.5 gains the CMN prefix for functional requirements |
 | D-63 | 18 Nov 2026 | BRD | PMS-BRD §4 approved: Rajesh Verma is Product owner and Enterprise Architect (author); Admin role = PMS Administrator; manager scope is direct reports only (skip-level view to Future); Admin opens module review screens (read and decide) only for the top-level employee's records – UX summary update tracked as OI-01 |
 | D-62 | 18 Nov 2026 | BRD | PMS-BRD §1–§3 (document control, introduction, business overview) approved; next §4 Stakeholders and roles |
 | D-61 | 18 Nov 2026 | BRD | OBJ-06 standards and guardrails expanded from 8 to 12 areas: architecture and design; frontend and UX incl. accessibility; API and integration; coding and code review; database and data management incl. data privacy; security; logging and observability; performance and scalability; resilience and availability; testing and quality; DevOps, CI/CD and deployment; documentation, traceability and delivery governance |
