@@ -7,7 +7,7 @@ Author: <name>
 Date: <Month YYYY>
 
 > Template guidance
-> - One document per functional module; the supporting-module data model (<PRJ>-HLD-Part03-M<n>-SUP-Datamodel) uses this template with §3.0 Need-basis assessment.
+> - One document per functional module. The supporting-module data model uses hld-part03-sup-datamodel-template.md.
 > - Conventions, common columns, ownership rules and cross-service consistency are in the anchor <PRJ>-HLD-Part03-Datamodel; do not repeat them.
 > - Entity status values: Draft / In review / Approved / Removed / Moved (keep a one-line stub with the reason or new location).
 > - Business statuses and transitions come from BRD §6; this document defines only how they are stored.
@@ -48,22 +48,6 @@ This document defines the entities owned by the [<Module name>] service: columns
 | --- | --- | --- | --- | --- |
 
 ## 3. Database design
-
-### 3.0 Need-basis assessment (SUP document only; delete in functional module documents)
-
-Model supporting-module entities on a need basis only. Where a capability is provided by an existing platform or product (e.g. identity provider for users / roles / sessions, an enterprise notification or document service), do not model its entities; keep the group heading with "Provided by <product / service> – not modelled here" and list only the local entities the project still needs (e.g. a local user reference or mapping table).
-
-| Group | Needed? (Yes / No / Partial) | Provided by (existing capability) | Local entities modelled |
-| --- | --- | --- | --- |
-
-Typical groups, when they are needed:
-
-- **User & access management** – USER, ROLE, FEATURE, USER_ROLE_MAP, ROLE_FEATURE_MAP, USER_HIERARCHY, USER_DELEGATION; state which attributes are mastered by the identity provider.
-- **Notification** – NOTIFICATION_TEMPLATE, NOTIFICATION_RULE, NOTIFICATION_TXN.
-- **Audit & activity log** – ACTIVITY_LOG, AUDIT_LOG, USER_ACCESS_LOG, USER_SESSION (append-only).
-- **Reference / master data** – lookup (valid values), configuration parameters, business calendar, domain masters.
-- **Document** – DOCUMENT (polymorphic owner: owner_type + owner_id).
-- **Integration & messaging** – OUTBOX_EVENT, INBOX / processed-message (idempotency), INTERFACE_LOG, job run log.
 
 ### 3.1 <ENTITY_NAME> (<Status>)
 
