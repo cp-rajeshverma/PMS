@@ -6,18 +6,18 @@ Status: templates frozen 17 Nov 2026 (D-35 to D-42); data model split 18 Nov 202
 
 | Artifact | Template | One per |
 | --- | --- | --- |
-| <PRJ>-BRD (anchor) | brd-anchor-template.md | project (context, roles, end-to-end process, cross-module rules, system-wide NFRs) |
-| <PRJ>-BRD-M<n>-<MOD> | brd-module-template.md | functional module |
-| <PRJ>-BRD-M<n>-SUP | brd-sup-template.md | project (supporting functions, need basis) |
-| <PRJ>-HLD-Part01-Architecture-and-Design | hld-part01-architecture-and-design-template.md | project (includes A&A architecture in §9; no separate A&A document, D-40) |
-| <PRJ>-HLD-Part01a-Principles-Patterns-Decisions | hld-part01a-principles-patterns-decisions-template.md | project (330-item catalogue in 18 groups; ADR register §5 and ADR format §6, D-45) |
-| <PRJ>-HLD-Part02-Functional (anchor) | hld-part02-functional-template.md | project (module index, function index, cross-module flows, common API / event / error conventions, roll-up inventories, requirement coverage) |
-| <PRJ>-HLD-Part02-M<n>-<MOD>-Functional | hld-part02-module-functional-template.md | functional module |
-| <PRJ>-HLD-Part02-M<n>-SUP-Functional | hld-part02-sup-functional-template.md | project (supporting modules) |
-| <PRJ>-HLD-Part03-Datamodel (anchor) | hld-part03-datamodel-template.md | project (conventions, ownership, entity index, master ER, cross-service, roll-ups) |
-| <PRJ>-HLD-Part03-M<n>-<MOD>-Datamodel | hld-part03-module-datamodel-template.md | functional module (entity definitions) |
-| <PRJ>-HLD-Part03-M<n>-SUP-Datamodel | hld-part03-sup-datamodel-template.md | project (supporting modules, need basis; entity structure per module template §3.1) |
-| UX journey index / UX summaries | ux-*-template.md | project / screen |
+| <PRJ>-BRD (anchor) | templates/02-brd/brd-anchor-template.md | project (context, roles, end-to-end process, cross-module rules, system-wide NFRs) |
+| <PRJ>-BRD-M<n>-<MOD> | templates/02-brd/brd-module-template.md | functional module |
+| <PRJ>-BRD-M<n>-SUP | templates/02-brd/brd-sup-template.md | project (supporting functions, need basis) |
+| <PRJ>-HLD-Part01-Architecture-and-Design | templates/03-hld/hld-part01-architecture-and-design-template.md | project (includes A&A architecture in §9; no separate A&A document, D-40) |
+| <PRJ>-HLD-Part01a-Principles-Patterns-Decisions | templates/03-hld/hld-part01a-principles-patterns-decisions-template.md | project (330-item catalogue in 18 groups; ADR register §5 and ADR format §6, D-45) |
+| <PRJ>-HLD-Part02-Functional (anchor) | templates/03-hld/hld-part02-anchor-functional-template.md | project (module index, function index, cross-module flows, common API / event / error conventions, roll-up inventories, requirement coverage) |
+| <PRJ>-HLD-Part02-M<n>-<MOD>-Functional | templates/03-hld/hld-part02-module-functional-template.md | functional module |
+| <PRJ>-HLD-Part02-M<n>-SUP-Functional | templates/03-hld/hld-part02-sup-functional-template.md | project (supporting modules) |
+| <PRJ>-HLD-Part03-Datamodel (anchor) | templates/03-hld/hld-part03-anchor-datamodel-template.md | project (conventions, ownership, entity index, master ER, cross-service, roll-ups) |
+| <PRJ>-HLD-Part03-M<n>-<MOD>-Datamodel | templates/03-hld/hld-part03-module-datamodel-template.md | functional module (entity definitions) |
+| <PRJ>-HLD-Part03-M<n>-SUP-Datamodel | templates/03-hld/hld-part03-sup-datamodel-template.md | project (supporting modules, need basis; entity structure per module template §3.1) |
+| UX journey index / UX summaries | 01-ux/ux-*-template.md | project / screen |
 | ADR file | format in Part01a §6 | significant architecture decision (`docs/decisions/adr/ADR-<NNN>-*.md`) |
 
 ## Conventions adopted

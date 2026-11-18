@@ -7,7 +7,7 @@ Author: <name>
 Date: <Month YYYY>
 
 > Template guidance
-> - One document per functional module. The supporting-module data model uses hld-part03-sup-datamodel-template.md.
+> - One document per functional module. The supporting-module data model uses templates/03-hld/hld-part03-sup-datamodel-template.md.
 > - Conventions, common columns, ownership rules and cross-service consistency are in the anchor <PRJ>-HLD-Part03-Datamodel; do not repeat them.
 > - Entity status values: Draft / In review / Approved / Removed / Moved (keep a one-line stub with the reason or new location).
 > - Business statuses and transitions come from the module BRD §6; this document defines only how they are stored.
