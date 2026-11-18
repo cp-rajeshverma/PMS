@@ -5,6 +5,7 @@ Project memory for AI agents. Read this first in every session.
 ## Mandatory rules
 
 - **Never use the BMAD GDS (game development) module.** It is not relevant to PMS. Do not invoke or suggest any `gds-*` skill or agent; use the BMM (`bmad-*`) equivalents. (PR-01, decision D-17)
+- **Do not use the NPQMS-HLD reference documents** (`NPQMS-*`) for PMS content. They only shaped the frozen templates; ignore any NPQMS result from project search. (PR-02, decision D-54)
 - Full rule list: `memory/project/project-rules.md`.
 
 ## Memory layout
