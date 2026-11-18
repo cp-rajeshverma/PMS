@@ -14,7 +14,7 @@ Date: November 2026
 | --- | --- | --- | --- | --- |
 | 1.0 | 0.1 | 18-Nov-2026 | Rajesh Verma | First draft from UX v1.0 (D-34), BRD v1.0 baseline (D-09) and decisions D-01 to D-54 |
 | 1.0 | 0.2 | 18-Nov-2026 | Rajesh Verma | All sections drafted and reviewed section by section (decisions D-55 to D-69); ready for stakeholder review |
-| 1.0 | 0.3 | 18-Nov-2026 | Rajesh Verma | Profile change request introduced (D-70): BR-CMN-05, BR-CMN-11, glossary, scope, OBJ-07, C-01, NFR-05, FR-CMN-010 updated; OI-07; future scope for reactivation and pre-boarding |
+| 1.0 | 0.3 | 18-Nov-2026 | Rajesh Verma | Profile change request introduced (D-70): BR-CMN-05, BR-CMN-11, glossary, scope, OBJ-07, C-01, NFR-05, FR-CMN-010 updated; OI-07; future scope for reactivation and pre-boarding; INT-09 (D-73) |
 
 ### 1.2 Review and approval
 
@@ -383,6 +383,7 @@ Business view of how modules hand over to each other. Message formats, API contr
 | INT-06 | Attendance and leave date check | API | When attendance or leave is saved or submitted | AMS ↔ LMS | No date carries both attendance and leave (BR-CMN-10) |
 | INT-07 | Dashboard and approvals inbox | API | User opens the dashboard or approvals inbox | EIMS, AMS, LMS, SMS → Shell | Tiles, to-do items, missing attendance days and pending approvals shown per role; each module's card loads on its own (§5.3) |
 | INT-08 | Identity provider | External system | Admin onboards, changes role, deactivates or resets a password; user signs in or changes password | EIMS ↔ identity provider | User account created with the Employee Id as user name and a temporary password; role stored; sign-in disabled for inactive employees; password policy, lockout and idle timeout enforced (D-16, D-26, D-28, D-29) |
+| INT-09 | Records before a new joining date | API | Admin changes an employee's date of joining | AMS, LMS → EIMS | Change allowed only if no attendance or leave (other than Cancelled) lies before the new date (D-71) |
 
 ## 8. System-wide non-functional requirements
 
