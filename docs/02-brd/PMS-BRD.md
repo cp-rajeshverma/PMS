@@ -13,6 +13,7 @@ Date: November 2026
 | Version | Revision | Date | Author | Change remark |
 | --- | --- | --- | --- | --- |
 | 1.0 | 0.1 | 18-Nov-2026 | Rajesh Verma | First draft from UX v1.0 (D-34), BRD v1.0 baseline (D-09) and decisions D-01 to D-54 |
+| 1.0 | 0.2 | 18-Nov-2026 | Rajesh Verma | All sections drafted and reviewed section by section (decisions D-55 to D-69); ready for stakeholder review |
 
 ### 1.2 Review and approval
 
@@ -453,7 +454,17 @@ Likelihood and impact: High / Medium / Low.
 
 ## 11. Traceability roll-up
 
-_Pending._
+Functional requirement and rule counts for the modules are filled in as each module BRD is approved. Every journey and screen in the approved UX is assigned to exactly one BRD document.
+
+| Module | Journeys | Screens | Functional requirements | Rules | Coverage status |
+| --- | --- | --- | --- | --- | --- |
+| Shared (this anchor) | 2: UJ-SH-03, UJ-SH-04 | 3: SCR-SH-00, SCR-SH-03, SCR-SH-04 | 15: FR-CMN-001 to FR-CMN-016 | 18: BR-CMN-01 to BR-CMN-18 | Drafted |
+| M1 – EIMS | 10: UJ-EIMS-01 to UJ-EIMS-09, UJ-SYS-04 | 4: SCR-EIMS-01 to SCR-EIMS-04 | In PMS-BRD-M1-EIMS | Baseline VR-EIMS-01 to 06 to be confirmed | Not started |
+| M2 – AMS | 4: UJ-AMS-01 to UJ-AMS-04 | 3: SCR-AMS-01 to SCR-AMS-03 | In PMS-BRD-M2-AMS | Baseline VR-AMS-01 to 05 to be confirmed | Not started |
+| M3 – LMS | 4: UJ-LMS-01 to UJ-LMS-04 | 3: SCR-LMS-01 to SCR-LMS-03 | In PMS-BRD-M3-LMS | Baseline VR-LMS-01 to 06 to be confirmed | Not started |
+| M4 – SMS | 7: UJ-SMS-01 to UJ-SMS-04, UJ-SYS-01 to UJ-SYS-03 | 2: SCR-SMS-01, SCR-SMS-02 | In PMS-BRD-M4-SMS | Baseline BR-SMS-01 to 04 to be confirmed | Not started |
+| M5 – SUP | 3: UJ-SH-01, UJ-SH-02, UJ-SH-05 | 2: SCR-SH-01, SCR-SH-02 | In PMS-BRD-M5-SUP | – | Not started |
+| **Total** | **30** | **17** | | | |
 
 ## 12. Open items
 
@@ -466,9 +477,23 @@ Running list, completed as the anchor is drafted.
 | OI-03 | Missing attendance reminder (FR-CMN-004): does it include today, or only days up to yesterday? | HR Manager | Before PMS-BRD-M2-AMS | Open |
 | OI-04 | When the Admin changes an employee's manager (BR-CMN-13), who decides the items already waiting for approval – the old or the new manager? | HR Manager | Before PMS-BRD-M1-EIMS | Open |
 | OI-05 | Which business values must the PMS Administrator be able to change without a release (for example idle timeout, lockout limits, reconciliation time, remarks length)? Today all are fixed by decisions. | Product owner | Before PMS-BRD-M5-SUP (ADM is Phase 2) | Open |
+| OI-06 | UX Journey Index still shows the reconciliation time for UJ-SYS-02 as "TBD"; it was set to 01:00 IST (D-24). Correct the UX document. | Product owner | Before HLD Part02 | Open |
 
 Approved decisions are kept in `docs/decisions/decision-log.md`.
 
 ## 13. Appendix
 
-_Pending._
+### 13.1 Future scope (not in this phase)
+
+| Area | Requirement ref | Note |
+| --- | --- | --- |
+| Supporting functions | §3.3, D-57 | Phase 2: ADM (configuration and master data), NM (email / SMS notifications), DM (documents) |
+| Shell | ADR-001, D-23 | Future: module screens loaded at run time instead of being built into the shell |
+| EIMS – manager view | §4.2, D-63 | Future: skip-level (indirect reports) view for managers |
+| Approvals | R-02 | Future: delegation of approvals when a manager is absent |
+| AMS | §3.3, D-03 | Future: shifts, breaks, overnight work, biometric or clock-in integration |
+| LMS | §3.3, D-04 | Future: leave balances, accruals and entitlement checks; half-day leave |
+| SMS | §3.3, D-05 | Future: paid leave in salary; statutory deductions (PF, ESI, PT, TDS); allowances; payslips; monthly payroll runs |
+| Common | §3.3, D-08 | Future: holiday calendar and weekend rules; single sign-on; multi-company and multi-currency |
+| SUP – AUTH | §3.3, D-07 | Future: self-service password reset |
+| Platform | NFR-08, D-12 | Future: backend moved to another platform (Node.js, Python FastAPI) on the technology-neutral design |
