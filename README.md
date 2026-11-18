@@ -7,7 +7,7 @@ Lightweight POC to test an AI-enabled, end-to-end SDLC. Four microservices (EIMS
 | Path | Purpose |
 | --- | --- |
 | `_bmad/`, `_bmad-output/` | BMAD install and BMAD-generated artifacts (planning, implementation, test) |
-| `templates/` | Frozen design templates (D-35 to D-42): UX journey index, UX summary, BRD, HLD Part01 AnD, Part01a principles & patterns, Part02 functional module, Part02 SUP, Part03 data model, ADR |
+| `templates/` | Frozen design templates (D-35 to D-43): UX journey index, UX summary, BRD, HLD Part01 AnD, Part01a principles & patterns, Part02 functional module, Part02 SUP, Part03 data model anchor, Part03 module data model, ADR |
 | `docs/` | Project knowledge base read by BMAD (`project_knowledge`) |
 | `docs/01-ux/` | Clickable HTML mockups and one UX summary per mockup (Step 2) |
 | `docs/02-brd/` | Business Requirements Document (Step 3) |

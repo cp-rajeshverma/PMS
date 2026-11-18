@@ -1,6 +1,6 @@
 # Design artifact set and template conventions
 
-Status: templates frozen 17 Nov 2026 (D-35 to D-42). Templates live in `templates/`.
+Status: templates frozen 17 Nov 2026 (D-35 to D-42); data model split 18 Nov 2026 (D-43). Templates live in `templates/`.
 
 ## Artifact set (per project)
 
@@ -11,7 +11,9 @@ Status: templates frozen 17 Nov 2026 (D-35 to D-42). Templates live in `template
 | <PRJ>-HLD-Part01a-Principles-Patterns | hld-part01a-principles-patterns-template.md | project (330 items, 18 groups) |
 | <PRJ>-HLD-Part02-M<n>-<MOD>-Functional | hld-part02-functional-template.md | functional module |
 | <PRJ>-HLD-Part02-M<n>-SUP-Functional | hld-part02-sup-functional-template.md | project (supporting modules) |
-| <PRJ>-HLD-Part03-Datamodel | hld-part03-datamodel-template.md | project |
+| <PRJ>-HLD-Part03-Datamodel (anchor) | hld-part03-datamodel-template.md | project (conventions, ownership, entity index, master ER, cross-service, roll-ups) |
+| <PRJ>-HLD-Part03-M<n>-<MOD>-Datamodel | hld-part03-module-datamodel-template.md | functional module (entity definitions) |
+| <PRJ>-HLD-Part03-M<n>-SUP-Datamodel | hld-part03-module-datamodel-template.md (+ §3.0 need-basis) | project (supporting modules, need basis) |
 | UX journey index / UX summaries | ux-*-template.md | project / screen |
 | ADR | adr-template.md | decision |
 
@@ -27,7 +29,7 @@ Status: templates frozen 17 Nov 2026 (D-35 to D-42). Templates live in `template
 - Validation rules reference BRD VR / BR ids; frontend records only what the UX summary does not.
 - Every diagram keeps a text-version table.
 - Designs stay technology-neutral to support replatforming (Java → Node.js / Python FastAPI).
-- Data model: database per service, no cross-database FK; supporting-module entities modelled on a need basis only, skipped when an existing capability provides them (D-42).
+- Data model: anchor + one document per module + SUP (D-43); columns defined only in module documents; database per service, no cross-database FK; supporting-module entities modelled on a need basis only, skipped when an existing capability provides them (D-42).
 
 ## Reference material
 
