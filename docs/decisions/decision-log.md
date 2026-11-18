@@ -4,6 +4,7 @@ Every approved project decision, newest first. Approver for all entries: Rajesh 
 
 | Id | Date | Area | Decision |
 | --- | --- | --- | --- |
+| D-74 | 18 Nov 2026 | BRD | PMS-BRD-M1-EIMS §7 approved: FR-EIMS-001 to FR-EIMS-041 with acceptance criteria; user stories US-EIMS-01 to US-EIMS-10 |
 | D-73 | 18 Nov 2026 | BRD | PMS-BRD-M1-EIMS §1–§6 approved (status codes as drafted); anchor gains INT-09 (AMS, LMS → EIMS check for records before a new joining date) |
 | D-72 | 18 Nov 2026 | EIMS | Profile change request details: the employee can withdraw a request in Draft, Submitted (before decision) or Rejected; a request needs at least one changed value to be submitted; a request pending when the Admin changes the manager follows open item OI-04 |
 | D-71 | 18 Nov 2026 | EIMS | EIMS rules: role change Manager → Employee blocked while the manager has active direct reports; date of joining change allowed only if no attendance or leave (except Cancelled) lies before the new date and age ≥ 18 still holds; manager must be active, have the Manager role, not be the employee and not create a reporting loop; no reactivation in POC (Future); Employee Ids never reused; email unique across active and inactive employees; mobile not unique; zip outside India 3–10 letters, digits, spaces or hyphens; date of joining not after today kept (pre-boarding Future); sensitive data = date, place and country of birth, parents' names, address, mobile, email, hourly wage rate |

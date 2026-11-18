@@ -203,7 +203,94 @@ If the Admin changes the employee's manager while a request is Submitted, the re
 
 ## 7. Functional requirements
 
-_Pending – drafted after review of §1–§6._
+All requirements are priority Must and phase POC unless stated otherwise. Approve-several-at-once from the approvals inbox follows FR-CMN-011 (anchor §5.3).
+
+### 7.1 SCR-EIMS-01 – Employee directory
+
+| Req id | Requirement | Priority | Phase | UX ref | Acceptance criteria (Given / When / Then) |
+| --- | --- | --- | --- | --- | --- |
+| FR-EIMS-001 | The Admin sees all employees with Employee Id, name with role, email, manager, date of joining, hourly wage rate and profile status. The Admin account itself is not listed. | Must | POC | SCR-EIMS-01 | Given the Admin opens Employees, when the list loads, then every active employee is listed with these columns and no Admin account appears. |
+| FR-EIMS-002 | A manager sees only their direct reports, without the manager and hourly wage rate columns, and can open a read-only profile view. | Must | POC | SCR-EIMS-01 | Given a manager opens My Team, when the list loads, then only employees whose Manager Id is that manager appear, no rate is shown, and View opens SCR-EIMS-04 read only. |
+| FR-EIMS-003 | Users can search by name, Employee Id or email and filter by profile status; the result count updates. With no match the screen shows "No employees found – Try a different search or filter." | Must | POC | SCR-EIMS-01 | Given the list is shown, when the user types "EMP0007", then only matching rows remain and the count shows 1. |
+| FR-EIMS-004 | Inactive employees are hidden by default; "Show inactive" lists them dimmed with an "Inactive" badge. | Must | POC | SCR-EIMS-01, BR-CMN-06 | Given an inactive employee exists, when "Show inactive" is off, then it is not listed; when on, then it is listed with the badge. |
+| FR-EIMS-005 | The Admin can reset an employee's password: after confirmation, the system issues a temporary password, shows it once with a Copy action, and the employee must replace it at the next sign-in. | Must | POC | SCR-EIMS-01, UJ-EIMS-08, D-07 | Given the Admin confirms Reset password for EMP0007, then a temporary password is shown once, and EMP0007's next sign-in opens Set password. |
+| FR-EIMS-006 | From the directory the Admin can start onboarding ("+ Onboard employee") and open an employee for editing. | Must | POC | SCR-EIMS-01 | Given the Admin clicks Edit on a row, then SCR-EIMS-02 opens in edit mode for that employee. |
+
+**User stories**
+
+| Id | As a | I want to | So that |
+| --- | --- | --- | --- |
+| US-EIMS-01 | Manager | see my direct reports and their profile status | I know whose profile still needs attention |
+| US-EIMS-02 | Admin | find any employee quickly and reset their password | users who forgot their password can sign in again |
+
+### 7.2 SCR-EIMS-02 – Employee admin form (create / edit / deactivate)
+
+| Req id | Requirement | Priority | Phase | UX ref | Acceptance criteria (Given / When / Then) |
+| --- | --- | --- | --- | --- | --- |
+| FR-EIMS-010 | The Admin creates an employee with first, middle and last name, email, date of joining, role (Employee or Manager), manager (or "None – top-level") and hourly wage rate. On save the employee is created as Draft and Active, a user account is created, and a panel shows the Employee Id and temporary password once, with Copy. | Must | POC | SCR-EIMS-02, UJ-EIMS-01, D-02 | Given valid details, when the Admin saves, then the employee exists as Draft / Active with a new Employee Id, and the temporary password is shown once and never again. |
+| FR-EIMS-011 | Creation is refused with field-level messages for a duplicate or invalid email, a future date of joining, a missing manager choice or an invalid rate. | Must | POC | SCR-EIMS-02, VR-EIMS-02, VR-EIMS-04, VR-EIMS-06 | Given an email already used by any employee (active or inactive), when the Admin saves, then the form shows the duplicate-email message and nothing is created. |
+| FR-EIMS-012 | In edit mode name and email are read only (maintained by the employee); the Admin can change date of joining, role, manager and hourly wage rate. Saving does not change the profile status. | Must | POC | SCR-EIMS-02, BR-CMN-13 | Given an Approved employee, when the Admin changes the rate and saves, then the profile stays Approved and "Changes saved." is shown. |
+| FR-EIMS-013 | A new hourly wage rate applies only to salary records generated after the change. | Must | POC | BR-CMN-13 | Given salary records exist at INR 250, when the rate changes to INR 300, then existing records keep 250 and the next generated record uses 300. |
+| FR-EIMS-014 | The manager list offers only active employees with the Manager role, excluding the employee and anyone who would create a reporting loop; "None – top-level" means the Admin approves this employee's records. | Must | POC | SCR-EIMS-02, VR-EIMS-05, D-71 | Given A manages B, when the Admin edits A, then B is not offered as A's manager. |
+| FR-EIMS-015 | A change of date of joining is accepted only if no attendance or leave (other than Cancelled) lies before the new date and the employee is still at least 18 on it; otherwise the blocking records are shown. | Must | POC | D-71, INT-09 | Given attendance on 05-Nov, when the Admin sets the joining date to 10-Nov, then the change is refused and the 05-Nov attendance is named. |
+| FR-EIMS-016 | Changing a Manager's role to Employee is blocked while they have active direct reports; the message lists the reports. | Must | POC | D-71 | Given a manager with 3 active reports, when the Admin selects role Employee, then saving is refused and the 3 reports are listed. |
+| FR-EIMS-017 | After a manager change, new submissions go to the new manager (or the Admin for top-level). Items already waiting are handled per open item OI-04. | Must | POC | BR-CMN-01, OI-04 | Given B's manager changes from M1 to M2, when B submits attendance afterwards, then it appears in M2's inbox. |
+| FR-EIMS-018 | The Admin deactivates an employee after confirmation: the employee becomes Inactive, can no longer sign in, and all records are kept. Deactivation is blocked for a manager with active direct reports, listing them. | Must | POC | SCR-EIMS-02, UJ-EIMS-07, BR-CMN-06, BR-CMN-14 | Given an employee with no reports, when the Admin confirms Deactivate, then "<name> deactivated." is shown and a sign-in attempt shows the inactive-account message. |
+
+**User stories**
+
+| Id | As a | I want to | So that | Baseline |
+| --- | --- | --- | --- | --- |
+| US-EIMS-03 | Admin | create an employee with basic details | the employee can sign in and complete the profile | EIMS-US1 |
+| US-EIMS-04 | Admin | set role, manager and hourly wage rate | approvals and wages work | EIMS-US5 |
+| US-EIMS-05 | Admin | deactivate an employee | they can no longer sign in and their history is kept | EIMS-US6 |
+
+### 7.3 SCR-EIMS-03 – My profile (incl. profile change request)
+
+| Req id | Requirement | Priority | Phase | UX ref | Acceptance criteria (Given / When / Then) |
+| --- | --- | --- | --- | --- | --- |
+| FR-EIMS-020 | The employee sees a status banner and a read-only block "Set by your administrator" (Employee Id, manager, date of joining, hourly wage rate), followed by the editable sections Name, Parents, Birth, Employment (last employer), Address and Contact. | Must | POC | SCR-EIMS-03 | Given a Draft profile on first sign-in, then only the Admin-entered values are filled and the Draft banner is shown. |
+| FR-EIMS-021 | In Draft or Rejected the employee can save a draft at any time without required-field checks; the status does not change. | Must | POC | SCR-EIMS-03 | Given half the fields are empty, when the employee saves a draft, then "Draft saved." is shown and the status stays Draft. |
+| FR-EIMS-022 | Submit checks all required fields and validations; on success the profile becomes Submitted and "Profile submitted to <approver> for approval." is shown. | Must | POC | SCR-EIMS-03, VR-EIMS-01 to VR-EIMS-03, VR-EIMS-07 to VR-EIMS-09 | Given a 10-digit mobile number is missing, when the employee submits, then the field is highlighted, "Please correct the highlighted fields." is shown and the status stays Draft. |
+| FR-EIMS-023 | A Submitted profile is read only with the banner "Waiting for <approver>"; until a decision is taken the employee can withdraw it back to Draft. | Must | POC | D-70 | Given a Submitted profile not yet decided, when the employee withdraws, then the status is Draft and the item leaves the approver's inbox. |
+| FR-EIMS-024 | A Rejected profile shows the approver's remarks in a banner and can be corrected and resubmitted. | Must | POC | SCR-EIMS-03, BR-CMN-04 | Given a rejection with remarks, when the employee opens My Profile, then the remarks are shown and the fields are editable. |
+| FR-EIMS-025 | An Approved profile is read only. "Request a change" starts a profile change request, filled with the approved values, unless the employee already has an open request. | Must | POC | D-70, UJ-EIMS-05 | Given an open request in Draft, when the employee opens My Profile, then "Request a change" is replaced by a link to the open request. |
+| FR-EIMS-026 | In a change request the employee edits any employee-editable field, saves a draft and submits; submit needs at least one changed value and all validations. Changed fields are marked. | Must | POC | D-70, D-72 | Given no value differs from the approved profile, when the employee submits, then "No changes to submit." is shown and the request stays Draft. |
+| FR-EIMS-027 | The employee sees the request status; can withdraw it in Draft, Submitted (before decision) or Rejected; sees the remarks of a rejected request and can correct and resubmit it. | Must | POC | D-70, D-72 | Given a Rejected request, when the employee withdraws it, then it becomes Withdrawn and a new request can be started. |
+| FR-EIMS-028 | While a request is open the profile stays Approved and shows the approved values; attendance and leave continue normally. When the request is approved, the new values become the profile. | Must | POC | BR-CMN-11, D-70 | Given a Submitted request to change the address, when the manager approves it, then My Profile shows the new address and the status stays Approved. |
+
+**User stories**
+
+| Id | As a | I want to | So that | Baseline |
+| --- | --- | --- | --- | --- |
+| US-EIMS-06 | Employee | fill in and submit my profile | my information is on record | EIMS-US2 |
+| US-EIMS-07 | Employee | withdraw my submitted profile before it is decided | I can correct a mistake myself | – (D-70) |
+| US-EIMS-08 | Employee | request a change to my approved profile | my details stay current, after approval | EIMS-US4 |
+
+### 7.4 SCR-EIMS-04 – Profile review
+
+| Req id | Requirement | Priority | Phase | UX ref | Acceptance criteria (Given / When / Then) |
+| --- | --- | --- | --- | --- | --- |
+| FR-EIMS-030 | The review shows the employee's name, Employee Id, date of joining, submission date and status. | Must | POC | SCR-EIMS-04 | Given a Submitted profile, when the approver opens it, then these header values are shown. |
+| FR-EIMS-031 | For a new profile all submitted values are shown in one column with Approve and Reject. | Must | POC | SCR-EIMS-04 | Given a first submission, then one "Submitted" column is shown. |
+| FR-EIMS-032 | For a profile change request the approved and requested values are shown side by side; changed rows carry a "Changed" badge and the old value is struck through. | Must | POC | SCR-EIMS-04, D-70 | Given a request changing only the mobile number, then only that row is marked Changed. |
+| FR-EIMS-033 | The approver approves, or rejects with remarks (required, up to 500 characters). Messages: "Profile approved." / "Profile rejected and returned to <name>." The approver never sees their own profile or request here. | Must | POC | SCR-EIMS-04, BR-CMN-03, BR-CMN-08 | Given empty remarks, when the approver rejects, then "Remarks are required to reject." is shown and the status is unchanged. |
+| FR-EIMS-034 | Opened from the directory, the profile is shown read only in one column with no actions. | Must | POC | SCR-EIMS-04, UJ-EIMS-09 | Given a manager clicks View, then no Approve or Reject action is offered. |
+| FR-EIMS-035 | If the item was already decided or withdrawn, actions are hidden and a banner says so ("Already approved / rejected by <name> on <date>" or "Withdrawn by the employee"). | Must | POC | SCR-EIMS-04, D-70 | Given the employee withdrew the request, when the manager opens it from an old link, then the withdrawn banner is shown and no action is possible. |
+
+**User stories**
+
+| Id | As a | I want to | So that | Baseline |
+| --- | --- | --- | --- | --- |
+| US-EIMS-09 | Manager | approve or reject my team's profiles and change requests | only verified data is used | EIMS-US3 |
+| US-EIMS-10 | Manager | see exactly what changed in a change request | I can decide quickly and correctly | – (D-70) |
+
+### 7.5 UJ-SYS-04 – Employee Id and temporary password generation
+
+| Req id | Requirement | Priority | Phase | UX ref | Acceptance criteria (Given / When / Then) |
+| --- | --- | --- | --- | --- | --- |
+| FR-EIMS-040 | The system generates a unique Employee Id: "EMP" followed by a sequential number padded to 4 digits (EMP0001, EMP0002, …). Ids are never reused, also after deactivation. | Must | POC | UJ-SYS-04, D-02, D-71 | Given EMP0012 is the highest Id (active or inactive), when a new employee is created, then the Id is EMP0013. |
+| FR-EIMS-041 | The system generates a temporary password that meets the password policy, shows it only to the Admin once, and requires the employee to replace it at the first sign-in. The Employee Id is the sign-in user name. | Must | POC | UJ-SYS-04, D-28, INT-08 | Given a new employee, when they sign in with the temporary password, then Set password opens and the dashboard cannot be reached before a new password is saved. |
 
 ## 8. Business and validation rules
 
