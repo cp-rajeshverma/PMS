@@ -111,6 +111,7 @@ Users of the BRD set:
 | NFR-<MOD>-<NN> | Module-specific non-functional requirement | NFR-SMS-01 |
 | NOT-<MOD>-<NN> | Notification requirement | NOT-LMS-03 |
 | JOB-<MOD>-<NN> | Scheduled / backend job (JOB-CMN for cross-module) | JOB-CMN-01 |
+| INT-<NN> | Cross-module integration (event, API or external system), defined in this anchor §7 | INT-01 |
 | UJ-…, SCR-… | User journey / screen ids from UX | UJ-AMS-01, SCR-AMS-02 |
 
 Priority uses **MoSCoW (Must / Should / Could / Won't)** . Delivery phase: POC / Phase 2 / Future.
@@ -367,7 +368,19 @@ Rules that affect two or more modules are defined here once and referenced by id
 
 ## 7. Integrations and cross-module jobs
 
-_Pending._
+Business view of how modules hand over to each other. Message formats, API contracts and delivery guarantees are designed in PMS-HLD-Part02-Functional.
+
+| Id | Name | Type (event / API / scheduled / external system) | Trigger / schedule | Source → target | Business outcome |
+| --- | --- | --- | --- | --- | --- |
+| INT-01 | Attendance approved | Event | Approver approves attendance | AMS → SMS | Salary record generated as Generated, using the hours and the employee's current hourly wage rate (UJ-SYS-01, D-16) |
+| INT-02 | Attendance reopened | Event | Approver reopens attendance to resolve a salary dispute | AMS → SMS | Linked salary record set to Voided, reason kept in Remarks (UJ-SYS-03, BR-CMN-15, D-25) |
+| JOB-CMN-01 | Nightly salary reconciliation | Scheduled | Daily at 01:00 IST | AMS → SMS | Every approved attendance has exactly one non-voided salary record: missed records are created, mismatches are logged; last run shown on the Admin dashboard (UJ-SYS-02, D-16, D-24, KPI-04) |
+| INT-03 | Employee details for other modules | API | When another module needs employee data | EIMS → AMS, LMS, SMS, Shell | Name, Employee Id, date of joining, Manager Id, profile status and active flag from the last approved profile (BR-CMN-09, BR-CMN-11) |
+| INT-04 | Approver resolution | API | On submit and in approval views | EIMS → AMS, LMS, SMS, Shell | Each record goes to the owner's manager, or to the Admin for the top-level employee; no self-approval (BR-CMN-01, BR-CMN-08) |
+| INT-05 | Hourly wage rate | API | When a salary record is generated | EIMS → SMS | Current rate copied into the salary record; later rate changes do not alter it (BR-CMN-13) |
+| INT-06 | Attendance and leave date check | API | When attendance or leave is saved or submitted | AMS ↔ LMS | No date carries both attendance and leave (BR-CMN-10) |
+| INT-07 | Dashboard and approvals inbox | API | User opens the dashboard or approvals inbox | EIMS, AMS, LMS, SMS → Shell | Tiles, to-do items, missing attendance days and pending approvals shown per role; each module's card loads on its own (§5.3) |
+| INT-08 | Identity provider | External system | Admin onboards, changes role, deactivates or resets a password; user signs in or changes password | EIMS ↔ identity provider | User account created with the Employee Id as user name and a temporary password; role stored; sign-in disabled for inactive employees; password policy, lockout and idle timeout enforced (D-16, D-26, D-28, D-29) |
 
 ## 8. System-wide non-functional requirements
 
