@@ -14,6 +14,7 @@ Date: November 2026
 | --- | --- | --- | --- | --- |
 | 1.0 | 0.1 | 18-Nov-2026 | Rajesh Verma | First draft from UX v1.0 (D-34), BRD v1.0 baseline (D-09) and decisions D-01 to D-54 |
 | 1.0 | 0.2 | 18-Nov-2026 | Rajesh Verma | All sections drafted and reviewed section by section (decisions D-55 to D-69); ready for stakeholder review |
+| 1.0 | 0.3 | 18-Nov-2026 | Rajesh Verma | Profile change request introduced (D-70): BR-CMN-05, BR-CMN-11, glossary, scope, OBJ-07, C-01, NFR-05, FR-CMN-010 updated; OI-07; future scope for reactivation and pre-boarding |
 
 ### 1.2 Review and approval
 
@@ -88,7 +89,7 @@ Users of the BRD set:
 | Direct report | Employee whose Manager Id is the given manager |
 | Admin | System role that onboards and maintains employees; has no personal records (D-24) |
 | Temporary password | Password issued by the system at onboarding or Admin reset; must be replaced at next sign-in |
-| Approved-profile snapshot | Last approved version of an employee profile, used by other modules while a change is being re-approved (D-29) |
+| Profile change request | Request by an employee to change employee-editable fields of an approved profile; holds old and new values; the profile stays Approved until the request is approved (D-70) |
 | Hourly Wage Rate | Wage per hour in INR, set by Admin on the employee |
 | Day Hour | Hours worked on a day (To Time – From Time) |
 | Day Wage Amount | Day Hour × Hourly Wage Rate, rounded to 2 decimals, INR |
@@ -151,7 +152,7 @@ The application is deliberately small – four functional modules, each a separa
 | OBJ-04 | Calculate daily wages automatically from approved attendance, approved by the manager and reviewed by the employee | Wage accuracy (KPI-02); salary completeness after reconciliation (KPI-04) |
 | OBJ-05 | Run every delivery step with a formal review and approval gate at the end of each step | Gate and traceability measure (KPI-05) |
 | OBJ-06 | Produce a reusable set of standards and guardrails covering: (1) architecture and design; (2) frontend and UX, including accessibility; (3) API and integration (contract-first, events); (4) coding and code review; (5) database and data management, including data privacy; (6) security (identity, secrets, secure coding); (7) logging and observability; (8) performance and scalability; (9) resilience and availability; (10) testing and quality; (11) DevOps, CI/CD and deployment (environments, branching, release); (12) documentation, traceability and delivery governance | All 12 standards approved at their gate (KPI-05) |
-| OBJ-07 | Keep the application small: four functional modules, one business entity per module (D-06, D-10) | Four module services delivered within the agreed scope (§3.3) |
+| OBJ-07 | Keep the application small: four functional modules, one business entity per module (D-06, D-10); the only exception is the EIMS profile change request (D-70) | Four module services delivered within the agreed scope (§3.3) |
 
 **Measures of success (KPIs)**
 
@@ -168,7 +169,7 @@ The application is deliberately small – four functional modules, each a separa
 | Module | In scope (POC) | Phase 2 / Future |
 | --- | --- | --- |
 | Shell (common) | Login, set / change password, dashboard per role, approvals inbox, role-based menu | Future: runtime micro-frontends instead of build-time packages (ADR-001) |
-| EIMS – Employee Information | Admin onboarding (Employee Id and temporary password), profile complete / submit / approve, re-approval on edit, Admin-owned fields (role, manager, rate, date of joining), deactivation, password reset, employee directory | – |
+| EIMS – Employee Information | Admin onboarding (Employee Id and temporary password), profile complete / submit / withdraw / approve, profile change requests for approved profiles, Admin-owned fields (role, manager, rate, date of joining), deactivation, password reset, employee directory | – |
 | AMS – Attendance | Daily attendance entry (15-minute steps), submit, approve / reject, reopen after a salary dispute, month calendar and list | Future: shifts, breaks, overnight work, biometric or clock-in integration |
 | LMS – Leave | Full-day Casual / Sick / Earned leave, submit, cancel while Submitted, approve / reject, past and future dates | Future: leave balances, accruals and entitlement checks; half-day leave |
 | SMS – Salary | Automatic daily wage from approved attendance, manager approval, employee accept (single or several) or dispute, keep as is or reopen, earnings for a period | Future: paid leave in salary; statutory deductions (PF, ESI, PT, TDS); allowances; payslips; monthly payroll runs |
@@ -281,7 +282,7 @@ flowchart TD
 | 12 | Resolve the dispute | SMS, AMS | Manager (Admin for the top-level employee) | Keep as is with explanation: back to Manager Approved, step 11 (D-33). Reopen attendance: attendance Rejected, salary record Voided, back to step 7 (UJ-SMS-03, UJ-AMS-04, UJ-SYS-03) | M4-SMS, M2-AMS |
 | 13 | See earnings for a period | SMS | Employee | Total wages shown, voided records excluded (UJ-SMS-04) | M4-SMS |
 
-Alongside the main flow: the dashboard and approvals inbox guide every user to the next action (UJ-SH-03, UJ-SH-04, §5.3); the employee may update an approved profile, which goes back for re-approval while other modules keep using the last approved profile (UJ-EIMS-05, D-29); the Admin maintains manager, rate and role, deactivates leavers and resets passwords (UJ-EIMS-06 to UJ-EIMS-08).
+Alongside the main flow: the dashboard and approvals inbox guide every user to the next action (UJ-SH-03, UJ-SH-04, §5.3); the employee may change an approved profile through a profile change request; the profile stays Approved and in use until the request is approved (UJ-EIMS-05, D-70); the Admin maintains manager, rate and role, deactivates leavers and resets passwords (UJ-EIMS-06 to UJ-EIMS-08).
 
 ### 5.2 Journey index
 
@@ -334,7 +335,7 @@ The dashboard (SCR-SH-03), approvals inbox (SCR-SH-04) and shell layout (SCR-SH-
 | FR-CMN-006 | Managers also see "Waiting for your approval" with counts per module and a link to the approvals inbox; the card is hidden when nothing is waiting. | Must | POC | SCR-SH-03 |
 | FR-CMN-007 | The Admin sees tiles for active employees, profiles not yet approved, items waiting for the Admin and the last reconciliation run, a list of recently onboarded employees and an "Onboard employee" action. The Admin has no personal tiles. | Must | POC | SCR-SH-03, D-24 |
 | FR-CMN-008 | Each dashboard card loads on its own: if one module is unavailable, only its card shows "Couldn't load" with Retry, and the rest of the page works. | Must | POC | SCR-SH-03 |
-| FR-CMN-010 | The approvals inbox lists every item waiting for the user's decision across modules – submitted profiles, attendance and leave, generated and disputed salary records – with tabs per module and counts. A manager sees direct reports' items only; the Admin sees the top-level employee's items only. | Must | POC | UJ-SH-04, SCR-SH-04, D-58 |
+| FR-CMN-010 | The approvals inbox lists every item waiting for the user's decision across modules – submitted profiles and profile change requests, attendance and leave, generated and disputed salary records – with tabs per module and counts. A manager sees direct reports' items only; the Admin sees the top-level employee's items only. | Must | POC | UJ-SH-04, SCR-SH-04, D-58 |
 | FR-CMN-011 | The approver can approve one item or several selected items at once; reject is one item at a time and needs remarks. Generated salary records can be approved but not rejected. | Must | POC | D-24, D-07 |
 | FR-CMN-012 | For a disputed salary record the approver can choose Keep as is (explanation required; record returns to Manager Approved) or Reopen attendance (after confirming the effect: attendance back to Rejected, salary record Voided). | Must | POC | D-33, D-07, D-25 |
 | FR-CMN-013 | Each inbox item can be opened in its module review screen for full detail. | Must | POC | SCR-SH-04 |
@@ -352,15 +353,15 @@ Rules that affect two or more modules are defined here once and referenced by id
 | BR-CMN-02 | Every business record carries Status, Approver Id, Approved Date and Remarks. | EIMS, AMS, LMS, SMS | D-01 (C2); baseline BR-C2 |
 | BR-CMN-03 | Remarks are required to reject a record, to reopen attendance and to close a dispute with Keep as is; maximum 500 characters. | EIMS, AMS, LMS, SMS | D-01, D-33, SCR-SH-04; baseline BR-C3 |
 | BR-CMN-04 | A rejected record goes back to its owner, who can correct and resubmit it. | EIMS, AMS, LMS | D-01 (C4); baseline BR-C4 |
-| BR-CMN-05 | Approved attendance and leave records are locked. An approved profile can be edited, and the edit sends it back to Submitted for re-approval. The only way to change approved attendance is a reopen after a salary dispute (BR-CMN-15). | EIMS, AMS, LMS | D-02 (E2); baseline BR-C5 |
+| BR-CMN-05 | Approved attendance and leave records are locked. An approved profile is changed only through a profile change request, which is approved like any other record; the profile stays Approved meanwhile (D-70). The only way to change approved attendance is a reopen after a salary dispute (BR-CMN-15). | EIMS, AMS, LMS | D-02 (E2), D-70; baseline BR-C5 |
 | BR-CMN-06 | Records are never physically deleted; an Is Active flag marks soft-deleted records. An inactive employee cannot sign in, and their history is kept. | EIMS, AMS, LMS, SMS, SUP | D-01 (C5), EIMS-US6; baseline BR-C6 |
 | BR-CMN-07 | Every record carries Created By, Created Date, Updated By and Updated Date, set by the system. | EIMS, AMS, LMS, SMS | D-01; baseline BR-C7 |
 | BR-CMN-08 | No one approves their own records. A manager's own records are approved by their own manager (or by the Admin if the manager is the top-level employee). | EIMS, AMS, LMS, SMS | D-01; baseline BR-C8 |
 | BR-CMN-09 | Only an employee with an approved profile can enter attendance or request leave. | EIMS, AMS, LMS | Baseline AMS-V5, LMS-V6; SCR-SH-03 |
 | BR-CMN-10 | A date cannot carry both attendance and leave: attendance is not allowed on a date covered by the employee's submitted or approved leave, and leave is not allowed on a date that has submitted or approved attendance. | AMS, LMS | D-03 (A3), D-04 (L4); baseline AMS-V4, LMS-V4 |
-| BR-CMN-11 | While an approved profile is being re-approved, the other modules keep using the last approved profile, and the employee keeps working normally. | EIMS, AMS, LMS, SMS | D-29 (UXQ-14, UXQ-15) |
+| BR-CMN-11 | While a profile change request is open, the profile stays Approved; the other modules keep using it and the employee keeps working normally. Approved changes apply from the moment of approval. | EIMS, AMS, LMS, SMS | D-29 (UXQ-14), D-70 |
 | BR-CMN-12 | An approver can approve several records at once; rejection is one record at a time. | EIMS, AMS, LMS, SMS | D-24 (UXQ-01) |
-| BR-CMN-13 | Admin-owned details (role, manager, hourly wage rate, date of joining) change without profile re-approval. A new hourly wage rate applies only to salary records generated after the change; existing salary records keep the rate copied when they were generated. | EIMS, SMS | D-05 (S1), SCR-EIMS-02; baseline SMS-R2 |
+| BR-CMN-13 | Admin-owned details (role, manager, hourly wage rate, date of joining) change without employee approval or a change request. A new hourly wage rate applies only to salary records generated after the change; existing salary records keep the rate copied when they were generated. | EIMS, SMS | D-05 (S1), SCR-EIMS-02; baseline SMS-R2 |
 | BR-CMN-14 | A manager who still has active direct reports cannot be deactivated until the Admin reassigns those reports. | EIMS, AMS, LMS, SMS | D-29 (UXQ-13) |
 | BR-CMN-15 | Approved attendance can be reopened only to resolve a disputed salary record. Reopening sets the attendance back to Rejected and the system sets the linked salary record to Voided; the employee corrects and resubmits, and a new salary record is generated when the attendance is approved again. | AMS, SMS | D-07 (O1, O2), D-25 |
 | BR-CMN-16 | Voided salary records are excluded from every total and earnings figure (dashboard and salary screens); they stay visible on request. | SMS, Shell | D-25 |
@@ -393,7 +394,7 @@ Module-specific NFRs are in each module BRD §13. Targets are sized for about 10
 | NFR-02 | Availability | PMS is available during business hours; data can be restored after a failure; one module being down does not stop the others (FR-CMN-008). | 99 % in Production, 08:00–20:00 IST, Monday to Saturday; daily backup; RPO 24 h; RTO 8 h (D-59) |
 | NFR-03 | Security | Sign-in with Employee Id and password; temporary passwords must be replaced at first sign-in; password policy: at least 8 characters, upper and lower case, a number, a special character, not the Employee Id; account locked for 15 minutes after 5 failed sign-ins; session ends after 30 minutes idle; sign-in messages never reveal whether an Employee Id exists; passwords are never stored or shown in readable form; every request is checked against the user's role and data scope (§4.3), so personal data is visible only to the employee, their manager and the Admin. | D-26, D-28, D-58, SCR-SH-01, SCR-SH-02; 0 access-control defects in security testing |
 | NFR-04 | Usability and accessibility | English-only web interface for desktop browsers; consistent layout on every screen (FR-CMN-015); every action and status understandable without colour alone; keyboard operable. | Latest Chrome and Edge; designed for 1366 px wide screens; WCAG 2.1 AA, text contrast at least 4.5:1 (D-08, D-24, D-59, UX summaries §8) |
-| NFR-05 | Auditability | Every record shows who created and last changed it and when (BR-CMN-07), and who approved it, when and with which remarks (BR-CMN-02); void reasons, dispute remarks and Keep as is explanations are kept; the last approved profile is kept for comparison (D-29); every reconciliation run is logged. | 100 % of records with complete audit fields (KPI-03) |
+| NFR-05 | Auditability | Every record shows who created and last changed it and when (BR-CMN-07), and who approved it, when and with which remarks (BR-CMN-02); void reasons, dispute remarks and Keep as is explanations are kept; profile change requests keep old and new values (D-70); every reconciliation run is logged. | 100 % of records with complete audit fields (KPI-03) |
 | NFR-06 | Data integrity | Records are never physically deleted (BR-CMN-06); one attendance entry per employee per day; exactly one non-voided salary record per approved attendance; the hourly wage rate is copied at generation (BR-CMN-13); a change by another user is detected rather than overwritten (FR-CMN-014); amounts kept to 2 decimals in INR. | 0 mismatches after nightly reconciliation (KPI-04); 100 % wage accuracy (KPI-02) |
 | NFR-07 | Scalability | Each module can scale on its own as the number of employees grows, without redesign. | 100 employees in year 1; scale out per module to 10×; load-tested to 2× (200 employees, 50 concurrent users) (D-59) |
 | NFR-08 | Maintainability / configurability | Each module can be changed, tested and deployed on its own; the design stays technology-neutral so the backend can later move to another platform; separate Development, QA and Production environments. | D-10, D-11, D-12, D-18 |
@@ -423,7 +424,7 @@ Year-1 figures are planning estimates derived from about 100 employees (D-59). G
 | Assumption | A-03 | Users work in English on desktop browsers (D-08). |
 | Assumption | A-04 | About 20 sample employees are enough for testing and demonstration; live use is up to about 100 employees in year 1 (D-08, D-59). |
 | Assumption | A-05 | The HR Manager and Finance Manager are available to answer questions and review each BRD document (D-55). |
-| Constraint | C-01 | PMS is a lightweight POC: four functional modules, one business entity per module (D-06, D-10). |
+| Constraint | C-01 | PMS is a lightweight POC: four functional modules, one business entity per module (D-06, D-10); exception: the EIMS profile change request (D-70). |
 | Constraint | C-02 | Each module is a separate service with its own data store; modules share data only through agreed interfaces (§7) (D-10, D-18). |
 | Constraint | C-03 | The approved technology stack and hosting apply (D-11, D-12, D-16, D-21); details are in PMS-HLD-Part01-Architecture-and-Design. |
 | Constraint | C-04 | All screens run inside one shell application; module screens are built into it for the POC (D-23, ADR-001). |
@@ -478,6 +479,7 @@ Running list, completed as the anchor is drafted.
 | OI-04 | When the Admin changes an employee's manager (BR-CMN-13), who decides the items already waiting for approval – the old or the new manager? | HR Manager | Before PMS-BRD-M1-EIMS | Open |
 | OI-05 | Which business values must the PMS Administrator be able to change without a release (for example idle timeout, lockout limits, reconciliation time, remarks length)? Today all are fixed by decisions. | Product owner | Before PMS-BRD-M5-SUP (ADM is Phase 2) | Open |
 | OI-06 | UX Journey Index still shows the reconciliation time for UJ-SYS-02 as "TBD"; it was set to 01:00 IST (D-24). Correct the UX document. | Product owner | Before HLD Part02 | Open |
+| OI-07 | Update the UX for the profile change request and the withdrawal of a submitted new profile (D-70): SCR-EIMS-03, SCR-EIMS-04, SCR-SH-03, SCR-SH-04, UX Journey Index (UJ-EIMS-05, status list) | Product owner | Before HLD Part02 | Open |
 
 Approved decisions are kept in `docs/decisions/decision-log.md`.
 
@@ -490,6 +492,7 @@ Approved decisions are kept in `docs/decisions/decision-log.md`.
 | Supporting functions | §3.3, D-57 | Phase 2: ADM (configuration and master data), NM (email / SMS notifications), DM (documents) |
 | Shell | ADR-001, D-23 | Future: module screens loaded at run time instead of being built into the shell |
 | EIMS – manager view | §4.2, D-63 | Future: skip-level (indirect reports) view for managers |
+| EIMS – employees | D-71 | Future: reactivating an inactive employee; onboarding before the joining date (pre-boarding) |
 | Approvals | R-02 | Future: delegation of approvals when a manager is absent |
 | AMS | §3.3, D-03 | Future: shifts, breaks, overnight work, biometric or clock-in integration |
 | LMS | §3.3, D-04 | Future: leave balances, accruals and entitlement checks; half-day leave |
