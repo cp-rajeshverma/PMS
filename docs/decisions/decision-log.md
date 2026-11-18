@@ -5,6 +5,7 @@ Every approved project decision, newest first. Approver for all entries: Rajesh 
 | Id | Date | Area | Decision |
 | --- | --- | --- | --- |
 | D-34 | 16 Nov 2026 | Gate | **Step 2 (UX) approved**: UX journey index v1.0, 17 mockups, 17 UX summaries. Next: Step 3 (BRD) |
+| D-48 | 18 Nov 2026 | Templates | Part02 split: anchor <PRJ>-HLD-Part02-Functional (module index, function index, cross-module flows XF-nn, common API / event / error / audit / frontend conventions, roll-up inventories, cross-module NFRs, requirement coverage) in hld-part02-functional-template.md; per-module template renamed hld-part02-module-functional-template.md; SUP template unchanged apart from references |
 | D-47 | 18 Nov 2026 | Templates | Part01 document ID spelled out: <PRJ>-HLD-Part01-Architecture-and-Design (was <PRJ>-HLD-Part01-AnD); references in all templates, project memory and README updated; section references use "Part01 §n" |
 | D-46 | 18 Nov 2026 | Templates | Template file hld-part01-and-template.md renamed to hld-part01-architecture-and-design-template.md; document ID <PRJ>-HLD-Part01-AnD unchanged |
 | D-45 | 18 Nov 2026 | Templates | ADR template merged into Part01a, renamed Principles, Patterns & Decisions: §5 ADR register (with related catalogue ids), §6 ADR record format; each ADR stays a separate file in docs/decisions/adr; AnD §18 refers to Part01a §5; adr-template.md retired |

@@ -49,7 +49,7 @@ This document is the anchor of the [<Project>] data model: modelling conventions
 | --- | --- | --- |
 | 1 | <PRJ>-HLD-Part01-Architecture-and-Design (§12 data architecture, §13 data migration) | Overall architecture and design |
 | 2 | <PRJ>-HLD-Part01a-Principles-Patterns-Decisions | Principles and patterns catalogue; ADR register |
-| 3 | <PRJ>-HLD-Part02-M1..M<n>-<MOD>-Functional | Functional modules (entity usage per function) |
+| 3 | <PRJ>-HLD-Part02-Functional (anchor) and <PRJ>-HLD-Part02-M1..M<n>-<MOD>-Functional | Functional design (entity usage per function, cross-module flows) |
 | 4 | <PRJ>-HLD-Part02-M<n>-SUP-Functional | Supporting modules |
 | 5 | <PRJ>-HLD-Part03-M1..M<n>-<MOD>-Datamodel | Module data models (entity definitions) |
 | 6 | <PRJ>-HLD-Part03-M<n>-SUP-Datamodel | Supporting-module data model (need basis) |

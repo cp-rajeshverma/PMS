@@ -1,10 +1,16 @@
-# <Project> – HLD Part02-M<n>: <Module name> (<MOD>) Functional Design
+# <Project> – HLD Part02: Functional Design (Anchor)
 
-Document ID: <PRJ>-HLD-Part02-M<n>-<MOD>-Functional-v<x.y>
-Module: <Module name> (<MOD>)
+Document ID: <PRJ>-HLD-Part02-Functional-v<x.y>
+Scope: functional design anchor – module index, cross-module flows, common design conventions and roll-up inventories; per-function designs are in the module documents
 Project: <project name and phase>
 Author: <name>
 Date: <Month YYYY>
+
+> Template guidance
+> - This anchor holds what spans modules. Per-function designs live only in <PRJ>-HLD-Part02-M<n>-<MOD>-Functional (one per functional module) and <PRJ>-HLD-Part02-M<n>-SUP-Functional; the anchor never repeats them.
+> - Inventories in §7 are roll-ups of the module documents, keyed by id, with a link to the owning function.
+> - Keep the design technology-neutral so it holds across replatforming.
+> - Every diagram keeps a text-version table beneath it.
 
 ## 1. Document control
 
@@ -22,230 +28,146 @@ Date: <Month YYYY>
 | Business analyst | | | |
 | Dev lead | | | |
 
-## 2. Introduction: Function design
+## 2. Introduction
 
-This document describes the high-level solution approach for each system function of the [<Module name>] module: APIs, database, orchestration and scenarios. Architecture-wide decisions (stack, resilience defaults, logging, security) are in Part01 and are not repeated here.
+This document is the anchor of the [<Project>] functional design: it indexes the module design documents, designs the flows that cross modules, and sets the design conventions every module follows.
 
 ### 2.1 Reference documents
 
-**Requirement documents**
-
-| # | Document | Version |
-| --- | --- | --- |
-| 1 | <PRJ>-BRD | v<x> |
-| 2 | UX Journey Index and UX Summaries | v<x> |
-| 3 | Decision log / ADRs | D-01 to D-<nn> |
-
-**Design documents**
-
 | # | Document | Purpose |
 | --- | --- | --- |
-| 1 | <PRJ>-HLD-Part01-Architecture-and-Design | Overall architecture and design |
-| 2 | <PRJ>-HLD-Part01a-Principles-Patterns-Decisions | Principles and patterns catalogue; ADR register |
-| 3 | <PRJ>-HLD-Part02-M<n>-<MOD>-Functional | Solution approach per functional module (one per module) |
-| 4 | <PRJ>-HLD-Part02-M<n>-SUP-Functional | Solution approach for supporting modules |
-| 5 | <PRJ>-HLD-Part03-Datamodel | Data model |
+| 1 | <PRJ>-BRD | Requirements |
+| 2 | UX Journey Index and UX Summaries | Experience design |
+| 3 | <PRJ>-HLD-Part01-Architecture-and-Design | Overall architecture and design |
+| 4 | <PRJ>-HLD-Part01a-Principles-Patterns-Decisions | Principles and patterns catalogue; ADR register |
+| 5 | <PRJ>-HLD-Part03-Datamodel (anchor) | Data model |
 | 6 | API / event contracts (`contracts/`) | OpenAPI and event schemas |
 
-## 3. Module: <Module name>
+### 2.2 Module design documents
 
-### 3.1 Preread
+| Module | Document | Owning service | Version | Status |
+| --- | --- | --- | --- | --- |
+| <MOD1> | <PRJ>-HLD-Part02-M1-<MOD1>-Functional | | | |
+| SUP | <PRJ>-HLD-Part02-M<n>-SUP-Functional | | | |
 
-#### 3.1.1 Overview
+## 3. Functional landscape
 
-<What the module does, who uses it, what it owns (data, APIs, events), what it depends on.>
+### 3.1 Module overview
 
-#### 3.1.2 Module process flow
-
-<Diagram: the module's main business flow with its system functions (by id), decision points and handovers to other modules / jobs.>
-
-#### 3.1.3 High-level ER diagram
-
-<Module slice of the ER diagram; full definition in Part03 §<x>.>
-
-#### 3.1.4 Status lifecycle
-
-Business statuses and transitions are defined in BRD §6.<n>. This section records only the technical handling: where status is stored, how transitions are enforced, events emitted per transition.
-
-| Transition | Enforced in | Event emitted | Audit / activity entry |
-| --- | --- | --- | --- |
-
-#### 3.1.5 System function index
-
-| Function id | System function | Type (screen / API / backend job) | UX screen | Delivery phase | Design status |
+| Module | Purpose | Primary users (roles) | Key entities owned | Depends on (modules) | Used by (modules) |
 | --- | --- | --- | --- | --- | --- |
-| <MOD>0010 | | Screen | SCR-<MOD>-01 | POC | Draft |
 
-### 3.2 <Module name> system functions
+### 3.2 Module dependency map
 
-Repeat 3.2.n for every function in the index.
+<Diagram: modules and the direction of their dependencies (sync API / event / job).>
 
-#### 3.2.1 <MOD>0010 – <Function name> (Module: <MOD>, <Design status>)
+| From module | To module | Dependency (API / event / job) | Purpose | Flow (§5) |
+| --- | --- | --- | --- | --- |
 
-> Guidance
-> - Design status: Draft / In review / Approved / Deferred.
-> - Keep the design technology-neutral (no framework-specific terms such as Spring annotations) so it holds across replatforming (Java → Node.js / Python FastAPI).
-> - Do not restate what lives elsewhere: business rules and validations reference BRD ids; screen behaviour already in the UX summary is referenced, not copied.
+## 4. System function index (all modules)
 
-##### 3.2.1.1 Purpose, trigger and conditions
+| Function id | System function | Module | Type (screen / API / backend job / configuration) | UX screen | Delivery phase | Design status | Document section |
+| --- | --- | --- | --- | --- | --- | --- | --- |
 
-<One or two sentences: what the function lets the user / system do.>
+## 5. Cross-module flows
+
+One subsection per business flow that spans two or more modules.
+
+### 5.1 XF-01 – <Flow name>
 
 | Item | Detail |
 | --- | --- |
-| Delivery phase | POC / Phase 2 |
+| Business purpose | |
 | Trigger | <user action / event / schedule> |
-| Pre-conditions | <state that must hold before the function runs> |
-| Post-conditions | <resulting state, statuses, events emitted> |
+| Modules involved | |
+| Requirement refs | BRD FR / BR, UJ |
+| Pre-conditions / post-conditions | |
 
-##### 3.2.1.2 Actor & data scope
+<Sequence diagram across modules (participants: user, frontends, gateway, services, broker, jobs).>
 
-Per role × screen access matrix (BRD §4.3):
-
-| Role | Access (Read / Read-write / Approve / None) | Data scope (row-level) |
-| --- | --- | --- |
-| Employee | | Own records only |
-| Manager | | Own + direct reportees |
-| Admin | | All |
-
-##### 3.2.1.3 Requirement traceability
-
-| Source | References |
-| --- | --- |
-| BRD functional requirements | FR-<MOD>-… |
-| BRD business / validation rules | BR-…, VR-… |
-| BRD NFRs | NFR-… |
-| UX | UJ-…, SCR-… |
-| Decisions | D-…, ADR-… |
-| Related functions – depends on | <MOD>00nn … |
-| Related functions – used by | <MOD>00nn … |
-
-##### 3.2.1.4 Navigation & prototype reference
-
-**Navigation:** <Menu > Screen > Tab>
-
-**Prototype:** `docs/01-ux/mockups/<file>.html` · UX summary `docs/01-ux/ux-summary/<file>.md`
-
-##### 3.2.1.5 Solution approach
-
-###### 3.2.1.5.1 Design description
-
-The [<Function name>] function lets users work with the following sections / activities:
-
-1. <Section / activity>
-2. <Section / activity>
-
-**<Section / activity name>**
-
-1. <What the section shows or captures.>
-2. Data is fetched / saved via API: [API-<MOD>-nn : <METHOD> /<ctx>/<resource> (Purpose : …)]
-3. DB entity: [<ENTITY>]
-4. <Rules applied (BR / VR ids), query vs edit mode, defaults.>
-
-###### 3.2.1.5.2 Design notes
-
-1. <Design choices, options considered and why, ids / sequences, caching, pagination, concurrency.>
-
-###### 3.2.1.5.3 Sequence & orchestration
-
-<Sequence diagram (e.g. Mermaid) for the main flow; alt / opt blocks for alternative and error paths. Participants: User, Frontend, Gateway, <Service>, other services, Broker, DB.>
-
-Cross-service and asynchronous steps only (omit for a single-service synchronous function):
-
-| Step | Type (sync call / event / job / workflow) | Producer → consumer | Event / API | Consistency (local tx / outbox / saga / compensation) |
-| --- | --- | --- | --- | --- |
-
-###### 3.2.1.5.4 Frontend
-
-Only what is not already in the UX summary:
-
-1. <Components, state handling, API call mapping, client-side validation, empty / loading / error / read-only states, accessibility notes.>
-
-###### 3.2.1.5.5 Backend
-
-| API id | API name | Method & endpoint | Purpose | Request (key fields) | Response (key fields) | Roles |
-| --- | --- | --- | --- | --- | --- | --- |
-| API-<MOD>-01 | | | | | | |
-
-<Server-side validation, transaction boundary, idempotency, events published, jobs.>
-
-###### 3.2.1.5.6 Database
-
-| Entity | Operation (C / R / U / soft-D) | Purpose in this function |
-| --- | --- | --- |
-
-###### 3.2.1.5.7 Validation & error handling
-
-| Rule ref (BRD VR / BR) | Layer (UI / API / DB) | Error code | HTTP status | Message |
-| --- | --- | --- | --- | --- |
-
-###### 3.2.1.5.8 Security & data privacy
-
-| Item | Detail |
-| --- | --- |
-| Authorization check per API | API-<MOD>-nn: role + data-scope rule |
-| Sensitive fields | <e.g. salary, bank account, PAN> |
-| Masking (UI / API response) | |
-| Encryption (in transit / at rest / field-level) | |
-| Logging rule | <never log / mask in logs> |
-
-###### 3.2.1.5.9 Notifications, audit & activity log
-
-| Trigger | Notification (NOT id) | Activity log entry | Audit fields captured |
-| --- | --- | --- | --- |
-
-###### 3.2.1.5.10 Scenarios
-
-Business and technical scenarios the design must satisfy; basis for test cases.
-
-| Scenario id | Scenario | Type (positive / negative / edge / concurrency / failure) | Requirement ref | Pre-condition | Expected result | Test level (unit / API / E2E) |
-| --- | --- | --- | --- | --- | --- | --- |
-
-##### 3.2.1.6 Notes, issues & assumptions
-
-1. Note / Issue / Assumption / Q: <text>
-
-## 4. NFR summary & inventories
-
-### 4.1 NFR summary
-
-NFR detail is kept out of each function's design description; functions reference an NFR id, and the authoritative value lives here.
-
-| Seq | NFR id | Category | Requirement | Design approach | Applicable function(s) |
+| Step | Module | Function id | Interaction (sync API / event / job) | API / event | Consistency (local tx / outbox / saga / compensation) |
 | --- | --- | --- | --- | --- | --- |
 
-### 4.2 API inventory
+**Failure handling & compensation:** <what happens when a step fails; retries, compensating actions, manual intervention>
 
-Roll-up of the per-function API tables (§3.2.n.5.5); the API id is the key.
+**Reconciliation:** <job / report that detects and repairs drift between modules>
 
-| API id | API name | Purpose | Method & endpoint | Request (key fields) | Roles | Idempotent | Function |
-| --- | --- | --- | --- | --- | --- | --- |
+## 6. Common design conventions
 
-Resilience defaults (timeouts, retries, circuit breaker, idempotency): Part01 §8.5.
+### 6.1 API conventions
 
-### 4.3 Event inventory
+| Topic | Convention |
+| --- | --- |
+| Base path and versioning | <e.g. /api/v1/<module>/...> |
+| Resource naming | <plural nouns, kebab-case, no verbs except actions> |
+| Methods and status codes | |
+| Request / response envelope | |
+| Error format | <e.g. RFC 9457 problem details: type, title, status, detail, code, traceId> |
+| Pagination, sorting, filtering | |
+| Idempotency | <Idempotency-Key header for unsafe retries> |
+| Concurrency | <ETag / row_version, 409 on conflict> |
+| Date, time, money, enum formats | |
+| Correlation and tracing headers | |
 
-| Seq | Event | Producer | Consumer(s) | Queue / topic | Key payload fields | Function |
-| --- | --- | --- | --- | --- | --- | --- |
+### 6.2 Event conventions
 
-### 4.4 Scheduled job inventory
+| Topic | Convention |
+| --- | --- |
+| Naming | <e.g. <module>.<entity>.<past-tense-verb>> |
+| Envelope (id, type, source, time, correlation id, version, payload) | |
+| Versioning and compatibility | |
+| Delivery and ordering guarantees | |
+| Idempotent consumers | |
+| Dead-letter and replay | |
 
-| Seq | Job | Schedule | Purpose | Function |
-| --- | --- | --- | --- | --- |
+### 6.3 Error code scheme
 
-### 4.5 Error code catalogue
-
-| Error code | HTTP status | Meaning | Message |
-| --- | --- | --- | --- |
-
-## 5. Appendix
-
-### 5.1 Future scope (not designed in this phase)
-
-| Area | Requirement ref | Note |
+| Module | Error code range / prefix | Owner |
 | --- | --- | --- |
 
-### 5.2 Open items
+### 6.4 Audit, activity log and notification conventions
+
+<Which actions write an activity entry or audit record, the standard message format, and how notification triggers are raised (event → notification service). Detail in Part02-SUP.>
+
+### 6.5 Frontend conventions
+
+<Shared shell, navigation, common components, state handling, error and empty states; reference UX artifacts and the frontend composition ADR.>
+
+## 7. Roll-up inventories
+
+### 7.1 API inventory
+
+| API id | API name | Module | Method & endpoint | Roles | Idempotent | Function |
+| --- | --- | --- | --- | --- | --- | --- |
+
+### 7.2 Event inventory
+
+| Event | Producer module | Consumer module(s) | Queue / topic | Flow (§5) | Function |
+| --- | --- | --- | --- | --- | --- |
+
+### 7.3 Scheduled job inventory
+
+| Job | Module | Schedule | Purpose | Function |
+| --- | --- | --- | --- | --- |
+
+### 7.4 Notification inventory
+
+| NOT id | Notification | Triggering module / function | Recipients | Channel |
+| --- | --- | --- | --- | --- |
+
+## 8. NFR summary (cross-module)
+
+| NFR id | Category | Requirement | Design approach | Applies to (modules / flows) |
+| --- | --- | --- | --- | --- |
+
+## 9. Requirement coverage
+
+| BRD requirement | Function id(s) / flow | Module document section | Status |
+| --- | --- | --- | --- |
+
+## 10. Appendix
+
+### 10.1 Open items
 
 | Id | Question | Owner | Status |
 | --- | --- | --- | --- |

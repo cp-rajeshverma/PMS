@@ -8,7 +8,7 @@ Date: <Month YYYY>
 
 > Template guidance
 > - This document covers capabilities that are shared across the functional modules (Part02-M1..M<n>) and are not owned by any single business domain.
-> - Every system function uses the per-function structure of the Part02 functional module template §3.2.1 (D-38).
+> - Every system function uses the per-function structure of the Part02 module functional template §3.2.1 (D-38).
 > - Design status values: Draft / In review / Approved / Deferred / Moved (to another Part02 document; keep a one-line stub with the new location).
 > - Keep the design technology-neutral so it holds across replatforming; product-specific configuration (e.g. identity provider realm settings) goes in Design notes.
 > - A sub-module that does not apply to the project keeps its heading with "Not applicable – <reason>".
@@ -50,9 +50,10 @@ This document describes the high-level solution approach for the supporting syst
 | --- | --- | --- |
 | 1 | <PRJ>-HLD-Part01-Architecture-and-Design | Overall architecture and design |
 | 2 | <PRJ>-HLD-Part01a-Principles-Patterns-Decisions | Principles and patterns catalogue; ADR register |
-| 3 | <PRJ>-HLD-Part02-M1..M<n>-<MOD>-Functional | Functional modules (consumers of this document) |
-| 4 | <PRJ>-HLD-Part03-Datamodel | Data model |
-| 5 | API / event contracts (`contracts/`) | OpenAPI and event schemas |
+| 3 | <PRJ>-HLD-Part02-Functional (anchor) | Module index, cross-module flows, common design conventions, roll-up inventories |
+| 4 | <PRJ>-HLD-Part02-M1..M<n>-<MOD>-Functional | Functional modules (consumers of this document) |
+| 5 | <PRJ>-HLD-Part03-Datamodel | Data model |
+| 6 | API / event contracts (`contracts/`) | OpenAPI and event schemas |
 
 ### 2.2 Supporting module overview
 
@@ -76,7 +77,7 @@ This document describes the high-level solution approach for the supporting syst
 
 #### 3.1.1 ADM0010 – Activity log & audit log (Module: ADM, <Design status>)
 
-<Per-function structure (Part02 functional template §3.2.1). Guidance:>
+<Per-function structure (Part02 module functional template §3.2.1). Guidance:>
 
 - **Activity log**: chronological, human-readable history of a business entity; format `<activity> – <description> – <performed by> – <performed at>`; activities configured in an activity rule table.
 - **Audit log**: field-level change tracking for audited attributes (old value, new value, by, when, reason); append-only, no update / delete API.
@@ -98,7 +99,7 @@ Typical functions (keep those the BRD requires; mark others Not applicable):
 
 #### 3.2.1 ADM0100 – <Master data function> (Module: ADM, <Design status>)
 
-<Per-function structure (Part02 functional template §3.2.1). Standard CRUD guidance: create, search & list (paginated), view, edit, activate / deactivate, soft delete; uniqueness; no hard delete of values referenced by transactions; changes audit-logged; changes apply prospectively; cache invalidation.>
+<Per-function structure (Part02 module functional template §3.2.1). Standard CRUD guidance: create, search & list (paginated), view, edit, activate / deactivate, soft delete; uniqueness; no hard delete of values referenced by transactions; changes audit-logged; changes apply prospectively; cache invalidation.>
 
 ## 4. Supporting non-functional modules
 
@@ -127,7 +128,7 @@ Typical functions: UM0010 Manage user · UM0020 Add / remove user role (incl. bu
 
 #### 4.1.1 UM0010 – <Function name> (Module: UM, <Design status>)
 
-<Per-function structure (Part02 functional template §3.2.1).>
+<Per-function structure (Part02 module functional template §3.2.1).>
 
 ### 4.2 Authentication & authorization
 
@@ -169,7 +170,7 @@ Architecture, token design, OAuth / OIDC flows, MFA approach and API-level secur
 
 #### 4.2.7 AUTH0040 – Password & MFA management (Module: AUTH, <Design status>)
 
-<Per-function structure (Part02 functional template §3.2.1), or a pointer stub when owned entirely by the identity provider.>
+<Per-function structure (Part02 module functional template §3.2.1), or a pointer stub when owned entirely by the identity provider.>
 
 ### 4.3 Notification management
 
@@ -190,13 +191,13 @@ Architecture, token design, OAuth / OIDC flows, MFA approach and API-level secur
 
 #### 4.3.3 NM0030 – Manage notification rules & templates (Module: NM, <Design status>)
 
-<Per-function structure (Part02 functional template §3.2.1).>
+<Per-function structure (Part02 module functional template §3.2.1).>
 
 ### 4.4 Document management
 
 #### 4.4.1 DM0010 – Manage document (Module: DM, <Design status>)
 
-<Per-function structure (Part02 functional template §3.2.1). Guidance: upload / list / download / remove (soft) / metadata; allowed file types, max size and count as configuration; malware scan; storage location; access follows the owning business record.>
+<Per-function structure (Part02 module functional template §3.2.1). Guidance: upload / list / download / remove (soft) / metadata; allowed file types, max size and count as configuration; malware scan; storage location; access follows the owning business record.>
 
 ## 5. NFR summary & inventories
 
