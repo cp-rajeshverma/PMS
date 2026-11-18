@@ -189,7 +189,52 @@ All out-of-scope items are deferred, not rejected.
 
 ## 4. Stakeholders and roles
 
-_Pending – drafted after review of §1–§3._
+### 4.1 Stakeholders
+
+| Stakeholder | Interest / responsibility |
+| --- | --- |
+| Product owner – Rajesh Verma | Owns scope and priorities; approves each delivery step and every decision in the decision log |
+| Enterprise Architect – Rajesh Verma | Author of the BRD set; ensures requirements are complete, consistent and traceable into the HLD |
+| HR Manager | Business owner / SME for all modules; confirms employee, attendance and leave rules; reviews and approves the BRD set |
+| Finance Manager | Business owner / SME for all modules; confirms wage calculation and salary rules; reviews and approves the BRD set |
+| Business analyst | Captures and clarifies requirements; reviews the BRD set |
+| Employees | Maintain their own profile, attendance and leave; review and accept their salary records |
+| Managers | Approve their direct reports' records; also act as employees for their own records |
+| PMS Administrator | Runs the system: onboards and maintains employees, resets passwords, approves the top-level employee's records |
+| Design, development and QA teams | Build and test PMS from the BRD set; raise gaps as open items |
+
+### 4.2 Role catalogue
+
+| Role id | Role name | Type (internal / system) | Description | Data scope (own / reportees / all) |
+| --- | --- | --- | --- | --- |
+| ROLE-EMP | Employee | Internal | Completes and maintains own profile; enters and submits own attendance; requests and cancels own leave; accepts or disputes own salary records; changes own password | Own |
+| ROLE-MGR | Manager | Internal | Everything an Employee can do for own records, plus: approves or rejects direct reports' profiles, attendance and leave; approves direct reports' salary records; resolves their salary disputes (keep as is, or reopen attendance). Own records are approved by own manager (BR-CMN-08) | Own + direct reports (no skip-level) |
+| ROLE-ADM | PMS Administrator (Admin) | Internal | Onboards employees; maintains role, manager, hourly wage rate and date of joining; deactivates employees; resets passwords; approves all records of the top-level employee (profile, attendance, leave, salary, disputes) (D-58). Has no personal records (D-24) | All employee master data (EIMS); top-level employee's records for approval only |
+| SYS-EIMS | Employee service | System | Generates the Employee Id and temporary password at onboarding (UJ-SYS-04) | Employee records it creates |
+| SYS-SMS | Salary service | System | Generates salary records on attendance approval and voids them when attendance is reopened (UJ-SYS-01, UJ-SYS-03) | All salary records |
+| SYS-REC | Reconciliation job | System | Nightly at 01:00 IST: creates missed salary records and logs mismatches (UJ-SYS-02) | All approved attendance and salary records |
+
+Roles Employee, Manager and Admin are held in the identity provider and chosen by the Admin at onboarding (D-29). The role sets what a user can do; the Manager Id on the employee record sets whose records a manager approves.
+
+### 4.3 Role × module access
+
+Screen-level access is in each module BRD §4.2. R = read, R/W = read and write, A = approve, — = no access.
+
+| Module | Employee | Manager | Admin | System |
+| --- | --- | --- | --- | --- |
+| Shell – dashboard | R (own) | R (own + approval counts) | R (system tiles) | — |
+| Shell – approvals inbox | — | A (direct reports) | A (top-level employee) | — |
+| EIMS – Employee | R/W (own profile) | R/W (own profile); R, A (direct reports) | R/W (all employee master data, Admin-owned fields); A (top-level employee) | R/W (Employee Id, temporary password) |
+| AMS – Attendance | R/W (own) | R/W (own); R, A (direct reports, incl. reopen after dispute) | A (top-level employee; read limited to those records) | R (approved attendance, for salary) |
+| LMS – Leave | R/W (own) | R/W (own); R, A (direct reports) | A (top-level employee; read limited to those records) | — |
+| SMS – Salary | R, accept / dispute (own) | R, accept / dispute (own); R, A (direct reports, incl. keep as is) | A (top-level employee; read limited to those records) | R/W (generate, void, reconcile) |
+| SUP – UM / AUTH | Sign in, change own password | Sign in, change own password | Sign in, change own password; create users, assign role, reset password, deactivate | — |
+
+Notes:
+
+- Admin has no access to other employees' attendance, leave or salary (D-58). For the top-level employee only, Admin opens the module review screen to see the detail and decide (open item OI-01).
+- A manager never sees or approves their own records in approval views (BR-CMN-08).
+- Inactive employees cannot sign in; their history is kept (BR-CMN-06).
 
 ## 5. End-to-end business process and journeys
 
@@ -221,7 +266,12 @@ _Pending._
 
 ## 12. Open items
 
-_Pending._
+Running list, completed as the anchor is drafted.
+
+| Id | Question | Owner | Due | Status / decision |
+| --- | --- | --- | --- | --- |
+| OI-01 | Update the UX summaries so Admin can open the review screen for the top-level employee's records (SCR-SH-04 roles text, SCR-AMS-03, SCR-LMS-03, SCR-SMS-02), read limited to those records (D-58) | Product owner | Before HLD Part02 | Open |
+| OI-02 | What happens to a deactivated employee's pending items (own submissions, and items waiting for their approval as manager)? | HR Manager | Before PMS-BRD-M1-EIMS | Open |
 
 Approved decisions are kept in `docs/decisions/decision-log.md`.
 
