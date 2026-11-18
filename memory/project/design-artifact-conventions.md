@@ -6,7 +6,7 @@ Status: templates frozen 17 Nov 2026 (D-35 to D-42); data model split 18 Nov 202
 
 | Artifact | Template | One per |
 | --- | --- | --- |
-| <PRJ>-BRD (anchor) | brd-template.md | project (context, roles, end-to-end process, cross-module rules, system-wide NFRs) |
+| <PRJ>-BRD (anchor) | brd-anchor-template.md | project (context, roles, end-to-end process, cross-module rules, system-wide NFRs) |
 | <PRJ>-BRD-M<n>-<MOD> | brd-module-template.md | functional module |
 | <PRJ>-BRD-M<n>-SUP | brd-sup-template.md | project (supporting functions, need basis) |
 | <PRJ>-HLD-Part01-Architecture-and-Design | hld-part01-architecture-and-design-template.md | project (includes A&A architecture in §9; no separate A&A document, D-40) |
