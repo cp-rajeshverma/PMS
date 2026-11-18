@@ -18,14 +18,14 @@ Date: <Month YYYY>
 
 ## 2. How to use this document
 
-This document holds (a) the catalogue of architecture principles and patterns the design is assessed against (§3–4, referenced from <PRJ>-HLD-Part01-AnD §4) and (b) the register and record format of architecture decisions (ADRs, §5–6, referenced from AnD §18). For each catalogue row, record: For each row, record:
+This document holds (a) the catalogue of architecture principles and patterns the design is assessed against (§3–4, referenced from <PRJ>-HLD-Part01-Architecture-and-Design §4) and (b) the register and record format of architecture decisions (ADRs, §5–6, referenced from Part01 §18). For each catalogue row, record: For each row, record:
 
 | Column | Meaning |
 | --- | --- |
 | Id | Stable id, used in HLDs, ADRs and reviews (e.g. AP-RES-03) |
 | Applicability | **Applied** · **Partial** · **Deferred** (later phase) · **N/A** (with reason) |
 | Realization | How the design meets it (component, setting, pattern), one line |
-| Ref | Where it is designed: AnD / Part02 / Part03 section, ADR, standard |
+| Ref | Where it is designed: Part01 / Part02 / Part03 section, ADR, standard |
 
 Rows are never deleted; mark them N/A with a reason. Add project-specific rows at the end of a group.
 
@@ -67,7 +67,7 @@ Rows are never deleted; mark them N/A with a reason. Add project-specific rows a
 
 | Id | Principle | Description | Applicability | Realization | Ref |
 | --- | --- | --- | --- | --- | --- |
-| AP-GOV-01 | Big Design Up Front (BDUF) | Enterprise architecture artifacts (AnD, A&A, HLDs, data model, contracts) are approved before implementation starts | | | |
+| AP-GOV-01 | Big Design Up Front (BDUF) | Enterprise architecture artifacts (architecture & design, A&A, HLDs, data model, contracts) are approved before implementation starts | | | |
 | AP-GOV-02 | Stakeholder alignment | Functional, system, deployment and integration architectures are reviewed and signed off with the stakeholders concerned | | | |
 | AP-GOV-03 | Architecture decision records | Every significant decision is recorded with context, options and consequences | | | |
 | AP-GOV-04 | End-to-end traceability | Requirement → design → code → test are linked by ids | | | |

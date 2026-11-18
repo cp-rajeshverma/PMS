@@ -40,7 +40,7 @@ This document describes the high-level solution approach for each system functio
 
 | # | Document | Purpose |
 | --- | --- | --- |
-| 1 | <PRJ>-HLD-Part01-AnD | Overall architecture and design |
+| 1 | <PRJ>-HLD-Part01-Architecture-and-Design | Overall architecture and design |
 | 2 | <PRJ>-HLD-Part01a-Principles-Patterns-Decisions | Principles and patterns catalogue; ADR register |
 | 3 | <PRJ>-HLD-Part02-M<n>-<MOD>-Functional | Solution approach per functional module (one per module) |
 | 4 | <PRJ>-HLD-Part02-M<n>-SUP-Functional | Solution approach for supporting modules |

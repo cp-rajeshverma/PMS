@@ -41,7 +41,7 @@ Date: <Month YYYY>
 
 | # | Document | Purpose |
 | --- | --- | --- |
-| 1 | <PRJ>-HLD-Part01-AnD | Overall architecture and design |
+| 1 | <PRJ>-HLD-Part01-Architecture-and-Design | Overall architecture and design |
 | 2 | <PRJ>-HLD-Part02-M<n>-<MOD>-Functional | Solution approach per functional module |
 | 3 | <PRJ>-HLD-Part02-M<n>-SUP-Functional | Solution approach for supporting modules |
 | 4 | <PRJ>-HLD-Part03-Datamodel | Data model |

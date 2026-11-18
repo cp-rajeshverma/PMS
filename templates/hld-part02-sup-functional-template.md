@@ -48,7 +48,7 @@ This document describes the high-level solution approach for the supporting syst
 
 | # | Document | Purpose |
 | --- | --- | --- |
-| 1 | <PRJ>-HLD-Part01-AnD | Overall architecture and design |
+| 1 | <PRJ>-HLD-Part01-Architecture-and-Design | Overall architecture and design |
 | 2 | <PRJ>-HLD-Part01a-Principles-Patterns-Decisions | Principles and patterns catalogue; ADR register |
 | 3 | <PRJ>-HLD-Part02-M1..M<n>-<MOD>-Functional | Functional modules (consumers of this document) |
 | 4 | <PRJ>-HLD-Part03-Datamodel | Data model |
