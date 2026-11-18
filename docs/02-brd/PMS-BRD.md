@@ -15,6 +15,7 @@ Date: November 2026
 | 1.0 | 0.1 | 18-Nov-2026 | Rajesh Verma | First draft from UX v1.0 (D-34), BRD v1.0 baseline (D-09) and decisions D-01 to D-54 |
 | 1.0 | 0.2 | 18-Nov-2026 | Rajesh Verma | All sections drafted and reviewed section by section (decisions D-55 to D-69); ready for stakeholder review |
 | 1.0 | 0.3 | 18-Nov-2026 | Rajesh Verma | Profile change request introduced (D-70): BR-CMN-05, BR-CMN-11, glossary, scope, OBJ-07, C-01, NFR-05, FR-CMN-010 updated; OI-07; future scope for reactivation and pre-boarding; INT-09 (D-73) |
+| 1.0 | 0.4 | 18-Nov-2026 | Rajesh Verma | RPT prefix in §2.5; EIMS status in §2.3 and §11 (D-76) |
 
 ### 1.2 Review and approval
 
@@ -68,7 +69,7 @@ Users of the BRD set:
 
 | Module | Document | Business owner / SME | Version | Status |
 | --- | --- | --- | --- | --- |
-| EIMS – Employee Information | PMS-BRD-M1-EIMS | HR Manager, Finance Manager | – | Not started |
+| EIMS – Employee Information | PMS-BRD-M1-EIMS | HR Manager, Finance Manager | v1.0 rev 0.1 | Drafted – approval pending OI-02, OI-04, OI-EIMS-01, OI-EIMS-02 |
 | AMS – Attendance | PMS-BRD-M2-AMS | HR Manager, Finance Manager | – | Not started |
 | LMS – Leave | PMS-BRD-M3-LMS | HR Manager, Finance Manager | – | Not started |
 | SMS – Salary | PMS-BRD-M4-SMS | HR Manager, Finance Manager | – | Not started |
@@ -113,6 +114,7 @@ Users of the BRD set:
 | NFR-<MOD>-<NN> | Module-specific non-functional requirement | NFR-SMS-01 |
 | NOT-<MOD>-<NN> | Notification requirement | NOT-LMS-03 |
 | JOB-<MOD>-<NN> | Scheduled / backend job (JOB-CMN for cross-module) | JOB-CMN-01 |
+| RPT-<MOD>-<NN> | Report or dashboard widget supplied by a module | RPT-EIMS-01 |
 | INT-<NN> | Cross-module integration (event, API or external system), defined in this anchor §7 | INT-01 |
 | UJ-…, SCR-… | User journey / screen ids from UX | UJ-AMS-01, SCR-AMS-02 |
 
@@ -461,7 +463,7 @@ Functional requirement and rule counts for the modules are filled in as each mod
 | Module | Journeys | Screens | Functional requirements | Rules | Coverage status |
 | --- | --- | --- | --- | --- | --- |
 | Shared (this anchor) | 2: UJ-SH-03, UJ-SH-04 | 3: SCR-SH-00, SCR-SH-03, SCR-SH-04 | 15: FR-CMN-001 to FR-CMN-016 | 18: BR-CMN-01 to BR-CMN-18 | Drafted |
-| M1 – EIMS | 10: UJ-EIMS-01 to UJ-EIMS-09, UJ-SYS-04 | 4: SCR-EIMS-01 to SCR-EIMS-04 | In PMS-BRD-M1-EIMS | Baseline VR-EIMS-01 to 06 to be confirmed | Not started |
+| M1 – EIMS | 10: UJ-EIMS-01 to UJ-EIMS-09, UJ-SYS-04 | 4: SCR-EIMS-01 to SCR-EIMS-04 | 32: FR-EIMS-001 to FR-EIMS-041 | 20: VR-EIMS-01 to 10, BR-EIMS-01 to 10 | Drafted (pending open items) |
 | M2 – AMS | 4: UJ-AMS-01 to UJ-AMS-04 | 3: SCR-AMS-01 to SCR-AMS-03 | In PMS-BRD-M2-AMS | Baseline VR-AMS-01 to 05 to be confirmed | Not started |
 | M3 – LMS | 4: UJ-LMS-01 to UJ-LMS-04 | 3: SCR-LMS-01 to SCR-LMS-03 | In PMS-BRD-M3-LMS | Baseline VR-LMS-01 to 06 to be confirmed | Not started |
 | M4 – SMS | 7: UJ-SMS-01 to UJ-SMS-04, UJ-SYS-01 to UJ-SYS-03 | 2: SCR-SMS-01, SCR-SMS-02 | In PMS-BRD-M4-SMS | Baseline BR-SMS-01 to 04 to be confirmed | Not started |

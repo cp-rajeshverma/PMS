@@ -372,32 +372,102 @@ The role (Employee / Manager) is held with the user account, not on the employee
 
 ## 10. Notifications and alerts
 
-_Pending._
+The POC has no email or SMS (C-05); all notifications are in-app, through the dashboard, the approvals inbox and screen banners (anchor §5.3).
+
+| Id | Event / trigger | Recipient(s) | Channel (in-app / email) | Timing | Message summary |
+| --- | --- | --- | --- | --- | --- |
+| NOT-EIMS-01 | Profile not yet approved (Draft, Submitted or Rejected) | Employee | In-app: dashboard banner | Every sign-in until approved | "Complete your profile to start entering attendance and leave" with a link to My Profile (FR-CMN-005) |
+| NOT-EIMS-02 | Profile or change request submitted | Approver (manager; Admin for the top-level employee) | In-app: approvals inbox, Approvals count, dashboard approval card | Immediately | New item "Profile" with employee name and submission time |
+| NOT-EIMS-03 | Profile or change request withdrawn | Approver | In-app: approvals inbox | Immediately | Item removed from the inbox and counts |
+| NOT-EIMS-04 | Profile or change request rejected | Employee | In-app: dashboard "Things to do"; banner on My Profile | Immediately | "Profile returned – please correct" with the approver's remarks |
+| NOT-EIMS-05 | Profile or change request approved | Employee | In-app: profile status tile and My Profile banner | Immediately | Status shown as Approved; for a change request, the new values are shown |
+| NOT-EIMS-06 | Employee created or password reset | Admin | In-app: one-time panel with Copy | Immediately, once | Employee Id and temporary password (handed to the employee as per OI-EIMS-01) |
 
 ## 11. Scheduled jobs and integrations
 
-_Pending._
+EIMS has no scheduled jobs. It takes part in these anchor integrations (anchor §7):
+
+| Id | Name | Type (event / API / scheduled) | Trigger / schedule | Source → target | Business outcome |
+| --- | --- | --- | --- | --- | --- |
+| INT-03 | Employee details for other modules | API | Another module needs employee data | EIMS → AMS, LMS, SMS, Shell | Approved-profile data, date of joining, Manager Id, profile status and active flag; open change requests are not visible to other modules (BR-CMN-11) |
+| INT-04 | Approver resolution | API | On submit and in approval views | EIMS → AMS, LMS, SMS, Shell | Manager, or Admin for the top-level employee (BR-CMN-01, BR-CMN-08) |
+| INT-05 | Hourly wage rate | API | Salary record generation | EIMS → SMS | Current rate (BR-CMN-13, FR-EIMS-013) |
+| INT-07 | Dashboard and approvals inbox | API | Dashboard or inbox opened | EIMS → Shell | Items in §12 and NOT-EIMS-01 to 05 |
+| INT-08 | Identity provider | External system | Create, role change, password reset, deactivation | EIMS ↔ identity provider | Account with Employee Id as user name, role, temporary password, sign-in disabled when inactive |
+| INT-09 | Records before a new joining date | API | Admin changes date of joining | AMS, LMS → EIMS | Change refused when attendance or leave (other than Cancelled) lies before the new date (BR-EIMS-05) |
 
 ## 12. Reporting and dashboard
 
-_Pending._
+Items EIMS supplies to the shared dashboard and inbox (anchor §5.3) and to its own screens.
+
+| Id | Report / widget | Audience | Content | Filters |
+| --- | --- | --- | --- | --- |
+| RPT-EIMS-01 | Profile status tile | Employee, Manager | Own profile status; open change request status, if any | – |
+| RPT-EIMS-02 | "Things to do" items | Employee, Manager | Profile or change request rejected – fix; profile not yet submitted | – |
+| RPT-EIMS-03 | Waiting for your approval – Profiles | Manager, Admin | Count of submitted profiles and change requests to decide | – |
+| RPT-EIMS-04 | Admin tiles | Admin | Active employees; profiles not yet approved; items waiting for the Admin (top-level employee) | – |
+| RPT-EIMS-05 | Recently onboarded employees | Admin | Latest created employees with Employee Id, name, date of joining and profile status | – |
+| RPT-EIMS-06 | Employee directory | Admin (all), Manager (direct reports) | As FR-EIMS-001 to 004 | Search (name, Employee Id, email), profile status, show inactive |
 
 ## 13. Module non-functional requirements and volumetrics
 
-_Pending._
+System-wide NFRs (anchor §8) apply; module-specific additions:
+
+| NFR id | Category | Requirement | Measure / target |
+| --- | --- | --- | --- |
+| NFR-EIMS-01 | Security / privacy | Sensitive employee attributes (§9) are shown only within the role's data scope and never appear in logs, error messages or test data in readable form. | 0 sensitive values found in log and test-data review (D-71) |
+| NFR-EIMS-02 | Security | A temporary password is visible only once, to the Admin, at creation or reset; it cannot be displayed again. | Verified in security testing (FR-EIMS-005, FR-EIMS-041) |
+
+| Volume type | Year 1 | Growth % per year | Peak |
+| --- | --- | --- | --- |
+| Employees (records) | About 100 | 0 % (20 % headroom) | All employees onboarded at go-live (see OI-EIMS-02) |
+| Profile approvals | About 100 | 0 % | Go-live weeks |
+| Profile change requests | About 50 | 0 % | – |
+| Admin changes (role, manager, rate, joining date) and deactivations | Not estimated | – | – |
 
 ## 14. Assumptions, constraints and dependencies
 
-_Pending._
+| Type | Id | Statement |
+| --- | --- | --- |
+| Assumption | A-EIMS-01 | The approver checks the employee's details against information held outside PMS; PMS stores no supporting documents in the POC (DM is Phase 2, D-57). |
+| Constraint | C-EIMS-01 | Mobile numbers are Indian 10-digit numbers (VR-EIMS-03). |
+| Constraint | C-EIMS-02 | EIMS holds two business entities, Employee and Profile change request – the agreed exception to one entity per module (D-70). |
+| Dependency | DEP-EIMS-01 | Identity provider for user accounts, roles, temporary passwords and sign-in blocking (anchor DEP-01, INT-08). |
+| Dependency | DEP-EIMS-02 | INT-09 needs AMS and LMS. EIMS is built first (anchor DEP-03); until AMS and LMS exist there are no records to check, so the joining-date check is completed when they are delivered. |
+| Dependency | DEP-EIMS-03 | Open items OI-02 and OI-04 (anchor §12) are decided before this document is approved (anchor DEP-06). |
 
 ## 15. Traceability matrix
 
-_Pending._
+| Journey id | Screen id | Req id | Rule ids | Test ref (later) |
+| --- | --- | --- | --- | --- |
+| UJ-EIMS-01 | SCR-EIMS-01, SCR-EIMS-02 | FR-EIMS-006, 010, 011, 014 | VR-EIMS-02, 04, 05, 06, 07, 10; BR-EIMS-08, 09; BR-CMN-01 | |
+| UJ-EIMS-02 | SCR-SH-03, SCR-EIMS-03 | FR-EIMS-020, 021, 022, 023 | VR-EIMS-01, 02, 03, 07, 08, 09, 10; BR-EIMS-02; BR-CMN-09 | |
+| UJ-EIMS-03 | SCR-SH-04, SCR-EIMS-04 | FR-EIMS-030, 031, 032, 033, 035 | BR-CMN-01, 02, 03, 08, 12 | |
+| UJ-EIMS-04 | SCR-SH-03, SCR-EIMS-03 | FR-EIMS-024, 027 | BR-CMN-04 | |
+| UJ-EIMS-05 | SCR-EIMS-03 | FR-EIMS-025, 026, 027, 028 | BR-EIMS-03, 04; BR-CMN-05, 11 | |
+| UJ-EIMS-06 | SCR-EIMS-01, SCR-EIMS-02 | FR-EIMS-012, 013, 014, 015, 016, 017 | VR-EIMS-01, 04, 05, 06; BR-EIMS-04, 05, 06; BR-CMN-13 | |
+| UJ-EIMS-07 | SCR-EIMS-01, SCR-EIMS-02 | FR-EIMS-018 | BR-EIMS-07; BR-CMN-06, 14 | |
+| UJ-EIMS-08 | SCR-EIMS-01 | FR-EIMS-005 | NFR-EIMS-02 | |
+| UJ-EIMS-09 | SCR-EIMS-01, SCR-EIMS-04 | FR-EIMS-001, 002, 003, 004, 034 | BR-EIMS-10 | |
+| UJ-SYS-04 | SCR-EIMS-02 | FR-EIMS-040, 041 | BR-EIMS-01; NFR-EIMS-02 | |
 
 ## 16. Open items
 
-_Pending._
+Cross-module open items OI-02 (pending items of a deactivated employee), OI-04 (pending items on a manager change) and OI-07 (UX updates for the change request) are in the anchor §12.
+
+| Id | Question | Owner | Due | Status / decision |
+| --- | --- | --- | --- | --- |
+| OI-EIMS-01 | How does the Admin hand the temporary password to the employee (in person, phone, company email outside PMS)? PMS only shows it once to the Admin. | HR Manager | Before approval of this document | Open |
+| OI-EIMS-02 | At go-live, are all employees onboarded one by one by the Admin, or is a bulk import needed (not in the approved UX)? | HR Manager | Before approval of this document | Open |
 
 ## 17. Appendix
 
-_Pending._
+### 17.1 Future scope (not in this phase)
+
+| Area | Requirement ref | Note |
+| --- | --- | --- |
+| Onboarding | D-71 | Onboarding before the joining date (pre-boarding) |
+| Deactivation | D-71, BR-EIMS-07 | Reactivating an inactive employee |
+| Passwords | Anchor §13.1 | Self-service password reset |
+| Directory | D-63 | Skip-level view for managers |
+| Documents | D-57 | Supporting documents attached to the profile (DM, Phase 2) |

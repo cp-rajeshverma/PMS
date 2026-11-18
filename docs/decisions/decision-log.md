@@ -4,6 +4,7 @@ Every approved project decision, newest first. Approver for all entries: Rajesh 
 
 | Id | Date | Area | Decision |
 | --- | --- | --- | --- |
+| D-76 | 18 Nov 2026 | BRD | PMS-BRD-M1-EIMS §10 to §17 approved; all EIMS sections reviewed, document at v1.0 rev 0.1, final approval pending OI-02, OI-04, OI-EIMS-01, OI-EIMS-02; RPT-<MOD>-<NN> prefix added to anchor §2.5; anchor §2.3 and §11 updated (rev 0.4). Next: PMS-BRD-M2-AMS (19 Nov 2026) |
 | D-75 | 18 Nov 2026 | BRD | PMS-BRD-M1-EIMS §8 and §9 approved: VR-EIMS-01 to 10, BR-EIMS-01 to 10, Employee and Profile change request data; Submitted Date added to both entities |
 | D-74 | 18 Nov 2026 | BRD | PMS-BRD-M1-EIMS §7 approved: FR-EIMS-001 to FR-EIMS-041 with acceptance criteria; user stories US-EIMS-01 to US-EIMS-10 |
 | D-73 | 18 Nov 2026 | BRD | PMS-BRD-M1-EIMS §1–§6 approved (status codes as drafted); anchor gains INT-09 (AMS, LMS → EIMS check for records before a new joining date) |
