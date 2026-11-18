@@ -5,6 +5,7 @@ Every approved project decision, newest first. Approver for all entries: Rajesh 
 | Id | Date | Area | Decision |
 | --- | --- | --- | --- |
 | D-34 | 16 Nov 2026 | Gate | **Step 2 (UX) approved**: UX journey index v1.0, 17 mockups, 17 UX summaries. Next: Step 3 (BRD) |
+| D-45 | 18 Nov 2026 | Templates | ADR template merged into Part01a, renamed Principles, Patterns & Decisions: §5 ADR register (with related catalogue ids), §6 ADR record format; each ADR stays a separate file in docs/decisions/adr; AnD §18 refers to Part01a §5; adr-template.md retired |
 | D-44 | 18 Nov 2026 | Templates | Separate SUP data model template (hld-part03-sup-datamodel-template.md): need-basis assessment, one section per supporting group, entity structure referenced from module data model template §3.1; module data model template no longer carries SUP content |
 | D-43 | 18 Nov 2026 | Templates | Data model split: Part03 anchor (conventions, ownership, entity index with links, entity-level master ER, cross-service consistency, roll-ups) + Part03-M<n>-<MOD>-Datamodel per module + Part03-M<n>-SUP-Datamodel (need basis); columns defined only in module documents |
 | D-42 | 17 Nov 2026 | Templates | HLD Part03 data model template approved; supporting-module entities modelled on a need basis only (skipped where an existing capability provides them). Template set frozen; NPQMS reference PDFs may be removed from the Claude Project |

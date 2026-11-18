@@ -39,7 +39,7 @@ This document describes the overall architecture and design of <application>. It
 | # | Document | Purpose |
 | --- | --- | --- |
 | 1 | <PRJ>-HLD-Part01-AnD | Overall architecture and design (this document) |
-| 2 | <PRJ>-HLD-Part01a-Principles-Patterns | Catalogue of principles and patterns with applicability and realization |
+| 2 | <PRJ>-HLD-Part01a-Principles-Patterns-Decisions | Catalogue of principles and patterns with applicability and realization; ADR register and format |
 | 3 | <PRJ>-HLD-Part02-M<n>-<MOD>-Functional | Solution approach for system functions of each functional module |
 | 4 | <PRJ>-HLD-Part02-M<n>-SUP-Functional | Solution approach for supporting modules |
 | 5 | <PRJ>-HLD-Part03-Datamodel | Data model |
@@ -579,8 +579,10 @@ Full design in <PRJ>-HLD-Part03-Datamodel. Summary: database per service, data o
 
 ## 18. Architecture decisions
 
-| ADR | Title | Status | Decision log ref |
-| --- | --- | --- | --- |
+Architecture decisions are registered in <PRJ>-HLD-Part01a-Principles-Patterns-Decisions §5 (ADR register); each ADR is a separate file in `docs/decisions/adr/` using the format in Part01a §6. List here only the ADRs that shape this document's chapters:
+
+| ADR | Title | Affects AnD chapter(s) |
+| --- | --- | --- |
 
 ## 19. Risks and technical debt
 

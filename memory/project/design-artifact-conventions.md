@@ -1,6 +1,6 @@
 # Design artifact set and template conventions
 
-Status: templates frozen 17 Nov 2026 (D-35 to D-42); data model split 18 Nov 2026 (D-43, D-44). Templates live in `templates/`.
+Status: templates frozen 17 Nov 2026 (D-35 to D-42); data model split 18 Nov 2026 (D-43, D-44); ADR template merged into Part01a 18 Nov 2026 (D-45). Templates live in `templates/`.
 
 ## Artifact set (per project)
 
@@ -8,14 +8,14 @@ Status: templates frozen 17 Nov 2026 (D-35 to D-42); data model split 18 Nov 202
 | --- | --- | --- |
 | <PRJ>-BRD | brd-template.md | project |
 | <PRJ>-HLD-Part01-AnD | hld-part01-and-template.md | project (includes A&A architecture in §9; no separate A&A document, D-40) |
-| <PRJ>-HLD-Part01a-Principles-Patterns | hld-part01a-principles-patterns-template.md | project (330 items, 18 groups) |
+| <PRJ>-HLD-Part01a-Principles-Patterns-Decisions | hld-part01a-principles-patterns-decisions-template.md | project (330-item catalogue in 18 groups; ADR register §5 and ADR format §6, D-45) |
 | <PRJ>-HLD-Part02-M<n>-<MOD>-Functional | hld-part02-functional-template.md | functional module |
 | <PRJ>-HLD-Part02-M<n>-SUP-Functional | hld-part02-sup-functional-template.md | project (supporting modules) |
 | <PRJ>-HLD-Part03-Datamodel (anchor) | hld-part03-datamodel-template.md | project (conventions, ownership, entity index, master ER, cross-service, roll-ups) |
 | <PRJ>-HLD-Part03-M<n>-<MOD>-Datamodel | hld-part03-module-datamodel-template.md | functional module (entity definitions) |
 | <PRJ>-HLD-Part03-M<n>-SUP-Datamodel | hld-part03-sup-datamodel-template.md | project (supporting modules, need basis; entity structure per module template §3.1) |
 | UX journey index / UX summaries | ux-*-template.md | project / screen |
-| ADR | adr-template.md | decision |
+| ADR file | format in Part01a §6 | significant architecture decision (`docs/decisions/adr/ADR-<NNN>-*.md`) |
 
 ## Conventions adopted
 

@@ -1,6 +1,6 @@
-# <Project> – HLD Part01a: Architecture Principles & Patterns Catalogue
+# <Project> – HLD Part01a: Architecture Principles, Patterns & Decisions
 
-Document ID: <PRJ>-HLD-Part01a-Principles-Patterns-v<x.y>
+Document ID: <PRJ>-HLD-Part01a-Principles-Patterns-Decisions-v<x.y>
 Project: <project name and phase>
 Author: <name>
 Date: <Month YYYY>
@@ -16,9 +16,9 @@ Date: <Month YYYY>
 | Architect | | | |
 | Product owner | | | |
 
-## 2. How to use this catalogue
+## 2. How to use this document
 
-This catalogue lists the architecture principles and patterns the design is assessed against. It is referenced from <PRJ>-HLD-Part01-AnD §4. For each row, record:
+This document holds (a) the catalogue of architecture principles and patterns the design is assessed against (§3–4, referenced from <PRJ>-HLD-Part01-AnD §4) and (b) the register and record format of architecture decisions (ADRs, §5–6, referenced from AnD §18). For each catalogue row, record: For each row, record:
 
 | Column | Meaning |
 | --- | --- |
@@ -486,3 +486,51 @@ Source: Enterprise Integration Patterns (Hohpe & Woolf), messaging patterns cata
 | AP-AI-03 | Layered AI memory | Platform, project, user and session memory kept separate | | | |
 | AP-AI-04 | Guardrail rules for agents | Project rules restrict which agents and tools may be used | | | |
 | AP-AI-05 | Curated knowledge base | Only approved project documents are fed to agents | | | |
+
+## 5. Architecture decision register (ADRs)
+
+An ADR records a significant architecture decision: one that is hard to reverse, affects several components, or departs from a catalogue principle. Smaller decisions stay in the decision log (D-xx) only. Each ADR is kept as its own file, `docs/decisions/adr/ADR-<NNN>-<short-title>.md`, using the format in §6; this register is the index.
+
+| ADR | Title | Status | Date | Related principles / patterns (catalogue ids) | Decision log ref | File |
+| --- | --- | --- | --- | --- | --- | --- |
+| ADR-001 | | | | | D-<NN> | `docs/decisions/adr/ADR-001-<title>.md` |
+
+Rules:
+
+- Numbers are never reused; an accepted ADR is not edited. A change of decision is a new ADR that supersedes the old one (old status → Superseded by ADR-<NNN>).
+- A catalogue row whose applicability is Deferred or N/A because of a decision references the ADR in its Ref column.
+
+## 6. ADR record format
+
+Each ADR file uses this structure:
+
+```markdown
+# ADR-<NNN>: <Short decision title>
+
+| Field | Value |
+| --- | --- |
+| Status | Proposed / Accepted / Superseded by ADR-<NNN> / Deprecated |
+| Date | <yyyy-mm-dd> |
+| Deciders | <names / roles> |
+| Decision log ref | D-<NN> |
+| Related principles / patterns | <catalogue ids, e.g. AP-FE-03, AP-MS-12> |
+
+## Context
+
+<The problem, forces and constraints that make a decision necessary.>
+
+## Decision
+
+<What was decided, stated in one or two sentences.>
+
+## Alternatives considered
+
+| Option | Pros | Cons | Why not chosen |
+| --- | --- | --- | --- |
+
+## Consequences
+
+- **Positive:** <…>
+- **Negative / trade-offs:** <…>
+- **Follow-ups:** <…>
+```
