@@ -4,6 +4,7 @@ Every approved project decision, newest first. Approver for all entries: Rajesh 
 
 | Id | Date | Area | Decision |
 | --- | --- | --- | --- |
+| D-68 | 18 Nov 2026 | BRD | PMS-BRD §9 and §10 approved: assumptions A-01 to A-05, constraints C-01 to C-07, dependencies DEP-01 to DEP-06, risks R-01 to R-08 with likelihood, impact and owners as drafted |
 | D-67 | 18 Nov 2026 | BRD | PMS-BRD §8 approved: system-wide NFR-01 to NFR-08 (incl. NFR-03 measure "0 access-control defects in security testing") and §8.1 volumetrics with year-1 estimates as drafted; open item OI-05 |
 | D-66 | 18 Nov 2026 | BRD | PMS-BRD §7 approved: integrations INT-01 to INT-08 and job JOB-CMN-01; INT-<NN> prefix added to §2.5 |
 | D-65 | 18 Nov 2026 | BRD | PMS-BRD §6 approved: cross-module rules BR-CMN-01 to BR-CMN-18 (baseline BR-C1 to BR-C8 kept in order as BR-CMN-01 to 08; single-module rules stay in module BRDs); open item OI-04 (pending approvals on manager change) |

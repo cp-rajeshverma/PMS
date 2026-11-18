@@ -415,11 +415,41 @@ Year-1 figures are planning estimates derived from about 100 employees (D-59). G
 
 ## 9. Assumptions, constraints and dependencies
 
-_Pending._
+| Type | Id | Statement |
+| --- | --- | --- |
+| Assumption | A-01 | Single company, single time zone (IST) and single currency (INR) (D-08). |
+| Assumption | A-02 | Weekends and holidays are not treated differently; any date may carry attendance or leave (D-08). |
+| Assumption | A-03 | Users work in English on desktop browsers (D-08). |
+| Assumption | A-04 | About 20 sample employees are enough for testing and demonstration; live use is up to about 100 employees in year 1 (D-08, D-59). |
+| Assumption | A-05 | The HR Manager and Finance Manager are available to answer questions and review each BRD document (D-55). |
+| Constraint | C-01 | PMS is a lightweight POC: four functional modules, one business entity per module (D-06, D-10). |
+| Constraint | C-02 | Each module is a separate service with its own data store; modules share data only through agreed interfaces (§7) (D-10, D-18). |
+| Constraint | C-03 | The approved technology stack and hosting apply (D-11, D-12, D-16, D-21); details are in PMS-HLD-Part01-Architecture-and-Design. |
+| Constraint | C-04 | All screens run inside one shell application; module screens are built into it for the POC (D-23, ADR-001). |
+| Constraint | C-05 | No email or SMS notifications in the POC; users are guided by dashboard reminders and the approvals inbox (D-57, §5.3). |
+| Constraint | C-06 | No self-service password reset; the PMS Administrator resets passwords (D-07). |
+| Constraint | C-07 | The approved UX v1.0 is the baseline for screens and journeys; any change needs product owner approval and a decision-log entry (D-34). |
+| Dependency | DEP-01 | An identity provider for sign-in, roles, password policy, lockout and idle timeout (D-16, INT-08). |
+| Dependency | DEP-02 | A message broker for the AMS → SMS hand-over events (D-16, D-21, INT-01, INT-02). |
+| Dependency | DEP-03 | Build order: EIMS first, then AMS and LMS, then SMS, because every module needs an approved employee profile and SMS needs approved attendance and the hourly wage rate (baseline §10). |
+| Dependency | DEP-04 | Development, QA and Production environments are available on the approved hosting platform (D-11). |
+| Dependency | DEP-05 | The BRD set is reviewed and approved by the business stakeholders before the HLD starts (D-14, D-55). |
+| Dependency | DEP-06 | Open items in §12 are closed before the module BRD that depends on them is approved. |
 
 ## 10. Risks
 
-_Pending._
+Likelihood and impact: High / Medium / Low.
+
+| Risk id | Risk | Likelihood | Impact | Mitigation | Owner |
+| --- | --- | --- | --- | --- | --- |
+| R-01 | An attendance-approved hand-over to SMS is lost, so no salary record is created. | Low | High | Reliable hand-over designed in HLD; nightly reconciliation creates any missed record (JOB-CMN-01, KPI-04). | Enterprise Architect |
+| R-02 | Approvals stall when a manager is absent, since the POC has no delegation. | Medium | Medium | Dashboard and inbox show pending counts; Admin can reassign the manager (BR-CMN-13, OI-04); delegation recorded as Future scope. | HR Manager |
+| R-03 | The dispute and reopen cycle creates a second valid salary record for the same day. | Low | High | Exactly one non-voided salary record per attendance (NFR-06); generation repeated safely; reconciliation checks it (KPI-04). | Enterprise Architect |
+| R-04 | Personal data (date of birth, parents' names, address, wages) is seen by someone outside the allowed scope. | Low | High | Role and data-scope check on every request (NFR-03, §4.3); Admin has no access to others' attendance, leave or salary (D-58); synthetic test data only. | Enterprise Architect |
+| R-05 | Stakeholders expect full payroll features (deductions, payslips, payroll runs) during the POC. | Medium | Medium | Approved scope and out-of-scope list (§3.3); new needs go through the decision log as Phase 2 or Future. | Product owner |
+| R-06 | Design, code or tests drift from the approved requirements and decisions. | Medium | High | Approval gate at each delivery step; decision log; BRD → HLD → code → test traceability (KPI-05, §11). | Product owner |
+| R-07 | Business stakeholders are not yet named, which may delay reviews and sign-off. | Medium | Medium | Review roles fixed now (§1.2); names added when shared; product owner tracks review dates. | Product owner |
+| R-08 | Open items (§12) stay unresolved and hold up the module BRDs. | Medium | Medium | Each open item has an owner and a due point; reviewed at each section review. | Product owner |
 
 ## 11. Traceability roll-up
 
