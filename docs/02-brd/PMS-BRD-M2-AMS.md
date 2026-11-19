@@ -220,11 +220,43 @@ All requirements are priority Must and phase POC. Approve-several-at-once from t
 
 ## 8. Business and validation rules
 
-_Pending._
+| Rule id | Rule | Type (business / validation) | Applies to (screen / function) | Source (decision / UX) |
+| --- | --- | --- | --- | --- |
+| VR-AMS-01 | One active attendance entry per employee per date; discarded entries do not count. | Validation | SCR-AMS-02 | D-03 (A1), D-77; baseline AMS-V1 |
+| VR-AMS-02 | From time is earlier than to time, on the same day; no overnight entries. | Validation | SCR-AMS-02 | D-03 (A2); baseline AMS-V2 |
+| VR-AMS-03 | The date is not in the future and not before the employee's date of joining; there is no other limit on past dates. | Validation | SCR-AMS-02 | D-77; baseline AMS-V3 |
+| VR-AMS-04 | An entry cannot be submitted for a date covered by the employee's submitted or approved leave. | Validation | SCR-AMS-02 | D-03 (A3), D-77, BR-CMN-10; baseline AMS-V4 |
+| VR-AMS-05 | Only an employee with an approved profile can create or submit attendance. | Validation | SCR-AMS-01, SCR-AMS-02 | BR-CMN-09; baseline AMS-V5 |
+| VR-AMS-06 | From and to times are on 15-minute steps between 00:00 and 23:45; the minimum is 15 minutes (0.25 h). | Validation | SCR-AMS-02 | D-31, D-77 |
+| VR-AMS-07 | To submit, date, from time and to time are required; to save a draft, only the date is required. | Validation | SCR-AMS-02 | UX SCR-AMS-02, D-79 |
+| BR-AMS-01 | Hours worked = to time – from time, in hours with 2 decimals (for example 09:00 to 17:30 = 8.50). | Business | SCR-AMS-02, SCR-AMS-03, INT-01 | D-05 (S2); UX SCR-AMS-02 |
+| BR-AMS-02 | A submitted entry cannot be withdrawn by the employee; the approver rejects it instead. | Business | SCR-AMS-02 | D-31 |
+| BR-AMS-03 | Above 12 hours the employee must confirm before submitting, and approvers see an "Over 12 h" flag; nothing is blocked. | Business | SCR-AMS-02, SCR-AMS-03, SCR-SH-04 | D-31, D-77 |
+| BR-AMS-04 | Only Draft and Rejected entries can be discarded, by their owner, after confirmation; the entry is kept inactive and the date becomes free. | Business | SCR-AMS-02 | D-77 |
+| BR-AMS-05 | The date of an entry cannot be changed once the entry exists. | Business | SCR-AMS-02 | UX SCR-AMS-02 |
+| BR-AMS-06 | Weekends may carry attendance and are never shown as missing. | Business | SCR-AMS-01 | D-08, D-28 |
+
+Cross-module rules that also apply: BR-CMN-01 to BR-CMN-10, BR-CMN-12, BR-CMN-15, BR-CMN-17, BR-CMN-18 (anchor §6); missing weekdays per FR-CMN-004.
 
 ## 9. Data requirements
 
-_Pending._
+"Mandatory" means required to submit (VR-AMS-07). Attendance data is not classed as sensitive (D-71 lists the sensitive employee attributes); it is still shown only within the role's data scope (anchor §4.3).
+
+### 9.1 Attendance
+
+| Attribute | Description | Type / format | Mandatory | Validation (VR id) | Set by | Sensitive (Y / N) |
+| --- | --- | --- | --- | --- | --- | --- |
+| Attendance Id | Unique identifier | System key | Y | – | System | N |
+| Employee Id | Owner of the entry | Employee Id | Y | VR-AMS-05 | System (signed-in employee) | N |
+| Date | Work date | Date, IST | Y | VR-AMS-01, 03, 04 | Employee | N |
+| From Time | Start of work | Time HH:MM, 15-minute steps | Y | VR-AMS-02, 06 | Employee | N |
+| To Time | End of work | Time HH:MM, 15-minute steps | Y | VR-AMS-02, 06 | Employee | N |
+| Hours worked | To time – from time; shown on screens and handed to SMS | Decimal, 2 places | – (derived) | BR-AMS-01 | System | N |
+| Status | Attendance status (§6.1) | Draft, Submitted, Approved, Rejected | Y | – | System on action | N |
+| Submitted Date | When the entry was last submitted (shown in team review) | Date and time, IST | – | – | System | N |
+| Approver Id, Approved Date, Remarks | Workflow fields; remarks hold the rejection or reopen reason | Employee Id; date and time; text ≤ 500 | – | BR-CMN-03 | System / approver (BR-CMN-02) | N |
+| Is Active | Soft-delete flag; false when discarded | Yes / No | Y | BR-AMS-04 | System; employee on discard | N |
+| Created By, Created Date, Updated By, Updated Date | Audit fields | User id; date and time, IST | Y | – | System (BR-CMN-07) | N |
 
 ## 10. Notifications and alerts
 
