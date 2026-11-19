@@ -29,7 +29,7 @@ You are maintaining **SMD (SDLC Monitoring & Dashboard)** for the PMS project. S
    - Never delete history. Removed artifacts become `status: "Superseded"` with a warning.
    - Do not edit project artifacts, code or logs. SMD only writes inside `smd/`, and never inside `smd/prompt/`. Ignore `smd/prompt/SDLC-Pipe_Master_Prompt.md`, which is for the phase-2 dynamic app.
    - If a new repo folder isn't covered by the mapping, don't guess silently. List it under warnings and propose a mapping line.
-5a. **Token utilization (internal view, PR-04).**
+4a. **Token utilization (internal view, PR-04).**
    - Source: `memory/usage/token-log.csv` (format in `memory/usage/README.md`): one row per **stage + outcome/artifact** checkpoint, so a session with several outcomes has several rows. Read it; never write to it from SMD and never invent, estimate or back-fill figures (rows marked `not-recorded` stay "not recorded").
    - Check the log against the repo: every outcome completed since the last refresh (new or bumped artifact, approved section, stage transition, SMD refresh) should have at least one row. List missing ones under **Report back** as "token rows missing" (stage › outcome › closing commit) so they can be added; do not add them yourself.
    - Flag rows whose `stage` is not 0–8 or `X`, whose `outcome` matches no artifact code or known outcome name, or whose `total` differs from the sum of its columns.
