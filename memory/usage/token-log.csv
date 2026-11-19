@@ -6,3 +6,4 @@ date,stage,outcome,module,activity,requests,input,cache_write,cache_read,output,
 2026-11-18,2,PMS-BRD-M1-EIMS,EIMS,Module BRD draft and review,,,,,,,not-recorded,D-76,"Before PR-04; not recoverable"
 2026-11-19,2,PMS-BRD-M2-AMS,AMS,Module BRD draft and review,,,,,,,not-recorded,D-81,"Before PR-04; not recoverable"
 2026-11-19,2,PMS-BRD-M3-LMS,LMS,Module BRD draft and review,,,,,,,not-recorded,D-88,"Before PR-04; not recoverable"
+2026-11-19,2,PMS-BRD-M4-SMS,SMS,Context load; gap questions; §1–§6 draft and review,,,,,,,not-recorded,D-91,"No usage reading available in this session"

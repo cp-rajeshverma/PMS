@@ -20,6 +20,7 @@ Date: November 2026
 | 1.0 | 0.6 | 19-Nov-2026 | Rajesh Verma | AMS status in §2.3 and §11 (D-81) |
 | 1.0 | 0.7 | 19-Nov-2026 | Rajesh Verma | Cancelling approved leave added to out of scope (§3.3) and future scope (§13.1) (D-84) |
 | 1.0 | 0.8 | 19-Nov-2026 | Rajesh Verma | OI-09 (LMS UX updates); LMS status in §2.3 and §11 (D-88) |
+| 1.0 | 0.9 | 19-Nov-2026 | Rajesh Verma | OI-10 (SMS UX updates) (D-90) |
 
 ### 1.2 Review and approval
 
@@ -491,6 +492,7 @@ Running list, completed as the anchor is drafted.
 | OI-07 | Update the UX for the profile change request and the withdrawal of a submitted new profile (D-70): SCR-EIMS-03, SCR-EIMS-04, SCR-SH-03, SCR-SH-04, UX Journey Index (UJ-EIMS-05, status list) | Product owner | Before HLD Part02 | Open |
 | OI-08 | Update the AMS UX (D-77): discard action for Draft and Rejected attendance (SCR-AMS-01, SCR-AMS-02); "Leave on this day" flag on draft or rejected attendance; "Over 12 h" flag for approvers (SCR-AMS-03, SCR-SH-04); History default current month incl. inactive reports | Product owner | Before HLD Part02 | Open |
 | OI-09 | Update the LMS UX (D-84, D-88): Team leave History date range filter, defaulting to the current month and including inactive reports (SCR-LMS-03); submitted time in Pending rows; "Also away" empty for the top-level employee; "Requested" shows the first submission date (SCR-LMS-01, SCR-LMS-03) | Product owner | Before HLD Part02 | Open |
+| OI-10 | Update the SMS UX (D-90): Team salary must not list the manager's own records (BR-CMN-08, SCR-SMS-02 mockup); separate notes for the dispute remark and the manager's Keep as is explanation, and repeated disputes after Keep as is (SCR-SMS-01, SCR-SMS-02, SCR-SH-04); Accepted Date; Team salary All records default current month to today incl. inactive reports, Needs action not filtered by date (SCR-SMS-02); Admin dashboard reconciliation tile shows result, records created / voided and mismatches (SCR-SH-03); UX Journey Index UJ-SYS-02 adds voiding of stale records | Product owner | Before HLD Part02 | Open |
 
 Approved decisions are kept in `docs/decisions/decision-log.md`.
 
