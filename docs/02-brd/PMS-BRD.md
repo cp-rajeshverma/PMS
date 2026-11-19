@@ -16,6 +16,7 @@ Date: November 2026
 | 1.0 | 0.2 | 18-Nov-2026 | Rajesh Verma | All sections drafted and reviewed section by section (decisions D-55 to D-69); ready for stakeholder review |
 | 1.0 | 0.3 | 18-Nov-2026 | Rajesh Verma | Profile change request introduced (D-70): BR-CMN-05, BR-CMN-11, glossary, scope, OBJ-07, C-01, NFR-05, FR-CMN-010 updated; OI-07; future scope for reactivation and pre-boarding; INT-09 (D-73) |
 | 1.0 | 0.4 | 18-Nov-2026 | Rajesh Verma | RPT prefix in §2.5; EIMS status in §2.3 and §11 (D-76) |
+| 1.0 | 0.5 | 19-Nov-2026 | Rajesh Verma | BR-CMN-10 clarified for draft and rejected attendance; INT-10; OI-08 (D-77) |
 
 ### 1.2 Review and approval
 
@@ -360,7 +361,7 @@ Rules that affect two or more modules are defined here once and referenced by id
 | BR-CMN-07 | Every record carries Created By, Created Date, Updated By and Updated Date, set by the system. | EIMS, AMS, LMS, SMS | D-01; baseline BR-C7 |
 | BR-CMN-08 | No one approves their own records. A manager's own records are approved by their own manager (or by the Admin if the manager is the top-level employee). | EIMS, AMS, LMS, SMS | D-01; baseline BR-C8 |
 | BR-CMN-09 | Only an employee with an approved profile can enter attendance or request leave. | EIMS, AMS, LMS | Baseline AMS-V5, LMS-V6; SCR-SH-03 |
-| BR-CMN-10 | A date cannot carry both attendance and leave: attendance is not allowed on a date covered by the employee's submitted or approved leave, and leave is not allowed on a date that has submitted or approved attendance. | AMS, LMS | D-03 (A3), D-04 (L4); baseline AMS-V4, LMS-V4 |
+| BR-CMN-10 | A date cannot carry both attendance and leave: attendance is not allowed on a date covered by the employee's submitted or approved leave, and leave is not allowed on a date that has submitted or approved attendance. Draft or Rejected attendance does not block leave, but cannot be submitted while submitted or approved leave covers the date (D-77). | AMS, LMS | D-03 (A3), D-04 (L4); baseline AMS-V4, LMS-V4 |
 | BR-CMN-11 | While a profile change request is open, the profile stays Approved; the other modules keep using it and the employee keeps working normally. Approved changes apply from the moment of approval. | EIMS, AMS, LMS, SMS | D-29 (UXQ-14), D-70 |
 | BR-CMN-12 | An approver can approve several records at once; rejection is one record at a time. | EIMS, AMS, LMS, SMS | D-24 (UXQ-01) |
 | BR-CMN-13 | Admin-owned details (role, manager, hourly wage rate, date of joining) change without employee approval or a change request. A new hourly wage rate applies only to salary records generated after the change; existing salary records keep the rate copied when they were generated. | EIMS, SMS | D-05 (S1), SCR-EIMS-02; baseline SMS-R2 |
@@ -386,6 +387,7 @@ Business view of how modules hand over to each other. Message formats, API contr
 | INT-07 | Dashboard and approvals inbox | API | User opens the dashboard or approvals inbox | EIMS, AMS, LMS, SMS → Shell | Tiles, to-do items, missing attendance days and pending approvals shown per role; each module's card loads on its own (§5.3) |
 | INT-08 | Identity provider | External system | Admin onboards, changes role, deactivates or resets a password; user signs in or changes password | EIMS ↔ identity provider | User account created with the Employee Id as user name and a temporary password; role stored; sign-in disabled for inactive employees; password policy, lockout and idle timeout enforced (D-16, D-26, D-28, D-29) |
 | INT-09 | Records before a new joining date | API | Admin changes an employee's date of joining | AMS, LMS → EIMS | Change allowed only if no attendance or leave (other than Cancelled) lies before the new date (D-71) |
+| INT-10 | Salary status for attendance | API | Approver opens attendance history or the approvals inbox | SMS → AMS, Shell | Approved attendance whose salary record is Disputed is marked "Salary disputed" and can be reopened (BR-CMN-15, D-77) |
 
 ## 8. System-wide non-functional requirements
 
@@ -483,6 +485,7 @@ Running list, completed as the anchor is drafted.
 | OI-05 | Which business values must the PMS Administrator be able to change without a release (for example idle timeout, lockout limits, reconciliation time, remarks length)? Today all are fixed by decisions. | Product owner | Before PMS-BRD-M5-SUP (ADM is Phase 2) | Open |
 | OI-06 | UX Journey Index still shows the reconciliation time for UJ-SYS-02 as "TBD"; it was set to 01:00 IST (D-24). Correct the UX document. | Product owner | Before HLD Part02 | Open |
 | OI-07 | Update the UX for the profile change request and the withdrawal of a submitted new profile (D-70): SCR-EIMS-03, SCR-EIMS-04, SCR-SH-03, SCR-SH-04, UX Journey Index (UJ-EIMS-05, status list) | Product owner | Before HLD Part02 | Open |
+| OI-08 | Update the AMS UX (D-77): discard action for Draft and Rejected attendance (SCR-AMS-01, SCR-AMS-02); "Leave on this day" flag on draft or rejected attendance; "Over 12 h" flag for approvers (SCR-AMS-03, SCR-SH-04); History default current month incl. inactive reports | Product owner | Before HLD Part02 | Open |
 
 Approved decisions are kept in `docs/decisions/decision-log.md`.
 
