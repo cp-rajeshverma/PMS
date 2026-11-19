@@ -14,4 +14,4 @@ Each prompt is self-contained: paste it into a new session with the PMS folder (
 
 The prompt for PMS-BRD-M5-SUP is added after SMS.
 
-**Execute prompts:** `execute-prompt-file-<prompt>.md` holds the short message to paste into a new session to run a prompt file (e.g. `execute-prompt-file-brd-m4-sms-prompt.md`). The SDLC dashboard refresh has its own in `smd/prompt/execute-prompt-file-smd-update-prompt.md`.
+**Execute prompts:** `execute-prompt-file-<prompt>.md` holds the short message to paste into a new session to run a prompt file – one per prompt file (anchor, M1-EIMS, M2-AMS, M3-LMS, M4-SMS). The SDLC dashboard refresh has its own in `smd/prompt/execute-prompt-file-smd-update-prompt.md`.
