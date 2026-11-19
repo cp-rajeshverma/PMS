@@ -4,6 +4,7 @@ Every approved project decision, newest first. Approver for all entries: Rajesh 
 
 | Id | Date | Area | Decision |
 | --- | --- | --- | --- |
+| D-78 | 19 Nov 2026 | BRD | PMS-BRD-M2-AMS §1–§6 approved: status codes as drafted; reopen reuses the Rejected status |
 | D-77 | 19 Nov 2026 | AMS | AMS rules: owner can discard Draft or Rejected attendance (soft delete, status kept, date freed; Submitted and Approved cannot be discarded); leave allowed on a date with Draft or Rejected attendance, which then cannot be submitted while submitted or approved leave covers the date (BR-CMN-10 clarified); no backdating limit beyond the date of joining; times in 15-minute steps from 00:00 to 23:45, To after From, minimum 0.25 h; "Over 12 h" flag shown to approvers (information only); team history defaults to the current month and includes inactive reports; anchor INT-10 (SMS → AMS salary status) and OI-08 (AMS UX updates); anchor rev 0.5 |
 | D-76 | 18 Nov 2026 | BRD | PMS-BRD-M1-EIMS §10 to §17 approved; all EIMS sections reviewed, document at v1.0 rev 0.1, final approval pending OI-02, OI-04, OI-EIMS-01, OI-EIMS-02; RPT-<MOD>-<NN> prefix added to anchor §2.5; anchor §2.3 and §11 updated (rev 0.4). Next: PMS-BRD-M2-AMS (19 Nov 2026) |
 | D-75 | 18 Nov 2026 | BRD | PMS-BRD-M1-EIMS §8 and §9 approved: VR-EIMS-01 to 10, BR-EIMS-01 to 10, Employee and Profile change request data; Submitted Date added to both entities |
