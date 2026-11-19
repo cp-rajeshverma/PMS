@@ -9,4 +9,6 @@ date,stage,outcome,module,activity,requests,input,cache_write,cache_read,output,
 2026-11-19,2,PMS-BRD-M4-SMS,SMS,Context load; gap questions; §1–§6 draft and review,,,,,,,not-recorded,D-91,"No usage reading available in this session"
 2026-11-19,2,PMS-BRD-M4-SMS,SMS,§7 functional requirements draft and review,,,,,,,not-recorded,D-92,"No usage reading available in this session"
 2026-11-19,2,PMS-BRD-M4-SMS,SMS,§8–§9 rules and data draft and review,,,,,,,not-recorded,D-93,"No usage reading available in this session"
-2026-11-19,2,PMS-BRD-M4-SMS,SMS,§10–§17 draft and review; anchor, handoff and prompt updates,,,,,,,not-recorded,D-94,"No usage reading available in this session"
+2026-11-19,2,PMS-BRD-M4-SMS,SMS,"§10–§17 draft and review; anchor, handoff and prompt updates",,,,,,,not-recorded,D-94,"No usage reading available in this session"
+2026-11-19,2,PMS-BRD-M4-SMS,SMS,Module BRD draft and review (all sections) – session total share,53,124,173886,13161067,50397,13385474,estimated,00e9b24,"Session reading 76 requests / 19,194,265 tokens measured after the SMD refresh; no reading at 00e9b24, so split by request count (53 SMS BRD / 23 SMD refresh incl. token-log follow-up)"
+2026-11-19,X,SMD dashboard refresh,ALL,Refresh SMD data and build; token-log follow-up,23,54,75460,5711406,21871,5808791,estimated,8e4ecb0,"Session reading 76 requests / 19,194,265 tokens measured after the SMD refresh; no reading at 00e9b24, so split by request count (53 SMS BRD / 23 SMD refresh incl. token-log follow-up)"
