@@ -1,0 +1,85 @@
+# SMD configuration – approved 2026-11-19 (customer-facing, default stage names, planned dates TBD)
+app: { code: PMS, name: Payroll Management System, modules: [EIMS, AMS, LMS, SMS, SUP], target_go_live: null }
+owner: Rajesh Verma (Enterprise Architect / Product owner)
+remote_base_url: https://github.com/cp-rajeshverma/PMS/blob/main/
+audience: customer-facing      # rule PR-03 / D-60: dashboard never names AI tools or agents
+neutral_terms:                 # applied to every text shown in the dashboard
+  "BMAD": "agile delivery"
+  "Claude Docs": "working document"
+  "Claude Project": "project workspace"
+  "NPQMS": "external reference"
+neutral_generic: "Internal delivery-tooling decision / housekeeping"   # used when text still names tools or agents
+display_names: { driven_by: { Manual: Manual, BMAD: Agile } }
+planned_dates: TBD             # to be decided based on progress
+target_go_live: TBD
+
+pipelines:
+  - id: PMS-TX-01
+    type: TRANSFORMATION
+    stages:
+      - { seq: 0, name: Initiation & Governance, repo_step: "Step 1", driven_by: Manual, gate_evidence: [D-42, D-52] }
+      - { seq: 1, name: Discovery & UX,          repo_step: "Step 2", driven_by: Manual, gate_evidence: [D-34] }
+      - { seq: 2, name: Business Requirements,   repo_step: "Step 3", driven_by: Manual,
+          deliverables: [PMS-BRD, PMS-BRD-M1-EIMS, PMS-BRD-M2-AMS, PMS-BRD-M3-LMS, PMS-BRD-M4-SMS, PMS-BRD-M5-SUP] }
+      - { seq: 3, name: Solution Design (HLD),   repo_step: "Step 4", driven_by: Manual,
+          deliverables: [HLD-Part01, HLD-Part01a, HLD-Part02 anchor+M1..M4+SUP, HLD-Part03 anchor+M1..M4+SUP] }
+      - { seq: 4, name: Agile Planning,          repo_step: "Step 5", driven_by: BMAD }
+      - { seq: 5, name: Build,                   repo_step: "Step 5", driven_by: BMAD }
+      - { seq: 6, name: Testing,                 repo_step: "Step 5", driven_by: BMAD }
+      - { seq: 7, name: Release & Deployment,    repo_step: "Step 6", driven_by: BMAD }
+      - { seq: 8, name: Go-Live & Hypercare,     repo_step: "Step 6", driven_by: BMAD }
+
+mapping:   # repo path glob -> stage / artifact type
+  - { glob: "templates/**",                         stage: 0, type: Template }
+  - { glob: "README.md",                            stage: 0, type: Governance }
+  - { glob: "docs/01-ux/ux-journey-index.md",       stage: 1, type: UXJourneyIndex }
+  - { glob: "docs/01-ux/mockups/html/*.html",       stage: 1, type: Mockup }
+  - { glob: "docs/01-ux/mockups/png/*.png",         stage: 1, type: Screenshot }   # mapped to screens by file-name prefix (a=AMS, e=EIMS, l=LMS, s=SMS, s-/sh=Shell)
+  - { glob: "docs/01-ux/ux-summary/*.md",           stage: 1, type: UXSummary }
+  - { glob: "docs/01-ux/_generator/**",             stage: 1, type: Tooling, kind: code }
+  - { glob: "docs/01-ux/mockups/html/assets/**",    stage: 1, type: Tooling, kind: code }
+  - { glob: "docs/02-brd/*.md",                     stage: 2, type: BRD }
+  - { glob: "docs/03-hld/**",                       stage: 3, type: HLD }
+  - { glob: "docs/04-standards/**",                 stage: 3, type: Standard }
+  - { glob: "docs/decisions/decision-log.md",       feed: decisions }
+  - { glob: "docs/decisions/adr/*.md",              feed: decisions, type: ADR }
+  - { glob: "memory/sessions/*.md",                 feed: activity, link: false }   # summarised only, never linked (customer-facing)
+  - { glob: "docs/02-brd/PMS-BRD.md#§10",           feed: risks }
+  - { glob: "docs/02-brd/*.md#Open items",          feed: findings }
+  - { glob: "_bmad-output/planning-artifacts/**",   stage: 4, type: BMAD-planning }
+  - { glob: "_bmad-output/implementation-artifacts/**", stage: 5, type: Story }
+  - { glob: "_bmad-output/test-artifacts/**",       stage: 6, type: Test }
+  - { glob: "contracts/**",                         stage: 5, kind: code, type: Contract }
+  - { glob: "services/**",                          stage: 5, kind: code }
+  - { glob: "platform/**",                          stage: 5, kind: code }
+  - { glob: "infra/**",                             stage: 7, kind: config }
+  - { glob: ".github/workflows/**",                 stage: 7, kind: config }
+
+exclude:   # never indexed or linked
+  - ".git/**"
+  - ".claude/**"          # agent tooling (~1,300 files)
+  - "_bmad/**"            # BMAD installation
+  - ".bmad-loop/**"
+  - "**/.gitkeep"
+  - "**/node_modules/**"
+  - ".env*"
+  - "smd/**"
+  - "CLAUDE.md"           # agent instructions (customer-facing view)
+  - "memory/**"           # agent memory and session notes (summarised only)
+  - ".gitignore"
+
+id_patterns:   # used for coverage / traceability
+  screen: "SCR-[A-Z]+-\\d{2}"
+  journey: "UJ-[A-Z]+-\\d{2}"
+  functional_req: "FR-[A-Z]+-\\d{3}"
+  business_rule: "BR-[A-Z]+-\\d{2}"
+  validation_rule: "VR-[A-Z]+-\\d{2}"
+  user_story: "US-[A-Z]+-\\d{2}"
+  integration: "INT-\\d{2}"
+  open_item: "OI-[A-Z0-9-]+"
+  decision: "D-\\d{2,3}"
+
+coverage_pairs:
+  - { from: Mockups (SCR), to: BRD (FR / journeys) }
+  - { from: UX journeys (UJ), to: BRD }
+  - { from: BRD (FR/BR/VR), to: HLD Part02 }      # empty until HLD starts

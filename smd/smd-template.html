@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SMD – SDLC Monitoring &amp; Dashboard</title>
+<style>
+:root{--bg:#f6f7f9;--panel:#fff;--ink:#1b2430;--muted:#5b6675;--line:#dde2e8;--accent:#1f5fae;--accent-soft:#e8f0fb;
+--ok:#1e7a46;--ok-soft:#e5f4ea;--warn:#9a5b00;--warn-soft:#fdf1dc;--bad:#b42318;--bad-soft:#fde8e6;--info:#4b3fae;--info-soft:#eeebfb;--none:#6b7280;--none-soft:#eef0f3;
+--shadow:0 1px 2px rgba(16,24,40,.06),0 1px 3px rgba(16,24,40,.08);--radius:10px;font-size:14px}
+[data-theme=dark]{--bg:#12161c;--panel:#1a2029;--ink:#e6e9ee;--muted:#9aa4b2;--line:#2c3542;--accent:#6ea8ff;--accent-soft:#1d2a3d;
+--ok:#5ccf8b;--ok-soft:#173226;--warn:#f0b357;--warn-soft:#3a2c14;--bad:#ff7b72;--bad-soft:#3d1c1a;--info:#a99cff;--info-soft:#25213f;--none:#9aa4b2;--none-soft:#232a35;--shadow:none}
+*{box-sizing:border-box}
+body{margin:0;font-family:"Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif;background:var(--bg);color:var(--ink);line-height:1.45}
+a{color:var(--accent);text-decoration:none}a:hover{text-decoration:underline}
+a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.app{display:grid;grid-template-columns:230px 1fr;min-height:100vh}
+nav{background:var(--panel);border-right:1px solid var(--line);padding:16px 10px;position:sticky;top:0;height:100vh;overflow:auto}
+.brand{padding:4px 10px 14px;border-bottom:1px solid var(--line);margin-bottom:10px}
+.brand b{font-size:18px;letter-spacing:.5px}.brand small{display:block;color:var(--muted)}
+nav a{display:flex;gap:8px;align-items:center;padding:7px 10px;border-radius:8px;color:var(--ink);font-size:13.5px}
+nav a.active,nav a:hover{background:var(--accent-soft);color:var(--accent);text-decoration:none}
+nav .sep{font-size:11px;text-transform:uppercase;color:var(--muted);padding:12px 10px 4px;letter-spacing:.6px}
+main{padding:18px 26px 40px;min-width:0}
+.top{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:12px}
+.crumb{color:var(--muted);font-size:13px;flex:1;min-width:200px}.crumb a{color:var(--muted)}.crumb b{color:var(--ink)}
+input[type=search],select{border:1px solid var(--line);background:var(--panel);color:var(--ink);border-radius:8px;padding:7px 10px;font:inherit}
+input[type=search]{width:240px}
+button{font:inherit;cursor:pointer;border:1px solid var(--line);background:var(--panel);color:var(--ink);border-radius:8px;padding:6px 10px}
+button:hover{border-color:var(--accent)}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin:0 0 14px}
+.chip{border-radius:999px;padding:4px 12px;font-size:12.5px}
+.chip[aria-pressed=true]{background:var(--accent);color:#fff;border-color:var(--accent)}
+.banner{background:var(--warn-soft);color:var(--warn);border:1px solid var(--warn);border-radius:8px;padding:8px 12px;margin-bottom:12px;display:flex;gap:10px;align-items:center}
+.banner span{flex:1}
+.banner[hidden]{display:none}
+h1{font-size:22px;margin:0 0 2px}h2{font-size:16px;margin:0 0 10px}h3{font-size:14px;margin:14px 0 6px}
+.sub{color:var(--muted);margin:0 0 14px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:14px 16px;box-shadow:var(--shadow);margin-bottom:14px}
+.grid{display:grid;gap:14px}.g2{grid-template-columns:repeat(2,minmax(0,1fr))}.g3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:14px}
+.kpi{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:12px 14px;box-shadow:var(--shadow)}
+.kpi .v{font-size:24px;font-weight:600}.kpi .l{color:var(--muted);font-size:12.5px}
+.hero{display:flex;gap:16px;flex-wrap:wrap;align-items:center}
+.hero .t{flex:1;min-width:260px}
+.health{display:inline-flex;gap:6px;align-items:center;font-weight:600;border-radius:999px;padding:4px 12px}
+.H-G{background:var(--ok-soft);color:var(--ok)}.H-A{background:var(--warn-soft);color:var(--warn)}.H-R{background:var(--bad-soft);color:var(--bad)}
+.badge{display:inline-flex;gap:4px;align-items:center;border-radius:999px;padding:1px 9px;font-size:12px;font-weight:600;white-space:nowrap}
+.b-ok{background:var(--ok-soft);color:var(--ok)}.b-warn{background:var(--warn-soft);color:var(--warn)}.b-bad{background:var(--bad-soft);color:var(--bad)}
+.b-info{background:var(--info-soft);color:var(--info)}.b-none{background:var(--none-soft);color:var(--none)}.b-acc{background:var(--accent-soft);color:var(--accent)}
+.src{font-size:11px;border:1px solid var(--line);border-radius:6px;padding:0 6px;color:var(--muted)}.src.inferred{border-style:dotted}
+.strip{display:flex;gap:4px;overflow-x:auto;padding:4px 2px 8px}
+.chev{flex:1;min-width:106px;position:relative;padding:10px 10px 10px 18px;background:var(--none-soft);color:var(--ink);clip-path:polygon(0 0,calc(100% - 12px) 0,100% 50%,calc(100% - 12px) 100%,0 100%,12px 50%);cursor:pointer;border:0;text-align:left;border-radius:0}
+.chev:first-child{clip-path:polygon(0 0,calc(100% - 12px) 0,100% 50%,calc(100% - 12px) 100%,0 100%);padding-left:12px}
+.chev.s-Completed{background:var(--ok-soft)}.chev.s-InProgress{background:var(--warn-soft)}.chev.cur{outline:2px solid var(--accent);outline-offset:-2px}
+.chev .n{font-size:11px;color:var(--muted)}.chev .nm{font-weight:600;font-size:12.5px;line-height:1.2;margin:2px 0}.chev .d{font-size:11px;color:var(--muted)}
+.gatemark{flex:0 0 auto;align-self:center;font-size:10.5px;writing-mode:vertical-rl;transform:rotate(180deg);color:var(--accent);border-left:2px dashed var(--accent);padding:4px 2px}
+.bar{height:8px;background:var(--none-soft);border-radius:99px;overflow:hidden}.bar i{display:block;height:100%;background:var(--accent)}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th,td{text-align:left;padding:7px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:12px;color:var(--muted);font-weight:600;cursor:pointer;user-select:none;white-space:nowrap}
+tr:hover td{background:var(--accent-soft)}
+.cols3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.col h2{display:flex;gap:8px;align-items:center}
+.item{border-left:3px solid var(--line);padding:6px 10px;margin-bottom:8px;background:var(--bg);border-radius:0 8px 8px 0}
+.item small{color:var(--muted);display:block}
+.done{border-color:var(--ok)}.doing{border-color:var(--warn)}.next{border-color:var(--accent)}
+.flink{display:inline-flex;gap:4px;align-items:center;margin-right:10px;white-space:nowrap}
+.cp{border:0;background:none;color:var(--muted);padding:0 4px;font-size:12px}
+.kv{display:grid;grid-template-columns:150px 1fr;gap:6px 12px;font-size:13px}.kv dt{color:var(--muted)}.kv dd{margin:0}
+.flow{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.flow .node{border:1px solid var(--line);border-radius:8px;padding:4px 8px;background:var(--bg);font-size:12.5px}
+.flow .node.me{border-color:var(--accent);background:var(--accent-soft)}
+.tree details{margin-left:14px}.tree summary{cursor:pointer;padding:3px 0;font-weight:600}
+.tree .f{display:grid;grid-template-columns:1fr 95px 110px 1fr;gap:8px;padding:3px 0 3px 18px;border-bottom:1px dashed var(--line);font-size:12.5px}
+.muted{color:var(--muted)}.small{font-size:12px}.right{text-align:right}
+.tl{position:relative}.tl .ev{display:grid;grid-template-columns:96px 1fr;gap:10px;padding:6px 0;border-bottom:1px solid var(--line)}
+.empty{padding:22px;text-align:center;color:var(--muted);border:1px dashed var(--line);border-radius:var(--radius)}
+.matrix td.c{text-align:center}
+svg text{fill:var(--muted);font-size:11px}
+footer{color:var(--muted);font-size:12px;margin-top:24px}
+@media (max-width:900px){.app{grid-template-columns:1fr}nav{position:static;height:auto}.g2,.g3,.cols3{grid-template-columns:1fr}}
+@media print{nav,.top,.chips,.banner,.noprint{display:none!important}.app{display:block}main{padding:0}.card,.kpi{box-shadow:none;break-inside:avoid}body{background:#fff;font-size:11px}}
+</style>
+</head>
+<body>
+<div class="app">
+<nav aria-label="Main">
+  <div class="brand"><b>SMD</b><small>SDLC Monitoring &amp; Dashboard</small><small id="appname"></small></div>
+  <a href="#/" data-r="">▣ Overview</a>
+  <div class="sep">Lifecycle</div>
+  <div id="navstages"></div>
+  <a href="#/build" data-r="build">▦ Build matrix</a>
+  <div class="sep">Evidence</div>
+  <a href="#/artifacts" data-r="artifacts">▤ Artifacts</a>
+  <a href="#/repo" data-r="repo">🗀 Repository</a>
+  <a href="#/gaps" data-r="gaps">⚑ Reviews &amp; gaps</a>
+  <a href="#/decisions" data-r="decisions">✔ Decisions</a>
+  <a href="#/risks" data-r="risks">△ Risks</a>
+  <a href="#/activity" data-r="activity">↻ Activity</a>
+  <div class="sep">After go-live</div>
+  <a href="#/crs" data-r="crs">⇄ Change requests</a>
+  <div class="sep">About</div>
+  <a href="#/trend" data-r="trend">📈 Trend</a>
+  <a href="#/about" data-r="about">ⓘ Data &amp; quality</a>
+</nav>
+<main>
+  <div id="detached" class="banner" hidden role="status"><span>Full artifact and code links work when this page is opened from <code>smd/web/</code> inside a checkout of the PMS repository. "Open on remote" links work from anywhere.</span><button id="hideb" aria-label="Dismiss">✕</button></div>
+  <div class="top">
+    <div class="crumb" id="crumb"></div>
+    <input type="search" id="q" placeholder="Search artifacts, decisions, files…" aria-label="Search">
+    <button id="theme" title="Toggle dark mode" aria-label="Toggle dark mode">◐</button>
+    <button id="print" title="Print / save as PDF" class="noprint">⎙</button>
+  </div>
+  <div class="chips" id="chips" role="group" aria-label="Module filter"></div>
+  <div id="view" tabindex="-1"></div>
+  <footer id="foot"></footer>
+</main>
+</div>
+<img id="anchor" alt="" hidden>
+<script type="application/json" id="smd-data">/*SMD_DATA*/</script>
+<script>
+(function(){
+'use strict';
+const D = JSON.parse(document.getElementById('smd-data').textContent);
+const P = D.pipelines[0], ST = P.stages, PRE = D.meta.repo_rel_prefix || '../../', REM = D.meta.remote_base_url;
+const ART = Object.fromEntries(D.artifacts.map(a => [a.code, a]));
+const DEC = Object.fromEntries(D.decisions.map(d => [d.id, d]));
+let MOD = 'ALL', Q = '';
+const $ = s => document.querySelector(s);
+const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const MON = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+const fd = d => { if (!d) return '—'; const m = /^(\d{4})-(\d{2})-(\d{2})/.exec(d); return m ? `${+m[3]} ${MON[+m[2]-1]} ${m[1]}` : esc(d); };
+const STAT = {
+  'Completed':['b-ok','✓'],'Approved':['b-ok','✓'],'Passed':['b-ok','✓'],'Accepted':['b-ok','✓'],'Resolved':['b-ok','✓'],
+  'In Progress':['b-warn','◐'],'In Review':['b-info','◔'],'Draft':['b-warn','✎'],'Rework':['b-bad','↺'],'Approved-with-comments':['b-info','✓'],
+  'Pending':['b-none','…'],'Planned':['b-none','○'],'Not Started':['b-none','○'],'Open':['b-bad','!'],'In-progress':['b-warn','◐'],
+  'Blocked':['b-bad','⛔'],'Failed':['b-bad','✕'],'Superseded':['b-none','⊘'],'Skipped':['b-none','–']};
+const badge = s => { const [c,i] = STAT[s] || ['b-none','•']; return `<span class="badge ${c}"><span aria-hidden="true">${i}</span>${esc(s)}</span>`; };
+const SEV = {Critical:'b-bad',High:'b-bad',Medium:'b-warn',Low:'b-none'};
+const sev = s => `<span class="badge ${SEV[s]||'b-none'}">${s==='Critical'||s==='High'?'▲':s==='Medium'?'◆':'▽'} ${esc(s)}</span>`;
+const src = s => s ? `<span class="src ${s==='inferred'?'inferred':''}" title="Data source">${esc(s)}</span>` : '';
+const enc = p => p.split('/').map(encodeURIComponent).join('/');
+const ICON = p => /\.(png|jpe?g|svg|gif)$/i.test(p)?'🖼':/\.html?$/i.test(p)?'🌐':/\.md$/i.test(p)?'📄':/\.(py|js|ts|java|css|json|ya?ml|sql)$/i.test(p)?'⌨':/\.pdf$/i.test(p)?'📕':/\.(docx?|xlsx?|pptx?)$/i.test(p)?'📎':'📄';
+function flink(path, label){
+  if (!path) return '<span class="muted">not yet in repo</span>';
+  let h = `<span class="flink"><a href="${PRE}${enc(path)}" target="_blank" rel="noopener" title="Open ${esc(path)}">${ICON(path)} ${esc(label || path.split('/').pop())}</a>`;
+  if (REM) h += ` <a class="small muted" href="${REM}${enc(path)}" target="_blank" rel="noopener" title="Open on remote">↗</a>`;
+  return h + ` <button class="cp" data-copy="${esc(path)}" title="Copy path" aria-label="Copy path ${esc(path)}">⧉</button></span>`;
+}
+const alink = c => ART[c] ? `<a href="#/artifact/${encodeURIComponent(c)}">${esc(c)}</a>` : (DEC[c] ? `<a href="#/decisions/${encodeURIComponent(c)}">${esc(c)}</a>` : esc(c));
+const refl = r => !r ? '' : r.startsWith('#/') ? `<a href="${r}">open</a>` : /^[0-9a-f]{7}$/.test(r) ? (REM ? `<a class="small" href="${REM.replace('/blob/main/','/commit/')}${r}" target="_blank" rel="noopener">${r}</a>` : `<code>${r}</code>`) : alink(r);
+const modOK = m => MOD === 'ALL' || !m || m === 'ALL' || m === MOD;
+const qOK = (...xs) => !Q || xs.join(' ').toLowerCase().includes(Q);
+const stageName = n => ST[n] ? `Stage ${n} – ${ST[n].name}` : '';
+const drivenLabel = s => s.driven_by === 'Manual' ? '<span class="badge b-none" title="Template-driven, manual authoring">Manual</span>' : '<span class="badge b-acc" title="Agile delivery stage">Agile</span>';
+function sortable(tbl){ tbl.querySelectorAll('th').forEach((th,i)=>{ th.title='Sort'; th.addEventListener('click',()=>{ const tb=tbl.tBodies[0]; const rows=[...tb.rows]; const dir=th.dataset.dir==='a'?'d':'a'; th.dataset.dir=dir;
+  rows.sort((a,b)=>{const x=a.cells[i].innerText,y=b.cells[i].innerText;return (dir==='a'?1:-1)*x.localeCompare(y,undefined,{numeric:true});}); rows.forEach(r=>tb.appendChild(r)); }); }); }
+
+/* ---------- views ---------- */
+function vOverview(){
+  const cur = ST[P.current_stage];
+  const arts = D.artifacts.filter(a => modOK(a.module));
+  const appr = arts.filter(a => a.status === 'Approved').length;
+  const openHi = D.findings.filter(f => f.status === 'Open' && (f.severity === 'High' || f.severity === 'Critical')).length;
+  const doneSt = ST.filter(s => s.status === 'Completed').length;
+  const overall = Math.round(ST.reduce((t,s)=>t+s.percent,0)/ST.length);
+  const golive = D.app.target_go_live ? Math.ceil((new Date(D.app.target_go_live)-new Date())/864e5)+' days' : 'not set';
+  const done = ST.flatMap(s=>s.milestones.filter(m=>m.status==='Completed').map(m=>Object.assign({stage:s.seq},m))).sort((a,b)=>(b.actual||'').localeCompare(a.actual||'')||b.id.localeCompare(a.id)).slice(0,7);
+  const doing = arts.filter(a => a.status==='Draft' || a.status==='In Review');
+  const strip = ST.map(s => `${s.seq===4?'<span class="gatemark" title="Mockups + BRD + HLD baselined">ready for agile delivery</span>':''}<button class="chev s-${s.status.replace(' ','')} ${s.seq===P.current_stage?'cur':''}" onclick="location.hash='#/stage/${s.seq}'" aria-label="${esc(stageName(s.seq))}: ${esc(s.status)}">
+    <div class="n">Stage ${s.seq} · ${esc(s.repo_step)}</div><div class="nm">${esc(s.name)}</div><div>${badge(s.status)}</div>
+    <div class="d">${s.actual_end?'done '+fd(s.actual_end):s.actual_start?'since '+fd(s.actual_start):'&nbsp;'}</div></button>`).join('');
+  return `
+  <div class="card hero">
+    <div class="t"><h1>${esc(D.app.name)} <span class="muted" style="font-weight:400">(${esc(D.app.code)})</span></h1>
+      <p class="sub" style="margin:4px 0 0">${esc(D.app.subtitle||'')} · ${esc(P.name)} · Data as of <b>${fd(D.meta.generated_at)}</b> ${esc((D.meta.generated_at||'').slice(11,16))} IST · commit <code>${esc(D.meta.repo_commit)}</code></p></div>
+    <div><span class="health H-${D.app.health}" title="${esc(D.app.health_reason)}">● Health: ${({G:'Green',A:'Amber',R:'Red'})[D.app.health]}</span></div>
+    <div style="flex-basis:100%" class="small muted">${esc(D.app.health_reason)}</div>
+  </div>
+  <div class="card"><h2>Pipeline – current stage: <a href="#/stage/${cur.seq}">${esc(stageName(cur.seq))}</a> ${badge(cur.status)} <span class="muted small">${cur.percent}% complete</span></h2>
+    <div class="strip" role="list">${strip}</div>
+    <div class="small muted">Click a stage for its gate, steps, milestones and artifacts. Stages 0–3 are template-driven; stages 4–8 follow agile delivery once mockups, BRD and HLD are baselined.</div></div>
+  <div class="kpis">
+    <div class="kpi"><div class="v">${doneSt}/${ST.length}</div><div class="l">Stages completed</div></div>
+    <div class="kpi"><div class="v">${overall}%</div><div class="l">Overall lifecycle progress</div><div class="bar"><i style="width:${overall}%"></i></div></div>
+    <div class="kpi"><div class="v">${appr}/${arts.length}</div><div class="l">Artifacts approved${MOD!=='ALL'?' ('+MOD+')':''}</div></div>
+    <div class="kpi"><div class="v">${D.stories.filter(s=>s.status==='Done').length}/${D.stories.length}</div><div class="l">Stories done</div></div>
+    <div class="kpi"><div class="v" style="color:var(--bad)">${openHi}</div><div class="l"><a href="#/gaps">Open High / Critical items</a></div></div>
+    <div class="kpi"><div class="v">${D.decisions.filter(d=>d.id.startsWith('D-')).length}</div><div class="l"><a href="#/decisions">Decisions recorded</a></div></div>
+    <div class="kpi"><div class="v" style="font-size:16px;padding:5px 0">${golive}</div><div class="l">To go-live</div></div>
+  </div>
+  <div class="cols3">
+    <div class="card col"><h2>✓ Done <span class="muted small">latest milestones</span></h2>${done.map(m=>`<div class="item done">${esc(m.name)}<small>${fd(m.actual)} · <a href="#/stage/${m.stage}">Stage ${m.stage}</a> · ${esc(P.stages[m.stage].owner)}</small></div>`).join('') || '<div class="empty">Nothing yet</div>'}</div>
+    <div class="card col"><h2>◐ Doing</h2>${doing.map(a=>`<div class="item doing">${alink(a.code)} ${badge(a.status)}<small>${esc(a.version)} · updated ${fd(a.last_updated)} · ${esc(a.author)}</small></div>`).join('') || '<div class="empty">Nothing in progress</div>'}</div>
+    <div class="card col"><h2>→ Next</h2>${D.next_actions.map(n=>`<div class="item next">${esc(n.item)}<small>${esc(n.owner)} · ${esc(n.when)} ${n.ref?'· '+refl(n.ref):''}</small></div>`).join('')}</div>
+  </div>
+  <div class="grid g2">
+    <div class="card"><h2>What changed since the last update</h2>${D.changes_since_last.map(c=>`<div class="item next"><b>${esc(c.id)}</b> ${esc(c.change)}<small>${c.from?esc(c.from)+' → ':''}${esc(c.to||'')}</small></div>`).join('')}</div>
+    <div class="card"><h2>Timeline (actual)</h2>${gantt()}<div class="small muted">Planned dates will be added once set; bars show actual start to finish (or today).</div></div>
+  </div>`;
+}
+function gantt(){
+  const rows = ST.filter(s=>s.actual_start);
+  if (!rows.length) return '<div class="empty">No dates yet</div>';
+  const t0 = new Date(rows[0].actual_start), today = new Date((D.meta.generated_at||'').slice(0,10) || Date.now());
+  const all = rows.map(s=>[new Date(s.actual_start), s.actual_end? new Date(s.actual_end): today]);
+  const min = new Date(Math.min(...all.map(x=>+x[0]))), max = new Date(Math.max(...all.map(x=>+x[1]))+864e5);
+  const W=520, L=150, span=(max-min)||864e5, x=d=>L+(d-min)/span*(W-L);
+  let svg=`<svg viewBox="0 0 ${W} ${rows.length*26+26}" width="100%" role="img" aria-label="Stage timeline">`;
+  rows.forEach((s,i)=>{ const [a,b]=all[i]; const y=i*26+6; svg+=`<text x="0" y="${y+13}">Stage ${s.seq} ${esc(s.name.slice(0,16))}</text><rect x="${x(a)}" y="${y}" width="${Math.max(6,x(new Date(+b+864e5))-x(a))}" height="16" rx="4" fill="${s.status==='Completed'?'var(--ok)':'var(--warn)'}"><title>${esc(s.name)}: ${fd(s.actual_start)} – ${s.actual_end?fd(s.actual_end):'ongoing'}</title></rect>`; });
+  for (let d=new Date(min); d<=max; d=new Date(+d+864e5)) svg+=`<text x="${x(d)}" y="${rows.length*26+20}">${d.getDate()} ${MON[d.getMonth()]}</text>`;
+  return svg+'</svg>';
+}
+function artTable(list, cols){
+  cols = cols || ['code','name','stage','status','version','author','date','file'];
+  if (!list.length) return '<div class="empty">No artifacts match</div>';
+  const H={code:'Code',name:'Name',stage:'Stage',status:'Status',version:'Version',author:'Author',date:'Completed / updated',file:'File',src:'Source',module:'Module'};
+  return `<table class="sortable"><thead><tr>${cols.map(c=>`<th>${H[c]}</th>`).join('')}</tr></thead><tbody>${list.map(a=>`<tr>${cols.map(c=>`<td>${
+    c==='code'?alink(a.code):c==='name'?esc(a.name):c==='stage'?`<a href="#/stage/${a.stage}">${a.stage}</a>`:c==='status'?badge(a.status):c==='version'?esc(a.version):
+    c==='author'?esc(a.author):c==='date'?(a.completed?fd(a.completed):a.last_updated?'upd. '+fd(a.last_updated):'—'):c==='src'?src(a.source):c==='module'?esc(a.module):
+    flink(a.path,(a.files&&a.files.length>1)?'open':null)}</td>`).join('')}</tr>`).join('')}</tbody></table>`;
+}
+function vStage(n){
+  const s = ST[n]; if (!s) return '<div class="empty">Unknown stage</div>';
+  const arts = D.artifacts.filter(a=>a.stage===n && modOK(a.module) && qOK(a.code,a.name,a.summary));
+  const decs = D.decisions.filter(d=>d.stage===n);
+  const blocking = D.findings.filter(f=>f.status==='Open' && ((ART[f.target]||{}).stage===n || (ART[f.source]||{}).stage===n));
+  const prev = ST[n-1], next = ST[n+1];
+  return `<div class="card"><div class="hero"><div class="t"><h1>${esc(stageName(n))}</h1><p class="sub" style="margin:2px 0 0">${esc(s.repo_step)} of the delivery lifecycle · owner ${esc(s.owner)} · ${drivenLabel(s)}</p></div>
+    <div>${badge(s.status)} <span class="muted">${s.percent}%</span><div class="bar" style="width:160px;margin-top:6px"><i style="width:${s.percent}%"></i></div></div></div>
+    <dl class="kv" style="margin-top:12px"><dt>Actual start / end</dt><dd>${fd(s.actual_start)} – ${s.actual_end?fd(s.actual_end):'ongoing'}</dd><dt>Planned</dt><dd>${s.planned_start?fd(s.planned_start)+' – '+fd(s.planned_end):'<span class="muted">to be set based on progress</span>'}</dd><dt>Source</dt><dd>${src(s.source)}</dd></dl>
+    <div class="small" style="margin-top:8px">${prev?`← <a href="#/stage/${n-1}">${esc(stageName(n-1))}</a>`:''} ${next?` &nbsp; | &nbsp; <a href="#/stage/${n+1}">${esc(stageName(n+1))}</a> →`:''}</div></div>
+  <div class="grid g2">
+   <div class="card"><h2>Exit gate ${badge(s.gate.decision)}</h2>${s.gate.decided_by?`<p class="small muted">Decided by ${esc(s.gate.decided_by)} on ${fd(s.gate.date)}</p>`:''}
+     <table><tbody>${s.gate.criteria.map(c=>`<tr><td style="width:24px">${c.met?'<span class="badge b-ok" title="met">✓</span>':'<span class="badge b-none" title="not met">○</span>'}</td><td>${esc(c.text)}${c.evidence?'<div class="small">'+flink(c.evidence,'evidence')+'</div>':''}</td></tr>`).join('')}</tbody></table>
+     ${blocking.length?`<h3>Open items affecting this stage</h3>${blocking.map(f=>`<div class="item doing">${sev(f.severity)} <a href="#/gaps/${f.id}">${esc(f.id)}</a> ${esc(f.summary)}</div>`).join('')}`:''}</div>
+   <div class="card"><h2>Steps</h2><table><thead><tr><th>#</th><th>Step</th><th>Role</th><th>Status</th><th>Date</th></tr></thead><tbody>${s.steps.map(t=>`<tr><td class="muted">${esc(t.id)}</td><td>${esc(t.name)} ${t.artifact?'· '+alink(t.artifact):''}</td><td>${esc(t.agent||'')}</td><td>${badge(t.status)}</td><td>${fd(t.date)}</td></tr>`).join('')}</tbody></table>
+   ${s.milestones.length?`<h3>Milestones</h3><table><tbody>${s.milestones.map(m=>`<tr><td>${esc(m.name)}</td><td>${badge(m.status)}</td><td>${fd(m.actual)}</td></tr>`).join('')}</tbody></table>`:''}</div>
+  </div>
+  <div class="card"><h2>Artifacts (${arts.length})</h2>${artTable(arts)}</div>
+  ${decs.length?`<div class="card"><h2>Decisions in this stage (${decs.length})</h2>${decTable(decs)}</div>`:''}`;
+}
+function vBuild(){
+  const steps = ST[5].steps;
+  return `<h1>Build matrix</h1><p class="sub">Story × coding-step progress. Rows appear once epics and stories are created in Stage 4 (Agile Planning).</p>
+  <div class="card"><table class="matrix"><thead><tr><th>Story</th><th>Module</th>${steps.map(s=>`<th title="${esc(s.agent||'')}">${esc(s.name)}</th>`).join('')}</tr></thead>
+  <tbody>${D.stories.length?D.stories.filter(s=>modOK(s.module)).map(s=>`<tr><td>${esc(s.id)} ${esc(s.title)}</td><td>${esc(s.module)}</td>${Object.values(s.steps).map(v=>`<td class="c">${v?'<span class="badge b-ok" title="'+esc(v)+'">✓</span>':'<span class="muted">○</span>'}</td>`).join('')}</tr>`).join('')
+   :`<tr><td colspan="${steps.length+2}"><div class="empty">No stories yet – Build (Stage 5) has not started.</div></td></tr>`}</tbody></table></div>`;
+}
+function vArtifacts(){
+  const list = D.artifacts.filter(a=>modOK(a.module) && qOK(a.code,a.name,a.summary,a.type,a.path));
+  const types=[...new Set(D.artifacts.map(a=>a.type))];
+  return `<h1>Artifacts</h1><p class="sub">${list.length} of ${D.artifacts.length} artifacts. Click a code for details; file links open the actual document from the repository.</p>
+  <div class="card"><label class="small muted">Type <select id="tf"><option value="">All</option>${types.map(t=>`<option>${esc(t)}</option>`).join('')}</select></label>
+  <label class="small muted" style="margin-left:10px">Status <select id="sf"><option value="">All</option>${[...new Set(D.artifacts.map(a=>a.status))].map(t=>`<option>${esc(t)}</option>`).join('')}</select></label>
+  <div id="atbl" style="margin-top:10px">${artTable(list,['code','name','module','stage','status','version','date','src','file'])}</div></div>`;
+}
+function vArtifact(code){
+  const a = ART[code]; if (!a) return '<div class="empty">Unknown artifact</div>';
+  const down = D.artifacts.filter(x=>x.depends_on.includes(code));
+  const finds = D.findings.filter(f=>f.source===code||f.target===code);
+  const revs = D.reviews.filter(r=>r.artifacts.includes(code));
+  const files = a.files&&a.files.length ? a.files : (a.path?[{label:'Document',path:a.path}]:[]);
+  return `<div class="card"><h1>${esc(a.name)}</h1><p class="sub">${esc(a.code)} · ${esc(a.type)} · <a href="#/stage/${a.stage}">${esc(stageName(a.stage))}</a></p>
+   <div class="grid g2"><dl class="kv"><dt>Status</dt><dd>${badge(a.status)}</dd><dt>Version</dt><dd>${esc(a.version)}</dd><dt>Author</dt><dd>${esc(a.author)}</dd>
+   <dt>Reviewers</dt><dd>${esc(a.reviewers.join(', ')||'—')}</dd><dt>Module</dt><dd>${esc(a.module)}</dd><dt>Step</dt><dd>${esc(a.step||'—')}</dd>
+   <dt>Started</dt><dd>${fd(a.started)}</dd><dt>Completed</dt><dd>${fd(a.completed)}</dd><dt>Last updated</dt><dd>${fd(a.last_updated)}</dd><dt>Data source</dt><dd>${src(a.source)}</dd></dl>
+   <div><h3 style="margin-top:0">Files</h3>${files.length?files.map(f=>`<div style="margin-bottom:6px">${esc(f.label)}: ${flink(f.path)}</div>`).join(''):'<span class="muted">Not yet in the repository</span>'}
+   ${a.png_inferred?'<div class="small muted">Screenshot mapping inferred from file name.</div>':''}
+   <h3>Summary</h3><p>${esc(a.summary)}</p></div></div></div>
+  <div class="card"><h2>Upstream → this → downstream</h2><div class="flow">${a.depends_on.map(c=>`<span class="node">${alink(c)}</span>`).join('<span>·</span>')||'<span class="muted">no upstream</span>'}
+   <span>→</span><span class="node me">${esc(a.code)}</span><span>→</span>${down.map(x=>`<span class="node">${alink(x.code)}</span>`).join('<span>·</span>')||'<span class="muted">no downstream yet</span>'}</div></div>
+  <div class="grid g2"><div class="card"><h2>Reviews</h2>${revs.length?revs.map(r=>`<div class="item done">${badge(r.verdict)} ${esc(r.title)}<small>${fd(r.date)} · ${esc(r.reviewers.join(', '))} · ${flink(r.path,'decision log')}</small></div>`).join(''):'<div class="empty">No recorded reviews</div>'}</div>
+  <div class="card"><h2>Findings / open items</h2>${finds.length?finds.map(f=>`<div class="item doing">${sev(f.severity)} <a href="#/gaps/${f.id}">${esc(f.id)}</a> ${badge(f.status)} ${esc(f.summary)}</div>`).join(''):'<div class="empty">None</div>'}</div></div>`;
+}
+function vRepo(folder){
+  const files = D.repo_files.filter(f=>modOK(f.module) && qOK(f.path,f.links.join(' ')) && (!folder || f.path.startsWith(folder+'/')));
+  const tree={};
+  files.forEach(f=>{ let n=tree; f.folder.split('/').filter(Boolean).forEach(p=>{n[p]=n[p]||{};n=n[p];}); (n.__f=n.__f||[]).push(f); });
+  const kinds=[...new Set(D.repo_files.map(f=>f.kind))];
+  const row=f=>`<div class="f" data-k="${f.kind}"><span>${flink(f.path)}</span><span class="muted">${esc(f.kind)}</span><span class="muted">${fd(f.last_updated)}</span><span>${f.links.map(alink).join(', ')}</span></div>`;
+  const render=(n,depth)=>Object.keys(n).filter(k=>k!=='__f').sort().map(k=>`<details ${depth<2?'open':''}><summary>🗀 ${esc(k)} <span class="muted small">(${count(n[k])})</span></summary>${render(n[k],depth+1)}${(n[k].__f||[]).map(row).join('')}</details>`).join('');
+  const count=n=>(n.__f||[]).length+Object.keys(n).filter(k=>k!=='__f').reduce((t,k)=>t+count(n[k]),0);
+  return `<h1>Repository</h1><p class="sub">${files.length} project files (code, templates, documents, mockups, screenshots). Each link opens the actual file from your checkout; ↗ opens it on the remote; ⧉ copies the path.</p>
+  <div class="card"><label class="small muted">Kind <select id="kf"><option value="">All</option>${kinds.map(k=>`<option>${k}</option>`).join('')}</select></label>
+  <div class="tree" style="margin-top:8px">${(tree.__f||[]).map(row).join('')}${render(tree,0)}</div></div>`;
+}
+function vGaps(id){
+  const f = D.findings.filter(x=>qOK(x.id,x.summary,x.source,x.target));
+  const cov = D.coverage.map(c=>{ const pct=c.total?Math.round(c.covered/c.total*100):0; return `<tr><td>${esc(c.from)} → ${esc(c.to)}</td><td>${c.total?`${c.covered}/${c.total}`:'—'}</td><td style="width:160px">${c.total?`<div class="bar"><i style="width:${pct}%;background:${pct===100?'var(--ok)':'var(--warn)'}"></i></div><span class="small">${pct}%</span>`:'<span class="muted small">not started</span>'}</td><td>${c.missing_items.map(esc).join(', ')||'—'}</td><td class="small muted">${esc(c.note)} ${src(c.source)}</td></tr>`; }).join('');
+  return `<h1>Reviews &amp; gaps</h1><p class="sub">Coverage between consecutive stages, recorded reviews, and open items / findings.</p>
+  <div class="card"><h2>Coverage between consecutive stages</h2><table><thead><tr><th>Pair</th><th>Covered</th><th>%</th><th>Missing</th><th>Note</th></tr></thead><tbody>${cov}</tbody></table></div>
+  <div class="card"><h2>Open items and findings (${f.filter(x=>x.status==='Open').length} open)</h2><label class="small muted">Severity <select id="vf"><option value="">All</option><option>High</option><option>Medium</option><option>Low</option></select></label>
+  <table class="sortable" style="margin-top:8px"><thead><tr><th>Id</th><th>Severity</th><th>Category</th><th>Summary</th><th>Between</th><th>Owner</th><th>Due</th><th>Status</th></tr></thead><tbody>${f.map(x=>`<tr id="f-${esc(x.id)}" data-s="${x.severity}" ${x.id===id?'style="outline:2px solid var(--accent)"':''}><td><b>${esc(x.id)}</b> ${x.origin==='inferred'?src('inferred'):''}</td><td>${sev(x.severity)}</td><td>${esc(x.category)}</td><td>${esc(x.summary)}</td><td class="small">${alink(x.source)} → ${alink(x.target)}</td><td>${esc(x.owner)}</td><td class="small">${esc(x.due)}</td><td>${badge(x.status)}</td></tr>`).join('')}</tbody></table></div>
+  <div class="card"><h2>Reviews (${D.reviews.length})</h2><table><thead><tr><th>Id</th><th>Type</th><th>Review</th><th>Date</th><th>Verdict</th><th>Evidence</th></tr></thead><tbody>${D.reviews.map(r=>`<tr><td>${esc(r.id)}</td><td>${esc(r.type)}</td><td>${esc(r.title)}<div class="small">${r.artifacts.map(alink).join(', ')}</div></td><td>${fd(r.date)}</td><td>${badge(r.verdict)}</td><td>${flink(r.path,'decision log')}</td></tr>`).join('')}</tbody></table></div>`;
+}
+function decTable(list){ return `<table class="sortable"><thead><tr><th>Id</th><th>Date</th><th>Area</th><th>Decision</th><th>Stage</th></tr></thead><tbody>${list.map(d=>`<tr id="d-${esc(d.id)}"><td><b>${esc(d.id)}</b></td><td style="white-space:nowrap">${fd(d.date)}</td><td>${esc(d.area)}</td><td>${esc(d.summary)}<div class="small">${flink(d.path, d.id.startsWith('ADR')?'ADR':'decision log')}</div></td><td><a href="#/stage/${d.stage}">${d.stage}</a></td></tr>`).join('')}</tbody></table>`; }
+function vDecisions(id){
+  const list = D.decisions.filter(d=>qOK(d.id,d.summary,d.area)).sort((a,b)=>(b.date||'').localeCompare(a.date||'')||b.id.localeCompare(a.id,undefined,{numeric:true}));
+  setTimeout(()=>{ if(id){ const el=document.getElementById('d-'+id); if(el){ el.scrollIntoView({block:'center'}); el.style.outline='2px solid var(--accent)'; } } },0);
+  return `<h1>Decisions</h1><p class="sub">${list.length} decisions and ADRs, newest first. Approver: ${esc(D.people[0].name)} (product owner).</p><div class="card">${decTable(list)}</div>`;
+}
+function vRisks(){ return `<h1>Risks</h1><p class="sub">Risks recorded in the BRD anchor (§10).</p><div class="card"><table class="sortable"><thead><tr><th>Id</th><th>Risk</th><th>Likelihood</th><th>Impact</th><th>Owner</th><th>Status</th></tr></thead><tbody>${D.risks.map(r=>`<tr><td><b>${esc(r.id)}</b></td><td>${esc(r.summary)}<div class="small">${flink(r.path,'BRD §10')}</div></td><td>${sev(r.likelihood)}</td><td>${sev(r.impact)}</td><td>${esc(r.owner)}</td><td>${badge(r.status)}</td></tr>`).join('')}</tbody></table></div>`; }
+function vActivity(){
+  const types=[...new Set(D.activity.map(a=>a.type))];
+  const list=D.activity.filter(a=>qOK(a.summary,a.actor));
+  return `<h1>Activity</h1><p class="sub">${list.length} events: commits, working sessions, decisions and stage changes.</p>
+  <div class="card"><label class="small muted">Type <select id="af"><option value="">All</option>${types.map(t=>`<option>${t}</option>`).join('')}</select></label>
+  <div class="tl" style="margin-top:8px">${list.map(a=>`<div class="ev" data-t="${a.type}"><span class="muted small">${fd(a.date)}</span><span><span class="badge b-none">${esc(a.type)}</span> ${esc(a.summary)} <span class="small muted">· ${esc(a.actor)}</span> ${refl(a.ref)}</span></div>`).join('')}</div></div>`;
+}
+function vCRs(){
+  return `<h1>Change requests</h1><p class="sub">After go-live, each CR (or bundle of CRs) runs its own pipeline, separate from the transformation pipeline.</p>
+  ${D.change_requests.length?'':'<div class="card"><div class="empty">No change requests yet – PMS is not live. CRs are recorded as <code>crs/CR-YYYY-NNN_*.md</code> once go-live is reached.</div></div>'}
+  <div class="card"><h2>CR lifecycle (template)</h2><div class="strip">${D.cr_template.map((n,i)=>`<div class="chev"><div class="n">CR stage ${i}</div><div class="nm">${esc(n)}</div></div>`).join('')}</div></div>`;
+}
+function vTrend(){
+  const t=D.meta.trend||[]; if(t.length<2) return '<div class="empty">Not enough history yet</div>';
+  const W=640,H=220,L=36,B=24, max=Math.max(...t.map(r=>Math.max(r.decisions,r.commits,r.artifacts_done)));
+  const x=i=>L+i*(W-L-10)/(t.length-1), y=v=>H-B-v/max*(H-B-10);
+  const line=(k,c)=>`<polyline fill="none" stroke="${c}" stroke-width="2.5" points="${t.map((r,i)=>x(i)+','+y(r[k])).join(' ')}"/>`+t.map((r,i)=>`<circle cx="${x(i)}" cy="${y(r[k])}" r="3" fill="${c}"><title>${fd(r.date)}: ${r[k]} ${k.replace('_',' ')}</title></circle>`).join('');
+  return `<h1>Trend</h1><p class="sub">Cumulative progress by day. Each SMD refresh adds a point.</p><div class="card">
+  <svg viewBox="0 0 ${W} ${H}" width="100%" role="img" aria-label="Cumulative trend">${[0,.5,1].map(f=>`<line x1="${L}" x2="${W}" y1="${y(max*f)}" y2="${y(max*f)}" stroke="var(--line)"/><text x="0" y="${y(max*f)+4}">${Math.round(max*f)}</text>`).join('')}
+  ${line('decisions','var(--accent)')}${line('commits','var(--info)')}${line('artifacts_done','var(--ok)')}${t.map((r,i)=>`<text x="${x(i)-14}" y="${H-6}">${fd(r.date).slice(0,6)}</text>`).join('')}</svg>
+  <div class="small"><span style="color:var(--accent)">━ decisions</span> &nbsp; <span style="color:var(--info)">━ commits</span> &nbsp; <span style="color:var(--ok)">━ artifacts done / drafted</span></div></div>`;
+}
+function vAbout(){
+  const q=D.data_quality;
+  return `<h1>Data &amp; quality</h1><div class="card"><dl class="kv"><dt>Generated</dt><dd>${fd(D.meta.generated_at)} ${esc((D.meta.generated_at||'').slice(11,16))} by ${esc(D.meta.generated_by)}</dd>
+  <dt>Repository</dt><dd>${esc(D.meta.repo_root)} · commit <code>${esc(D.meta.repo_commit)}</code> · ${esc(D.meta.working_tree_note||'')}</dd><dt>Remote</dt><dd>${REM?`<a href="${esc(REM)}" target="_blank" rel="noopener">${esc(REM)}</a>`:'—'}</dd>
+  <dt>Audience</dt><dd>${esc(D.meta.audience||'')}</dd>
+  <dt>Artifact sources</dt><dd>${q.artifacts_declared} declared · ${q.artifacts_git} git · ${q.artifacts_config} config · ${q.artifacts_inferred} inferred</dd><dt>Repository files</dt><dd>${D.repo_files.length} linked</dd></dl></div>
+  <div class="card"><h2>Warnings</h2>${q.warnings.map(w=>`<div class="item doing">${esc(w)}</div>`).join('')}</div>
+  <div class="card"><h2>How to refresh</h2><p>Run the update instructions in <code>smd/prompt/smd-update-prompt.md</code>. The refreshed page is written to <code>smd/web/PMS_SMD_Dashboard.html</code>. Source badges: <b>declared</b> = document control / decision log / front-matter; <b>git</b> = commit history; <b>config</b> = SMD configuration; <b>inferred</b> (dotted) = derived from content or file names.</p></div>`;
+}
+/* ---------- router ---------- */
+function route(){
+  const h = decodeURIComponent(location.hash.replace(/^#\/?/,'')); const [r, ...rest] = h.split('/'); const arg = rest.join('/');
+  let html, crumb=[['Overview','#/']];
+  if (r==='stage') { html=vStage(+arg); crumb.push([stageName(+arg)]); }
+  else if (r==='build') { html=vBuild(); crumb.push(['Build matrix']); }
+  else if (r==='artifacts') { html=vArtifacts(); crumb.push(['Artifacts']); }
+  else if (r==='artifact') { const a=ART[arg]; html=vArtifact(arg); if(a) crumb.push([stageName(a.stage),'#/stage/'+a.stage],[arg]); }
+  else if (r==='repo') { html=vRepo(arg); crumb.push(['Repository','#/repo']); if(arg) crumb.push([arg]); }
+  else if (r==='gaps') { html=vGaps(arg); crumb.push(['Reviews & gaps']); }
+  else if (r==='decisions') { html=vDecisions(arg); crumb.push(['Decisions']); }
+  else if (r==='risks') { html=vRisks(); crumb.push(['Risks']); }
+  else if (r==='activity') { html=vActivity(); crumb.push(['Activity']); }
+  else if (r==='crs') { html=vCRs(); crumb.push(['Change requests']); }
+  else if (r==='trend') { html=vTrend(); crumb.push(['Trend']); }
+  else if (r==='about') { html=vAbout(); crumb.push(['Data & quality']); }
+  else html=vOverview();
+  $('#view').innerHTML = html;
+  $('#crumb').innerHTML = `${esc(D.app.code)} › ` + crumb.map((c,i)=>i<crumb.length-1&&c[1]?`<a href="${c[1]}">${esc(c[0])}</a>`:`<b>${esc(c[0])}</b>`).join(' › ');
+  document.querySelectorAll('nav a').forEach(a=>a.classList.toggle('active', a.getAttribute('href')==='#/'+h || (a.dataset.r && a.dataset.r===r && r!=='stage') || (r==='' && a.dataset.r==='')));
+  document.querySelectorAll('table.sortable').forEach(sortable);
+  wireFilters();
+  if (!/^(gaps|decisions)\//.test(h)) window.scrollTo(0,0);
+  if (r==='gaps' && arg) { const el=document.getElementById('f-'+arg); if(el) el.scrollIntoView({block:'center'}); }
+}
+function wireFilters(){
+  const bind=(id,attr,sel,fn)=>{ const s=$(id); if(!s) return; s.onchange=()=>{ document.querySelectorAll(sel).forEach(el=>{ el.style.display = !s.value || fn(el,s.value) ? '' : 'none'; }); }; };
+  const tf=$('#tf'), sf=$('#sf');
+  if (tf) { const f=()=>{ const list=D.artifacts.filter(a=>modOK(a.module)&&qOK(a.code,a.name,a.summary,a.type,a.path)&&(!tf.value||a.type===tf.value)&&(!sf.value||a.status===sf.value)); $('#atbl').innerHTML=artTable(list,['code','name','module','stage','status','version','date','src','file']); document.querySelectorAll('#atbl table').forEach(sortable); }; tf.onchange=f; sf.onchange=f; }
+  bind('#kf',0,'.tree .f',(el,v)=>el.dataset.k===v);
+  bind('#vf',0,'tr[data-s]',(el,v)=>el.dataset.s===v);
+  bind('#af',0,'.ev',(el,v)=>el.dataset.t===v);
+}
+/* ---------- chrome ---------- */
+$('#appname').textContent = D.app.code + ' – ' + D.app.name;
+$('#navstages').innerHTML = ST.map(s=>`<a href="#/stage/${s.seq}" data-r="stage"><span aria-hidden="true">${s.status==='Completed'?'✓':s.status==='In Progress'?'◐':'○'}</span> ${s.seq}. ${esc(s.name)}</a>`).join('');
+$('#chips').innerHTML = ['ALL', ...D.app.modules].map(m=>`<button class="chip" aria-pressed="${m===MOD}" data-m="${m}">${m==='ALL'?'All modules':m+' – '+esc(D.app.module_names[m]||'')}</button>`).join('');
+$('#chips').addEventListener('click', e=>{ const b=e.target.closest('.chip'); if(!b) return; MOD=b.dataset.m; document.querySelectorAll('.chip').forEach(c=>c.setAttribute('aria-pressed', c.dataset.m===MOD)); route(); });
+$('#q').addEventListener('input', e=>{ Q=e.target.value.trim().toLowerCase(); if(Q && !/^#\/(artifacts|repo|decisions|activity|gaps)/.test(location.hash)) location.hash='#/artifacts'; else route(); });
+document.addEventListener('click', e=>{ const b=e.target.closest('[data-copy]'); if(!b) return; const t=b.dataset.copy; const done=()=>{ b.textContent='✓'; setTimeout(()=>b.textContent='⧉',1200); };
+  if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(t).then(done, ()=>prompt('Copy path:', t)); else prompt('Copy path:', t); });
+let theme='light'; try { theme = localStorage.getItem('smd-theme') || (matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'); } catch(e) {}
+const setTheme=t=>{ document.documentElement.dataset.theme=t; try{ localStorage.setItem('smd-theme',t); }catch(e){} };
+setTheme(theme); $('#theme').onclick=()=>setTheme(document.documentElement.dataset.theme==='dark'?'light':'dark');
+$('#print').onclick=()=>{ location.hash='#/'; setTimeout(()=>print(),150); };
+$('#hideb').onclick=()=>{ $('#detached').hidden=true; };
+const img=$('#anchor'); img.onerror=()=>{ $('#detached').hidden=false; }; img.src=PRE+'smd/web/.smd-anchor.png';
+$('#foot').innerHTML = `SMD ${esc(D.meta.smd_version)} · ${esc(D.app.code)} · generated ${fd(D.meta.generated_at)} · read-only view of the repository`;
+window.addEventListener('hashchange', route); route();
+})();
+</script>
+</body>
+</html>
