@@ -138,3 +138,67 @@ Leave requests are never discarded or deleted: Rejected and Cancelled requests s
 | Submitted | Rejected | Reject | As above | Remarks required (BR-CMN-03) |
 | Submitted | Cancelled | Cancel | Employee | Confirmation required; only before the approver decides (D-07) |
 | Rejected | Submitted | Resubmit | Employee | As for submit; the request's own earlier dates do not count as an overlap; Submitted Date updated, Request Date kept (BR-CMN-04, D-84) |
+
+## 7. Functional requirements
+
+All requirements are priority Must and phase POC. Approve-several-at-once and changed-meanwhile handling in the approvals inbox follow FR-CMN-011 and FR-CMN-014 (anchor §5.3).
+
+### 7.1 SCR-LMS-01 – My leave
+
+| Req id | Requirement | Priority | Phase | UX ref | Acceptance criteria (Given / When / Then) |
+| --- | --- | --- | --- | --- | --- |
+| FR-LMS-001 | Tiles show approved days taken in the current calendar year for each type (Casual, Sick, Earned) and the number of pending requests with the approver's name ("Waiting for <approver>"). Days are counted in the calendar year in which they fall. | Must | POC | SCR-LMS-01, D-84 | Given approved Casual leave 30-Dec-2026 to 02-Jan-2027, then the 2026 Casual tile counts 2 days. |
+| FR-LMS-002 | An information note states that leave balances are not tracked and that days are calendar days, from and to inclusive. | Must | POC | SCR-LMS-01, D-04, D-32 | Given the screen opens, then the note is shown. |
+| FR-LMS-003 | The list shows each request – dates, type, days, requested date, status and manager remarks – newest first, with filters by status and by type; Cancelled requests are shown dimmed. | Must | POC | SCR-LMS-01 | Given the Rejected filter, then only Rejected requests are listed. |
+| FR-LMS-004 | Cancel is offered only on Submitted requests. A confirmation explains that the request is withdrawn before the manager decides and cannot be undone; on confirmation the request becomes Cancelled: "Leave request cancelled." | Must | POC | SCR-LMS-01, UJ-LMS-02, D-07 | Given an Approved request, then no Cancel action is offered. |
+| FR-LMS-005 | If the approver decided the request meanwhile, cancelling fails and the employee is told to refresh. | Must | POC | SCR-LMS-01, FR-CMN-014 | Given the approver approved the request a moment ago, when the employee confirms Cancel, then the request stays Approved and the refresh message is shown. |
+| FR-LMS-006 | Edit is offered only on Rejected requests and opens the request form filled in (SCR-LMS-02). Approved and Cancelled requests offer no action. | Must | POC | SCR-LMS-01, UJ-LMS-03, D-84 | Given a Rejected request, when the employee clicks Edit, then the form opens with its type, dates and the approver's remarks. |
+| FR-LMS-007 | Until the profile is approved, a banner explains that the profile must be approved first and "+ Request leave" is disabled. | Must | POC | SCR-LMS-01, BR-CMN-09 | Given a Submitted profile, then the button is disabled. |
+| FR-LMS-008 | With no requests: "No leave requests – Use + Request leave to apply."; if the list cannot be loaded, an alert with Retry is shown. | Must | POC | SCR-LMS-01 | Given a new employee with no requests, then the empty message is shown. |
+| FR-LMS-009 | A manager also sees a Team tab, with the pending count, leading to SCR-LMS-03. | Must | POC | SCR-LMS-01 | Given an Employee without the Manager role, then no Team tab is shown. |
+
+**User stories**
+
+| Id | As a | I want to | So that | Baseline |
+| --- | --- | --- | --- | --- |
+| US-LMS-01 | Employee | view my leave history and status | I can track approvals | LMS-US4 |
+| US-LMS-02 | Employee | cancel a request before it is decided | I can change my plans | LMS-US2 |
+
+### 7.2 SCR-LMS-02 – Leave request
+
+| Req id | Requirement | Priority | Phase | UX ref | Acceptance criteria (Given / When / Then) |
+| --- | --- | --- | --- | --- | --- |
+| FR-LMS-010 | The employee chooses the leave type (Casual, Sick or Earned; Casual pre-selected) and the from and to dates; the to date defaults to the from date. The number of leave days and the date range are shown as the employee types, counting every calendar day inclusive. | Must | POC | SCR-LMS-02, D-32 | Given Fri 13-Nov to Mon 16-Nov, then 4 days are shown. |
+| FR-LMS-011 | Past dates back to the date of joining and any future date are accepted, with no limit on the length of a request. | Must | POC | SCR-LMS-02, D-07, D-84 | Given a from date three weeks ago (after the date of joining), when the employee submits sick leave, then it is Submitted. |
+| FR-LMS-012 | A side panel lists the rules: full days only; calendar days inclusive; balances not checked; no overlap with own submitted or approved leave; no day with submitted or approved attendance; cancel possible until the manager decides. | Must | POC | SCR-LMS-02 | Given the form opens, then the rules panel is shown. |
+| FR-LMS-013 | Submit for approval checks all rules (§8); on success the request becomes Submitted, "<Type> leave <range> submitted to <approver>." is shown and the employee returns to My leave. There is no draft (D-32). | Must | POC | SCR-LMS-02, UJ-LMS-01 | Given valid dates, when the employee submits, then the request appears in the approver's inbox. |
+| FR-LMS-014 | Errors are shown at the date fields: "To date must be on or after From date", "Overlaps your submitted <type> leave (<range>)", "You already have attendance on <date>", and a from date before the date of joining is refused. Submit is disabled while saving; if saving fails: "Leave request could not be submitted. Please try again." | Must | POC | SCR-LMS-02 | Given submitted attendance on Tue 10-Nov, when the employee submits leave 09-Nov to 11-Nov, then the attendance message names 10-Nov and nothing is saved. |
+| FR-LMS-015 | When fixing a rejected request, a red banner shows the approver's name, decision date and remarks; type and both dates can be changed; the request's own earlier dates do not count as an overlap; Submit sends it back as Submitted. | Must | POC | SCR-LMS-02, UJ-LMS-03, BR-CMN-04, D-84 | Given a Rejected Earned request 22–26 Dec, when the employee changes it to 22–24 Dec and submits, then it is Submitted with the new dates. |
+| FR-LMS-016 | Cancel on the form returns to My leave without saving anything. | Must | POC | SCR-LMS-02 | Given a new form with dates entered, when the employee clicks Cancel, then no request exists. |
+
+**User stories**
+
+| Id | As a | I want to | So that | Baseline |
+| --- | --- | --- | --- | --- |
+| US-LMS-03 | Employee | request leave for a date range, including past sick days | my absence is recorded | LMS-US1 |
+| US-LMS-04 | Employee | correct and resubmit a rejected request | I can fix what the manager pointed out | – (BR-CMN-04) |
+
+### 7.3 SCR-LMS-03 – Team leave review
+
+| Req id | Requirement | Priority | Phase | UX ref | Acceptance criteria (Given / When / Then) |
+| --- | --- | --- | --- | --- | --- |
+| FR-LMS-020 | The Team tab has Pending (with count) and History, with filters for team member and leave type; History also has a date range (from ≤ to), opens on requests overlapping the current month and includes reports who became inactive, marked Inactive. | Must | POC | SCR-LMS-03, D-84 | Given a report deactivated last week, then their October leave appears in History when October is selected. |
+| FR-LMS-021 | Pending rows show employee, type, dates, days and submitted time. | Must | POC | SCR-LMS-03 | Given a resubmitted request, then the submitted time is the resubmission time. |
+| FR-LMS-022 | Each pending row shows "Also away": the approver's other direct reports with submitted or approved leave overlapping the request's dates, as names and a count in text. It is empty for the top-level employee's requests. | Must | POC | SCR-LMS-03, D-84 | Given two other reports with approved leave on one of the dates, then the row shows both names and "2". |
+| FR-LMS-023 | The approver approves one row or several selected rows; each becomes Approved and locked: "Leave for <name> approved." | Must | POC | SCR-LMS-03, BR-CMN-12 | Given 3 rows selected, when the approver approves, then all 3 are Approved. |
+| FR-LMS-024 | The approver rejects one row at a time with remarks (required, up to 500 characters): "Leave rejected and returned to <name>." | Must | POC | SCR-LMS-03, BR-CMN-03 | Given empty remarks, then "Remarks are required to reject." is shown. |
+| FR-LMS-025 | If the employee cancelled a request meanwhile, its row is removed with "This request was cancelled by the employee."; in a bulk approval, failed items stay selected with their own error (FR-CMN-014). | Must | POC | SCR-LMS-03 | Given a request cancelled after the page opened, when the approver approves it, then the row is removed with the message. |
+| FR-LMS-026 | History shows decided requests with the decision, approver, decision date, remarks and status. | Must | POC | SCR-LMS-03 | Given a rejected request, then History shows its remarks. |
+| FR-LMS-027 | A manager sees and decides only direct reports' leave, never their own; the Admin sees and decides only the top-level employee's leave. | Must | POC | BR-CMN-01, BR-CMN-08, D-58 | Given a manager opens Team, then their own requests are not listed. |
+| FR-LMS-028 | With nothing pending: "Nothing pending – All leave requests have been decided." | Must | POC | SCR-LMS-03 | Given no submitted requests, then the message is shown. |
+
+**User stories**
+
+| Id | As a | I want to | So that | Baseline |
+| --- | --- | --- | --- | --- |
+| US-LMS-05 | Manager | approve or reject my team's leave requests, seeing who else is away | I can plan team capacity | LMS-US3 |
