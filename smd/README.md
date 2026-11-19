@@ -22,7 +22,7 @@ Overview (pipeline strip, KPIs, Done / Doing / Next, changes, timeline) · Stage
 | `smd-data.json` | Current dashboard data (source copy of the embedded block) |
 | `smd-template.html` | Renderer (HTML + CSS + vanilla JS, empty data placeholder) |
 | `build.mjs` | Injects the data into the template, checks every linked path, writes `web/` |
-| `web/` | Generated output: `PMS_SMD_Dashboard.html` and `.smd-anchor.png` (checkout detection) |
+| `web/` | Generated output: `PMS_SMD_Dashboard.html` (customer), `.smd-anchor.png` (checkout detection) and `PMS_SMD_Dashboard_internal.html` (internal only, git-ignored: adds token utilization per stage › outcome from `memory/usage/token-log.csv`, rule PR-04) |
 | `snapshots/` | Data snapshot per refresh (history and trend) |
 | `CHANGELOG.md` | One entry per refresh |
 

@@ -1,0 +1,8 @@
+date,stage,outcome,module,activity,requests,input,cache_write,cache_read,output,total,source,ref,note
+2026-11-19,X,SMD dashboard refresh,ALL,Refresh SMD data and build; token-logging setup design,37,76,85902,5368691,23372,5478041,measured,dbbc014,"Session reading up to the token-logging request; covers refresh and design discussion"
+2026-11-15,1,UX mockups (all modules),ALL,UX journeys mockups summaries,,,,,,,not-recorded,D-34,"Before PR-04; not recoverable"
+2026-11-18,0,Templates (BRD + HLD),ALL,Template set,,,,,,,not-recorded,D-52,"Before PR-04; not recoverable"
+2026-11-18,2,PMS-BRD,ALL,BRD anchor draft and review,,,,,,,not-recorded,D-69,"Before PR-04; not recoverable"
+2026-11-18,2,PMS-BRD-M1-EIMS,EIMS,Module BRD draft and review,,,,,,,not-recorded,D-76,"Before PR-04; not recoverable"
+2026-11-19,2,PMS-BRD-M2-AMS,AMS,Module BRD draft and review,,,,,,,not-recorded,D-81,"Before PR-04; not recoverable"
+2026-11-19,2,PMS-BRD-M3-LMS,LMS,Module BRD draft and review,,,,,,,not-recorded,D-88,"Before PR-04; not recoverable"

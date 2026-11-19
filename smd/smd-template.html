@@ -119,10 +119,12 @@ footer{color:var(--muted);font-size:12px;margin-top:24px}
 </div>
 <img id="anchor" alt="" hidden>
 <script type="application/json" id="smd-data">/*SMD_DATA*/</script>
+<!--TK-START--><script type="application/json" id="smd-tokens">/*SMD_TOKENS*/</script><!--TK-END-->
 <script>
 (function(){
 'use strict';
 const D = JSON.parse(document.getElementById('smd-data').textContent);
+/*TK-START*/const TK = JSON.parse(document.getElementById('smd-tokens').textContent||'null');/*TK-END*/
 const P = D.pipelines[0], ST = P.stages, PRE = D.meta.repo_rel_prefix || '../../', REM = D.meta.remote_base_url;
 const ART = Object.fromEntries(D.artifacts.map(a => [a.code, a]));
 const DEC = Object.fromEntries(D.decisions.map(d => [d.id, d]));
@@ -198,8 +200,17 @@ function vOverview(){
   <div class="grid g2">
     <div class="card"><h2>What changed since the last update</h2>${D.changes_since_last.map(c=>`<div class="item next"><b>${esc(c.id)}</b> ${esc(c.change)}<small>${c.from?esc(c.from)+' → ':''}${esc(c.to||'')}</small></div>`).join('')}</div>
     <div class="card"><h2>Timeline (actual)</h2>${gantt()}<div class="small muted">Planned dates will be added once set; bars show actual start to finish (or today).</div></div>
-  </div>`;
+  </div>/*TK-START*/${TK?tokenCard():''}/*TK-END*/`;
 }
+/*TK-START*/function tokenCard(){
+  const n=v=>v==null?'–':v>=1e6?(v/1e6).toFixed(2)+'M':v>=1e3?(v/1e3).toFixed(0)+'K':String(v);
+  const max=Math.max(1,...TK.stages.map(s=>s.effective));
+  const rows=TK.stages.map(s=>`<tr style="background:var(--line)"><td><b>${esc(s.stage==='X'?'Cross-stage (governance & tooling)':stageName(+s.stage))}</b></td><td></td><td><b>${s.total?n(s.total):'–'}</b></td><td><b>${s.effective?n(s.effective):'–'}</b></td><td>${s.requests||'–'}</td><td><div class="bar" style="width:120px"><i style="width:${Math.round(100*s.effective/max)}%"></i></div></td></tr>`+
+    s.outcomes.map(o=>`<tr><td style="padding-left:18px">${esc(o.outcome)}</td><td>${esc(o.module)}</td><td>${o.source==='not-recorded'?'<span class="muted">not recorded</span>':n(o.total)}</td><td>${o.source==='not-recorded'?'':n(o.effective)}</td><td>${o.requests||'–'}</td><td class="small muted">${esc(o.source)} · ${o.rows} row(s)${o.last?' · '+fd(o.last):''}</td></tr>`).join('')).join('');
+  return `<div class="card"><h2>Token utilization – stage › outcome <span class="muted small">(internal view)</span></h2>
+  <div class="small muted">Total ${n(TK.total)} tokens · effective ${n(TK.effective)} (input×1, cache write×2, cache read×0.1, output×5) · ${TK.measured_rows} measured row(s), ${TK.unrecorded_rows} not recorded · source memory/usage/token-log.csv · built ${esc(TK.built)}</div>
+  <table class="tbl" style="width:100%;margin-top:8px"><thead><tr><th>Stage › outcome / artifact</th><th>Module</th><th>Tokens</th><th>Effective</th><th>Requests</th><th></th></tr></thead><tbody>${rows}</tbody></table></div>`;
+}/*TK-END*/
 function gantt(){
   const rows = ST.filter(s=>s.actual_start);
   if (!rows.length) return '<div class="empty">No dates yet</div>';

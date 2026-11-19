@@ -8,10 +8,17 @@ neutral_terms:                 # applied to every text shown in the dashboard
   "Claude Docs": "working document"
   "Claude Project": "project workspace"
   "NPQMS": "external reference"
+neutral_patterns: ["token"]       # texts matching these (e.g. D-89, token-logging commits) are shown as neutral_generic
 neutral_generic: "Internal delivery-tooling decision / housekeeping"   # used when text still names tools or agents
 display_names: { driven_by: { Manual: Manual, BMAD: Agile } }
 planned_dates: TBD             # to be decided based on progress
 target_go_live: TBD
+
+token_usage:                   # internal view only (PR-04); never in the customer build
+  log: memory/usage/token-log.csv
+  level: [stage, outcome]
+  internal_output: smd/web/PMS_SMD_Dashboard_internal.html
+  effective_weights: { input: 1, cache_write: 2, cache_read: 0.1, output: 5 }
 
 pipelines:
   - id: PMS-TX-01

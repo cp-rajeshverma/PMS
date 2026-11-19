@@ -106,3 +106,14 @@ No format is required. SMD summarizes them into the activity feed and never embe
 `Session: <date> · Agent: <BMAD role> · Stage: <n> · Story/Artifact: <id> · Outcome: <one line>`
 
 That line becomes the activity entry as-is.
+
+## 9. Token usage log (internal, PR-04)
+
+Log token consumption per **stage + outcome/artifact** in `memory/usage/token-log.csv` — not only at session close:
+
+1. Take a cumulative usage reading when the session starts.
+2. Each time an outcome/artifact is completed (usually at its commit), take a new reading and append one row with the difference since the previous reading. One session with three outcomes = three rows.
+3. Columns: `date, stage (0–8 or X), outcome (artifact code or module-wise outcome name), module, activity, requests, input, cache_write, cache_read, output, total, source (measured|estimated|not-recorded), ref (commit / decision), note`.
+4. Never invent figures. Token data is internal: it appears only in the internal dashboard copy, never in customer-facing documents.
+
+Readings: Claude app / Cowork – ask for the session's usage explanation; Claude Code – `/cost`; API – Admin usage report.

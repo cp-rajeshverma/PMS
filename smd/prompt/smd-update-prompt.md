@@ -29,23 +29,32 @@ You are maintaining **SMD (SDLC Monitoring & Dashboard)** for the PMS project. S
    - Never delete history. Removed artifacts become `status: "Superseded"` with a warning.
    - Do not edit project artifacts, code or logs. SMD only writes inside `smd/`, and never inside `smd/prompt/`. Ignore `smd/prompt/SDLC-Pipe_Master_Prompt.md`, which is for the phase-2 dynamic app.
    - If a new repo folder isn't covered by the mapping, don't guess silently. List it under warnings and propose a mapping line.
+5a. **Token utilization (internal view, PR-04).**
+   - Source: `memory/usage/token-log.csv` (format in `memory/usage/README.md`): one row per **stage + outcome/artifact** checkpoint, so a session with several outcomes has several rows. Read it; never write to it from SMD and never invent, estimate or back-fill figures (rows marked `not-recorded` stay "not recorded").
+   - Check the log against the repo: every outcome completed since the last refresh (new or bumped artifact, approved section, stage transition, SMD refresh) should have at least one row. List missing ones under **Report back** as "token rows missing" (stage › outcome › closing commit) so they can be added; do not add them yourself.
+   - Flag rows whose `stage` is not 0–8 or `X`, whose `outcome` matches no artifact code or known outcome name, or whose `total` differs from the sum of its columns.
+   - `node smd/build.mjs` aggregates the log into the **internal** copy `smd/web/PMS_SMD_Dashboard_internal.html` (git-ignored): an Overview card under "Timeline (actual)" with Stage › outcome/artifact rows (module, tokens, effective tokens = input×1 + cache write×2 + cache read×0.1 + output×5, requests, source). The customer file `PMS_SMD_Dashboard.html` must contain **no** token data or code: the build strips everything between the `TK-START` / `TK-END` markers and fails if "token" remains.
+   - Decisions, commits or activity whose text mentions tokens (e.g. D-89) are shown with `neutral_generic` from `smd-config.yaml` (`neutral_patterns`).
+   - Never put token figures in `smd-data.json`, snapshots, `CHANGELOG.md` or any customer-facing text (PR-03).
 5. **Write the outputs.**
    - `smd/smd-data.json` (update `meta.generated_at`, `meta.repo_commit`, `meta.previous_snapshot`, and the trend series)
    - `smd/snapshots/YYYY-MM-DD_HHmm.json`
-   - Run `node smd/build.mjs` to regenerate `smd/web/PMS_SMD_Dashboard.html`
+   - Run `node smd/build.mjs` to regenerate `smd/web/PMS_SMD_Dashboard.html` (customer) and `smd/web/PMS_SMD_Dashboard_internal.html` (internal, with token utilization)
    - Prepend an entry to `smd/CHANGELOG.md`
 6. **Verify.**
    - The build passes schema validation.
    - Every `path` exists. `build.mjs` reports 0 broken file links; list any that remain.
    - The HTML opens with no console errors (headless check, if available).
    - The file is under 2 MB.
+   - The customer file contains no "token" text; the internal file shows the token card with the same totals as the log.
 7. **Report back** in under 15 lines:
    - current stage and health (with reason),
    - the key changes since the last update,
    - newly opened or closed findings,
    - items due in the next 7 days,
    - data-quality warnings,
-   - suggested mapping or convention fixes.
+   - suggested mapping or convention fixes,
+   - token utilization: total and effective tokens this refresh period per stage › outcome, plus any "token rows missing" (internal; never in the customer file).
 
 Optional, only if I ask in this run: `--with-template` (also apply the UI changes I describe to `smd-template.html`), `--attach` (send me the generated HTML as an attachment), or `--commit` (create a git commit `chore(smd): refresh dashboard YYYY-MM-DD`).
 

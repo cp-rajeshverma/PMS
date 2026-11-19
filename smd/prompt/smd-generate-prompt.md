@@ -145,6 +145,13 @@ Rules:
 - **Code:** derive story / coding-step progress from story files (BMAD story status sections), branches and commits that reference story IDs, and test folders. Do not embed code contents. **Do index every tracked code and artifact file** in `repo_files` (path, folder, type, size, last commit date and author, linked story / artifact IDs taken from commit messages and front-matter), so the page can link to every file. Exclude binaries, `node_modules`, build outputs, `.git` and anything git-ignored. Exclude secrets files (`.env*`, keys) completely, not even their names.
 - Use relative paths from the repo root (e.g. `docs/brd/PMS_BRD.md`).
 
+## 6a. Token utilization (internal view only, PR-04)
+
+- **Logging rule.** Token consumption is logged at **stage + outcome/artifact** level in `memory/usage/token-log.csv` (columns: `date, stage, outcome, module, activity, requests, input, cache_write, cache_read, output, total, source, ref, note`; `stage` is 0–8 or `X` for cross-stage governance and tooling; `source` is `measured`, `estimated` or `not-recorded`). The working session takes a cumulative usage reading at the start and at the completion of every outcome (typically its commit) and appends one row per outcome with the difference. Create the file with its header and a `memory/usage/README.md` if they do not exist.
+- **SMD reads, never writes** the log, and never invents figures.
+- **Rendering.** `build.mjs` aggregates the log (per stage: total, effective, requests; per outcome inside the stage: module, total, effective, requests, source, rows, last date) and injects it into a second placeholder `/*SMD_TOKENS*/` of the template, writing **`smd/web/PMS_SMD_Dashboard_internal.html`** (git-ignored through `smd/.gitignore`). The Overview of the internal copy shows a card "Token utilization – stage › outcome" directly under "Timeline (actual)", with a share bar per stage, "not recorded" for unlogged outcomes, and a footer with total tokens, effective tokens (input×1 + cache write×2 + cache read×0.1 + output×5) and measured / not-recorded row counts.
+- **Customer build.** All token code and the placeholder sit between `TK-START` / `TK-END` markers; the customer build removes them and fails if the word "token" remains. Token figures never go into `smd-data.json`, snapshots or the changelog.
+
 ## 7. Data schema (`smd-data.json`)
 
 Keep this shape stable. It is designed so the future SDLC-Pipe app can import it.
@@ -229,5 +236,6 @@ UX: a persistent left nav, a breadcrumb, a global search box (artifacts, stories
 - [ ] No raw agent-log text, secrets or payroll data appear in the HTML.
 - [ ] `node smd/build.mjs` regenerates an identical file from the same `smd-data.json`.
 - [ ] The file is under 2 MB, and the Overview prints on one page.
+- [ ] When `memory/usage/token-log.csv` exists, `PMS_SMD_Dashboard_internal.html` shows the token utilization card (stage › outcome) under "Timeline (actual)"; the customer file contains no token data or code (§6a).
 
 **PROMPT END**
