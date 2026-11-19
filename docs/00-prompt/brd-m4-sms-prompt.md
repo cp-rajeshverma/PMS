@@ -4,9 +4,9 @@
 | --- | --- |
 | Document | docs/02-brd/PMS-BRD-M4-SMS.md |
 | Template | templates/02-brd/brd-module-template.md |
-| Used | – |
-| Outcome | – |
-| Status | Ready for the next session |
+| Used | 19 Nov 2026 |
+| Outcome | All sections reviewed (D-90 to D-94; D-89 was already used for token logging); anchor rev 0.9 (OI-10) and 0.10 (SMS status); approval pending OI-02, OI-04 |
+| Status | Done – reuse only to revise SMS |
 
 ## Prompt
 

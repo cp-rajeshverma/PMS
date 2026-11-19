@@ -4,6 +4,7 @@ Every approved project decision, newest first. Approver for all entries: Rajesh 
 
 | Id | Date | Area | Decision |
 | --- | --- | --- | --- |
+| D-94 | 19 Nov 2026 | BRD | PMS-BRD-M4-SMS §10 to §17 approved; all SMS sections reviewed, document at v1.0 rev 0.1, final approval pending OI-02, OI-04; anchor rev 0.10: SMS status in §2.3 and §11. Next: PMS-BRD-M5-SUP need-basis assessment in a new session |
 | D-93 | 19 Nov 2026 | BRD | PMS-BRD-M4-SMS §8 and §9 approved: VR-SMS-01 to 04, BR-SMS-01 to 13 (baseline SMS-R1 to R4 kept as BR-SMS-01 to 04), Salary record data with Dispute Remark, Resolution Explanation, Disputed Date and Accepted Date; Day Wage Rate and Day Wage Amount classed as sensitive; the reconciliation run log is a job log, not a business entity |
 | D-92 | 19 Nov 2026 | BRD | PMS-BRD-M4-SMS §7 approved: FR-SMS-001 to FR-SMS-046 (31 used) with acceptance criteria; user stories US-SMS-01 to US-SMS-06; salary items in the approvals inbox follow FR-CMN-010 to FR-CMN-014 with the same rules as SCR-SMS-02 |
 | D-91 | 19 Nov 2026 | BRD | PMS-BRD-M4-SMS §1–§6 approved: status codes GENERATED, MANAGER_APPROVED, ACCEPTED, DISPUTED, VOIDED as drafted; reconciliation may void Generated, Manager Approved or Disputed records whose attendance is no longer Approved |

@@ -283,32 +283,94 @@ Earlier dispute remarks and explanations are kept in the audit trail, not as att
 
 ## 10. Notifications and alerts
 
-To be drafted.
+All notifications are in-app (anchor C-05): dashboard, approvals inbox and screen states. No reminder is ever replaced by an automatic decision (D-33).
+
+| Id | Event / trigger | Recipient(s) | Channel (in-app / email) | Timing | Message summary |
+| --- | --- | --- | --- | --- | --- |
+| NOT-SMS-01 | Salary record generated | Approver (manager; Admin for the top-level employee) | In-app: approvals inbox (Salary tab), Approvals count, dashboard approval card, Needs action on SCR-SMS-02 | Immediately (within 1 minute of attendance approval, NFR-01) | New "Salary" item with employee, date, hours and amount |
+| NOT-SMS-02 | Salary record approved by the approver | Employee | In-app: dashboard "Things to do" (salary records to review); To review tile on My salary | Immediately | "<n> salary record(s) to review" with the amount |
+| NOT-SMS-03 | Record still waiting for acceptance | Employee | In-app: dashboard "Things to do" and To review tile (FR-SMS-012) | Each time the dashboard or My salary opens, until accepted or disputed | Count and amount of records to accept or dispute |
+| NOT-SMS-04 | Salary record disputed | Approver | In-app: approvals inbox item with the employee's remark, Approvals count, dashboard approval card; disputes listed first in Needs action | Immediately | "Disputed" item with employee, date, amount and remark |
+| NOT-SMS-05 | Dispute closed with Keep as is | Employee | In-app: record back in To review with the approver's explanation; dashboard "Things to do" | Immediately | "Dispute closed" with the approver's explanation; accept or dispute again |
+| NOT-SMS-06 | Salary record voided (attendance reopened, or by reconciliation) | Employee; approver | In-app: record shown as Voided with the reason when "Show voided" is on; removed from Needs action. The reopened attendance itself is notified by NOT-AMS-04 | Immediately (reconciliation: after the 01:00 IST run) | Status Voided with the void reason |
+| NOT-SMS-07 | Reconciliation run finished | Admin | In-app: last reconciliation run tile on the Admin dashboard (FR-CMN-007, FR-SMS-045) | After each run at 01:00 IST | Run time, result, records created and voided, mismatches logged |
 
 ## 11. Scheduled jobs and integrations
 
-To be drafted.
+SMS runs the cross-module job JOB-CMN-01 and takes part in these anchor integrations (anchor §7); it has no module-only job.
+
+| Id | Name | Type (event / API / scheduled) | Trigger / schedule | Source → target | Business outcome |
+| --- | --- | --- | --- | --- | --- |
+| INT-01 | Attendance approved | Event | Attendance approval | AMS → SMS | Salary record generated (FR-SMS-040, FR-SMS-041) |
+| INT-02 | Attendance reopened | Event | Reopen of a disputed day | AMS → SMS | Salary record voided with the reason (FR-SMS-042) |
+| JOB-CMN-01 | Nightly salary reconciliation | Scheduled | Daily 01:00 IST | AMS → SMS | Missing records created, stale records voided, other mismatches logged; last run on the Admin dashboard (FR-SMS-043 to FR-SMS-045) |
+| INT-03, INT-04 | Employee details and approver | API | Generation, approval and team views | EIMS → SMS | Employee name, Manager Id, active flag; approver of each record (FR-SMS-028) |
+| INT-05 | Hourly wage rate | API | Salary record generation | EIMS → SMS | Current rate copied into the record (BR-SMS-02) |
+| INT-07 | Dashboard and approvals inbox | API | Dashboard or inbox opened | SMS → Shell | Items in §12; NOT-SMS-01 to 07 |
+| INT-10 | Salary status for attendance | API | Attendance history or approvals inbox opened | SMS → AMS, Shell | "Salary disputed" and Reopen offered (FR-SMS-046) |
 
 ## 12. Reporting and dashboard
 
-To be drafted.
+| Id | Report / widget | Audience | Content | Filters |
+| --- | --- | --- | --- | --- |
+| RPT-SMS-01 | Earnings this month tile (dashboard) | Employee, Manager | Amount of Manager Approved and Accepted records in the current month; Voided, Disputed and Generated excluded (FR-CMN-002, BR-SMS-09) | – |
+| RPT-SMS-02 | "Things to do" items (dashboard) | Employee, Manager | Salary records to review (Manager Approved) | – |
+| RPT-SMS-03 | Waiting for your approval – Salary | Manager, Admin | Count of Generated and Disputed records to act on | – |
+| RPT-SMS-04 | Last reconciliation run tile (dashboard) | Admin | Run time, result, records created and voided, mismatches logged (FR-SMS-045) | – |
+| RPT-SMS-05 | My salary tiles and period total | Employee, Manager | Earned in period, To review, Waiting for manager, Disputed; period total (FR-SMS-001, FR-SMS-006) | Period (default current month to today), Show voided |
+| RPT-SMS-06 | Team totals in period | Manager, Admin | Per employee: approved hours, earned amount, open items (FR-SMS-027) | Team member, date range (default current month to today), Show voided |
+| RPT-SMS-07 | Team salary – All records | Manager, Admin | All records with status and notes, incl. inactive reports (FR-SMS-020, FR-SMS-021) | Team member, date range, Show voided |
 
 ## 13. Module non-functional requirements and volumetrics
 
-To be drafted.
+System-wide NFRs (anchor §8) apply; SMS has no module-specific additions. Generation within 1 minute and the reconciliation run under 5 minutes are NFR-01; void reasons, dispute remarks and explanations are covered by NFR-05; one non-voided record per approved attendance and 2-decimal amounts by NFR-06 (KPI-02, KPI-04).
+
+| Volume type | Year 1 | Growth % per year | Peak |
+| --- | --- | --- | --- |
+| Salary records generated | About 26,400 (one per approved attendance, anchor §8.1), plus regenerated records after reopens | 0 % (20 % headroom) | Anchor daily peaks; month-end approval catch-up |
+| Salary approvals and acceptances | About 26,400 each (often several at once) | 0 % | Month-end |
+| Disputes, Keep as is, voids | Not estimated (expected rare) | – | – |
+| Reconciliation runs | 365 (one per night) | 0 % | Daily 01:00 IST |
 
 ## 14. Assumptions, constraints and dependencies
 
-To be drafted.
+| Type | Id | Statement |
+| --- | --- | --- |
+| Assumption | A-SMS-01 | Employees review their salary records regularly, helped by dashboard reminders; there is no deadline for accepting a record (D-33). |
+| Assumption | A-SMS-02 | Approvers check the attendance before approving it, so most wage errors are caught before a salary record exists (BR-SMS-06). |
+| Constraint | C-SMS-01 | SMS calculates daily wages only; no deductions, allowances, payslips or payroll runs in the POC (anchor §3.3). |
+| Constraint | C-SMS-02 | Amounts are in INR with 2 decimals and dates and times in IST (BR-CMN-18). |
+| Constraint | C-SMS-03 | EIMS keeps only the current hourly wage rate; records generated late or after a reopen use the rate at the time of generation (D-90). |
+| Dependency | DEP-SMS-01 | AMS provides attendance approval and reopen hand-overs and all approved attendance for the reconciliation (INT-01, INT-02, JOB-CMN-01; anchor DEP-02 message broker, DEP-03 build order). |
+| Dependency | DEP-SMS-02 | EIMS provides the hourly wage rate, employee details and approver (INT-03 to INT-05). |
+| Dependency | DEP-SMS-03 | Open items OI-02 and OI-04 (anchor §12) are decided before this document is approved (anchor DEP-06); OI-01, OI-06 and OI-10 are closed before HLD Part02. |
 
 ## 15. Traceability matrix
 
-To be drafted.
+| Journey id | Screen id | Req id | Rule ids | Test ref (later) |
+| --- | --- | --- | --- | --- |
+| UJ-SMS-01 | SCR-SH-04, SCR-SMS-02 | FR-SMS-020, 021, 022, 023, 024, 027, 028, 029 | VR-SMS-03, 04; BR-SMS-06, 09, 13; BR-CMN-01, 08, 12 | |
+| UJ-SMS-02 | SCR-SH-03, SCR-SMS-01 | FR-SMS-003, 004, 007, 008, 009, 010, 011, 012, 013 | VR-SMS-01, 04; BR-SMS-04, 07, 08, 12; BR-CMN-03 | |
+| UJ-SMS-03 | SCR-SMS-02, SCR-SH-04 (Reopen continues in UJ-AMS-04) | FR-SMS-025, 026, 046 | VR-SMS-02, 04; BR-SMS-08, 12; BR-CMN-03, 15 | |
+| UJ-SMS-04 | SCR-SMS-01 | FR-SMS-001, 002, 005, 006, 014 | VR-SMS-03; BR-SMS-09, 10; BR-CMN-16, 18 | |
+| UJ-SYS-01 | – (SCR-SMS-02, SCR-SH-04) | FR-SMS-040, 041 | BR-SMS-01 to 05; BR-CMN-13, 17, 18 | |
+| UJ-SYS-02 | SCR-SH-03 | FR-SMS-043, 044, 045 | BR-SMS-01, 02, 11 | |
+| UJ-SYS-03 | SCR-SMS-01, SCR-SMS-02 | FR-SMS-042 | BR-SMS-10; BR-CMN-15, 16 | |
 
 ## 16. Open items
 
-To be drafted.
+Cross-module open items that affect SMS are in the anchor §12: OI-01 (Admin opens SCR-SMS-02 for the top-level employee), OI-02 (pending items of a deactivated employee, incl. salary records waiting for approval or acceptance), OI-04 (pending salary approvals and disputes on a manager change), OI-06 (UX Journey Index reconciliation time "TBD", set to 01:00 IST) and OI-10 (SMS UX updates). SMS has no module-only open items.
+
+| Id | Question | Owner | Due | Status / decision |
+| --- | --- | --- | --- | --- |
+| – | None | – | – | – |
 
 ## 17. Appendix
 
-To be drafted.
+### 17.1 Future scope (not in this phase)
+
+| Area | Requirement ref | Note |
+| --- | --- | --- |
+| Wages | Anchor §13.1 | Paid leave in salary |
+| Payroll | Anchor §13.1 | Statutory deductions (PF, ESI, PT, TDS), allowances, payslips, monthly payroll runs |
+| Approvals | Anchor §13.1, R-02 | Delegation of approvals when a manager is absent |
