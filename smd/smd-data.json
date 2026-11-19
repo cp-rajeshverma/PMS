@@ -1,12 +1,12 @@
 {
  "meta": {
   "smd_version": "1.0",
-  "generated_at": "2026-11-19T18:47+05:30",
-  "generated_by": "SMD generate run",
+  "generated_at": "2026-11-19T20:33+05:30",
+  "generated_by": "SMD update run",
   "repo_root": "D:\\POC\\PMS",
-  "repo_commit": "32b2031",
-  "working_tree_note": "Includes uncommitted change D-82 (mockup folders reorganised).",
-  "previous_snapshot": null,
+  "repo_commit": "7c44ca9",
+  "working_tree_note": "Clean working tree at 7c44ca9.",
+  "previous_snapshot": "snapshots/2026-11-19_1848.json",
   "repo_rel_prefix": "../../",
   "remote_base_url": "https://github.com/cp-rajeshverma/PMS/blob/main/",
   "audience": "customer-facing (rule PR-03 applied)",
@@ -37,9 +37,9 @@
    },
    {
     "date": "2026-11-19",
-    "decisions": 82,
-    "commits": 65,
-    "artifacts_done": 37
+    "decisions": 88,
+    "commits": 76,
+    "artifacts_done": 38
    }
   ]
  },
@@ -61,7 +61,7 @@
   },
   "target_go_live": null,
   "health": "A",
-  "health_reason": "Business open items OI-02, OI-03 and OI-04 are past their due point and block BRD sign-off; BRD reviewers are not yet named (R-07). Planned dates to be set based on progress."
+  "health_reason": "No Critical findings. High open items OI-02, OI-03 and OI-04 are past their due point and now block approval of the EIMS, AMS and LMS BRDs; BRD reviewers are not yet named (R-07). Planned dates to be set based on progress."
  },
  "people": [
   {
@@ -337,17 +337,17 @@
      "planned_end": null,
      "actual_start": "2026-11-18",
      "actual_end": null,
-     "percent": 35,
+     "percent": 50,
      "source": "declared",
      "gate": {
       "criteria": [
        {
-        "text": "All six BRD documents drafted (anchor, EIMS, AMS, LMS, SMS, SUP) – 3 of 6 done",
+        "text": "All six BRD documents drafted (anchor, EIMS, AMS, LMS, SMS, SUP) – 4 of 6 done",
         "met": false,
         "evidence": "docs/02-brd/PMS-BRD.md"
        },
        {
-        "text": "Open items OI-01 to OI-08, OI-EIMS-01, OI-EIMS-02 resolved",
+        "text": "Open items OI-01 to OI-09, OI-EIMS-01, OI-EIMS-02 resolved",
         "met": false,
         "evidence": "docs/02-brd/PMS-BRD.md"
        },
@@ -357,7 +357,7 @@
         "evidence": null
        },
        {
-        "text": "Mockups ↔ BRD gaps closed (UX updates OI-01, OI-06, OI-07, OI-08)",
+        "text": "Mockups ↔ BRD gaps closed (UX updates OI-01, OI-06, OI-07, OI-08, OI-09)",
         "met": false,
         "evidence": null
        },
@@ -400,8 +400,8 @@
        "id": "S2.4",
        "name": "Module BRD LMS",
        "agent": null,
-       "status": "Not Started",
-       "date": null,
+       "status": "Completed",
+       "date": "2026-11-19",
        "artifact": "PMS-BRD-M3-LMS"
       },
       {
@@ -453,10 +453,10 @@
       },
       {
        "id": "M2.4",
-       "name": "LMS BRD drafted",
+       "name": "LMS BRD drafted (D-88)",
        "planned": null,
-       "actual": null,
-       "status": "Not Started"
+       "actual": "2026-11-19",
+       "status": "Completed"
       },
       {
        "id": "M2.5",
@@ -2088,7 +2088,7 @@
    "type": "BRD",
    "stage": 2,
    "step": "BRD anchor",
-   "version": "v1.0 rev 0.6",
+   "version": "v1.0 rev 0.8",
    "status": "In Review",
    "started": "2026-11-18",
    "completed": null,
@@ -2104,7 +2104,7 @@
     "PMS-UX-JOURNEYS",
     "PMS-TPL-BRD-ANCHOR"
    ],
-   "summary": "Business context, roles, end-to-end process, cross-module rules BR-CMN-01..18, integrations, system-wide NFRs, risks R-01..R-08 and open items OI-01..OI-08. All sections drafted (D-69); stakeholder review pending.",
+   "summary": "Business context, roles, end-to-end process, cross-module rules BR-CMN-01..18, integrations, system-wide NFRs, risks R-01..R-08 and open items OI-01..OI-09. All sections drafted (D-69); module status for EIMS, AMS and LMS recorded (rev 0.8, D-88); stakeholder review pending.",
    "files": [],
    "module": "ALL",
    "pipeline": "PMS-TX-01",
@@ -2183,22 +2183,30 @@
    "stage": 2,
    "step": "Module BRD LMS",
    "module": "LMS",
-   "version": "—",
-   "status": "Planned",
+   "version": "v1.0 rev 0.1",
+   "status": "Draft",
    "completed": null,
-   "last_updated": null,
-   "path": null,
+   "last_updated": "2026-11-19",
+   "path": "docs/02-brd/PMS-BRD-M3-LMS.md",
    "source": "declared",
    "depends_on": [
-    "PMS-BRD"
+    "PMS-BRD",
+    "PMS-TPL-BRD-MODULE",
+    "PMS-UX-SCR-LMS-01",
+    "PMS-UX-SCR-LMS-02",
+    "PMS-UX-SCR-LMS-03"
    ],
-   "summary": "Next: drafting starts in a new session (D-81).",
-   "reviewers": [],
+   "summary": "All sections drafted and reviewed section by section (D-85 to D-88); 25 functional requirements FR-LMS-001..028 with acceptance criteria, user stories US-LMS-01..05, rules VR-LMS-01..07 and BR-LMS-01..09; final approval pending OI-02, OI-04.",
+   "reviewers": [
+    "[BA]",
+    "[HR Manager]",
+    "[Finance Manager]"
+   ],
    "files": [],
    "pipeline": "PMS-TX-01",
    "author": "Rajesh Verma",
    "planned": null,
-   "started": null
+   "started": "2026-11-19"
   },
   {
    "code": "PMS-BRD-M4-SMS",
@@ -2216,7 +2224,7 @@
    "depends_on": [
     "PMS-BRD"
    ],
-   "summary": "After PMS-BRD-M3-LMS.",
+   "summary": "Next: drafting starts in a new session (D-88).",
    "reviewers": [],
    "files": [],
    "pipeline": "PMS-TX-01",
@@ -2513,6 +2521,20 @@
    "verdict": "Approved-with-comments",
    "path": "docs/decisions/decision-log.md",
    "title": "AMS BRD section-by-section review (D-78 to D-81)"
+  },
+  {
+   "id": "RV-06",
+   "type": "peer",
+   "artifacts": [
+    "PMS-BRD-M3-LMS"
+   ],
+   "reviewers": [
+    "Rajesh Verma"
+   ],
+   "date": "2026-11-19",
+   "verdict": "Approved-with-comments",
+   "path": "docs/decisions/decision-log.md",
+   "title": "LMS BRD section-by-section review (D-84 to D-88)"
   }
  ],
  "findings": [
@@ -2525,7 +2547,7 @@
    "severity": "High",
    "status": "Open",
    "owner": "HR Manager",
-   "due": "Before PMS-BRD-M1-EIMS (overdue – EIMS drafted)",
+   "due": "Before PMS-BRD-M1-EIMS (overdue – EIMS drafted); also blocks approval of AMS and LMS BRDs",
    "summary": "What happens to a deactivated employee's pending items (own submissions and items awaiting their approval as manager)?",
    "origin": "declared"
   },
@@ -2551,7 +2573,7 @@
    "severity": "High",
    "status": "Open",
    "owner": "HR Manager",
-   "due": "Before PMS-BRD-M1-EIMS (overdue – EIMS drafted)",
+   "due": "Before PMS-BRD-M1-EIMS (overdue – EIMS drafted); also blocks approval of AMS and LMS BRDs",
    "summary": "When the Admin changes an employee's manager (BR-CMN-13), who decides items already awaiting approval – old or new manager?",
    "origin": "declared"
   },
@@ -2634,6 +2656,19 @@
    "origin": "declared"
   },
   {
+   "id": "OI-09",
+   "review": null,
+   "source": "PMS-BRD",
+   "target": "PMS-UX-SCR-LMS-03",
+   "category": "Inconsistent",
+   "severity": "Medium",
+   "status": "Open",
+   "owner": "Product owner",
+   "due": "Before HLD Part02",
+   "summary": "Update LMS UX (D-84, D-88): team leave History date range filter (current-month default, inactive reports included), submitted time in Pending rows, \"Also away\" empty for the top-level employee, \"Requested\" shows first submission date (SCR-LMS-01, SCR-LMS-03).",
+   "origin": "declared"
+  },
+  {
    "id": "OI-06",
    "review": null,
    "source": "PMS-BRD",
@@ -2666,7 +2701,7 @@
    "target": "PMS-BRD-M3-LMS",
    "category": "Missing",
    "severity": "Low",
-   "status": "Open",
+   "status": "Resolved",
    "owner": "Product owner",
    "due": "PMS-BRD-M3-LMS",
    "summary": "SCR-LMS-02 (Leave request) is not yet referenced by any BRD; expected to be covered by PMS-BRD-M3-LMS.",
@@ -2678,15 +2713,13 @@
    "from": "Mockups (SCR)",
    "to": "BRD set",
    "total": 17,
-   "covered": 16,
+   "covered": 17,
    "partial": 0,
-   "missing": 1,
-   "missing_items": [
-    "SCR-LMS-02"
-   ],
+   "missing": 0,
+   "missing_items": [],
    "orphans": [],
    "source": "inferred",
-   "note": "ID references found in the drafted BRDs (anchor, EIMS, AMS). LMS and SMS module BRDs are not written yet."
+   "note": "ID references found in the drafted BRDs (anchor, EIMS, AMS, LMS). SMS and SUP module BRDs are not written yet."
   },
   {
    "from": "UX journeys (UJ)",
@@ -2698,7 +2731,7 @@
    "missing_items": [],
    "orphans": [],
    "source": "inferred",
-   "note": "ID references found in the drafted BRDs (anchor, EIMS, AMS). LMS and SMS module BRDs are not written yet."
+   "note": "ID references found in the drafted BRDs (anchor, EIMS, AMS, LMS). SMS and SUP module BRDs are not written yet."
   },
   {
    "from": "BRD (FR / BR / VR)",
@@ -2714,6 +2747,72 @@
   }
  ],
  "decisions": [
+  {
+   "id": "D-88",
+   "title": "PMS-BRD-M3-LMS §10 to §17 approved",
+   "date": "2026-11-19",
+   "author": "Rajesh Verma",
+   "area": "BRD",
+   "stage": 2,
+   "summary": "PMS-BRD-M3-LMS §10 to §17 approved; all LMS sections reviewed, document at v1.0 rev 0.1, final approval pending OI-02, OI-04; anchor rev 0.8: OI-09 (LMS UX updates: History date range filter with current-month default incl. inactive reports, submitted time in Pending rows, \"Also away\" empty for the top-level employee, \"Requested\" = first submission), LMS status in §2.3 and §11. Next: PMS-BRD-M4-SMS in a new session",
+   "path": "docs/decisions/decision-log.md",
+   "status": "Approved"
+  },
+  {
+   "id": "D-87",
+   "title": "PMS-BRD-M3-LMS §8 and §9 approved",
+   "date": "2026-11-19",
+   "author": "Rajesh Verma",
+   "area": "BRD",
+   "stage": 2,
+   "summary": "PMS-BRD-M3-LMS §8 and §9 approved: VR-LMS-01 to 07, BR-LMS-01 to 09, Leave data; Request Date (first submission) and Submitted Date (last submission); leave data, including the Sick type, not classed as sensitive",
+   "path": "docs/decisions/decision-log.md",
+   "status": "Approved"
+  },
+  {
+   "id": "D-86",
+   "title": "PMS-BRD-M3-LMS §7 approved",
+   "date": "2026-11-19",
+   "author": "Rajesh Verma",
+   "area": "BRD",
+   "stage": 2,
+   "summary": "PMS-BRD-M3-LMS §7 approved: FR-LMS-001 to FR-LMS-028 with acceptance criteria; user stories US-LMS-01 to US-LMS-05; team leave History has a date range filter",
+   "path": "docs/decisions/decision-log.md",
+   "status": "Approved"
+  },
+  {
+   "id": "D-85",
+   "title": "PMS-BRD-M3-LMS §1–§6 approved",
+   "date": "2026-11-19",
+   "author": "Rajesh Verma",
+   "area": "BRD",
+   "stage": 2,
+   "summary": "PMS-BRD-M3-LMS §1–§6 approved: status codes SUBMITTED, APPROVED, REJECTED, CANCELLED as drafted; leave requests are never discarded or deleted by users (no Is Active action)",
+   "path": "docs/decisions/decision-log.md",
+   "status": "Approved"
+  },
+  {
+   "id": "D-84",
+   "title": "LMS rules",
+   "date": "2026-11-19",
+   "author": "Rajesh Verma",
+   "area": "LMS",
+   "stage": 2,
+   "summary": "LMS rules: a Rejected leave request cannot be cancelled – it stays Rejected and can be fixed and resubmitted later; approved leave cannot be cancelled in the POC (Future scope); no limit on future dates or on the length of a request; leave days in monthly and yearly figures are split by calendar month / year; \"Also away\" lists the approver's other direct reports with Submitted or Approved leave overlapping the dates (empty for the top-level employee); team history defaults to the current month and includes inactive reports; fixing a rejected request may change type and dates, and the request's own earlier dates do not count as an overlap; Request Date = first submission (L1), Submitted Date = last submission; anchor rev 0.7 (§3.3, §13.1: cancelling approved leave as Future scope)",
+   "path": "docs/decisions/decision-log.md",
+   "status": "Approved"
+  },
+  {
+   "id": "D-83",
+   "title": "Internal delivery-tooling decision (details in the internal decision log)",
+   "date": "2026-11-19",
+   "author": "Rajesh Verma",
+   "area": "Process",
+   "stage": 0,
+   "summary": "Internal delivery-tooling decision (details in the internal decision log)",
+   "path": "docs/decisions/decision-log.md",
+   "status": "Approved"
+  },
   {
    "id": "D-82",
    "title": "Mockup files reorganised",
@@ -3633,6 +3732,110 @@
    "date": "2026-11-19",
    "actor": "Rajesh Verma",
    "kind": "human",
+   "type": "session",
+   "summary": "Working session handoff: LMS BRD drafted and reviewed (D-84 to D-88); anchor rev 0.8 with OI-09; next PMS-BRD-M4-SMS, then M5-SUP.",
+   "ref": null
+  },
+  {
+   "date": "2026-11-19",
+   "actor": "Rajesh Verma",
+   "kind": "human",
+   "type": "status-change",
+   "summary": "Module BRD LMS drafted (D-88); Stage 2 BRD at 50%.",
+   "ref": "#/stage/2"
+  },
+  {
+   "date": "2026-11-19",
+   "actor": "Rajesh Verma",
+   "kind": "human",
+   "type": "commit",
+   "summary": "brd: PMS-BRD-M3-LMS §10–§17, LMS drafted; anchor rev 0.8 (OI-09, LMS status); decision D-88; session handoff",
+   "ref": "7c44ca9"
+  },
+  {
+   "date": "2026-11-19",
+   "actor": "Rajesh Verma",
+   "kind": "human",
+   "type": "commit",
+   "summary": "brd: PMS-BRD-M3-LMS §8 rules and §9 data; decision D-87",
+   "ref": "71b59e8"
+  },
+  {
+   "date": "2026-11-19",
+   "actor": "Rajesh Verma",
+   "kind": "human",
+   "type": "commit",
+   "summary": "brd: PMS-BRD-M3-LMS §7 functional requirements; decision D-86",
+   "ref": "c74c070"
+  },
+  {
+   "date": "2026-11-19",
+   "actor": "Rajesh Verma",
+   "kind": "human",
+   "type": "commit",
+   "summary": "brd: PMS-BRD-M3-LMS §1–§6 draft; decision D-85",
+   "ref": "006b46d"
+  },
+  {
+   "date": "2026-11-19",
+   "actor": "Rajesh Verma",
+   "kind": "human",
+   "type": "commit",
+   "summary": "brd: anchor rev 0.7 – cancelling approved leave as out of scope / Future (D-84)",
+   "ref": "a33f4e0"
+  },
+  {
+   "date": "2026-11-19",
+   "actor": "Rajesh Verma",
+   "kind": "human",
+   "type": "commit",
+   "summary": "decisions: D-84 LMS rules; anchor rev 0.7 (cancel approved leave as Future scope)",
+   "ref": "1f767b2"
+  },
+  {
+   "date": "2026-11-19",
+   "actor": "Rajesh Verma",
+   "kind": "human",
+   "type": "commit",
+   "summary": "Internal delivery-tooling housekeeping",
+   "ref": "320d69b"
+  },
+  {
+   "date": "2026-11-19",
+   "actor": "Rajesh Verma",
+   "kind": "human",
+   "type": "commit",
+   "summary": "Internal delivery-tooling housekeeping",
+   "ref": "cf581c3"
+  },
+  {
+   "date": "2026-11-19",
+   "actor": "Rajesh Verma",
+   "kind": "human",
+   "type": "commit",
+   "summary": "Internal delivery-tooling housekeeping",
+   "ref": "e790662"
+  },
+  {
+   "date": "2026-11-19",
+   "actor": "Rajesh Verma",
+   "kind": "human",
+   "type": "commit",
+   "summary": "feat(smd): first SDLC Monitoring & Dashboard build",
+   "ref": "143aed9"
+  },
+  {
+   "date": "2026-11-19",
+   "actor": "Rajesh Verma",
+   "kind": "human",
+   "type": "commit",
+   "summary": "docs: reorganise mockups into html/ and png/ (D-82)",
+   "ref": "acf55e7"
+  },
+  {
+   "date": "2026-11-19",
+   "actor": "Rajesh Verma",
+   "kind": "human",
    "type": "commit",
    "summary": "brd: PMS-BRD-M2-AMS §10–§17, AMS drafted; anchor rev 0.6; decision D-81; session handoff",
    "ref": "32b2031"
@@ -4214,7 +4417,7 @@
    "summary": "Approvals stall when a manager is absent (no delegation in the POC).",
    "likelihood": "Medium",
    "impact": "Medium",
-   "owner": "Product owner",
+   "owner": "HR Manager",
    "status": "Open",
    "path": "docs/02-brd/PMS-BRD.md"
   },
@@ -4275,13 +4478,13 @@
  ],
  "next_actions": [
   {
-   "item": "Draft PMS-BRD-M3-LMS (Leave)",
+   "item": "Draft PMS-BRD-M4-SMS (Salary)",
    "owner": "Rajesh Verma",
    "when": "Next working session",
-   "ref": "PMS-BRD-M3-LMS"
+   "ref": "PMS-BRD-M4-SMS"
   },
   {
-   "item": "Resolve overdue business open items OI-02, OI-03, OI-04 with the HR Manager",
+   "item": "Resolve overdue business open items OI-02, OI-03, OI-04 with the HR Manager (block EIMS, AMS and LMS BRD approval)",
    "owner": "HR Manager",
    "when": "Before BRD sign-off",
    "ref": "OI-02"
@@ -4293,22 +4496,16 @@
    "ref": "R-07"
   },
   {
-   "item": "Draft PMS-BRD-M4-SMS (Salary)",
-   "owner": "Rajesh Verma",
-   "when": "After M3-LMS",
-   "ref": "PMS-BRD-M4-SMS"
-  },
-  {
    "item": "Supporting functions need-basis assessment (PMS-BRD-M5-SUP)",
    "owner": "Rajesh Verma",
-   "when": "After M1–M4",
+   "when": "After M4-SMS",
    "ref": "PMS-BRD-M5-SUP"
   },
   {
-   "item": "Apply UX updates OI-01, OI-06, OI-07, OI-08 (and refresh UX summary status, F-SMD-01)",
+   "item": "Apply UX updates OI-01, OI-06, OI-07, OI-08, OI-09 (and refresh UX summary status, F-SMD-01)",
    "owner": "Product owner",
    "when": "Before HLD Part02",
-   "ref": "OI-07"
+   "ref": "OI-09"
   },
   {
    "item": "Start HLD (Stage 3) from the frozen templates",
@@ -4363,7 +4560,7 @@
    "ext": ".py",
    "size": 854,
    "created": "2026-11-15",
-   "last_updated": "2026-11-15",
+   "last_updated": "2026-11-19",
    "last_author": "Rajesh Verma",
    "module": "ALL",
    "links": [
@@ -4901,7 +5098,7 @@
    "ext": ".md",
    "size": 10166,
    "created": "2026-11-15",
-   "last_updated": "2026-11-15",
+   "last_updated": "2026-11-19",
    "last_author": "Rajesh Verma",
    "module": "ALL",
    "links": [
@@ -4915,7 +5112,7 @@
    "ext": ".md",
    "size": 3141,
    "created": "2026-11-15",
-   "last_updated": "2026-11-15",
+   "last_updated": "2026-11-19",
    "last_author": "Rajesh Verma",
    "module": "AMS",
    "links": [
@@ -4929,7 +5126,7 @@
    "ext": ".md",
    "size": 3525,
    "created": "2026-11-15",
-   "last_updated": "2026-11-15",
+   "last_updated": "2026-11-19",
    "last_author": "Rajesh Verma",
    "module": "AMS",
    "links": [
@@ -4943,7 +5140,7 @@
    "ext": ".md",
    "size": 3124,
    "created": "2026-11-15",
-   "last_updated": "2026-11-15",
+   "last_updated": "2026-11-19",
    "last_author": "Rajesh Verma",
    "module": "AMS",
    "links": [
@@ -4957,7 +5154,7 @@
    "ext": ".md",
    "size": 3073,
    "created": "2026-11-15",
-   "last_updated": "2026-11-15",
+   "last_updated": "2026-11-19",
    "last_author": "Rajesh Verma",
    "module": "EIMS",
    "links": [
@@ -4971,7 +5168,7 @@
    "ext": ".md",
    "size": 4280,
    "created": "2026-11-15",
-   "last_updated": "2026-11-15",
+   "last_updated": "2026-11-19",
    "last_author": "Rajesh Verma",
    "module": "EIMS",
    "links": [
@@ -4985,7 +5182,7 @@
    "ext": ".md",
    "size": 4116,
    "created": "2026-11-15",
-   "last_updated": "2026-11-15",
+   "last_updated": "2026-11-19",
    "last_author": "Rajesh Verma",
    "module": "EIMS",
    "links": [
@@ -4999,7 +5196,7 @@
    "ext": ".md",
    "size": 2944,
    "created": "2026-11-15",
-   "last_updated": "2026-11-15",
+   "last_updated": "2026-11-19",
    "last_author": "Rajesh Verma",
    "module": "EIMS",
    "links": [
@@ -5013,7 +5210,7 @@
    "ext": ".md",
    "size": 3022,
    "created": "2026-11-15",
-   "last_updated": "2026-11-15",
+   "last_updated": "2026-11-19",
    "last_author": "Rajesh Verma",
    "module": "LMS",
    "links": [
@@ -5027,7 +5224,7 @@
    "ext": ".md",
    "size": 3071,
    "created": "2026-11-15",
-   "last_updated": "2026-11-15",
+   "last_updated": "2026-11-19",
    "last_author": "Rajesh Verma",
    "module": "LMS",
    "links": [
@@ -5041,7 +5238,7 @@
    "ext": ".md",
    "size": 2575,
    "created": "2026-11-15",
-   "last_updated": "2026-11-15",
+   "last_updated": "2026-11-19",
    "last_author": "Rajesh Verma",
    "module": "LMS",
    "links": [
@@ -5055,7 +5252,7 @@
    "ext": ".md",
    "size": 3418,
    "created": "2026-11-15",
-   "last_updated": "2026-11-15",
+   "last_updated": "2026-11-19",
    "last_author": "Rajesh Verma",
    "module": "ALL",
    "links": [
@@ -5069,7 +5266,7 @@
    "ext": ".md",
    "size": 3396,
    "created": "2026-11-15",
-   "last_updated": "2026-11-15",
+   "last_updated": "2026-11-19",
    "last_author": "Rajesh Verma",
    "module": "ALL",
    "links": [
@@ -5083,7 +5280,7 @@
    "ext": ".md",
    "size": 2828,
    "created": "2026-11-15",
-   "last_updated": "2026-11-15",
+   "last_updated": "2026-11-19",
    "last_author": "Rajesh Verma",
    "module": "ALL",
    "links": [
@@ -5097,7 +5294,7 @@
    "ext": ".md",
    "size": 3943,
    "created": "2026-11-15",
-   "last_updated": "2026-11-15",
+   "last_updated": "2026-11-19",
    "last_author": "Rajesh Verma",
    "module": "ALL",
    "links": [
@@ -5111,7 +5308,7 @@
    "ext": ".md",
    "size": 4015,
    "created": "2026-11-15",
-   "last_updated": "2026-11-15",
+   "last_updated": "2026-11-19",
    "last_author": "Rajesh Verma",
    "module": "ALL",
    "links": [
@@ -5125,7 +5322,7 @@
    "ext": ".md",
    "size": 3754,
    "created": "2026-11-15",
-   "last_updated": "2026-11-15",
+   "last_updated": "2026-11-19",
    "last_author": "Rajesh Verma",
    "module": "SMS",
    "links": [
@@ -5139,7 +5336,7 @@
    "ext": ".md",
    "size": 3593,
    "created": "2026-11-15",
-   "last_updated": "2026-11-15",
+   "last_updated": "2026-11-19",
    "last_author": "Rajesh Verma",
    "module": "SMS",
    "links": [
@@ -5175,11 +5372,25 @@
    ]
   },
   {
+   "path": "docs/02-brd/PMS-BRD-M3-LMS.md",
+   "folder": "docs/02-brd",
+   "kind": "artifact",
+   "ext": ".md",
+   "size": 28983,
+   "created": "2026-11-19",
+   "last_updated": "2026-11-19",
+   "last_author": "Rajesh Verma",
+   "module": "LMS",
+   "links": [
+    "PMS-BRD-M3-LMS"
+   ]
+  },
+  {
    "path": "docs/02-brd/PMS-BRD.md",
    "folder": "docs/02-brd",
    "kind": "artifact",
    "ext": ".md",
-   "size": 51332,
+   "size": 52122,
    "created": "2026-11-18",
    "last_updated": "2026-11-19",
    "last_author": "Rajesh Verma",
@@ -5207,7 +5418,7 @@
    "folder": "docs/decisions",
    "kind": "artifact",
    "ext": ".md",
-   "size": 20387,
+   "size": 22634,
    "created": "2026-11-15",
    "last_updated": "2026-11-19",
    "last_author": "Rajesh Verma",
@@ -5223,7 +5434,7 @@
    "ext": ".md",
    "size": 1212,
    "created": "2026-11-18",
-   "last_updated": "2026-11-18",
+   "last_updated": "2026-11-19",
    "last_author": "Rajesh Verma",
    "module": "ALL",
    "links": [
@@ -5237,7 +5448,7 @@
    "ext": ".md",
    "size": 1515,
    "created": "2026-11-18",
-   "last_updated": "2026-11-18",
+   "last_updated": "2026-11-19",
    "last_author": "Rajesh Verma",
    "module": "ALL",
    "links": [
@@ -5335,7 +5546,7 @@
    "ext": ".md",
    "size": 8960,
    "created": "2026-11-18",
-   "last_updated": "2026-11-18",
+   "last_updated": "2026-11-19",
    "last_author": "Rajesh Verma",
    "module": "ALL",
    "links": [
@@ -5401,32 +5612,110 @@
  ],
  "changes_since_last": [
   {
-   "entity": "dashboard",
-   "id": "SMD",
-   "change": "Initial baseline – first SMD build",
+   "entity": "artifact",
+   "id": "PMS-BRD",
+   "change": "Version bump (D-84, D-88): cancelling approved leave as Future scope; OI-09; LMS status",
+   "from": "v1.0 rev 0.6",
+   "to": "v1.0 rev 0.8"
+  },
+  {
+   "entity": "artifact",
+   "id": "PMS-BRD-M3-LMS",
+   "change": "New artifact: LMS BRD drafted, all sections reviewed (D-84 to D-88); approval pending OI-02, OI-04",
+   "from": "Planned",
+   "to": "Draft · v1.0 rev 0.1"
+  },
+  {
+   "entity": "stage",
+   "id": "S2",
+   "change": "Stage 2 progress (anchor in review, EIMS, AMS and LMS drafted)",
+   "from": "35%",
+   "to": "50%"
+  },
+  {
+   "entity": "step",
+   "id": "S2.4",
+   "change": "Module BRD LMS drafted",
+   "from": "Not Started",
+   "to": "Completed"
+  },
+  {
+   "entity": "milestone",
+   "id": "M2.4",
+   "change": "LMS BRD drafted (D-88)",
+   "from": "Not Started",
+   "to": "Completed"
+  },
+  {
+   "entity": "review",
+   "id": "RV-06",
+   "change": "New review: LMS BRD section-by-section review (D-84 to D-88)",
    "from": null,
-   "to": "1.0"
+   "to": "Approved-with-comments"
+  },
+  {
+   "entity": "finding",
+   "id": "F-SMD-02",
+   "change": "Closed: SCR-LMS-02 now referenced by PMS-BRD-M3-LMS",
+   "from": "Open",
+   "to": "Resolved"
+  },
+  {
+   "entity": "finding",
+   "id": "OI-09",
+   "change": "New open item: LMS UX updates (Medium, Product owner, before HLD Part02)",
+   "from": null,
+   "to": "Open"
+  },
+  {
+   "entity": "risk",
+   "id": "R-02",
+   "change": "Owner corrected to match PMS-BRD §10",
+   "from": "Product owner",
+   "to": "HR Manager"
+  },
+  {
+   "entity": "coverage",
+   "id": "Mockups → BRD",
+   "change": "SCR-LMS-02 now covered by PMS-BRD-M3-LMS",
+   "from": "16/17",
+   "to": "17/17"
   },
   {
    "entity": "decision",
+   "id": "D-83 to D-88",
+   "change": "6 new decisions (LMS rules and LMS BRD section approvals D-84 to D-88; one internal housekeeping decision)",
+   "from": "82",
+   "to": "88"
+  },
+  {
+   "entity": "repo_file",
+   "id": "docs/02-brd/PMS-BRD-M3-LMS.md",
+   "change": "New file indexed",
+   "from": null,
+   "to": "linked to PMS-BRD-M3-LMS"
+  },
+  {
+   "entity": "data_quality",
    "id": "D-82",
-   "change": "Mockups reorganised into html/ and png/ folders",
-   "from": "docs/01-ux/mockups/",
-   "to": "docs/01-ux/mockups/html/, png/"
+   "change": "Resolved: mockup reorganisation is now committed (acf55e7)",
+   "from": "working tree",
+   "to": "committed"
   }
  ],
  "data_quality": {
-  "artifacts_declared": 39,
+  "artifacts_declared": 40,
   "artifacts_inferred": 0,
   "artifacts_git": 2,
-  "artifacts_config": 8,
-  "neutralised_items": 14,
+  "artifacts_config": 7,
+  "neutralised_items": 19,
   "warnings": [
    "No artifact carries an smd: front-matter block yet; status comes from document control tables, the decision log and git.",
    "Screenshot (PNG) to screen mapping is inferred from file names (15 of 17 screens; SCR-EIMS-02 and SCR-SH-02 have no screenshot).",
    "Planned dates and target go-live are not set yet (to be decided based on progress).",
    "Internal tooling folders, working memory and session notes are excluded from this customer-facing view; session activity is summarised only.",
-   "D-82 reorganisation is in the working tree and not yet committed; \"Open on remote\" links to moved mockups work after push."
+   "Two new repository folders are not covered by the path mapping and are not indexed: an internal working-files folder under docs/ (D-83) and an internal screenshots folder at the repository root. Proposed mapping: exclude both from this view.",
+   "FR-LMS numbering has gaps (25 requirements used in FR-LMS-001..028), as with EIMS and AMS; counts are taken from PMS-BRD §11."
   ]
  }
 }
