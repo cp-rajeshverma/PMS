@@ -231,11 +231,55 @@ All requirements are priority Must and phase POC. Salary items in the approvals 
 
 ## 8. Business and validation rules
 
-To be drafted.
+| Rule id | Rule | Type (business / validation) | Applies to (screen / function) | Source (decision / UX) |
+| --- | --- | --- | --- | --- |
+| VR-SMS-01 | To dispute, a remark is required: not blank, up to 500 characters. | Validation | SCR-SMS-01 | BR-CMN-03; UX SCR-SMS-01 |
+| VR-SMS-02 | To close a dispute with Keep as is, an explanation is required: not blank, up to 500 characters. | Validation | SCR-SMS-02, SCR-SH-04 | BR-CMN-03, D-33; UX SCR-SMS-02 |
+| VR-SMS-03 | In the period and date range filters, From is on or before To. | Validation | SCR-SMS-01, SCR-SMS-02 | UX SCR-SMS-01 |
+| VR-SMS-04 | An action is accepted only on a record in the status that allows it (§6.1): approve on Generated with the attendance still Approved; accept and dispute on own Manager Approved; Keep as is and Reopen on Disputed. Otherwise it is refused with a message to refresh. | Validation | SCR-SMS-01, SCR-SMS-02, SCR-SH-04 | FR-CMN-014, D-90 |
+| BR-SMS-01 | A salary record is generated automatically, once, when attendance is approved; there is at most one non-voided salary record per attendance. | Business | UJ-SYS-01, UJ-SYS-02 | D-05 (S4), D-25; baseline SMS-R1 |
+| BR-SMS-02 | The hourly wage rate is copied into the record when it is generated – also when it is generated late by the reconciliation or again after a reopen – so later rate changes do not alter it. | Business | UJ-SYS-01, UJ-SYS-02 | BR-CMN-13, D-90; baseline SMS-R2 |
+| BR-SMS-03 | Only approved attendance generates a salary record; approved leave earns no wage. | Business | UJ-SYS-01 | BR-CMN-17, D-05 (S6); baseline SMS-R3 |
+| BR-SMS-04 | No one – employee, manager or Admin – enters or edits Day Hour, Day Wage Rate or Day Wage Amount. | Business | All SMS screens | D-05; baseline SMS-R4 |
+| BR-SMS-05 | Day Hour = the approved attendance hours (2 decimals). Day Wage Amount = Day Hour × Day Wage Rate, rounded half up to 2 decimals, INR. Totals are the sum of the rounded amounts. | Business | UJ-SYS-01, SCR-SMS-01, SCR-SMS-02 | D-05 (S2, S3), D-90, BR-CMN-18 |
+| BR-SMS-06 | A generated record can be approved but not rejected; a wrong wage is corrected through a dispute and a reopen of the attendance. | Business | SCR-SMS-02, SCR-SH-04 | D-07 (O2) |
+| BR-SMS-07 | The employee accepts one or several Manager Approved records at once, or disputes them one at a time. Accepted is final. Records are never accepted automatically. | Business | SCR-SMS-01 | D-05 (S5), D-33 |
+| BR-SMS-08 | A dispute is closed by the approver either with Keep as is (record back to Manager Approved) or by reopening the attendance (record Voided). After Keep as is the employee may dispute again; there is no limit. | Business | SCR-SMS-02, SCR-SH-04 | D-07 (O1), D-33, D-90 |
+| BR-SMS-09 | Earnings and totals count Manager Approved and Accepted records only; Generated, Disputed and Voided records are excluded. | Business | SCR-SMS-01, SCR-SMS-02, SCR-SH-03 | FR-CMN-002, BR-CMN-16, D-25 |
+| BR-SMS-10 | Voided is set only by the system and is final; voided records are kept with their void reason, hidden unless "Show voided" is on. | Business | UJ-SYS-02, UJ-SYS-03, SCR-SMS-01, SCR-SMS-02 | D-25 |
+| BR-SMS-11 | The nightly reconciliation (01:00 IST) creates missing records for approved attendance, voids non-voided records whose attendance is no longer Approved, and only logs any other mismatch. | Business | UJ-SYS-02 | JOB-CMN-01, D-24, D-90 |
+| BR-SMS-12 | The latest dispute remark and the approver's Keep as is explanation are kept as separate values; earlier dispute rounds remain in the audit trail. The system records the Accepted Date and the Disputed Date. | Business | SCR-SMS-01, SCR-SMS-02 | D-90, NFR-05 |
+| BR-SMS-13 | In team views, Needs action shows every Generated and Disputed record regardless of the date range; All records and team totals default to the current month to today and include inactive reports. | Business | SCR-SMS-02 | D-90 |
+
+Cross-module rules that also apply: BR-CMN-01 to BR-CMN-03, BR-CMN-06 to BR-CMN-08, BR-CMN-12, BR-CMN-13, BR-CMN-15 to BR-CMN-18 (anchor §6). BR-CMN-04 and BR-CMN-05 apply through AMS: a salary error is corrected by reopening and resubmitting the attendance.
 
 ## 9. Data requirements
 
-To be drafted.
+"Mandatory" means always present once the record exists; all attributes except the dispute remark and the Keep as is explanation are set by the system or taken from other modules. The hourly wage rate is classed as sensitive (D-71); the wage amount derived from it is treated the same way. Salary data is shown only within the role's data scope (anchor §4.3); the Admin sees only the top-level employee's records.
+
+### 9.1 Salary record
+
+| Attribute | Description | Type / format | Mandatory | Validation (VR id) | Set by | Sensitive (Y / N) |
+| --- | --- | --- | --- | --- | --- | --- |
+| Salary Id | Unique identifier | System key | Y | – | System | N |
+| Employee Id | Owner of the record | Employee Id | Y | – | System (from the attendance) | N |
+| Attendance Id | Link to the approved attendance; at most one non-voided record per attendance | Attendance key | Y | BR-SMS-01 | System | N |
+| Work Date | Date worked, from the attendance | Date, IST | Y | – | System | N |
+| Attendance from and to time | Shown on screens from the linked attendance; how SMS holds them is designed in the HLD | Time, HH:MM | – (shown) | – | AMS (INT-01) | N |
+| Day Hour | Hours worked | Decimal, 2 places | Y | BR-SMS-05 | System | N |
+| Day Wage Rate | Hourly wage rate copied from EIMS at generation | Decimal, INR, 2 places | Y | BR-SMS-02 | System (INT-05) | Y |
+| Day Wage Amount | Day Hour × Day Wage Rate, rounded half up | Decimal, INR, 2 places | Y | BR-SMS-05 | System | Y |
+| Status | Salary status (§6.1) | Generated, Manager Approved, Accepted, Disputed, Voided | Y | VR-SMS-04 | System on action | N |
+| Approver Id, Approved Date | Who approved the record or last closed a dispute with Keep as is, and when | Employee Id or Admin; date and time, IST | – | – | System (BR-CMN-02) | N |
+| Remarks | Void reason (reopen remarks and date, or reconciliation) | Text ≤ 500 | – | – | System (BR-CMN-02, D-25) | N |
+| Dispute Remark | Employee's latest dispute remark | Text ≤ 500 | – (required to dispute) | VR-SMS-01 | Employee | N |
+| Resolution Explanation | Approver's latest Keep as is explanation | Text ≤ 500 | – (required for Keep as is) | VR-SMS-02 | Approver | N |
+| Disputed Date | When the employee last disputed the record | Date and time, IST | – | BR-SMS-12 | System | N |
+| Accepted Date | When the employee accepted the record | Date and time, IST | – | BR-SMS-12 | System | N |
+| Is Active | Soft-delete flag (BR-CMN-06); no user action sets it in the POC | Yes / No | Y | – | System | N |
+| Created By, Created Date, Updated By, Updated Date | Audit fields; Created By is the system | User id; date and time, IST | Y | – | System (BR-CMN-07) | N |
+
+Earlier dispute remarks and explanations are kept in the audit trail, not as attributes (BR-SMS-12). The reconciliation run log (start and end time, result, records created and voided, mismatches) is a job log, not a business entity (anchor C-01); it is designed in the HLD.
 
 ## 10. Notifications and alerts
 
