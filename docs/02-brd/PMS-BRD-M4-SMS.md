@@ -160,7 +160,74 @@ Only one non-voided salary record exists per attendance (D-25, NFR-06). Salary r
 
 ## 7. Functional requirements
 
-To be drafted after review of §1–§6.
+All requirements are priority Must and phase POC. Salary items in the approvals inbox (SCR-SH-04) follow FR-CMN-010 to FR-CMN-014 (anchor §5.3) with the same rules as SCR-SMS-02 (§7.2); the dashboard tile and to-do items are in §12.
+
+### 7.1 SCR-SMS-01 – My salary
+
+| Req id | Requirement | Priority | Phase | UX ref | Acceptance criteria (Given / When / Then) |
+| --- | --- | --- | --- | --- | --- |
+| FR-SMS-001 | Tiles for the selected period show: Earned in period (amount of Manager Approved and Accepted records); To review (count and amount of Manager Approved records); Waiting for manager (count of Generated records); Disputed (count, "With your manager"). Generated, Disputed and Voided records are not counted in earnings. | Must | POC | SCR-SMS-01, FR-CMN-002, BR-CMN-16 | Given in the period one Accepted record of ₹ 2,125.00, one Manager Approved of ₹ 2,250.00 and one Disputed, then Earned shows ₹ 4,375.00 and Disputed shows 1. |
+| FR-SMS-002 | A period filter (From, To) defaults to the first day of the current month to today; From must be on or before To. A "Show voided" toggle is off by default. Tiles, table and total update when the period or toggle changes. | Must | POC | SCR-SMS-01, UJ-SMS-04, D-25 | Given the screen opens on 19 Nov 2026, then the period is 01 Nov 2026 to 19 Nov 2026 and voided records are hidden. |
+| FR-SMS-003 | The table lists one row per salary record in the period, newest date first: date, attendance from–to time, hours (2 decimals), rate (₹ per hour), amount (₹, 2 decimals), status and notes. The employee's current hourly wage rate is shown above the table. | Must | POC | SCR-SMS-01 | Given a record for Mon 02 Nov, 09:00–17:30, then the row shows 8.50 h × 250.00 = ₹ 2,125.00. |
+| FR-SMS-004 | Notes show the latest dispute remark ("Your remark"), the approver's Keep as is explanation, or the void reason, whichever applies. | Must | POC | SCR-SMS-01, D-90 | Given a dispute closed with Keep as is, then the row shows both the employee's remark and the approver's explanation. |
+| FR-SMS-005 | With "Show voided" on, voided records are listed greyed, with the amount struck through, a "Voided" text badge and the void reason; they are never counted in tiles or totals. | Must | POC | SCR-SMS-01, D-25, BR-CMN-16 | Given a voided record and its regenerated replacement on the same date, when Show voided is on, then both rows are listed and only the replacement counts in the total. |
+| FR-SMS-006 | A footer shows the total earned in the period (Manager Approved and Accepted; excluding Generated, Disputed and Voided). | Must | POC | SCR-SMS-01, UJ-SMS-04 | Given the period changes, then the footer total equals the Earned tile. |
+| FR-SMS-007 | Accept is offered on each Manager Approved row; the record becomes Accepted and final: "Salary for <date> accepted." | Must | POC | SCR-SMS-01, UJ-SMS-02, D-05 | Given a Manager Approved record, when the employee clicks Accept, then it is Accepted and no further action is offered. |
+| FR-SMS-008 | Manager Approved rows have a checkbox; Accept selected accepts all selected rows: "<n> salary record(s) accepted." Records that fail stay selected with their own error; the others are accepted. | Must | POC | SCR-SMS-01, D-33 | Given 3 rows selected, when the employee clicks Accept selected, then all 3 are Accepted. |
+| FR-SMS-009 | Dispute is offered on each Manager Approved row, one at a time. A dialog explains what happens (the approver reviews it; if the attendance was wrong it is reopened, this record is voided and a new one is generated), shows date, times, hours × rate = amount, and asks "What is wrong?" (required, up to 500 characters). On confirmation the record becomes Disputed: "Dispute sent to <approver>." | Must | POC | SCR-SMS-01, UJ-SMS-02, BR-CMN-03 | Given an empty remark, when the employee confirms, then "A remark is required to dispute." is shown and nothing changes. |
+| FR-SMS-010 | After the approver closes a dispute with Keep as is, the record is Manager Approved again with the explanation, and the employee can accept it or dispute it again. | Must | POC | D-33, D-90 | Given a record returned with Keep as is, then Accept and Dispute are offered again. |
+| FR-SMS-011 | Only Manager Approved records offer actions; Generated, Accepted, Disputed and Voided records offer none. If the record was changed meanwhile, the action fails and the employee is told to refresh. | Must | POC | SCR-SMS-01, FR-CMN-014 | Given a record voided after the page opened, when the employee clicks Accept, then the record stays Voided and the refresh message is shown. |
+| FR-SMS-012 | Manager Approved records are never accepted automatically; they stay waiting and the dashboard keeps showing them as salary records to review. | Must | POC | D-33, FR-CMN-003 | Given a record left in Manager Approved for 30 days, then it is still Manager Approved and listed in "Things to do". |
+| FR-SMS-013 | With no records in the period: "No salary records in this period."; with nothing to review the To review tile shows 0 and no checkboxes are shown; if the data cannot be loaded, an alert with Retry is shown. | Must | POC | SCR-SMS-01 | Given a new employee with no approved attendance, then the empty message is shown. |
+| FR-SMS-014 | A manager also sees a Team tab, with the Needs action count, leading to SCR-SMS-02. | Must | POC | SCR-SMS-01 | Given an Employee without the Manager role, then no Team tab is shown. |
+
+**User stories**
+
+| Id | As a | I want to | So that | Baseline |
+| --- | --- | --- | --- | --- |
+| US-SMS-01 | Employee | accept or dispute my salary records | errors are raised and corrected | SMS-US3 |
+| US-SMS-02 | Employee | accept several salary records at once | reviewing a month's wages is quick | – (D-33) |
+| US-SMS-03 | Employee | view my salary records and total for a date range | I know what I have earned | SMS-US4 |
+
+### 7.2 SCR-SMS-02 – Team salary review
+
+| Req id | Requirement | Priority | Phase | UX ref | Acceptance criteria (Given / When / Then) |
+| --- | --- | --- | --- | --- | --- |
+| FR-SMS-020 | The Team tab has Needs action (with count) and All records, with filters for team member, date range and "Show voided". Needs action lists every Generated and Disputed record regardless of the date range, disputes first, then newest date. All records and team totals default to the first day of the current month to today and include reports who became inactive, marked Inactive. | Must | POC | SCR-SMS-02, D-90 | Given a Generated record from last month, then it is listed in Needs action although the date range is the current month. |
+| FR-SMS-021 | Rows show employee name and Employee Id, date, hours, rate, amount, status and notes (the employee's dispute remark, the Keep as is explanation or the void reason). Voided records are shown as in FR-SMS-005 when "Show voided" is on. | Must | POC | SCR-SMS-02 | Given a Disputed record, then the employee's remark is shown in Notes. |
+| FR-SMS-022 | The approver approves one Generated row or several selected rows; each becomes Manager Approved: "Approved. <name> can now review it." / "<n> salary record(s) approved. Employees can now review them." Only Generated rows can be selected. | Must | POC | SCR-SMS-02, UJ-SMS-01, BR-CMN-12 | Given 4 Generated rows selected, when the approver approves, then all 4 are Manager Approved and appear in the employees' To review tiles. |
+| FR-SMS-023 | A generated record cannot be rejected; the screen states that generated records can only be approved and that a wrong wage is fixed at the attendance. | Must | POC | SCR-SMS-02, D-07 | Given a Generated row, then no Reject action is offered. |
+| FR-SMS-024 | Approving fails for a record that is no longer Generated or whose attendance is no longer Approved, with a message to refresh; in a bulk approval the failed records stay selected with their own error and the others are approved. | Must | POC | FR-CMN-014, D-90 | Given one of 3 selected records was voided meanwhile, when the approver approves, then 2 are Manager Approved and the voided one stays selected with the refresh message. |
+| FR-SMS-025 | Keep as is on a Disputed row opens a dialog showing employee, date, amount and the employee's remark, explaining that the record goes back to Manager Approved for the employee to accept again, and asking for an explanation (required, up to 500 characters). On confirmation the record is Manager Approved: "Dispute closed. <name> can accept the record." | Must | POC | SCR-SMS-02, UJ-SMS-03, D-33, BR-CMN-03 | Given an empty explanation, then "An explanation is required." is shown and the record stays Disputed. |
+| FR-SMS-026 | Reopen attendance on a Disputed row opens a dialog explaining the effect (attendance back to the employee as Rejected; this salary record Voided; a new one generated when the corrected attendance is approved) and asking for remarks for the employee (required, up to 500 characters). On confirmation the attendance is reopened (FR-AMS-025) and the salary record is Voided with the reason: "Attendance reopened. Salary record voided." | Must | POC | SCR-SMS-02, UJ-SMS-03, UJ-AMS-04, BR-CMN-15, INT-02 | Given a disputed record, when the approver confirms Reopen with remarks, then the attendance is Rejected and the salary record is Voided. |
+| FR-SMS-027 | A "Team totals in period" table shows per employee, for the filters set: approved hours and earned amount (Manager Approved and Accepted records) and the number of open items (Generated and Disputed). | Must | POC | SCR-SMS-02, BR-CMN-16 | Given a report with one Accepted 8.00 h record and one Voided 9.00 h record, then the totals show 8.00 h. |
+| FR-SMS-028 | A manager sees and decides only direct reports' salary records, never their own; the Admin sees and decides only the top-level employee's records. | Must | POC | BR-CMN-01, BR-CMN-08, D-58 | Given a manager opens Team, then their own salary records are not listed. |
+| FR-SMS-029 | With nothing to act on: "Nothing needs action – All generated records are approved and there are no open disputes."; if the data cannot be loaded, an alert with Retry is shown. | Must | POC | SCR-SMS-02 | Given no Generated or Disputed records, then the message is shown. |
+
+**User stories**
+
+| Id | As a | I want to | So that | Baseline |
+| --- | --- | --- | --- | --- |
+| US-SMS-04 | Manager | approve my team's generated salary records | wages are confirmed before the employee sees them as final | SMS-US2 |
+| US-SMS-05 | Manager | close a dispute as is, or reopen the attendance when it was wrong | every dispute ends with a correct wage | – (D-07, D-33) |
+
+### 7.3 Salary generation, voiding and reconciliation (system)
+
+| Req id | Requirement | Priority | Phase | UX ref | Acceptance criteria (Given / When / Then) |
+| --- | --- | --- | --- | --- | --- |
+| FR-SMS-040 | When attendance is approved, the system creates one salary record as Generated: employee, link to the attendance, work date, Day Hour = the attendance hours, Day Wage Rate = the employee's current hourly wage rate from EIMS, Day Wage Amount = Day Hour × rate rounded half up to 2 decimals, INR. | Must | POC | UJ-SYS-01, INT-01, INT-05, D-05, D-90 | Given attendance 09:00–17:30 approved and a rate of ₹ 250.00, then a Generated record of 8.50 h and ₹ 2,125.00 exists within 1 minute (NFR-01). |
+| FR-SMS-041 | Only one non-voided salary record exists per attendance: a repeated hand-over for the same approval creates nothing new; after a void, the next approval of the corrected attendance creates a new record. | Must | POC | UJ-SYS-01, D-25, NFR-06 | Given the same approval is handed over twice, then one non-voided record exists. |
+| FR-SMS-042 | When attendance is reopened, the system sets its non-voided salary record to Voided and keeps the reason (the approver's reopen remarks and the reopen date). | Must | POC | UJ-SYS-03, INT-02, D-25 | Given a reopen with remarks "Out time was 17:00", then the record is Voided and the reason shows those remarks. |
+| FR-SMS-043 | Every day at 01:00 IST the reconciliation compares all approved attendance with the salary records: it creates a Generated record (as FR-SMS-040, current rate) for approved attendance without a non-voided record, and sets to Voided any non-voided record whose attendance is no longer Approved, with a reason stating it was voided by reconciliation. | Must | POC | UJ-SYS-02, JOB-CMN-01, D-24, D-90 | Given an approval whose hand-over was lost, when reconciliation runs, then the missing record is created as Generated. |
+| FR-SMS-044 | Other mismatches (for example more than one non-voided record for one attendance, or hours that differ from the attendance) are logged and not changed. | Must | POC | UJ-SYS-02, D-90 | Given a record whose hours differ from its attendance, when reconciliation runs, then the record is unchanged and a mismatch is logged. |
+| FR-SMS-045 | Every reconciliation run is logged with start and end time, result, records created, records voided and mismatches logged; the Admin dashboard shows the last run (FR-CMN-007). The run finishes in under 5 minutes (NFR-01). | Must | POC | UJ-SYS-02, SCR-SH-03, D-59, D-90 | Given last night's run created 2 records, then the Admin tile shows the run time, its result and "2 created". |
+| FR-SMS-046 | SMS provides the salary status of approved attendance to AMS and the shell; attendance whose salary record is Disputed is marked "Salary disputed" and can be reopened. | Must | POC | INT-10, FR-AMS-024 | Given a Disputed record, then the attendance shows "Salary disputed" in team attendance history. |
+
+**User stories**
+
+| Id | As a | I want to | So that | Baseline |
+| --- | --- | --- | --- | --- |
+| US-SMS-06 | System | calculate the day wage when attendance is approved | wages are accurate and need no manual entry | SMS-US1 |
 
 ## 8. Business and validation rules
 
