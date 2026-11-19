@@ -202,3 +202,47 @@ All requirements are priority Must and phase POC. Approve-several-at-once and ch
 | Id | As a | I want to | So that | Baseline |
 | --- | --- | --- | --- | --- |
 | US-LMS-05 | Manager | approve or reject my team's leave requests, seeing who else is away | I can plan team capacity | LMS-US3 |
+
+## 8. Business and validation rules
+
+| Rule id | Rule | Type (business / validation) | Applies to (screen / function) | Source (decision / UX) |
+| --- | --- | --- | --- | --- |
+| VR-LMS-01 | The from date is on or before the to date. | Validation | SCR-LMS-02 | Baseline LMS-V1 |
+| VR-LMS-02 | The from date is not before the employee's date of joining. Past dates are allowed; there is no limit on future dates or on the length of a request. | Validation | SCR-LMS-02 | D-07 (O5), D-84; baseline LMS-V2 |
+| VR-LMS-03 | No date of the request overlaps the employee's other submitted or approved leave. When a rejected request is fixed, its own earlier dates do not count. | Validation | SCR-LMS-02 | D-04 (L4), D-84; baseline LMS-V3 |
+| VR-LMS-04 | No date of the request has submitted or approved attendance; draft or rejected attendance does not block leave. | Validation | SCR-LMS-02 | BR-CMN-10, D-77, INT-06; baseline LMS-V4 |
+| VR-LMS-05 | The leave type is Casual, Sick or Earned. | Validation | SCR-LMS-02 | D-04 (L2); baseline LMS-V5 |
+| VR-LMS-06 | Only an employee with an approved profile can submit leave. | Validation | SCR-LMS-01, SCR-LMS-02 | BR-CMN-09; baseline LMS-V6 |
+| VR-LMS-07 | To submit, leave type, from date and to date are required. | Validation | SCR-LMS-02 | UX SCR-LMS-02 |
+| BR-LMS-01 | Leave days = to date – from date + 1; every calendar day counts, weekends included. | Business | SCR-LMS-01, SCR-LMS-02, SCR-LMS-03 | D-32 (UXQ-19); UX SCR-LMS-01 |
+| BR-LMS-02 | Leave is taken in full days only. | Business | SCR-LMS-02 | D-04 (L2) |
+| BR-LMS-03 | Leave balances and entitlements are not tracked or checked. | Business | SCR-LMS-01, SCR-LMS-02 | D-04 (L3) |
+| BR-LMS-04 | Only a Submitted request can be cancelled, by its owner, after confirmation and before the approver decides; Cancelled is final. | Business | SCR-LMS-01 | D-07 (O4), D-32 |
+| BR-LMS-05 | A Rejected request cannot be cancelled; it stays Rejected until the owner corrects type or dates and resubmits it, which is possible at any time. | Business | SCR-LMS-01, SCR-LMS-02 | BR-CMN-04, D-84 |
+| BR-LMS-06 | Approved leave cannot be cancelled or changed in the POC. | Business | SCR-LMS-01 | BR-CMN-05, D-84 |
+| BR-LMS-07 | The Request Date is set on the first submission and never changes; the Submitted Date is set on every submission. | Business | SCR-LMS-02, SCR-LMS-03 | D-04 (L1), D-84 |
+| BR-LMS-08 | In monthly and yearly figures, each leave day is counted in the calendar month and year in which it falls. | Business | SCR-LMS-01, SCR-SH-03 | D-84 |
+| BR-LMS-09 | "Also away" lists the approver's other direct reports whose submitted or approved leave overlaps the request's dates; it is empty for the top-level employee's requests. | Business | SCR-LMS-03 | D-84; UX SCR-LMS-03 |
+
+Cross-module rules that also apply: BR-CMN-01 to BR-CMN-10, BR-CMN-12, BR-CMN-17, BR-CMN-18 (anchor §6).
+
+## 9. Data requirements
+
+"Mandatory" means required to submit (VR-LMS-07). Leave data is not classed as sensitive (D-71 lists the sensitive employee attributes); it is still shown only within the role's data scope (anchor §4.3).
+
+### 9.1 Leave
+
+| Attribute | Description | Type / format | Mandatory | Validation (VR id) | Set by | Sensitive (Y / N) |
+| --- | --- | --- | --- | --- | --- | --- |
+| Leave Id | Unique identifier | System key | Y | – | System | N |
+| Employee Id | Owner of the request | Employee Id | Y | VR-LMS-06 | System (signed-in employee) | N |
+| Request Date | Date of the first submission (shown as "Requested") | Date, IST | Y | BR-LMS-07 | System | N |
+| Leave Type | Casual, Sick or Earned | List | Y | VR-LMS-05 | Employee | N |
+| From Date | First day of leave (inclusive) | Date, IST | Y | VR-LMS-01 to 04 | Employee | N |
+| To Date | Last day of leave (inclusive) | Date, IST | Y | VR-LMS-01, 03, 04 | Employee | N |
+| Leave days | To date – from date + 1; shown on screens and tiles | Whole number | – (derived) | BR-LMS-01 | System | N |
+| Status | Leave status (§6.1) | Submitted, Approved, Rejected, Cancelled | Y | – | System on action | N |
+| Submitted Date | When the request was last submitted (shown in team review) | Date and time, IST | Y | BR-LMS-07 | System | N |
+| Approver Id, Approved Date, Remarks | Workflow fields; remarks hold the rejection reason | Employee Id; date and time; text ≤ 500 | – | BR-CMN-03 | System / approver (BR-CMN-02) | N |
+| Is Active | Soft-delete flag (BR-CMN-06); no user action sets it in the POC | Yes / No | Y | – | System | N |
+| Created By, Created Date, Updated By, Updated Date | Audit fields | User id; date and time, IST | Y | – | System (BR-CMN-07) | N |
