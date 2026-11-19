@@ -4,6 +4,7 @@ Every approved project decision, newest first. Approver for all entries: Rajesh 
 
 | Id | Date | Area | Decision |
 | --- | --- | --- | --- |
+| D-88 | 19 Nov 2026 | BRD | PMS-BRD-M3-LMS §10 to §17 approved; all LMS sections reviewed, document at v1.0 rev 0.1, final approval pending OI-02, OI-04; anchor rev 0.8: OI-09 (LMS UX updates: History date range filter with current-month default incl. inactive reports, submitted time in Pending rows, "Also away" empty for the top-level employee, "Requested" = first submission), LMS status in §2.3 and §11. Next: PMS-BRD-M4-SMS in a new session |
 | D-87 | 19 Nov 2026 | BRD | PMS-BRD-M3-LMS §8 and §9 approved: VR-LMS-01 to 07, BR-LMS-01 to 09, Leave data; Request Date (first submission) and Submitted Date (last submission); leave data, including the Sick type, not classed as sensitive |
 | D-86 | 19 Nov 2026 | BRD | PMS-BRD-M3-LMS §7 approved: FR-LMS-001 to FR-LMS-028 with acceptance criteria; user stories US-LMS-01 to US-LMS-05; team leave History has a date range filter |
 | D-85 | 19 Nov 2026 | BRD | PMS-BRD-M3-LMS §1–§6 approved: status codes SUBMITTED, APPROVED, REJECTED, CANCELLED as drafted; leave requests are never discarded or deleted by users (no Is Active action) |

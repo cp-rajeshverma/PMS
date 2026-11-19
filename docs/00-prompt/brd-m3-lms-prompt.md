@@ -4,9 +4,9 @@
 | --- | --- |
 | Document | docs/02-brd/PMS-BRD-M3-LMS.md |
 | Template | templates/02-brd/brd-module-template.md |
-| Used | – |
-| Outcome | – |
-| Status | Ready for the next session |
+| Used | 19 Nov 2026 |
+| Outcome | All sections reviewed (D-84 to D-88); anchor rev 0.7 and 0.8 (OI-09); approval pending OI-02, OI-04 |
+| Status | Done – reuse only to revise LMS |
 
 ## Prompt
 

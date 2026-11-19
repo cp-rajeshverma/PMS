@@ -246,3 +246,85 @@ Cross-module rules that also apply: BR-CMN-01 to BR-CMN-10, BR-CMN-12, BR-CMN-17
 | Approver Id, Approved Date, Remarks | Workflow fields; remarks hold the rejection reason | Employee Id; date and time; text ≤ 500 | – | BR-CMN-03 | System / approver (BR-CMN-02) | N |
 | Is Active | Soft-delete flag (BR-CMN-06); no user action sets it in the POC | Yes / No | Y | – | System | N |
 | Created By, Created Date, Updated By, Updated Date | Audit fields | User id; date and time, IST | Y | – | System (BR-CMN-07) | N |
+
+## 10. Notifications and alerts
+
+All notifications are in-app (anchor C-05): dashboard, approvals inbox and screen banners.
+
+| Id | Event / trigger | Recipient(s) | Channel (in-app / email) | Timing | Message summary |
+| --- | --- | --- | --- | --- | --- |
+| NOT-LMS-01 | Leave submitted or resubmitted | Approver (manager; Admin for the top-level employee) | In-app: approvals inbox, Approvals count, dashboard approval card | Immediately | New "Leave" item with employee, type, date range and days |
+| NOT-LMS-02 | Leave rejected | Employee | In-app: dashboard "Things to do"; red banner on the request form | Immediately | "Leave <range> returned – please correct" with the approver's name, date and remarks |
+| NOT-LMS-03 | Leave approved | Employee | In-app: status in My leave; leave tiles on My leave and the dashboard | Immediately | Status Approved; approved days added to the tiles |
+| NOT-LMS-04 | Leave cancelled by the employee | Approver | In-app: item removed from the approvals inbox and Pending; message if the approver acts on it (FR-LMS-025) | Immediately | "This request was cancelled by the employee." |
+| NOT-LMS-05 | Own request waiting for a decision | Employee | In-app: dashboard "Things to do" and pending tile (FR-CMN-003, FR-LMS-001) | Each time the dashboard or My leave opens | "Waiting for <approver>" with the number of pending requests |
+
+## 11. Scheduled jobs and integrations
+
+LMS has no scheduled jobs of its own. It takes part in these anchor integrations (anchor §7):
+
+| Id | Name | Type (event / API / scheduled) | Trigger / schedule | Source → target | Business outcome |
+| --- | --- | --- | --- | --- | --- |
+| INT-03, INT-04 | Employee details and approver | API | Request, submit, approval views | EIMS → LMS | Approved profile, joining date, approver and direct reports (VR-LMS-02, VR-LMS-06, BR-LMS-09) |
+| INT-06 | Attendance and leave date check | API | Leave submit; attendance entry and submit | AMS ↔ LMS | No date with both (VR-LMS-04, BR-CMN-10) |
+| INT-07 | Dashboard and approvals inbox | API | Dashboard or inbox opened | LMS → Shell | Items in §12, leave days for the missing-attendance reminder (FR-CMN-004), NOT-LMS-01 to 05 |
+| INT-09 | Records before a new joining date | API | Admin changes date of joining | LMS → EIMS | Leave other than Cancelled before the new date is reported |
+
+## 12. Reporting and dashboard
+
+| Id | Report / widget | Audience | Content | Filters |
+| --- | --- | --- | --- | --- |
+| RPT-LMS-01 | Leave this month tile (dashboard) | Employee, Manager | Approved leave days falling in the current month and the pending count (FR-CMN-002, BR-LMS-08) | – |
+| RPT-LMS-02 | "Things to do" items (dashboard) | Employee, Manager | Rejected requests to fix; requests waiting for a decision | – |
+| RPT-LMS-03 | Waiting for your approval – Leave | Manager, Admin | Count of submitted requests to decide | – |
+| RPT-LMS-04 | My leave tiles | Employee, Manager | Approved days this year by type; pending requests (FR-LMS-001) | – (current calendar year) |
+| RPT-LMS-05 | Team leave history | Manager, Admin | Decisions, approver, remarks, status (FR-LMS-020, 026) | Team member, leave type, date range |
+
+## 13. Module non-functional requirements and volumetrics
+
+System-wide NFRs (anchor §8) apply; LMS has no module-specific additions.
+
+| Volume type | Year 1 | Growth % per year | Peak |
+| --- | --- | --- | --- |
+| Leave requests | About 1,200 (about 1 per employee per month, anchor §8.1) | 0 % (20 % headroom) | Anchor daily peaks; month-end approval catch-up |
+| Approval decisions | About 1,200 | 0 % | As above |
+| Cancellations | Not estimated (expected rare) | – | – |
+
+## 14. Assumptions, constraints and dependencies
+
+| Type | Id | Statement |
+| --- | --- | --- |
+| Assumption | A-LMS-01 | Approvers decide from their own knowledge of the team's work, helped by "Also away"; there are no balances or entitlements to check (D-04). |
+| Constraint | C-LMS-01 | Full days only, counted as calendar days including weekends (D-04, D-32). |
+| Constraint | C-LMS-02 | Dates are IST (D-08, BR-CMN-18). |
+| Dependency | DEP-LMS-01 | EIMS provides the approved profile, joining date, approver and direct reports (anchor DEP-03, INT-03, INT-04). |
+| Dependency | DEP-LMS-02 | AMS provides attendance dates (INT-06). LMS may be built before AMS; until AMS exists there is no attendance, so the check passes and is completed when AMS is delivered. |
+| Dependency | DEP-LMS-03 | Open items OI-02 and OI-04 (anchor §12) are decided before this document is approved (anchor DEP-06). |
+
+## 15. Traceability matrix
+
+| Journey id | Screen id | Req id | Rule ids | Test ref (later) |
+| --- | --- | --- | --- | --- |
+| UJ-LMS-01 | SCR-LMS-01, SCR-LMS-02 | FR-LMS-001, 002, 003, 007, 008, 010, 011, 012, 013, 014, 016 | VR-LMS-01 to 07; BR-LMS-01, 02, 03, 07, 08; BR-CMN-09, 10 | |
+| UJ-LMS-02 | SCR-LMS-01 | FR-LMS-004, 005 | BR-LMS-04, 06 | |
+| UJ-LMS-03 | SCR-SH-03, SCR-LMS-01, SCR-LMS-02 | FR-LMS-006, 013, 014, 015 | VR-LMS-03; BR-LMS-05, 07; BR-CMN-04 | |
+| UJ-LMS-04 | SCR-SH-04, SCR-LMS-01, SCR-LMS-03 | FR-LMS-009, 020 to 028 | BR-LMS-09; BR-CMN-01, 03, 08, 12, 17 | |
+
+## 16. Open items
+
+Cross-module open items that affect LMS are in the anchor §12: OI-01 (Admin opens SCR-LMS-03 for the top-level employee), OI-02 (pending items of a deactivated employee), OI-04 (pending items on a manager change) and OI-09 (LMS UX updates). LMS has no module-only open items.
+
+| Id | Question | Owner | Due | Status / decision |
+| --- | --- | --- | --- | --- |
+| – | None | – | – | – |
+
+## 17. Appendix
+
+### 17.1 Future scope (not in this phase)
+
+| Area | Requirement ref | Note |
+| --- | --- | --- |
+| Leave types | Anchor §13.1 | Half-day leave |
+| Entitlement | Anchor §13.1 | Leave balances, accruals and entitlement checks |
+| Changes | §3.2, D-84 | Cancelling approved leave |
+| Calendar | Anchor §13.1 | Holiday calendar and weekend rules |

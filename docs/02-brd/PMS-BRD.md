@@ -19,6 +19,7 @@ Date: November 2026
 | 1.0 | 0.5 | 19-Nov-2026 | Rajesh Verma | BR-CMN-10 clarified for draft and rejected attendance; INT-10; OI-08 (D-77) |
 | 1.0 | 0.6 | 19-Nov-2026 | Rajesh Verma | AMS status in §2.3 and §11 (D-81) |
 | 1.0 | 0.7 | 19-Nov-2026 | Rajesh Verma | Cancelling approved leave added to out of scope (§3.3) and future scope (§13.1) (D-84) |
+| 1.0 | 0.8 | 19-Nov-2026 | Rajesh Verma | OI-09 (LMS UX updates); LMS status in §2.3 and §11 (D-88) |
 
 ### 1.2 Review and approval
 
@@ -74,7 +75,7 @@ Users of the BRD set:
 | --- | --- | --- | --- | --- |
 | EIMS – Employee Information | PMS-BRD-M1-EIMS | HR Manager, Finance Manager | v1.0 rev 0.1 | Drafted – approval pending OI-02, OI-04, OI-EIMS-01, OI-EIMS-02 |
 | AMS – Attendance | PMS-BRD-M2-AMS | HR Manager, Finance Manager | v1.0 rev 0.1 | Drafted – approval pending OI-02, OI-03, OI-04 |
-| LMS – Leave | PMS-BRD-M3-LMS | HR Manager, Finance Manager | – | Not started |
+| LMS – Leave | PMS-BRD-M3-LMS | HR Manager, Finance Manager | v1.0 rev 0.1 | Drafted – approval pending OI-02, OI-04 |
 | SMS – Salary | PMS-BRD-M4-SMS | HR Manager, Finance Manager | – | Not started |
 | SUP – Supporting functions | PMS-BRD-M5-SUP | HR Manager, Finance Manager | – | Not started (need-basis assessment after M1–M4, D-53) |
 
@@ -470,7 +471,7 @@ Functional requirement and rule counts for the modules are filled in as each mod
 | Shared (this anchor) | 2: UJ-SH-03, UJ-SH-04 | 3: SCR-SH-00, SCR-SH-03, SCR-SH-04 | 15: FR-CMN-001 to FR-CMN-016 | 18: BR-CMN-01 to BR-CMN-18 | Drafted |
 | M1 – EIMS | 10: UJ-EIMS-01 to UJ-EIMS-09, UJ-SYS-04 | 4: SCR-EIMS-01 to SCR-EIMS-04 | 32: FR-EIMS-001 to FR-EIMS-041 | 20: VR-EIMS-01 to 10, BR-EIMS-01 to 10 | Drafted (pending open items) |
 | M2 – AMS | 4: UJ-AMS-01 to UJ-AMS-04 | 3: SCR-AMS-01 to SCR-AMS-03 | 27: FR-AMS-001 to FR-AMS-032 | 13: VR-AMS-01 to 07, BR-AMS-01 to 06 | Drafted (pending open items) |
-| M3 – LMS | 4: UJ-LMS-01 to UJ-LMS-04 | 3: SCR-LMS-01 to SCR-LMS-03 | In PMS-BRD-M3-LMS | Baseline VR-LMS-01 to 06 to be confirmed | Not started |
+| M3 – LMS | 4: UJ-LMS-01 to UJ-LMS-04 | 3: SCR-LMS-01 to SCR-LMS-03 | 25: FR-LMS-001 to FR-LMS-028 | 16: VR-LMS-01 to 07, BR-LMS-01 to 09 | Drafted (pending open items) |
 | M4 – SMS | 7: UJ-SMS-01 to UJ-SMS-04, UJ-SYS-01 to UJ-SYS-03 | 2: SCR-SMS-01, SCR-SMS-02 | In PMS-BRD-M4-SMS | Baseline BR-SMS-01 to 04 to be confirmed | Not started |
 | M5 – SUP | 3: UJ-SH-01, UJ-SH-02, UJ-SH-05 | 2: SCR-SH-01, SCR-SH-02 | In PMS-BRD-M5-SUP | – | Not started |
 | **Total** | **30** | **17** | | | |
@@ -489,6 +490,7 @@ Running list, completed as the anchor is drafted.
 | OI-06 | UX Journey Index still shows the reconciliation time for UJ-SYS-02 as "TBD"; it was set to 01:00 IST (D-24). Correct the UX document. | Product owner | Before HLD Part02 | Open |
 | OI-07 | Update the UX for the profile change request and the withdrawal of a submitted new profile (D-70): SCR-EIMS-03, SCR-EIMS-04, SCR-SH-03, SCR-SH-04, UX Journey Index (UJ-EIMS-05, status list) | Product owner | Before HLD Part02 | Open |
 | OI-08 | Update the AMS UX (D-77): discard action for Draft and Rejected attendance (SCR-AMS-01, SCR-AMS-02); "Leave on this day" flag on draft or rejected attendance; "Over 12 h" flag for approvers (SCR-AMS-03, SCR-SH-04); History default current month incl. inactive reports | Product owner | Before HLD Part02 | Open |
+| OI-09 | Update the LMS UX (D-84, D-88): Team leave History date range filter, defaulting to the current month and including inactive reports (SCR-LMS-03); submitted time in Pending rows; "Also away" empty for the top-level employee; "Requested" shows the first submission date (SCR-LMS-01, SCR-LMS-03) | Product owner | Before HLD Part02 | Open |
 
 Approved decisions are kept in `docs/decisions/decision-log.md`.
 
