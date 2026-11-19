@@ -148,7 +148,75 @@ A discarded entry keeps its last status and is marked inactive (Is Active = fals
 
 ## 7. Functional requirements
 
-_Pending – drafted after review of §1–§6._
+All requirements are priority Must and phase POC. Approve-several-at-once from the approvals inbox follows FR-CMN-011 (anchor §5.3).
+
+### 7.1 SCR-AMS-01 – My attendance
+
+| Req id | Requirement | Priority | Phase | UX ref | Acceptance criteria (Given / When / Then) |
+| --- | --- | --- | --- | --- | --- |
+| FR-AMS-001 | The employee sees a month calendar (Monday to Sunday) with each day's status badge, from and to time and hours; days with leave show a Leave badge; today is highlighted and future days are greyed. The month can be moved back to the joining month and forward to the current month. | Must | POC | SCR-AMS-01 | Given today is 19-Nov, when the employee clicks Next month, then December is not offered. |
+| FR-AMS-002 | Tiles for the shown month: approved hours (and days), waiting for approval, needs your action (Draft or Rejected) and missing weekdays. | Must | POC | SCR-AMS-01 | Given 3 approved days of 8 h, then the tile shows 24 h (3 days). |
+| FR-AMS-003 | Missing weekdays (FR-CMN-004) are outlined "Missing" in the calendar; this is a reminder only. | Must | POC | SCR-AMS-01, D-28, OI-03 | Given a past Wednesday with no attendance and no leave, then it shows "Missing"; a Saturday never does. |
+| FR-AMS-004 | A Calendar / List toggle shows the same month as a table: date, from, to, hours, status, approver remarks. | Must | POC | SCR-AMS-01, D-24 | Given List view, then each active entry of the month is one row. |
+| FR-AMS-005 | Clicking an empty or missing day up to today opens a new entry with the date filled in; clicking a day with an entry opens it; a leave day and future days offer no entry. | Must | POC | SCR-AMS-01 | Given a day with approved leave, when the employee clicks it, then no entry form opens. |
+| FR-AMS-006 | Until the profile is approved, a banner says "Your profile must be approved before you can enter attendance." and "+ Enter attendance" is disabled. | Must | POC | SCR-AMS-01, BR-CMN-09 | Given a Submitted profile, then the button is disabled. |
+| FR-AMS-007 | A Draft or Rejected entry on a date now covered by submitted or approved leave is marked "Leave on this day – discard". | Must | POC | D-77, OI-08 | Given a Draft on 12-Nov and approved leave on 12-Nov, then the entry shows the flag. |
+| FR-AMS-008 | If leave data cannot be loaded, attendance is still shown with the note "Leave days unavailable". | Must | POC | SCR-AMS-01 | Given LMS is unavailable, then the calendar shows attendance and the note. |
+
+**User stories**
+
+| Id | As a | I want to | So that | Baseline |
+| --- | --- | --- | --- | --- |
+| US-AMS-01 | Employee | view my attendance history and status by month | I can track approvals and missing days | AMS-US4 |
+
+### 7.2 SCR-AMS-02 – Attendance entry
+
+| Req id | Requirement | Priority | Phase | UX ref | Acceptance criteria (Given / When / Then) |
+| --- | --- | --- | --- | --- | --- |
+| FR-AMS-010 | The employee enters the date and the from and to times in 15-minute steps between 00:00 and 23:45; hours worked are calculated as the employee types (2 decimals). From time defaults to 09:00. | Must | POC | SCR-AMS-02, D-31, D-77 | Given 09:00 to 17:30, then hours show 8.50. |
+| FR-AMS-011 | Save draft keeps the entry as Draft ("Draft saved."); only the date rules are checked. | Must | POC | SCR-AMS-02 | Given no to time, when the employee saves a draft, then it is saved as Draft. |
+| FR-AMS-012 | Submit checks all rules (§8); on success the entry becomes Submitted and "Attendance for <date> submitted to <approver>." is shown. | Must | POC | SCR-AMS-02 | Given valid times, when the employee submits, then the entry appears in the approver's inbox. |
+| FR-AMS-013 | Above 12 hours the employee sees "Over 12 hours – please confirm the times." and must confirm before submitting; it is not blocked. | Must | POC | SCR-AMS-02, D-31 | Given 07:00 to 20:00, when the employee submits, then the confirmation appears; after confirming, the entry is Submitted. |
+| FR-AMS-014 | Errors are shown at the field: "Date cannot be in the future", "Attendance for this date already exists – Open it", "You have leave on <date>", "To time must be after From time". | Must | POC | SCR-AMS-02 | Given an existing entry for 12-Nov, when the employee picks 12-Nov, then the "already exists – Open it" message links to it. |
+| FR-AMS-015 | Once an entry exists its date cannot be changed. | Must | POC | SCR-AMS-02 | Given a Draft for 12-Nov, then the date field is read only. |
+| FR-AMS-016 | The banner and actions follow the status: Draft – editable; Submitted – read only, "Waiting for approval"; Approved – read only, "Locked – salary record generated"; Rejected – editable, red banner with the approver's remarks. | Must | POC | SCR-AMS-02, BR-CMN-04, BR-CMN-05 | Given a Rejected entry, then the remarks are shown and Submit is available. |
+| FR-AMS-017 | The employee can discard a Draft or Rejected entry after confirmation; it disappears from calendar, list and totals and the date can be entered again. | Must | POC | D-77, OI-08 | Given a reopened (Rejected) entry for a day not worked, when the employee discards it, then the day shows as Missing (if a weekday) and no salary is generated for it. |
+
+**User stories**
+
+| Id | As a | I want to | So that | Baseline |
+| --- | --- | --- | --- | --- |
+| US-AMS-02 | Employee | enter and submit my daily attendance | my hours are recorded and paid | AMS-US1 |
+| US-AMS-03 | Employee | edit and resubmit rejected attendance | I can correct mistakes | AMS-US2 |
+| US-AMS-04 | Employee | discard an entry I created by mistake or a day I did not work | my records stay correct | – (D-77) |
+
+### 7.3 SCR-AMS-03 – Team attendance review
+
+| Req id | Requirement | Priority | Phase | UX ref | Acceptance criteria (Given / When / Then) |
+| --- | --- | --- | --- | --- | --- |
+| FR-AMS-020 | The Team tab has Pending (with count) and History, with filters for team member and date range (from ≤ to). History opens on the current month and includes reports who became inactive, marked Inactive. | Must | POC | SCR-AMS-03, D-77 | Given a report deactivated last week, then their October entries appear in History when October is selected. |
+| FR-AMS-021 | Pending rows show employee, date, from, to, hours and submitted time; rows above 12 hours carry an "Over 12 h" flag. | Must | POC | SCR-AMS-03, D-77 | Given a 13-hour entry, then the row shows the flag. |
+| FR-AMS-022 | The approver approves one row or several selected rows; each becomes Approved and locked, and its salary record is generated ("Approved. Salary record will be generated."). | Must | POC | SCR-AMS-03, BR-CMN-12, INT-01 | Given 5 rows selected, when the approver approves, then all 5 are Approved and 5 salary records appear in SMS. |
+| FR-AMS-023 | The approver rejects one row at a time with remarks (required, up to 500 characters): "Rejected and returned to <name>." | Must | POC | SCR-AMS-03, BR-CMN-03 | Given empty remarks, then "Remarks are required to reject." is shown. |
+| FR-AMS-024 | History shows the decision, approver remarks and status; Rejected rows show "With employee"; Approved rows whose salary record is Disputed show "Salary disputed" and a Reopen action. | Must | POC | SCR-AMS-03, INT-10 | Given an approved day with an Accepted salary record, then no Reopen action is offered. |
+| FR-AMS-025 | Reopen explains the effect (attendance back to the employee as Rejected, salary record voided), requires remarks, and then reopens: "Attendance reopened. Salary record voided." | Must | POC | SCR-AMS-03, BR-CMN-15, INT-02 | Given a disputed day, when the approver confirms Reopen with remarks, then the attendance is Rejected and the salary record is Voided. |
+| FR-AMS-026 | A manager sees and decides only direct reports' attendance, never their own; the Admin sees and decides only the top-level employee's attendance. | Must | POC | BR-CMN-01, BR-CMN-08, D-58 | Given a manager opens Team, then their own entries are not listed. |
+| FR-AMS-027 | With nothing pending: "Nothing pending – All attendance in this range has been decided." | Must | POC | SCR-AMS-03 | Given no submitted entries in range, then the message is shown. |
+
+**User stories**
+
+| Id | As a | I want to | So that | Baseline |
+| --- | --- | --- | --- | --- |
+| US-AMS-05 | Manager | see pending attendance for my team and approve or reject it | wages are calculated only on verified hours | AMS-US3 |
+| US-AMS-06 | Manager | reopen an attendance day when a salary dispute shows it was wrong | the employee can correct it and be paid correctly | – (D-07) |
+
+### 7.4 Hand-over to salary (system)
+
+| Req id | Requirement | Priority | Phase | UX ref | Acceptance criteria (Given / When / Then) |
+| --- | --- | --- | --- | --- | --- |
+| FR-AMS-030 | Each approval hands the approved attendance (employee, date, from and to time, hours) to SMS once. | Must | POC | UJ-SYS-01, INT-01 | Given an attendance is approved, then exactly one non-voided salary record exists for it after reconciliation (KPI-04). |
+| FR-AMS-031 | Each reopen hands the reopened attendance to SMS so the linked salary record is voided. | Must | POC | UJ-SYS-03, INT-02 | Given a reopen, then the linked salary record shows Voided with the reason. |
+| FR-AMS-032 | AMS provides all approved attendance to the nightly reconciliation. | Must | POC | UJ-SYS-02, JOB-CMN-01 | Given a hand-over was missed, when reconciliation runs at 01:00 IST, then the missing salary record is created. |
 
 ## 8. Business and validation rules
 
