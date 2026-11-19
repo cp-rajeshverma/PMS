@@ -260,32 +260,87 @@ Cross-module rules that also apply: BR-CMN-01 to BR-CMN-10, BR-CMN-12, BR-CMN-15
 
 ## 10. Notifications and alerts
 
-_Pending._
+All notifications are in-app (anchor C-05): dashboard, approvals inbox and screen banners.
+
+| Id | Event / trigger | Recipient(s) | Channel (in-app / email) | Timing | Message summary |
+| --- | --- | --- | --- | --- | --- |
+| NOT-AMS-01 | Weekday without attendance or leave (FR-CMN-004) | Employee | In-app: dashboard "Things to do", "Missing" in the calendar | Each time the dashboard or calendar opens | "Attendance missing for <n> day(s)" with Enter |
+| NOT-AMS-02 | Attendance submitted | Approver (manager; Admin for the top-level employee) | In-app: approvals inbox, Approvals count, dashboard approval card | Immediately | New "Attendance" item with employee, date, times, hours and "Over 12 h" flag where relevant |
+| NOT-AMS-03 | Attendance rejected | Employee | In-app: dashboard "Things to do"; red banner on the entry | Immediately | "Attendance for <date> returned – please correct" with the approver's remarks |
+| NOT-AMS-04 | Attendance reopened after a salary dispute | Employee | In-app: dashboard "Things to do"; red banner on the entry | Immediately | "Attendance for <date> reopened – salary record voided" with the approver's remarks |
+| NOT-AMS-05 | Attendance approved | Employee | In-app: calendar status and approved-hours tile | Immediately | Status Approved; salary record to review follows from SMS |
+| NOT-AMS-06 | Draft or Rejected entry on a date now covered by leave | Employee | In-app: flag in calendar and list (FR-AMS-007) | When the calendar opens | "Leave on this day – discard" |
 
 ## 11. Scheduled jobs and integrations
 
-_Pending._
+AMS has no scheduled jobs of its own. It takes part in these anchor integrations (anchor §7):
+
+| Id | Name | Type (event / API / scheduled) | Trigger / schedule | Source → target | Business outcome |
+| --- | --- | --- | --- | --- | --- |
+| INT-01 | Attendance approved | Event | Approval | AMS → SMS | Salary record generated (FR-AMS-030) |
+| INT-02 | Attendance reopened | Event | Reopen | AMS → SMS | Salary record voided (FR-AMS-031) |
+| JOB-CMN-01 | Nightly salary reconciliation | Scheduled | Daily 01:00 IST | AMS → SMS | Missed salary records created (FR-AMS-032) |
+| INT-03, INT-04 | Employee details and approver | API | Entry, submit, approval views | EIMS → AMS | Approved profile, joining date, approver (VR-AMS-03, VR-AMS-05) |
+| INT-06 | Attendance and leave date check | API | Entry, submit; leave request | AMS ↔ LMS | No date with both (VR-AMS-04, BR-CMN-10) |
+| INT-07 | Dashboard and approvals inbox | API | Dashboard or inbox opened | AMS → Shell | Items in §12 and NOT-AMS-01 to 05 |
+| INT-09 | Records before a new joining date | API | Admin changes date of joining | AMS → EIMS | Active attendance before the new date is reported |
+| INT-10 | Salary status for attendance | API | History and inbox views | SMS → AMS | "Salary disputed" and Reopen offered (FR-AMS-024) |
 
 ## 12. Reporting and dashboard
 
-_Pending._
+| Id | Report / widget | Audience | Content | Filters |
+| --- | --- | --- | --- | --- |
+| RPT-AMS-01 | Hours this month tile (dashboard) | Employee, Manager | Approved hours in the current month (FR-CMN-002) | – |
+| RPT-AMS-02 | "Things to do" items (dashboard) | Employee, Manager | Rejected or reopened entries to fix; missing weekdays | – |
+| RPT-AMS-03 | Waiting for your approval – Attendance | Manager, Admin | Count of submitted entries to decide | – |
+| RPT-AMS-04 | My attendance tiles | Employee, Manager | Approved hours and days, waiting for approval, needs your action, missing weekdays (FR-AMS-002) | Month |
+| RPT-AMS-05 | Team attendance history | Manager, Admin | Decisions, remarks, status, "Salary disputed" (FR-AMS-020, 024) | Team member, date range |
 
 ## 13. Module non-functional requirements and volumetrics
 
-_Pending._
+System-wide NFRs (anchor §8) apply; AMS has no module-specific additions. The hand-over to SMS is covered by NFR-01 (salary record within 1 minute) and NFR-06 (exactly one non-voided salary record per approved attendance).
+
+| Volume type | Year 1 | Growth % per year | Peak |
+| --- | --- | --- | --- |
+| Attendance entries | About 26,400 (100 employees × 22 working days × 12) | 0 % (20 % headroom) | Daily 17:00–19:00 IST (entry); month-end catch-up |
+| Approval decisions | About 26,400 | 0 % | Daily 09:00–10:00 IST; month-end |
+| Reopens after salary dispute | Not estimated (expected rare) | – | – |
 
 ## 14. Assumptions, constraints and dependencies
 
-_Pending._
+| Type | Id | Statement |
+| --- | --- | --- |
+| Assumption | A-AMS-01 | Employees enter their own times; the approver checks them from their own knowledge of the work, as there is no clock-in data in the POC. |
+| Constraint | C-AMS-01 | One continuous period per day, without breaks or shifts, within the same day (D-03). |
+| Constraint | C-AMS-02 | Times are IST and in 15-minute steps (D-08, D-31). |
+| Dependency | DEP-AMS-01 | EIMS provides the approved profile, joining date and approver (anchor DEP-03, INT-03, INT-04). |
+| Dependency | DEP-AMS-02 | LMS provides leave dates (INT-06). AMS may be built before LMS; until LMS exists there is no leave, so the check passes and is completed when LMS is delivered. |
+| Dependency | DEP-AMS-03 | SMS provides the salary status for reopen (INT-10) and consumes the hand-over events (INT-01, INT-02). |
+| Dependency | DEP-AMS-04 | Open items OI-02, OI-03 and OI-04 (anchor §12) are decided before this document is approved (anchor DEP-06). |
 
 ## 15. Traceability matrix
 
-_Pending._
+| Journey id | Screen id | Req id | Rule ids | Test ref (later) |
+| --- | --- | --- | --- | --- |
+| UJ-AMS-01 | SCR-AMS-01, SCR-AMS-02 | FR-AMS-001, 002, 003, 004, 005, 006, 008, 010, 011, 012, 013, 014, 015, 016, 017 | VR-AMS-01 to 07; BR-AMS-01 to 06; BR-CMN-09, 10 | |
+| UJ-AMS-02 | SCR-AMS-01, SCR-AMS-02 | FR-AMS-007, 012, 016, 017 | BR-AMS-04; BR-CMN-04, 10 | |
+| UJ-AMS-03 | SCR-SH-04, SCR-AMS-03 | FR-AMS-020, 021, 022, 023, 026, 027, 030, 032 | BR-AMS-03; BR-CMN-01, 03, 08, 12, 17 | |
+| UJ-AMS-04 | SCR-SMS-02, SCR-SH-04, SCR-AMS-03 | FR-AMS-024, 025, 031 | BR-CMN-03, 15 | |
 
 ## 16. Open items
 
-_Pending._
+Cross-module open items that affect AMS are in the anchor §12: OI-02 (pending items of a deactivated employee), OI-03 (whether today counts as a missing day), OI-04 (pending items on a manager change) and OI-08 (AMS UX updates). AMS has no module-only open items.
+
+| Id | Question | Owner | Due | Status / decision |
+| --- | --- | --- | --- | --- |
+| – | None | – | – | – |
 
 ## 17. Appendix
 
-_Pending._
+### 17.1 Future scope (not in this phase)
+
+| Area | Requirement ref | Note |
+| --- | --- | --- |
+| Working time | Anchor §13.1 | Shifts, breaks, overnight work |
+| Capture | Anchor §13.1 | Clock-in or biometric integration |
+| Entry | §3.2 | Entering several days at once |
