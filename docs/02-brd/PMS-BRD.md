@@ -18,6 +18,7 @@ Date: November 2026
 | 1.0 | 0.4 | 18-Nov-2026 | Rajesh Verma | RPT prefix in §2.5; EIMS status in §2.3 and §11 (D-76) |
 | 1.0 | 0.5 | 19-Nov-2026 | Rajesh Verma | BR-CMN-10 clarified for draft and rejected attendance; INT-10; OI-08 (D-77) |
 | 1.0 | 0.6 | 19-Nov-2026 | Rajesh Verma | AMS status in §2.3 and §11 (D-81) |
+| 1.0 | 0.7 | 19-Nov-2026 | Rajesh Verma | Cancelling approved leave added to out of scope (§3.3) and future scope (§13.1) (D-84) |
 
 ### 1.2 Review and approval
 
@@ -175,13 +176,14 @@ The application is deliberately small – four functional modules, each a separa
 | Shell (common) | Login, set / change password, dashboard per role, approvals inbox, role-based menu | Future: runtime micro-frontends instead of build-time packages (ADR-001) |
 | EIMS – Employee Information | Admin onboarding (Employee Id and temporary password), profile complete / submit / withdraw / approve, profile change requests for approved profiles, Admin-owned fields (role, manager, rate, date of joining), deactivation, password reset, employee directory | – |
 | AMS – Attendance | Daily attendance entry (15-minute steps), submit, approve / reject, reopen after a salary dispute, month calendar and list | Future: shifts, breaks, overnight work, biometric or clock-in integration |
-| LMS – Leave | Full-day Casual / Sick / Earned leave, submit, cancel while Submitted, approve / reject, past and future dates | Future: leave balances, accruals and entitlement checks; half-day leave |
+| LMS – Leave | Full-day Casual / Sick / Earned leave, submit, cancel while Submitted, approve / reject, past and future dates | Future: leave balances, accruals and entitlement checks; half-day leave; cancelling approved leave |
 | SMS – Salary | Automatic daily wage from approved attendance, manager approval, employee accept (single or several) or dispute, keep as is or reopen, earnings for a period | Future: paid leave in salary; statutory deductions (PF, ESI, PT, TDS); allowances; payslips; monthly payroll runs |
 | SUP – Supporting functions | UM (users and roles in Keycloak) and AUTH (sign-in, temporary and own passwords, password policy, lockout, idle timeout) | Phase 2: ADM (configuration and master data), NM (email / SMS notifications), DM (documents) |
 
 **Out of scope**
 
 - Leave balances, accruals, entitlement checks and half-day leave – deferred; leave is recorded only (D-04).
+- Cancelling approved leave – approved leave stays locked (BR-CMN-05, D-84).
 - Paid leave in salary – approved leave earns no wage in the POC (D-05).
 - Statutory deductions (PF, ESI, PT, TDS), allowances, payslips, monthly payroll runs – payroll is limited to daily wages.
 - Shifts, breaks, overnight work, biometric or clock-in integration – one same-day entry per day (D-03).
@@ -502,7 +504,7 @@ Approved decisions are kept in `docs/decisions/decision-log.md`.
 | EIMS – employees | D-71 | Future: reactivating an inactive employee; onboarding before the joining date (pre-boarding) |
 | Approvals | R-02 | Future: delegation of approvals when a manager is absent |
 | AMS | §3.3, D-03 | Future: shifts, breaks, overnight work, biometric or clock-in integration |
-| LMS | §3.3, D-04 | Future: leave balances, accruals and entitlement checks; half-day leave |
+| LMS | §3.3, D-04, D-84 | Future: leave balances, accruals and entitlement checks; half-day leave; cancelling approved leave |
 | SMS | §3.3, D-05 | Future: paid leave in salary; statutory deductions (PF, ESI, PT, TDS); allowances; payslips; monthly payroll runs |
 | Common | §3.3, D-08 | Future: holiday calendar and weekend rules; single sign-on; multi-company and multi-currency |
 | SUP – AUTH | §3.3, D-07 | Future: self-service password reset |
