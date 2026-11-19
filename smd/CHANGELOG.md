@@ -1,5 +1,14 @@
 # SMD changelog
 
+## 2026-11-19 22:49 IST – refresh (SMS BRD drafted)
+
+- Refreshed from commit `00e9b24` (9 commits since `7c44ca9`: `dbbc014` to `00e9b24`); clean working tree.
+- **Stage 2 BRD In Progress, 50% → 65%**: PMS-BRD-M4-SMS drafted (v1.0 rev 0.1, all sections reviewed D-90 to D-94, approval pending OI-02, OI-04); anchor PMS-BRD rev 0.8 → 0.10; gate criterion "BRD documents drafted" now 5 of 6.
+- Health **Amber** (unchanged): High open items OI-02, OI-03, OI-04 overdue and now blocking EIMS, AMS, LMS and SMS approval; reviewers not named (R-07).
+- Findings: new OI-10 (SMS UX updates, Medium). Coverage Mockups → BRD 17/17, Journeys → BRD 30/30.
+- Data: 49 artifacts, 95 decisions / ADRs (+6), 14 open items / findings (13 open), 7 reviews (+RV-07), 8 risks, 80 linked repository files.
+- Warnings: two unmapped folders unchanged (exclusion proposed). Customer-facing filtering: 22 texts neutralised (+3).
+
 ## 2026-11-19 20:33 IST – refresh (LMS BRD drafted)
 
 - Refreshed from commit `7c44ca9` (11 commits since `32b2031`: `acf55e7` to `7c44ca9`); clean working tree.
