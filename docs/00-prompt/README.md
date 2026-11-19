@@ -9,6 +9,6 @@ Each prompt is self-contained: paste it into a new session with the PMS folder (
 | brd-00-anchor-prompt.md | docs/02-brd/PMS-BRD.md | Used 18 Nov 2026 – anchor drafted, now rev 0.6 | D-55 to D-69 |
 | brd-m1-eims-prompt.md | docs/02-brd/PMS-BRD-M1-EIMS.md | Used 18 Nov 2026 – drafted, approval pending open items | D-70 to D-76 |
 | brd-m2-ams-prompt.md | docs/02-brd/PMS-BRD-M2-AMS.md | Used 19 Nov 2026 – drafted, approval pending open items | D-77 to D-81 |
-| brd-m3-lms-prompt.md | docs/02-brd/PMS-BRD-M3-LMS.md | Ready – next session | from D-83 |
+| brd-m3-lms-prompt.md | docs/02-brd/PMS-BRD-M3-LMS.md | Ready – next session | from D-84 |
 
 Prompts for PMS-BRD-M4-SMS and PMS-BRD-M5-SUP are added after LMS.
