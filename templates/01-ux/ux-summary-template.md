@@ -6,7 +6,7 @@
 | Module | EIMS / AMS / LMS / SMS / Shell |
 | Roles | Employee / Manager / Admin |
 | User journeys | UJ-<MOD>-<NN> |
-| Mockup | `docs/01-ux/mockups/<file>.html` |
+| Mockup | `docs/01-ux/mockups/html/<file>.html` |
 | Version / status | 0.1 / Draft |
 | Last updated | <yyyy-mm-dd> |
 

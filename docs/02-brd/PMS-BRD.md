@@ -53,7 +53,7 @@ Users of the BRD set:
 | --- | --- | --- | --- |
 | 1 | UX Journey Index (`docs/01-ux/ux-journey-index.md`) | v1.0, approved (D-34) | Journeys, screens, navigation, status lists |
 | 2 | UX Summaries (`docs/01-ux/ux-summary/*.md`, 17 screens) | v0.1, approved with the UX set (D-34) | Fields, actions, rules per screen |
-| 3 | UX mockups (`docs/01-ux/mockups/*.html`, 17 screens) | approved (D-34) | Screen behaviour and layout |
+| 3 | UX mockups (`docs/01-ux/mockups/html/*.html`, 17 screens) | approved (D-34) | Screen behaviour and layout |
 | 4 | PMS – Business Requirements Document (baseline) | v1.0 (D-09) | Input only; content redistributed into this BRD set (D-53) |
 | 5 | Decision log (`docs/decisions/decision-log.md`) | D-01 to D-54 | Approved decisions |
 | 6 | ADR-001 Frontend composition (`docs/decisions/adr/`) | Accepted (D-23) | Shell and module frontend constraint |

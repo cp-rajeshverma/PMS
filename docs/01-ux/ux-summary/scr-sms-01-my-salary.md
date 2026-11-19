@@ -6,7 +6,7 @@
 | Module | SMS |
 | Roles | Employee, Manager (own salary; Manager also sees a "Team" tab) |
 | User journeys | UJ-SMS-02, UJ-SMS-04 |
-| Mockup | `docs/01-ux/mockups/scr-sms-01-my-salary.html` |
+| Mockup | `docs/01-ux/mockups/html/scr-sms-01-my-salary.html` |
 | Version / status | 0.1 / Draft – in review |
 | Last updated | 2026-11-16 |
 

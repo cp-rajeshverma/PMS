@@ -6,7 +6,7 @@
 | Module | EIMS |
 | Roles | Employee, Manager (own profile) |
 | User journeys | UJ-EIMS-02, UJ-EIMS-04, UJ-EIMS-05 |
-| Mockup | `docs/01-ux/mockups/scr-eims-03-my-profile.html` |
+| Mockup | `docs/01-ux/mockups/html/scr-eims-03-my-profile.html` |
 | Version / status | 0.1 / Draft – in review |
 | Last updated | 2026-11-16 |
 

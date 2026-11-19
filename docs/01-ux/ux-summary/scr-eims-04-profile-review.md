@@ -6,7 +6,7 @@
 | Module | EIMS |
 | Roles | Manager (direct reports), Admin (top-level employees) |
 | User journeys | UJ-EIMS-03, UJ-EIMS-09 (read-only) |
-| Mockup | `docs/01-ux/mockups/scr-eims-04-profile-review.html` |
+| Mockup | `docs/01-ux/mockups/html/scr-eims-04-profile-review.html` |
 | Version / status | 0.1 / Draft – in review |
 | Last updated | 2026-11-16 |
 

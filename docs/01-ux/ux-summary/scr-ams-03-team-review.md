@@ -6,7 +6,7 @@
 | Module | AMS |
 | Roles | Manager |
 | User journeys | UJ-AMS-03, UJ-AMS-04, UJ-SMS-03 |
-| Mockup | `docs/01-ux/mockups/scr-ams-03-team-review.html` |
+| Mockup | `docs/01-ux/mockups/html/scr-ams-03-team-review.html` |
 | Version / status | 0.1 / Draft – in review |
 | Last updated | 2026-11-16 |
 

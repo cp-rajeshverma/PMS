@@ -6,7 +6,7 @@
 | Module | EIMS |
 | Roles | Admin |
 | User journeys | UJ-EIMS-01, UJ-EIMS-06, UJ-EIMS-07, UJ-SYS-04 |
-| Mockup | `docs/01-ux/mockups/scr-eims-02-admin-form.html` |
+| Mockup | `docs/01-ux/mockups/html/scr-eims-02-admin-form.html` |
 | Version / status | 0.1 / Draft – in review |
 | Last updated | 2026-11-16 |
 

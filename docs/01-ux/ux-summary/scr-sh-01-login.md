@@ -6,7 +6,7 @@
 | Module | Shell (built as a Keycloak login theme, D-16) |
 | Roles | All |
 | User journeys | UJ-SH-01, UJ-SH-02, UJ-SH-05 |
-| Mockup | `docs/01-ux/mockups/scr-sh-01-login.html` |
+| Mockup | `docs/01-ux/mockups/html/scr-sh-01-login.html` |
 | Version / status | 0.1 / Draft – in review |
 | Last updated | 2026-11-15 |
 

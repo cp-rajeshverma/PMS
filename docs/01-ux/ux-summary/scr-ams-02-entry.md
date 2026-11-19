@@ -6,7 +6,7 @@
 | Module | AMS |
 | Roles | Employee, Manager (own attendance) |
 | User journeys | UJ-AMS-01, UJ-AMS-02 |
-| Mockup | `docs/01-ux/mockups/scr-ams-02-entry.html` |
+| Mockup | `docs/01-ux/mockups/html/scr-ams-02-entry.html` |
 | Version / status | 0.1 / Draft – in review |
 | Last updated | 2026-11-16 |
 

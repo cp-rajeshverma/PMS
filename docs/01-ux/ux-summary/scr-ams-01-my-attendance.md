@@ -6,7 +6,7 @@
 | Module | AMS (leave days read from LMS) |
 | Roles | Employee, Manager (own attendance; Manager also sees a "Team" tab) |
 | User journeys | UJ-AMS-01, UJ-AMS-02 |
-| Mockup | `docs/01-ux/mockups/scr-ams-01-my-attendance.html` |
+| Mockup | `docs/01-ux/mockups/html/scr-ams-01-my-attendance.html` |
 | Version / status | 0.1 / Draft – in review |
 | Last updated | 2026-11-16 |
 

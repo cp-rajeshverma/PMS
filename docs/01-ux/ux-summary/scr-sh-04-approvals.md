@@ -6,7 +6,7 @@
 | Module | Shell (aggregates pending items from EIMS, AMS, LMS, SMS) |
 | Roles | Manager (direct reports), Admin (top-level employee profiles) |
 | User journeys | UJ-SH-04, UJ-EIMS-03, UJ-AMS-03, UJ-LMS-04, UJ-SMS-01, UJ-SMS-03 |
-| Mockup | `docs/01-ux/mockups/scr-sh-04-approvals.html` |
+| Mockup | `docs/01-ux/mockups/html/scr-sh-04-approvals.html` |
 | Version / status | 0.1 / Draft – in review |
 | Last updated | 2026-11-16 |
 

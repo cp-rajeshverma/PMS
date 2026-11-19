@@ -6,7 +6,7 @@
 | Module | LMS |
 | Roles | Manager |
 | User journeys | UJ-LMS-04 |
-| Mockup | `docs/01-ux/mockups/scr-lms-03-team-review.html` |
+| Mockup | `docs/01-ux/mockups/html/scr-lms-03-team-review.html` |
 | Version / status | 0.1 / Draft – in review |
 | Last updated | 2026-11-16 |
 

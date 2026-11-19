@@ -6,7 +6,7 @@
 | Module | SMS (reopen action calls AMS) |
 | Roles | Manager |
 | User journeys | UJ-SMS-01, UJ-SMS-03, UJ-AMS-04 |
-| Mockup | `docs/01-ux/mockups/scr-sms-02-team-review.html` |
+| Mockup | `docs/01-ux/mockups/html/scr-sms-02-team-review.html` |
 | Version / status | 0.1 / Draft – in review |
 | Last updated | 2026-11-16 |
 

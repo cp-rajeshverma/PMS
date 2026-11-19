@@ -4,6 +4,7 @@ Every approved project decision, newest first. Approver for all entries: Rajesh 
 
 | Id | Date | Area | Decision |
 | --- | --- | --- | --- |
+| D-82 | 19 Nov 2026 | UX | Mockup files reorganised: HTML mockups and shared assets moved to `docs/01-ux/mockups/html/` (assets now `docs/01-ux/mockups/html/assets/`, supersedes the D-30 path); mockup screenshots (PNG) moved to `docs/01-ux/mockups/png/`; generator output path, UX journey index, UX summaries, PMS-BRD §2 input list and the UX/HLD Part02 templates updated (path-only change, no content or revision change) |
 | D-81 | 19 Nov 2026 | BRD | PMS-BRD-M2-AMS §10 to §17 approved; all AMS sections reviewed, document at v1.0 rev 0.1, final approval pending OI-02, OI-03, OI-04; anchor §2.3 and §11 updated (rev 0.6). Next: PMS-BRD-M3-LMS in a new session |
 | D-80 | 19 Nov 2026 | BRD | PMS-BRD-M2-AMS §8 and §9 approved: VR-AMS-01 to 07, BR-AMS-01 to 06, Attendance data; Submitted Date added; attendance data not classed as sensitive |
 | D-79 | 19 Nov 2026 | BRD | PMS-BRD-M2-AMS §7 approved: FR-AMS-001 to FR-AMS-032 with acceptance criteria; user stories US-AMS-01 to US-AMS-06 |

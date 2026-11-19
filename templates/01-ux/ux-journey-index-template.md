@@ -20,7 +20,7 @@ Every user journey in PMS, including journeys run by backend scheduled jobs, wit
 
 | Screen Id | Screen name | Module | Roles | Mockup file | UX summary file |
 | --- | --- | --- | --- | --- | --- |
-| SCR-<MOD>-01 | <name> | <module> | <roles> | `docs/01-ux/mockups/<file>.html` | `docs/01-ux/ux-summary/<file>.md` |
+| SCR-<MOD>-01 | <name> | <module> | <roles> | `docs/01-ux/mockups/html/<file>.html` | `docs/01-ux/ux-summary/<file>.md` |
 
 ## Navigation map
 

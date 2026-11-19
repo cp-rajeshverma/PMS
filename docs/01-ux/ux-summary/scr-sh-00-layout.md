@@ -6,7 +6,7 @@
 | Module | Shell |
 | Roles | Employee / Manager / Admin |
 | User journeys | UJ-SH-03, UJ-SH-04, UJ-SH-05 (frame for all journeys) |
-| Mockup | `docs/01-ux/mockups/scr-sh-00-layout.html` |
+| Mockup | `docs/01-ux/mockups/html/scr-sh-00-layout.html` |
 | Version / status | 0.1 / Draft – in review |
 | Last updated | 2026-11-15 |
 

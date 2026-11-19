@@ -6,7 +6,7 @@
 | Module | LMS (checks attendance days via AMS) |
 | Roles | Employee, Manager (own leave) |
 | User journeys | UJ-LMS-01, UJ-LMS-03 |
-| Mockup | `docs/01-ux/mockups/scr-lms-02-request.html` |
+| Mockup | `docs/01-ux/mockups/html/scr-lms-02-request.html` |
 | Version / status | 0.1 / Draft – in review |
 | Last updated | 2026-11-16 |
 

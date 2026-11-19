@@ -6,7 +6,7 @@
 | Module | Shell (reads summary data from EIMS, AMS, LMS, SMS APIs) |
 | Roles | Employee / Manager / Admin (different content per role) |
 | User journeys | UJ-SH-01, UJ-SH-03; entry point to UJ-EIMS-02/04, UJ-AMS-01/02, UJ-LMS-01, UJ-SMS-02 |
-| Mockup | `docs/01-ux/mockups/scr-sh-03-dashboard.html` |
+| Mockup | `docs/01-ux/mockups/html/scr-sh-03-dashboard.html` |
 | Version / status | 0.1 / Draft – in review |
 | Last updated | 2026-11-16 |
 

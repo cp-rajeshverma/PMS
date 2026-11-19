@@ -125,7 +125,7 @@ Per role × screen access matrix (module BRD §4.2):
 
 **Navigation:** <Menu > Screen > Tab>
 
-**Prototype:** `docs/01-ux/mockups/<file>.html` · UX summary `docs/01-ux/ux-summary/<file>.md`
+**Prototype:** `docs/01-ux/mockups/html/<file>.html` · UX summary `docs/01-ux/ux-summary/<file>.md`
 
 ##### 3.2.1.5 Solution approach
 

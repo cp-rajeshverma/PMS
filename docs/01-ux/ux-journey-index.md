@@ -76,23 +76,23 @@ PMS has **30 user journeys** (26 user-facing, 4 backend jobs) across **17 screen
 
 | Screen Id | Screen name | Module | Roles | Mockup file | UX summary file |
 | --- | --- | --- | --- | --- | --- |
-| SCR-SH-01 | Login | Shell | All | `mockups/scr-sh-01-login.html` | `ux-summary/scr-sh-01-login.md` |
-| SCR-SH-02 | Set password | Shell | All | `mockups/scr-sh-02-set-password.html` | `ux-summary/scr-sh-02-set-password.md` |
-| SCR-SH-03 | Dashboard (my tasks and status) | Shell | All | `mockups/scr-sh-03-dashboard.html` | `ux-summary/scr-sh-03-dashboard.md` |
-| SCR-SH-04 | Approvals inbox (all modules) | Shell | Manager, Admin | `mockups/scr-sh-04-approvals.html` | `ux-summary/scr-sh-04-approvals.md` |
-| SCR-EIMS-01 | Employee directory | EIMS | Manager (team), Admin (all) | `mockups/scr-eims-01-directory.html` | `ux-summary/scr-eims-01-directory.md` |
-| SCR-EIMS-02 | Employee admin form (create / edit / deactivate) | EIMS | Admin | `mockups/scr-eims-02-admin-form.html` | `ux-summary/scr-eims-02-admin-form.md` |
-| SCR-EIMS-03 | My profile | EIMS | All | `mockups/scr-eims-03-my-profile.html` | `ux-summary/scr-eims-03-my-profile.md` |
-| SCR-EIMS-04 | Profile review | EIMS | Manager, Admin | `mockups/scr-eims-04-profile-review.html` | `ux-summary/scr-eims-04-profile-review.md` |
-| SCR-AMS-01 | My attendance | AMS | All | `mockups/scr-ams-01-my-attendance.html` | `ux-summary/scr-ams-01-my-attendance.md` |
-| SCR-AMS-02 | Attendance entry | AMS | All | `mockups/scr-ams-02-entry.html` | `ux-summary/scr-ams-02-entry.md` |
-| SCR-AMS-03 | Team attendance review | AMS | Manager | `mockups/scr-ams-03-team-review.html` | `ux-summary/scr-ams-03-team-review.md` |
-| SCR-LMS-01 | My leave | LMS | All | `mockups/scr-lms-01-my-leave.html` | `ux-summary/scr-lms-01-my-leave.md` |
-| SCR-LMS-02 | Leave request | LMS | All | `mockups/scr-lms-02-request.html` | `ux-summary/scr-lms-02-request.md` |
-| SCR-LMS-03 | Team leave review | LMS | Manager | `mockups/scr-lms-03-team-review.html` | `ux-summary/scr-lms-03-team-review.md` |
-| SCR-SMS-01 | My salary | SMS | All | `mockups/scr-sms-01-my-salary.html` | `ux-summary/scr-sms-01-my-salary.md` |
-| SCR-SMS-02 | Team salary review | SMS | Manager | `mockups/scr-sms-02-team-review.html` | `ux-summary/scr-sms-02-team-review.md` |
-| SCR-SH-00 | Shell layout (header, menu, user menu) | Shell | All | `mockups/scr-sh-00-layout.html` | `ux-summary/scr-sh-00-layout.md` |
+| SCR-SH-01 | Login | Shell | All | `mockups/html/scr-sh-01-login.html` | `ux-summary/scr-sh-01-login.md` |
+| SCR-SH-02 | Set password | Shell | All | `mockups/html/scr-sh-02-set-password.html` | `ux-summary/scr-sh-02-set-password.md` |
+| SCR-SH-03 | Dashboard (my tasks and status) | Shell | All | `mockups/html/scr-sh-03-dashboard.html` | `ux-summary/scr-sh-03-dashboard.md` |
+| SCR-SH-04 | Approvals inbox (all modules) | Shell | Manager, Admin | `mockups/html/scr-sh-04-approvals.html` | `ux-summary/scr-sh-04-approvals.md` |
+| SCR-EIMS-01 | Employee directory | EIMS | Manager (team), Admin (all) | `mockups/html/scr-eims-01-directory.html` | `ux-summary/scr-eims-01-directory.md` |
+| SCR-EIMS-02 | Employee admin form (create / edit / deactivate) | EIMS | Admin | `mockups/html/scr-eims-02-admin-form.html` | `ux-summary/scr-eims-02-admin-form.md` |
+| SCR-EIMS-03 | My profile | EIMS | All | `mockups/html/scr-eims-03-my-profile.html` | `ux-summary/scr-eims-03-my-profile.md` |
+| SCR-EIMS-04 | Profile review | EIMS | Manager, Admin | `mockups/html/scr-eims-04-profile-review.html` | `ux-summary/scr-eims-04-profile-review.md` |
+| SCR-AMS-01 | My attendance | AMS | All | `mockups/html/scr-ams-01-my-attendance.html` | `ux-summary/scr-ams-01-my-attendance.md` |
+| SCR-AMS-02 | Attendance entry | AMS | All | `mockups/html/scr-ams-02-entry.html` | `ux-summary/scr-ams-02-entry.md` |
+| SCR-AMS-03 | Team attendance review | AMS | Manager | `mockups/html/scr-ams-03-team-review.html` | `ux-summary/scr-ams-03-team-review.md` |
+| SCR-LMS-01 | My leave | LMS | All | `mockups/html/scr-lms-01-my-leave.html` | `ux-summary/scr-lms-01-my-leave.md` |
+| SCR-LMS-02 | Leave request | LMS | All | `mockups/html/scr-lms-02-request.html` | `ux-summary/scr-lms-02-request.md` |
+| SCR-LMS-03 | Team leave review | LMS | Manager | `mockups/html/scr-lms-03-team-review.html` | `ux-summary/scr-lms-03-team-review.md` |
+| SCR-SMS-01 | My salary | SMS | All | `mockups/html/scr-sms-01-my-salary.html` | `ux-summary/scr-sms-01-my-salary.md` |
+| SCR-SMS-02 | Team salary review | SMS | Manager | `mockups/html/scr-sms-02-team-review.html` | `ux-summary/scr-sms-02-team-review.md` |
+| SCR-SH-00 | Shell layout (header, menu, user menu) | Shell | All | `mockups/html/scr-sh-00-layout.html` | `ux-summary/scr-sh-00-layout.md` |
 
 ## Status lists (from the mockups)
 

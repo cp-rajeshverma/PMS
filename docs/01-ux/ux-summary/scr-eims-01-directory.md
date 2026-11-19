@@ -6,7 +6,7 @@
 | Module | EIMS |
 | Roles | Admin (all employees, full actions), Manager ("My Team": direct reports, read-only) |
 | User journeys | UJ-EIMS-01, 06, 07, 08, 09 |
-| Mockup | `docs/01-ux/mockups/scr-eims-01-directory.html` |
+| Mockup | `docs/01-ux/mockups/html/scr-eims-01-directory.html` |
 | Version / status | 0.1 / Draft – in review |
 | Last updated | 2026-11-16 |
 

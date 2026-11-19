@@ -6,7 +6,7 @@
 | Module | Shell (Keycloak "Update password" page, same theme as SCR-SH-01) |
 | Roles | All |
 | User journeys | UJ-SH-02; change password from the user menu |
-| Mockup | `docs/01-ux/mockups/scr-sh-02-set-password.html` |
+| Mockup | `docs/01-ux/mockups/html/scr-sh-02-set-password.html` |
 | Version / status | 0.1 / Draft – in review |
 | Last updated | 2026-11-16 |
 

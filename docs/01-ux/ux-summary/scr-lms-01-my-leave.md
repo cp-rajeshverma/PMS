@@ -6,7 +6,7 @@
 | Module | LMS |
 | Roles | Employee, Manager (own leave; Manager also sees a "Team" tab) |
 | User journeys | UJ-LMS-01, UJ-LMS-02, UJ-LMS-03 |
-| Mockup | `docs/01-ux/mockups/scr-lms-01-my-leave.html` |
+| Mockup | `docs/01-ux/mockups/html/scr-lms-01-my-leave.html` |
 | Version / status | 0.1 / Draft – in review |
 | Last updated | 2026-11-16 |
 
