@@ -1,5 +1,14 @@
 # SMD changelog
 
+## 2026-11-20 23:19 IST – refresh (BRD consistency check; business open items decided)
+
+- Refreshed from commit `21aa65f` (5 commits since `b4e141a`: `637739a` to `21aa65f`); clean working tree.
+- **Stage 2 BRD In Progress, 80% → 85%**: BRD set consistency check (D-103, 28 findings, 27 fixed, OI-12 raised) and six business open items decided (D-104); anchor PMS-BRD rev 0.13 → 0.15, module BRDs rev 0.1 → 0.3; gate criteria now 3 of 6 met.
+- Health **Amber → Green**: no Critical or High finding open; remaining open items are UX updates due before HLD Part02; reviewers not named (R-07).
+- Findings: OI-02, OI-03, OI-04, OI-EIMS-01, OI-EIMS-02 closed; OI-12 raised and closed (D-104). Coverage Mockups → BRD 17/17, Journeys → BRD 30/30.
+- Data: 49 artifacts, 105 decisions / ADRs (+2), 16 open items / findings (8 open), 9 reviews (+RV-09), 8 risks (R-02 updated), 81 linked repository files, 0 broken links.
+- Warnings: new folder docs/02-brd/reviews/ not mapped (mapping line proposed). Customer-facing filtering: 29 texts neutralised (+2).
+
 ## 2026-11-20 19:48 IST – refresh (SUP BRD drafted; all six BRD documents drafted)
 
 - Refreshed from commit `b4e141a` (7 commits since `00e9b24`: `8e4ecb0` to `b4e141a`); clean working tree.
