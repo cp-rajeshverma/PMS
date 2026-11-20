@@ -22,6 +22,7 @@ Date: November 2026
 | 1.0 | 0.8 | 19-Nov-2026 | Rajesh Verma | OI-09 (LMS UX updates); LMS status in §2.3 and §11 (D-88) |
 | 1.0 | 0.9 | 19-Nov-2026 | Rajesh Verma | OI-10 (SMS UX updates) (D-90) |
 | 1.0 | 0.10 | 19-Nov-2026 | Rajesh Verma | SMS status in §2.3 and §11 (D-94) |
+| 1.0 | 0.11 | 20-Nov-2026 | Rajesh Verma | SUP rules (D-97): OI-05 closed; §3.3 SUP row worded technology-neutral; future scope for password history and expiry and a warning before idle timeout (§13.1); OI-11 (SUP UX updates) |
 
 ### 1.2 Review and approval
 
@@ -181,7 +182,7 @@ The application is deliberately small – four functional modules, each a separa
 | AMS – Attendance | Daily attendance entry (15-minute steps), submit, approve / reject, reopen after a salary dispute, month calendar and list | Future: shifts, breaks, overnight work, biometric or clock-in integration |
 | LMS – Leave | Full-day Casual / Sick / Earned leave, submit, cancel while Submitted, approve / reject, past and future dates | Future: leave balances, accruals and entitlement checks; half-day leave; cancelling approved leave |
 | SMS – Salary | Automatic daily wage from approved attendance, manager approval, employee accept (single or several) or dispute, keep as is or reopen, earnings for a period | Future: paid leave in salary; statutory deductions (PF, ESI, PT, TDS); allowances; payslips; monthly payroll runs |
-| SUP – Supporting functions | UM (users and roles in Keycloak) and AUTH (sign-in, temporary and own passwords, password policy, lockout, idle timeout) | Phase 2: ADM (configuration and master data), NM (email / SMS notifications), DM (documents) |
+| SUP – Supporting functions | UM (user accounts and roles in the identity provider) and AUTH (sign-in, temporary and own passwords, password policy, lockout, idle timeout) | Phase 2: ADM (configuration and master data), NM (email / SMS notifications), DM (documents) |
 
 **Out of scope**
 
@@ -488,12 +489,13 @@ Running list, completed as the anchor is drafted.
 | OI-02 | What happens to a deactivated employee's pending items (own submissions, and items waiting for their approval as manager)? | HR Manager | Before PMS-BRD-M1-EIMS | Open |
 | OI-03 | Missing attendance reminder (FR-CMN-004): does it include today, or only days up to yesterday? | HR Manager | Before PMS-BRD-M2-AMS | Open |
 | OI-04 | When the Admin changes an employee's manager (BR-CMN-13), who decides the items already waiting for approval – the old or the new manager? | HR Manager | Before PMS-BRD-M1-EIMS | Open |
-| OI-05 | Which business values must the PMS Administrator be able to change without a release (for example idle timeout, lockout limits, reconciliation time, remarks length)? Today all are fixed by decisions. | Product owner | Before PMS-BRD-M5-SUP (ADM is Phase 2) | Open |
+| OI-05 | Which business values must the PMS Administrator be able to change without a release (for example idle timeout, lockout limits, reconciliation time, remarks length)? Today all are fixed by decisions. | Product owner | Before PMS-BRD-M5-SUP (ADM is Phase 2) | Closed (D-97): none in the POC; all values stay fixed by decisions and change only by release or deployment setting; an Admin configuration screen is ADM, Phase 2 |
 | OI-06 | UX Journey Index still shows the reconciliation time for UJ-SYS-02 as "TBD"; it was set to 01:00 IST (D-24). Correct the UX document. | Product owner | Before HLD Part02 | Open |
 | OI-07 | Update the UX for the profile change request and the withdrawal of a submitted new profile (D-70): SCR-EIMS-03, SCR-EIMS-04, SCR-SH-03, SCR-SH-04, UX Journey Index (UJ-EIMS-05, status list) | Product owner | Before HLD Part02 | Open |
 | OI-08 | Update the AMS UX (D-77): discard action for Draft and Rejected attendance (SCR-AMS-01, SCR-AMS-02); "Leave on this day" flag on draft or rejected attendance; "Over 12 h" flag for approvers (SCR-AMS-03, SCR-SH-04); History default current month incl. inactive reports | Product owner | Before HLD Part02 | Open |
 | OI-09 | Update the LMS UX (D-84, D-88): Team leave History date range filter, defaulting to the current month and including inactive reports (SCR-LMS-03); submitted time in Pending rows; "Also away" empty for the top-level employee; "Requested" shows the first submission date (SCR-LMS-01, SCR-LMS-03) | Product owner | Before HLD Part02 | Open |
 | OI-10 | Update the SMS UX (D-90): Team salary must not list the manager's own records (BR-CMN-08, SCR-SMS-02 mockup); separate notes for the dispute remark and the manager's Keep as is explanation, and repeated disputes after Keep as is (SCR-SMS-01, SCR-SMS-02, SCR-SH-04); Accepted Date; Team salary All records default current month to today incl. inactive reports, Needs action not filtered by date (SCR-SMS-02); Admin dashboard reconciliation tile shows result, records created / voided and mismatches (SCR-SH-03); UX Journey Index UJ-SYS-02 adds voiding of stale records | Product owner | Before HLD Part02 | Open |
+| OI-11 | Update the shell UX for the SUP rules (D-97): SCR-SH-01 shows the inactive-account message only after the correct password; SCR-SH-00 header for the PMS Administrator (no Employee Id); UX summaries SCR-SH-01, SCR-SH-02, SCR-SH-00, SCR-EIMS-01, SCR-EIMS-02 refer to the identity provider instead of the product name | Product owner | Before HLD Part02 | Open |
 
 Approved decisions are kept in `docs/decisions/decision-log.md`.
 
@@ -512,5 +514,5 @@ Approved decisions are kept in `docs/decisions/decision-log.md`.
 | LMS | §3.3, D-04, D-84 | Future: leave balances, accruals and entitlement checks; half-day leave; cancelling approved leave |
 | SMS | §3.3, D-05 | Future: paid leave in salary; statutory deductions (PF, ESI, PT, TDS); allowances; payslips; monthly payroll runs |
 | Common | §3.3, D-08 | Future: holiday calendar and weekend rules; single sign-on; multi-company and multi-currency |
-| SUP – AUTH | §3.3, D-07 | Future: self-service password reset |
+| SUP – AUTH | §3.3, D-07, D-97 | Future: self-service password reset; password history and expiry; warning before the idle timeout |
 | Platform | NFR-08, D-12 | Future: backend moved to another platform (Node.js, Python FastAPI) on the technology-neutral design |
