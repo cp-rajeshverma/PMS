@@ -1,5 +1,14 @@
 # SMD changelog
 
+## 2026-11-20 19:48 IST – refresh (SUP BRD drafted; all six BRD documents drafted)
+
+- Refreshed from commit `b4e141a` (7 commits since `00e9b24`: `8e4ecb0` to `b4e141a`); clean working tree.
+- **Stage 2 BRD In Progress, 65% → 80%**: PMS-BRD-M5-SUP drafted (v1.0 rev 0.1, all sections reviewed D-97 to D-102, approval pending OI-02, OI-04, OI-11); anchor PMS-BRD rev 0.10 → 0.13; gate criterion "BRD documents drafted" now met (6 of 6).
+- Health **Amber** (unchanged): High open items OI-02, OI-03, OI-04 overdue and blocking approval of all five module BRDs; reviewers not named (R-07).
+- Findings: OI-05 closed (D-97); new OI-11 (shell UX updates, Medium). Coverage Mockups → BRD 17/17, Journeys → BRD 30/30.
+- Data: 49 artifacts, 103 decisions / ADRs (+8), 15 open items / findings (13 open), 8 reviews (+RV-08), 8 risks, 81 linked repository files, 0 broken links.
+- Warnings: new internal prompt-templates folder not indexed (exclusion proposed, with the two folders already listed). Customer-facing filtering: 27 texts neutralised (+5).
+
 ## 2026-11-19 22:49 IST – refresh (SMS BRD drafted)
 
 - Refreshed from commit `00e9b24` (9 commits since `7c44ca9`: `dbbc014` to `00e9b24`); clean working tree.

@@ -1,12 +1,12 @@
 {
  "meta": {
   "smd_version": "1.0",
-  "generated_at": "2026-11-19T22:49+05:30",
+  "generated_at": "2026-11-20T19:48+05:30",
   "generated_by": "SMD update run",
   "repo_root": "D:\\POC\\PMS",
-  "repo_commit": "00e9b24",
-  "working_tree_note": "Clean working tree at 00e9b24.",
-  "previous_snapshot": "snapshots/2026-11-19_2033.json",
+  "repo_commit": "b4e141a",
+  "working_tree_note": "Clean working tree at b4e141a.",
+  "previous_snapshot": "snapshots/2026-11-19_2249.json",
   "repo_rel_prefix": "../../",
   "remote_base_url": "https://github.com/cp-rajeshverma/PMS/blob/main/",
   "audience": "customer-facing (rule PR-03 applied)",
@@ -40,6 +40,12 @@
     "decisions": 94,
     "commits": 85,
     "artifacts_done": 39
+   },
+   {
+    "date": "2026-11-20",
+    "decisions": 102,
+    "commits": 93,
+    "artifacts_done": 40
    }
   ]
  },
@@ -61,7 +67,7 @@
   },
   "target_go_live": null,
   "health": "A",
-  "health_reason": "No Critical findings. High open items OI-02, OI-03 and OI-04 are past their due point and now block approval of the EIMS, AMS, LMS and SMS BRDs; BRD reviewers are not yet named (R-07). Planned dates to be set based on progress."
+  "health_reason": "No Critical findings. High open items OI-02, OI-03 and OI-04 are past their due point and block approval of all five module BRDs; BRD reviewers are not yet named (R-07). Planned dates to be set based on progress."
  },
  "people": [
   {
@@ -86,6 +92,12 @@
    "id": "FM",
    "name": "[Finance Manager]",
    "role": "Business stakeholder (to be named)",
+   "kind": "human"
+  },
+  {
+   "id": "SEC",
+   "name": "[Security / IT owner]",
+   "role": "Security / IT owner – reviewer of the supporting functions BRD (to be named)",
    "kind": "human"
   }
  ],
@@ -337,27 +349,27 @@
      "planned_end": null,
      "actual_start": "2026-11-18",
      "actual_end": null,
-     "percent": 65,
+     "percent": 80,
      "source": "declared",
      "gate": {
       "criteria": [
        {
-        "text": "All six BRD documents drafted (anchor, EIMS, AMS, LMS, SMS, SUP) – 5 of 6 done",
+        "text": "All six BRD documents drafted (anchor, EIMS, AMS, LMS, SMS, SUP) – 6 of 6 done",
+        "met": true,
+        "evidence": "docs/02-brd/PMS-BRD-M5-SUP.md"
+       },
+       {
+        "text": "Open items OI-01 to OI-04, OI-06 to OI-11, OI-EIMS-01, OI-EIMS-02 resolved (OI-05 closed, D-97)",
         "met": false,
         "evidence": "docs/02-brd/PMS-BRD.md"
        },
        {
-        "text": "Open items OI-01 to OI-10, OI-EIMS-01, OI-EIMS-02 resolved",
-        "met": false,
-        "evidence": "docs/02-brd/PMS-BRD.md"
-       },
-       {
-        "text": "Stakeholder review: BA, HR Manager, Finance Manager (names pending, R-07)",
+        "text": "Stakeholder review: BA, HR Manager, Finance Manager, Security / IT owner (names pending, R-07)",
         "met": false,
         "evidence": null
        },
        {
-        "text": "Mockups ↔ BRD gaps closed (UX updates OI-01, OI-06, OI-07, OI-08, OI-09, OI-10)",
+        "text": "Mockups ↔ BRD gaps closed (UX updates OI-01, OI-06 to OI-11)",
         "met": false,
         "evidence": null
        },
@@ -377,7 +389,7 @@
        "name": "BRD anchor (PMS-BRD)",
        "agent": null,
        "status": "In Review",
-       "date": "2026-11-19",
+       "date": "2026-11-20",
        "artifact": "PMS-BRD"
       },
       {
@@ -416,8 +428,8 @@
        "id": "S2.6",
        "name": "Supporting functions BRD (need basis)",
        "agent": null,
-       "status": "Not Started",
-       "date": null,
+       "status": "Completed",
+       "date": "2026-11-20",
        "artifact": "PMS-BRD-M5-SUP"
       },
       {
@@ -467,10 +479,10 @@
       },
       {
        "id": "M2.6",
-       "name": "SUP need-basis assessment",
+       "name": "SUP BRD drafted (D-102)",
        "planned": null,
-       "actual": null,
-       "status": "Not Started"
+       "actual": "2026-11-20",
+       "status": "Completed"
       },
       {
        "id": "M2.7",
@@ -2088,11 +2100,11 @@
    "type": "BRD",
    "stage": 2,
    "step": "BRD anchor",
-   "version": "v1.0 rev 0.10",
+   "version": "v1.0 rev 0.13",
    "status": "In Review",
    "started": "2026-11-18",
    "completed": null,
-   "last_updated": "2026-11-19",
+   "last_updated": "2026-11-20",
    "path": "docs/02-brd/PMS-BRD.md",
    "source": "declared",
    "reviewers": [
@@ -2104,7 +2116,7 @@
     "PMS-UX-JOURNEYS",
     "PMS-TPL-BRD-ANCHOR"
    ],
-   "summary": "Business context, roles, end-to-end process, cross-module rules BR-CMN-01..18, integrations, system-wide NFRs, risks R-01..R-08 and open items OI-01..OI-10. All sections drafted (D-69); module status for EIMS, AMS, LMS and SMS recorded (rev 0.10, D-94); stakeholder review pending.",
+   "summary": "Business context, roles, end-to-end process, cross-module rules BR-CMN-01..19, integrations, system-wide NFR-01..09, risks R-01..R-08 and open items OI-01..OI-11 (OI-05 closed, D-97). All sections drafted (D-69); status of all five module BRDs recorded (rev 0.13, D-102); stakeholder review pending.",
    "files": [],
    "module": "ALL",
    "pipeline": "PMS-TX-01",
@@ -2246,22 +2258,32 @@
    "stage": 2,
    "step": "Module BRD SUP",
    "module": "ALL",
-   "version": "—",
-   "status": "Planned",
+   "version": "v1.0 rev 0.1",
+   "status": "Draft",
    "completed": null,
-   "last_updated": null,
-   "path": null,
+   "last_updated": "2026-11-20",
+   "path": "docs/02-brd/PMS-BRD-M5-SUP.md",
    "source": "declared",
    "depends_on": [
-    "PMS-BRD"
+    "PMS-BRD",
+    "PMS-BRD-M1-EIMS",
+    "PMS-TPL-BRD-SUP",
+    "PMS-UX-SCR-SH-00",
+    "PMS-UX-SCR-SH-01",
+    "PMS-UX-SCR-SH-02"
    ],
-   "summary": "Need-basis assessment after M1–M4 (D-53); next, in a new session (D-94).",
-   "reviewers": [],
+   "summary": "All sections drafted and reviewed section by section (D-97 to D-102). Need-basis result: user management (UM) and authentication (AUTH) in the POC; audit log and activity log (FR-ADM-101..117) as the only POC part of administration; administration, notifications and documents Phase 2. 45 functional requirements (FR-UM 13, FR-AUTH 20, FR-ADM 12) with acceptance criteria, 13 rules, NFR-SUP-01..05; final approval pending OI-02, OI-04, OI-11.",
+   "reviewers": [
+    "[BA]",
+    "[HR Manager]",
+    "[Finance Manager]",
+    "[Security / IT owner]"
+   ],
    "files": [],
    "pipeline": "PMS-TX-01",
    "author": "Rajesh Verma",
    "planned": null,
-   "started": null
+   "started": "2026-11-20"
   },
   {
    "code": "PMS-HLD-Part01-Architecture-and-Design",
@@ -2556,6 +2578,21 @@
    "verdict": "Approved-with-comments",
    "path": "docs/decisions/decision-log.md",
    "title": "SMS BRD section-by-section review (D-90 to D-94)"
+  },
+  {
+   "id": "RV-08",
+   "type": "peer",
+   "artifacts": [
+    "PMS-BRD-M5-SUP",
+    "PMS-BRD"
+   ],
+   "reviewers": [
+    "Rajesh Verma"
+   ],
+   "date": "2026-11-20",
+   "verdict": "Approved-with-comments",
+   "path": "docs/decisions/decision-log.md",
+   "title": "Supporting functions BRD section-by-section review (D-97 to D-102)"
   }
  ],
  "findings": [
@@ -2568,7 +2605,7 @@
    "severity": "High",
    "status": "Open",
    "owner": "HR Manager",
-   "due": "Before PMS-BRD-M1-EIMS (overdue – EIMS drafted); also blocks approval of AMS, LMS and SMS BRDs",
+   "due": "Before PMS-BRD-M1-EIMS (overdue – EIMS drafted); also blocks approval of AMS, LMS, SMS and SUP BRDs",
    "summary": "What happens to a deactivated employee's pending items (own submissions and items awaiting their approval as manager)?",
    "origin": "declared"
   },
@@ -2594,7 +2631,7 @@
    "severity": "High",
    "status": "Open",
    "owner": "HR Manager",
-   "due": "Before PMS-BRD-M1-EIMS (overdue – EIMS drafted); also blocks approval of AMS, LMS and SMS BRDs",
+   "due": "Before PMS-BRD-M1-EIMS (overdue – EIMS drafted); also blocks approval of AMS, LMS, SMS and SUP BRDs",
    "summary": "When the Admin changes an employee's manager (BR-CMN-13), who decides items already awaiting approval – old or new manager?",
    "origin": "declared"
   },
@@ -2631,10 +2668,10 @@
    "target": "PMS-BRD-M5-SUP",
    "category": "Missing",
    "severity": "Medium",
-   "status": "Open",
+   "status": "Resolved",
    "owner": "Product owner",
    "due": "Before PMS-BRD-M5-SUP",
-   "summary": "Which business values must the Administrator change without a release (idle timeout, lockout limits, reconciliation time, remarks length)?",
+   "summary": "Which business values must the Administrator change without a release (idle timeout, lockout limits, reconciliation time, remarks length)? Closed (D-97): none in the POC; values fixed by decisions, changed by release or deployment setting.",
    "origin": "declared"
   },
   {
@@ -2703,6 +2740,19 @@
    "origin": "declared"
   },
   {
+   "id": "OI-11",
+   "review": null,
+   "source": "PMS-BRD",
+   "target": "PMS-UX-SCR-SH-01",
+   "category": "Inconsistent",
+   "severity": "Medium",
+   "status": "Open",
+   "owner": "Product owner",
+   "due": "Before HLD Part02",
+   "summary": "Update the shell UX for the supporting-function rules (D-97, D-101): inactive-account message only after the correct password (SCR-SH-01); header for the PMS Administrator without Employee Id (SCR-SH-00); UX summaries refer to the identity provider; system error messages show a flow reference.",
+   "origin": "declared"
+  },
+  {
    "id": "OI-06",
    "review": null,
    "source": "PMS-BRD",
@@ -2753,7 +2803,7 @@
    "missing_items": [],
    "orphans": [],
    "source": "inferred",
-   "note": "ID references found in the drafted BRDs (anchor, EIMS, AMS, LMS, SMS). The SUP BRD is not written yet."
+   "note": "ID references found in all six BRD documents (anchor, EIMS, AMS, LMS, SMS, SUP)."
   },
   {
    "from": "UX journeys (UJ)",
@@ -2765,7 +2815,7 @@
    "missing_items": [],
    "orphans": [],
    "source": "inferred",
-   "note": "ID references found in the drafted BRDs (anchor, EIMS, AMS, LMS, SMS). The SUP BRD is not written yet."
+   "note": "ID references found in all six BRD documents (anchor, EIMS, AMS, LMS, SMS, SUP)."
   },
   {
    "from": "BRD (FR / BR / VR)",
@@ -2781,6 +2831,94 @@
   }
  ],
  "decisions": [
+  {
+   "id": "D-102",
+   "title": "PMS-BRD-M5-SUP §12 to §14 approved",
+   "date": "2026-11-20",
+   "author": "Rajesh Verma",
+   "area": "BRD",
+   "stage": 2,
+   "summary": "PMS-BRD-M5-SUP §12 to §14 approved: NFR-SUP-01 to 05; traceability for 14 capabilities; no SUP-specific open items (OI-SUP-01 closed by D-100). All SUP sections reviewed, document at v1.0 rev 0.1, final approval pending OI-02, OI-04, OI-11. Anchor rev 0.13: SUP status in §2.3 and counts in §11. The BRD set is drafted; next: Stage 2 gate",
+   "path": "docs/decisions/decision-log.md",
+   "status": "Approved"
+  },
+  {
+   "id": "D-101",
+   "title": "Audit log and activity log; SUP §4 and §7 to §11 approved",
+   "date": "2026-11-20",
+   "author": "Rajesh Verma",
+   "area": "BRD",
+   "stage": 2,
+   "summary": "Audit log of every change to business records and user accounts (field, old and new value, process, user, time, flow reference; kept with the record; passwords never recorded). Activity log of the entry, completed steps and exit of every service operation, job and hand-over event, with one flow reference across modules shown in system error messages; personal and confidential information masked; read by IT operations only; kept 90 days in Production. No viewer screen in the POC (Phase 2). Anchor rev 0.12: BR-CMN-19, NFR-09, OI-11 extended. SUP §4 and §7 to §11 approved",
+   "path": "docs/decisions/decision-log.md",
+   "status": "Approved"
+  },
+  {
+   "id": "D-100",
+   "title": "Own password change ends other sessions",
+   "date": "2026-11-20",
+   "author": "Rajesh Verma",
+   "area": "SUP",
+   "stage": 2,
+   "summary": "Changing one's own password ends the user's other open sessions; the session in which it was changed continues (amends D-97)",
+   "path": "docs/decisions/decision-log.md",
+   "status": "Approved"
+  },
+  {
+   "id": "D-99",
+   "title": "PMS-BRD-M5-SUP §5 and §6 approved",
+   "date": "2026-11-20",
+   "author": "Rajesh Verma",
+   "area": "BRD",
+   "stage": 2,
+   "summary": "PMS-BRD-M5-SUP §5 and §6 approved: FR-UM-001 to 015 (13 used), US-UM-01 to 03, FR-AUTH-001 to 030 (20 used), US-AUTH-01 to 05; a request outside the user's role or data scope opens a neutral no-access page and reveals no data; a new password may not contain the Employee Id",
+   "path": "docs/decisions/decision-log.md",
+   "status": "Approved"
+  },
+  {
+   "id": "D-98",
+   "title": "PMS-BRD-M5-SUP §1 to §3 approved",
+   "date": "2026-11-20",
+   "author": "Rajesh Verma",
+   "area": "BRD",
+   "stage": 2,
+   "summary": "PMS-BRD-M5-SUP §1 to §3 approved: need-basis result user management and authentication Yes, audit Partial, administration, notifications and documents Phase 2; added on review: the important activities and events of every use case are logged in sequence so the complete execution flow can be followed when investigating an issue",
+   "path": "docs/decisions/decision-log.md",
+   "status": "Approved"
+  },
+  {
+   "id": "D-97",
+   "title": "Supporting-function rules",
+   "date": "2026-11-20",
+   "author": "Rajesh Verma",
+   "area": "SUP",
+   "stage": 2,
+   "summary": "Supporting-function rules: no Admin-changeable business values in the POC (OI-05 closed); one PMS Administrator account set up at installation; sign-in messages never reveal whether an Employee Id exists; deactivation and password reset end all sessions, role change applies at next sign-in; password reset also unlocks; new password differs from the current one; temporary password does not expire, latest only; several sessions allowed; security events recorded by the identity provider; log out without confirmation. BRD technology-neutral; anchor rev 0.11 (OI-11)",
+   "path": "docs/decisions/decision-log.md",
+   "status": "Approved"
+  },
+  {
+   "id": "D-96",
+   "title": "Internal delivery-tooling decision (details in the internal decision log)",
+   "date": "2026-11-20",
+   "author": "Rajesh Verma",
+   "area": "Process",
+   "stage": 0,
+   "summary": "Internal delivery-tooling decision (details in the internal decision log)",
+   "path": "docs/decisions/decision-log.md",
+   "status": "Approved"
+  },
+  {
+   "id": "D-95",
+   "title": "Internal delivery-tooling decision (details in the internal decision log)",
+   "date": "2026-11-20",
+   "author": "Rajesh Verma",
+   "area": "Process",
+   "stage": 0,
+   "summary": "Internal delivery-tooling decision (details in the internal decision log)",
+   "path": "docs/decisions/decision-log.md",
+   "status": "Approved"
+  },
   {
    "id": "D-94",
    "title": "PMS-BRD-M4-SMS §10 to §17 approved",
@@ -3829,6 +3967,86 @@
  ],
  "activity": [
   {
+   "date": "2026-11-20",
+   "actor": "Rajesh Verma",
+   "kind": "human",
+   "type": "session",
+   "summary": "Working session handoff: supporting functions BRD drafted and reviewed (D-97 to D-102); anchor rev 0.13 with OI-11, BR-CMN-19 and NFR-09; next Stage 2 gate (open items, UX update, consistency check, stakeholder review, sign-off).",
+   "ref": null
+  },
+  {
+   "date": "2026-11-20",
+   "actor": "Rajesh Verma",
+   "kind": "human",
+   "type": "status-change",
+   "summary": "Supporting functions BRD drafted (D-102); all six BRD documents drafted; Stage 2 BRD at 80%.",
+   "ref": "#/stage/2"
+  },
+  {
+   "date": "2026-11-20",
+   "actor": "Rajesh Verma",
+   "kind": "human",
+   "type": "commit",
+   "summary": "brd: PMS-BRD-M5-SUP §12–§14, SUP drafted; anchor rev 0.13 (SUP status); decision D-102; prompt outcome; session handoff",
+   "ref": "b4e141a"
+  },
+  {
+   "date": "2026-11-20",
+   "actor": "Rajesh Verma",
+   "kind": "human",
+   "type": "commit",
+   "summary": "brd: PMS-BRD-M5-SUP §4, §7–§11 (need-basis results, audit and activity log, rules, data); own password change ends other sessions; anchor rev 0.12 (BR-CMN-19, NFR-09); decisions D-100, D-101",
+   "ref": "49efb87"
+  },
+  {
+   "date": "2026-11-20",
+   "actor": "Rajesh Verma",
+   "kind": "human",
+   "type": "commit",
+   "summary": "brd: PMS-BRD-M5-SUP §5–§6 (user and access management, authentication and session); decision D-99",
+   "ref": "f13ae31"
+  },
+  {
+   "date": "2026-11-20",
+   "actor": "Rajesh Verma",
+   "kind": "human",
+   "type": "commit",
+   "summary": "brd: PMS-BRD-M5-SUP §1–§3 (need-basis assessment, scope); supporting-function rules D-97; anchor rev 0.11 (OI-05 closed, OI-11); decision D-98",
+   "ref": "0e1404c"
+  },
+  {
+   "date": "2026-11-20",
+   "actor": "Rajesh Verma",
+   "kind": "human",
+   "type": "commit",
+   "summary": "Internal delivery-tooling housekeeping",
+   "ref": "e73c3a3"
+  },
+  {
+   "date": "2026-11-20",
+   "actor": "Rajesh Verma",
+   "kind": "human",
+   "type": "commit",
+   "summary": "Internal delivery-tooling housekeeping",
+   "ref": "6ab4393"
+  },
+  {
+   "date": "2026-11-19",
+   "actor": "Rajesh Verma",
+   "kind": "human",
+   "type": "commit",
+   "summary": "Internal delivery-tooling housekeeping",
+   "ref": "9b68f56"
+  },
+  {
+   "date": "2026-11-19",
+   "actor": "Rajesh Verma",
+   "kind": "human",
+   "type": "commit",
+   "summary": "chore(smd): refresh dashboard 2026-11-19",
+   "ref": "8e4ecb0"
+  },
+  {
    "date": "2026-11-19",
    "actor": "Rajesh Verma",
    "kind": "human",
@@ -4666,33 +4884,33 @@
  ],
  "next_actions": [
   {
-   "item": "Supporting functions need-basis assessment (PMS-BRD-M5-SUP) – session prompt first",
-   "owner": "Rajesh Verma",
-   "when": "Next working session",
-   "ref": "PMS-BRD-M5-SUP"
-  },
-  {
-   "item": "Resolve overdue business open items OI-02, OI-03, OI-04 with the HR Manager (block EIMS, AMS, LMS and SMS BRD approval)",
+   "item": "Resolve overdue business open items OI-02, OI-03, OI-04 and OI-EIMS-01, OI-EIMS-02 with the HR Manager (block approval of all module BRDs)",
    "owner": "HR Manager",
    "when": "Before BRD sign-off",
    "ref": "OI-02"
   },
   {
-   "item": "Name BRD reviewers (BA, HR Manager, Finance Manager) and plan stakeholder review",
+   "item": "Apply UX updates OI-01, OI-06 to OI-11 (and refresh UX summary status, F-SMD-01)",
+   "owner": "Product owner",
+   "when": "Before HLD Part02",
+   "ref": "OI-11"
+  },
+  {
+   "item": "Consistency check across the BRD set (anchor and M1 to M5: ids, cross-references, status lists)",
+   "owner": "Rajesh Verma",
+   "when": "Next working session",
+   "ref": "#/stage/2"
+  },
+  {
+   "item": "Name BRD reviewers (BA, HR Manager, Finance Manager, Security / IT owner) and plan stakeholder review",
    "owner": "Product owner",
    "when": "Before BRD sign-off",
    "ref": "R-07"
   },
   {
-   "item": "Apply UX updates OI-01, OI-06, OI-07, OI-08, OI-09, OI-10 (and refresh UX summary status, F-SMD-01)",
-   "owner": "Product owner",
-   "when": "Before HLD Part02",
-   "ref": "OI-10"
-  },
-  {
-   "item": "Start HLD (Stage 3) from the frozen templates",
+   "item": "BRD set sign-off, then start HLD (Stage 3) from the frozen templates",
    "owner": "Rajesh Verma",
-   "when": "After BRD sign-off",
+   "when": "After stakeholder review",
    "ref": "#/stage/3"
   }
  ],
@@ -5582,13 +5800,27 @@
    "last_author": "Rajesh Verma"
   },
   {
+   "path": "docs/02-brd/PMS-BRD-M5-SUP.md",
+   "folder": "docs/02-brd",
+   "kind": "artifact",
+   "ext": ".md",
+   "size": 47121,
+   "created": "2026-11-20",
+   "last_updated": "2026-11-20",
+   "last_author": "Rajesh Verma",
+   "module": "ALL",
+   "links": [
+    "PMS-BRD-M5-SUP"
+   ]
+  },
+  {
    "path": "docs/02-brd/PMS-BRD.md",
    "folder": "docs/02-brd",
    "kind": "artifact",
    "ext": ".md",
-   "size": 52965,
+   "size": 55385,
    "created": "2026-11-18",
-   "last_updated": "2026-11-19",
+   "last_updated": "2026-11-20",
    "last_author": "Rajesh Verma",
    "module": "ALL",
    "links": [
@@ -5614,9 +5846,9 @@
    "folder": "docs/decisions",
    "kind": "artifact",
    "ext": ".md",
-   "size": 25280,
+   "size": 32368,
    "created": "2026-11-15",
-   "last_updated": "2026-11-19",
+   "last_updated": "2026-11-20",
    "last_author": "Rajesh Verma",
    "module": "ALL",
    "links": [
@@ -5809,80 +6041,94 @@
  "changes_since_last": [
   {
    "entity": "artifact",
-   "id": "PMS-BRD",
-   "change": "Version bump (D-90, D-94): OI-10 SMS UX updates; SMS status",
-   "from": "v1.0 rev 0.8",
-   "to": "v1.0 rev 0.10"
-  },
-  {
-   "entity": "artifact",
-   "id": "PMS-BRD-M4-SMS",
-   "change": "New artifact: SMS BRD drafted, all sections reviewed (D-90 to D-94); approval pending OI-02, OI-04",
+   "id": "PMS-BRD-M5-SUP",
+   "change": "New artifact: supporting functions BRD drafted, all sections reviewed (D-97 to D-102); approval pending OI-02, OI-04, OI-11",
    "from": "Planned",
    "to": "Draft · v1.0 rev 0.1"
   },
   {
+   "entity": "artifact",
+   "id": "PMS-BRD",
+   "change": "Version bump (D-97, D-101, D-102): OI-05 closed, OI-11, BR-CMN-19, NFR-09, SUP status",
+   "from": "v1.0 rev 0.10",
+   "to": "v1.0 rev 0.13"
+  },
+  {
    "entity": "stage",
    "id": "S2",
-   "change": "Stage 2 progress (anchor in review, EIMS, AMS, LMS and SMS drafted)",
-   "from": "50%",
-   "to": "65%"
+   "change": "Stage 2 progress (all six BRD documents drafted; anchor in review)",
+   "from": "65%",
+   "to": "80%"
+  },
+  {
+   "entity": "gate",
+   "id": "S2",
+   "change": "Gate criterion \"All six BRD documents drafted\" met",
+   "from": "5 of 6",
+   "to": "6 of 6"
   },
   {
    "entity": "step",
-   "id": "S2.5",
-   "change": "Module BRD SMS drafted",
+   "id": "S2.6",
+   "change": "Supporting functions BRD drafted",
    "from": "Not Started",
    "to": "Completed"
   },
   {
    "entity": "milestone",
-   "id": "M2.5",
-   "change": "SMS BRD drafted (D-94)",
+   "id": "M2.6",
+   "change": "SUP BRD drafted (D-102)",
    "from": "Not Started",
    "to": "Completed"
   },
   {
    "entity": "review",
-   "id": "RV-07",
-   "change": "New review: SMS BRD section-by-section review (D-90 to D-94)",
+   "id": "RV-08",
+   "change": "New review: supporting functions BRD section-by-section review (D-97 to D-102)",
    "from": null,
    "to": "Approved-with-comments"
   },
   {
    "entity": "finding",
-   "id": "OI-10",
-   "change": "New open item: SMS UX updates (Medium, Product owner, before HLD Part02)",
+   "id": "OI-05",
+   "change": "Closed (D-97): no Admin-changeable values in the POC",
+   "from": "Open",
+   "to": "Resolved"
+  },
+  {
+   "entity": "finding",
+   "id": "OI-11",
+   "change": "New open item: shell UX updates for the supporting-function rules (Medium, Product owner, before HLD Part02)",
    "from": null,
    "to": "Open"
   },
   {
    "entity": "finding",
    "id": "OI-02, OI-04",
-   "change": "Now also block approval of the SMS BRD",
-   "from": "EIMS, AMS, LMS",
-   "to": "EIMS, AMS, LMS, SMS"
+   "change": "Now also block approval of the SUP BRD",
+   "from": "EIMS, AMS, LMS, SMS",
+   "to": "EIMS, AMS, LMS, SMS, SUP"
   },
   {
    "entity": "decision",
-   "id": "D-89 to D-94",
-   "change": "6 new decisions (SMS rules and SMS BRD section approvals D-90 to D-94; one internal housekeeping decision)",
-   "from": "88",
-   "to": "94"
+   "id": "D-95 to D-102",
+   "change": "8 new decisions (supporting-function rules and SUP BRD section approvals D-97 to D-102; two internal housekeeping decisions)",
+   "from": "94",
+   "to": "102"
   },
   {
    "entity": "coverage",
    "id": "Mockups / journeys → BRD",
-   "change": "SCR-SMS-01, SCR-SMS-02 and UJ-SMS / UJ-SYS-01..03 now also referenced by PMS-BRD-M4-SMS",
+   "change": "SCR-SH-01, SCR-SH-02 and UJ-SH-01, 02, 05 now also referenced by PMS-BRD-M5-SUP",
    "from": "17/17, 30/30",
    "to": "17/17, 30/30"
   },
   {
    "entity": "repo_file",
-   "id": "docs/02-brd/PMS-BRD-M4-SMS.md",
+   "id": "docs/02-brd/PMS-BRD-M5-SUP.md",
    "change": "New file indexed",
    "from": null,
-   "to": "linked to PMS-BRD-M4-SMS"
+   "to": "linked to PMS-BRD-M5-SUP"
   }
  ],
  "data_quality": {
@@ -5890,14 +6136,14 @@
   "artifacts_inferred": 0,
   "artifacts_git": 2,
   "artifacts_config": 7,
-  "neutralised_items": 22,
+  "neutralised_items": 27,
   "warnings": [
    "No artifact carries an smd: front-matter block yet; status comes from document control tables, the decision log and git.",
    "Screenshot (PNG) to screen mapping is inferred from file names (15 of 17 screens; SCR-EIMS-02 and SCR-SH-02 have no screenshot).",
    "Planned dates and target go-live are not set yet (to be decided based on progress).",
    "Internal tooling folders, working memory and session notes are excluded from this customer-facing view; session activity is summarised only.",
-   "Two repository folders are not covered by the path mapping and are not indexed: an internal working-files folder under docs/ (D-83, now 11 files) and an internal screenshots folder at the repository root. Proposed mapping: exclude both from this view.",
-   "FR numbering has gaps in every module BRD (e.g. 31 requirements used in FR-SMS-001..046; 25 in FR-LMS-001..028), by design; counts are taken from PMS-BRD §11."
+   "Three repository folders are not covered by this view and are not indexed: an internal working-files folder under docs/ (D-83, now 13 files), an internal screenshots folder at the repository root, and a new internal prompt-templates folder templates/00-prompt/ (D-95, 26 files; declared internal, to be excluded). Proposed mapping: add exclude lines \"docs/00-prompt/**\" and \"templates/00-prompt/**\" (and the screenshots folder) to smd-config.yaml.",
+   "FR numbering has gaps in every module BRD (e.g. 31 requirements used in FR-SMS-001..046; 45 in FR-UM-001..015, FR-AUTH-001..030, FR-ADM-101..117), by design; counts are taken from PMS-BRD §11."
   ]
  }
 }
