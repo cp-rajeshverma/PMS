@@ -13,6 +13,7 @@ Date: November 2026
 | Version | Revision | Date | Author | Change remark |
 | --- | --- | --- | --- | --- |
 | 1.0 | 0.1 | 18-Nov-2026 | Rajesh Verma | First draft from UX v1.0 (D-34), PMS-BRD v1.0 rev 0.3 and decisions D-01 to D-72 |
+| 1.0 | 0.2 | 20-Nov-2026 | Rajesh Verma | BRD set consistency check (D-103): references to PMS-BRD rev 0.14 and D-01 to D-103; BR-CMN-19 in §8; FR-EIMS-005 and FR-EIMS-018 linked to FR-UM-006 and FR-UM-007 (D-97); INT-08 outcome; OI-12 in §14; OI-11 and OI-12 in §16 |
 
 ### 1.2 Review and approval
 
@@ -37,10 +38,10 @@ Glossary, roles, the end-to-end process, cross-module rules (BR-CMN) and system-
 
 | # | Document | Version | Use |
 | --- | --- | --- | --- |
-| 1 | PMS-BRD (anchor) | v1.0 rev 0.3 | Glossary, roles, end-to-end process, cross-module rules, integrations, system-wide NFRs |
+| 1 | PMS-BRD (anchor) | v1.0 rev 0.14 | Glossary, roles, end-to-end process, cross-module rules, integrations, system-wide NFRs |
 | 2 | UX Journey Index and UX Summaries SCR-EIMS-01 to SCR-EIMS-04 | v1.0 (D-34) | Journeys, screens, fields, actions |
 | 3 | PMS – Business Requirements Document (baseline) §6 | v1.0 (D-09) | Employee entity, validations EIMS-V1 to V6, user stories EIMS-US1 to US6 |
-| 4 | Decision log | D-01 to D-72 | Approved decisions |
+| 4 | Decision log | D-01 to D-103 | Approved decisions |
 
 ## 3. Module overview and scope
 
@@ -213,7 +214,7 @@ All requirements are priority Must and phase POC unless stated otherwise. Approv
 | FR-EIMS-002 | A manager sees only their direct reports, without the manager and hourly wage rate columns, and can open a read-only profile view. | Must | POC | SCR-EIMS-01 | Given a manager opens My Team, when the list loads, then only employees whose Manager Id is that manager appear, no rate is shown, and View opens SCR-EIMS-04 read only. |
 | FR-EIMS-003 | Users can search by name, Employee Id or email and filter by profile status; the result count updates. With no match the screen shows "No employees found – Try a different search or filter." | Must | POC | SCR-EIMS-01 | Given the list is shown, when the user types "EMP0007", then only matching rows remain and the count shows 1. |
 | FR-EIMS-004 | Inactive employees are hidden by default; "Show inactive" lists them dimmed with an "Inactive" badge. | Must | POC | SCR-EIMS-01, BR-CMN-06 | Given an inactive employee exists, when "Show inactive" is off, then it is not listed; when on, then it is listed with the badge. |
-| FR-EIMS-005 | The Admin can reset an employee's password: after confirmation, the system issues a temporary password, shows it once with a Copy action, and the employee must replace it at the next sign-in. | Must | POC | SCR-EIMS-01, UJ-EIMS-08, D-07 | Given the Admin confirms Reset password for EMP0007, then a temporary password is shown once, and EMP0007's next sign-in opens Set password. |
+| FR-EIMS-005 | The Admin can reset an employee's password: after confirmation, the system issues a temporary password, shows it once with a Copy action, and the employee must replace it at the next sign-in. The effect on the account (earlier passwords stop working, any lock cleared, all open sessions ended) is FR-UM-006. | Must | POC | SCR-EIMS-01, UJ-EIMS-08, D-07 | Given the Admin confirms Reset password for EMP0007, then a temporary password is shown once, and EMP0007's next sign-in opens Set password. |
 | FR-EIMS-006 | From the directory the Admin can start onboarding ("+ Onboard employee") and open an employee for editing. | Must | POC | SCR-EIMS-01 | Given the Admin clicks Edit on a row, then SCR-EIMS-02 opens in edit mode for that employee. |
 
 **User stories**
@@ -235,7 +236,7 @@ All requirements are priority Must and phase POC unless stated otherwise. Approv
 | FR-EIMS-015 | A change of date of joining is accepted only if no attendance or leave (other than Cancelled) lies before the new date and the employee is still at least 18 on it; otherwise the blocking records are shown. | Must | POC | D-71, INT-09 | Given attendance on 05-Nov, when the Admin sets the joining date to 10-Nov, then the change is refused and the 05-Nov attendance is named. |
 | FR-EIMS-016 | Changing a Manager's role to Employee is blocked while they have active direct reports; the message lists the reports. | Must | POC | D-71 | Given a manager with 3 active reports, when the Admin selects role Employee, then saving is refused and the 3 reports are listed. |
 | FR-EIMS-017 | After a manager change, new submissions go to the new manager (or the Admin for top-level). Items already waiting are handled per open item OI-04. | Must | POC | BR-CMN-01, OI-04 | Given B's manager changes from M1 to M2, when B submits attendance afterwards, then it appears in M2's inbox. |
-| FR-EIMS-018 | The Admin deactivates an employee after confirmation: the employee becomes Inactive, can no longer sign in, and all records are kept. Deactivation is blocked for a manager with active direct reports, listing them. | Must | POC | SCR-EIMS-02, UJ-EIMS-07, BR-CMN-06, BR-CMN-14 | Given an employee with no reports, when the Admin confirms Deactivate, then "<name> deactivated." is shown and a sign-in attempt shows the inactive-account message. |
+| FR-EIMS-018 | The Admin deactivates an employee after confirmation: the employee becomes Inactive, can no longer sign in, and all records are kept; the user account is disabled and all open sessions end (FR-UM-007). Deactivation is blocked for a manager with active direct reports, listing them. | Must | POC | SCR-EIMS-02, UJ-EIMS-07, BR-CMN-06, BR-CMN-14 | Given an employee with no reports, when the Admin confirms Deactivate, then "<name> deactivated." is shown and a sign-in with the correct password shows the inactive-account message. |
 
 **User stories**
 
@@ -317,7 +318,7 @@ All requirements are priority Must and phase POC unless stated otherwise. Approv
 | BR-EIMS-09 | The role (Employee or Manager) is held with the user account, set by the Admin, and is not part of profile approval. | Business | SCR-EIMS-02 | D-29 |
 | BR-EIMS-10 | Managers do not see their reports' hourly wage rates; the employee sees their own rate read only; the Admin sees all rates. | Business | SCR-EIMS-01, SCR-EIMS-03 | UX SCR-EIMS-01, SCR-EIMS-03 |
 
-Cross-module rules that also apply: BR-CMN-01 to BR-CMN-09, BR-CMN-11 to BR-CMN-14, BR-CMN-18 (anchor §6).
+Cross-module rules that also apply: BR-CMN-01 to BR-CMN-09, BR-CMN-11 to BR-CMN-14, BR-CMN-18, BR-CMN-19 (anchor §6).
 
 ## 9. Data requirements
 
@@ -393,7 +394,7 @@ EIMS has no scheduled jobs. It takes part in these anchor integrations (anchor �
 | INT-04 | Approver resolution | API | On submit and in approval views | EIMS → AMS, LMS, SMS, Shell | Manager, or Admin for the top-level employee (BR-CMN-01, BR-CMN-08) |
 | INT-05 | Hourly wage rate | API | Salary record generation | EIMS → SMS | Current rate (BR-CMN-13, FR-EIMS-013) |
 | INT-07 | Dashboard and approvals inbox | API | Dashboard or inbox opened | EIMS → Shell | Items in §12 and NOT-EIMS-01 to 05 |
-| INT-08 | Identity provider | External system | Create, role change, password reset, deactivation | EIMS ↔ identity provider | Account with Employee Id as user name, role, temporary password, sign-in disabled when inactive |
+| INT-08 | Identity provider | External system | Create, role change, password reset, deactivation | EIMS ↔ identity provider | Account with Employee Id as user name, role, temporary password; sign-in disabled and sessions ended when inactive; a reset clears a lock and ends all sessions (FR-UM-006, FR-UM-007) |
 | INT-09 | Records before a new joining date | API | Admin changes date of joining | AMS, LMS → EIMS | Change refused when attendance or leave (other than Cancelled) lies before the new date (BR-EIMS-05) |
 
 ## 12. Reporting and dashboard
@@ -434,7 +435,7 @@ System-wide NFRs (anchor §8) apply; module-specific additions:
 | Constraint | C-EIMS-02 | EIMS holds two business entities, Employee and Profile change request – the agreed exception to one entity per module (D-70). |
 | Dependency | DEP-EIMS-01 | Identity provider for user accounts, roles, temporary passwords and sign-in blocking (anchor DEP-01, INT-08). |
 | Dependency | DEP-EIMS-02 | INT-09 needs AMS and LMS. EIMS is built first (anchor DEP-03); until AMS and LMS exist there are no records to check, so the joining-date check is completed when they are delivered. |
-| Dependency | DEP-EIMS-03 | Open items OI-02 and OI-04 (anchor §12) are decided before this document is approved (anchor DEP-06). |
+| Dependency | DEP-EIMS-03 | Open items OI-02, OI-04 and OI-12 (anchor §12) are decided before this document is approved (anchor DEP-06). |
 
 ## 15. Traceability matrix
 
@@ -446,14 +447,14 @@ System-wide NFRs (anchor §8) apply; module-specific additions:
 | UJ-EIMS-04 | SCR-SH-03, SCR-EIMS-03 | FR-EIMS-024, 027 | BR-CMN-04 | |
 | UJ-EIMS-05 | SCR-EIMS-03 | FR-EIMS-025, 026, 027, 028 | BR-EIMS-03, 04; BR-CMN-05, 11 | |
 | UJ-EIMS-06 | SCR-EIMS-01, SCR-EIMS-02 | FR-EIMS-012, 013, 014, 015, 016, 017 | VR-EIMS-01, 04, 05, 06; BR-EIMS-04, 05, 06; BR-CMN-13 | |
-| UJ-EIMS-07 | SCR-EIMS-01, SCR-EIMS-02 | FR-EIMS-018 | BR-EIMS-07; BR-CMN-06, 14 | |
-| UJ-EIMS-08 | SCR-EIMS-01 | FR-EIMS-005 | NFR-EIMS-02 | |
+| UJ-EIMS-07 | SCR-EIMS-01, SCR-EIMS-02 | FR-EIMS-018; FR-UM-007 | BR-EIMS-07; BR-CMN-06, 14 | |
+| UJ-EIMS-08 | SCR-EIMS-01 | FR-EIMS-005; FR-UM-006 | NFR-EIMS-02 | |
 | UJ-EIMS-09 | SCR-EIMS-01, SCR-EIMS-04 | FR-EIMS-001, 002, 003, 004, 034 | BR-EIMS-10 | |
 | UJ-SYS-04 | SCR-EIMS-02 | FR-EIMS-040, 041 | BR-EIMS-01; NFR-EIMS-02 | |
 
 ## 16. Open items
 
-Cross-module open items OI-02 (pending items of a deactivated employee), OI-04 (pending items on a manager change) and OI-07 (UX updates for the change request) are in the anchor §12.
+Cross-module open items OI-02 (pending items of a deactivated employee), OI-04 (pending items on a manager change) OI-07 (UX updates for the change request), OI-11 (UX summaries SCR-EIMS-01 and SCR-EIMS-02 to name the identity provider) and OI-12 (whether more than one top-level employee is allowed) are in the anchor §12.
 
 | Id | Question | Owner | Due | Status / decision |
 | --- | --- | --- | --- | --- |

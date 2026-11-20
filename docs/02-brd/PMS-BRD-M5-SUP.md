@@ -13,6 +13,7 @@ Date: November 2026
 | Version | Revision | Date | Author | Change remark |
 | --- | --- | --- | --- | --- |
 | 1.0 | 0.1 | 20-Nov-2026 | Rajesh Verma | First draft from UX v1.0 (D-34), PMS-BRD v1.0 rev 0.12, PMS-BRD-M1-EIMS v1.0 rev 0.1 and decisions D-01 to D-101 |
+| 1.0 | 0.2 | 20-Nov-2026 | Rajesh Verma | BRD set consistency check (D-103): references to PMS-BRD rev 0.14, module BRDs rev 0.2 and D-01 to D-103; FR-AUTH-012 password wording (D-99) |
 
 ### 1.2 Review and approval
 
@@ -43,12 +44,12 @@ The Admin screens that drive user management – onboarding, role, deactivation 
 
 | # | Document | Version | Use |
 | --- | --- | --- | --- |
-| 1 | PMS-BRD (anchor) | v1.0 rev 0.12 | Glossary, scope (§3.3), roles and role catalogue (§4.2), role × module access (§4.3), end-to-end step 2 (§5.1), journeys UJ-SH-01, 02, 05 (§5.2), FR-CMN-015, 016 (§5.3), BR-CMN-01, 06, 08, 19, INT-08, NFR-03 to NFR-05, NFR-09, C-05, C-06, DEP-01, R-04 |
-| 2 | PMS-BRD-M1-EIMS | v1.0 rev 0.1 | Admin screens that drive user management: FR-EIMS-005, 010, 012, 016, 018, 040, 041; hand-over to the identity provider (§3.3, INT-08) |
-| 3 | PMS-BRD-M2-AMS, PMS-BRD-M3-LMS, PMS-BRD-M4-SMS | v1.0 rev 0.1 | Consumers of sign-in, roles and data scope |
+| 1 | PMS-BRD (anchor) | v1.0 rev 0.14 | Glossary, scope (§3.3), roles and role catalogue (§4.2), role × module access (§4.3), end-to-end step 2 (§5.1), journeys UJ-SH-01, 02, 05 (§5.2), FR-CMN-015, 016 (§5.3), BR-CMN-01, 06, 08, 19, INT-08, NFR-03 to NFR-05, NFR-09, C-05, C-06, DEP-01, R-04 |
+| 2 | PMS-BRD-M1-EIMS | v1.0 rev 0.2 | Admin screens that drive user management: FR-EIMS-005, 010, 012, 016, 018, 040, 041; hand-over to the identity provider (§3.3, INT-08) |
+| 3 | PMS-BRD-M2-AMS, PMS-BRD-M3-LMS, PMS-BRD-M4-SMS | v1.0 rev 0.2 | Consumers of sign-in, roles and data scope |
 | 4 | UX Journey Index (navigation map, user menu) and UX Summaries SCR-SH-00, SCR-SH-01, SCR-SH-02, SCR-EIMS-01, SCR-EIMS-02, with their mockups | v1.0 (D-34) | Journeys, screens, fields, messages |
 | 5 | PMS – Business Requirements Document (baseline) §4 | v1.0 (D-09) | Roles, permissions matrix, login (Employee Id and password, no single sign-on, no self-registration) |
-| 6 | Decision log | D-01 to D-101 | Approved decisions, in particular D-01, D-07, D-24, D-26, D-28, D-29, D-57, D-58, D-63, D-71, D-97 to D-101 |
+| 6 | Decision log | D-01 to D-103 | Approved decisions, in particular D-01, D-07, D-24, D-26, D-28, D-29, D-57, D-58, D-63, D-71, D-97 to D-101 |
 
 ### 2.3 Terms used in this document
 
@@ -184,7 +185,7 @@ Business policy only; the architecture is in PMS-HLD-Part01-Architecture-and-Des
 | --- | --- | --- | --- | --- | --- |
 | FR-AUTH-010 | Set password (first sign-in or after a reset): the user enters a new password and confirms it, with no way to skip. On save the temporary password stops working, "Password saved." is shown and the dashboard opens. | Must | POC | SCR-SH-02, UJ-SH-02 | Given a temporary password was used, when a valid new password is saved, then the dashboard opens and the temporary password is refused at the next sign-in. |
 | FR-AUTH-011 | Change password: any signed-in user can open Change password from the user menu, enter the current password, the new password and its confirmation, and save; Cancel returns to the dashboard. A wrong current password shows "Current password is incorrect." On save, all the user's other open sessions end; the session in which the password was changed continues (D-100). | Must | POC | SCR-SH-02, SCR-SH-00, D-100 | Given a signed-in user, when the current password is wrong, then "Current password is incorrect." is shown and the password is not changed. Given EMP0007 is signed in on two browsers, when the password is changed in one, then the other's next action opens the sign-in page. |
-| FR-AUTH-012 | A new password must meet the password policy – at least 8 characters, an upper-case and a lower-case letter, a number, a special character, not the Employee Id (D-28) – and differ from the current or temporary password (D-97). A checklist shows each rule as met (✓) or not (○), not by colour alone. Otherwise "The new password does not meet all the rules below." or "Passwords do not match." is shown. There is no password history or expiry in the POC (Future). | Must | POC | SCR-SH-02, D-28, D-97 | Given "Emp0007!x" for EMP0007, when saved, then it is refused because it contains the Employee Id. Given the new password equals the current one, then it is refused. |
+| FR-AUTH-012 | A new password must meet the password policy – at least 8 characters, an upper-case and a lower-case letter, a number, a special character, not containing the Employee Id (D-28, D-99) – and differ from the current or temporary password (D-97). A checklist shows each rule as met (✓) or not (○), not by colour alone. Otherwise "The new password does not meet all the rules below." or "Passwords do not match." is shown. There is no password history or expiry in the POC (Future). | Must | POC | SCR-SH-02, D-28, D-97 | Given "Emp0007!x" for EMP0007, when saved, then it is refused because it contains the Employee Id. Given the new password equals the current one, then it is refused. |
 | FR-AUTH-013 | A temporary password does not expire; it stays valid until it is replaced at sign-in or by a later reset (FR-UM-006). It is shown only once, to the Admin (NFR-EIMS-02). How it reaches the employee is open item OI-EIMS-01. | Must | POC | D-97, FR-EIMS-005, FR-EIMS-041 | Given a temporary password issued 10 days ago and not used, when the employee signs in with it, then Set password opens. |
 | FR-AUTH-014 | Passwords are never stored or shown in readable form; Show / Hide reveals only what the user is typing on the sign-in page. | Must | POC | SCR-SH-01, NFR-03 | Given any screen, report or log, then no password appears in readable form. |
 | FR-AUTH-015 | If a password cannot be saved for technical reasons, "Password could not be saved. Please try again." is shown and the old password stays valid. | Must | POC | SCR-SH-02 | Given the save fails, then the message is shown and the previous password still signs in. |

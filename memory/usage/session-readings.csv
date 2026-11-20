@@ -8,3 +8,5 @@ date,session,checkpoint,requests,input,cache_write,cache_read,output,total,instr
 2026-11-20,2026-11-20 SUP BRD,After §5–§6 approval (D-99),39,92,166239,7234659,36492,7437482,48.8,36.9,7.5,2.2,4.7,measured,D-99,"Adds the authorization question and §5–§6"
 2026-11-20,2026-11-20 SUP BRD,"After §4, §7–§11 approval (D-100, D-101)",46,110,356133,8836594,52949,9245786,49.1,36,8,2.6,4.5,measured,D-101,"Adds audit / activity log questions and §4, §7–§11"
 2026-11-20,2026-11-20 SUP BRD,"After §12–§14 approval and closing updates (D-102)",53,132,368672,10751697,62464,11182965,49.3,35.9,7.8,2.8,4.3,measured,D-102,"Adds §12–§14, anchor rev 0.13, handoff, prompt outcome"
+2026-11-20,2026-11-20 BRD consistency check and open-items note,Session start (after loading the prompt),3,6,17658,284876,732,303272,78.1,19.5,0,1.7,0.6,measured,,"Start reading; files and commands = device shell"
+2026-11-20,2026-11-20 BRD consistency check and open-items note,After Part A approval (D-103),34,76,214721,6987991,41211,7243999,40.6,54.8,0,2.7,1.9,measured,D-103,"Adds context load of six BRDs, consistency check, fixes and report"

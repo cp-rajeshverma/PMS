@@ -13,6 +13,7 @@ Date: November 2026
 | Version | Revision | Date | Author | Change remark |
 | --- | --- | --- | --- | --- |
 | 1.0 | 0.1 | 19-Nov-2026 | Rajesh Verma | First draft from UX v1.0 (D-34), PMS-BRD v1.0 rev 0.9 and decisions D-01 to D-90 |
+| 1.0 | 0.2 | 20-Nov-2026 | Rajesh Verma | BRD set consistency check (D-103): references to PMS-BRD rev 0.14, PMS-BRD-M2-AMS rev 0.2 and D-01 to D-103; BR-CMN-11, 14, 19 in §8; Voided status meaning (D-90) |
 
 ### 1.2 Review and approval
 
@@ -37,11 +38,11 @@ Glossary (salary terms), roles, the end-to-end process, cross-module rules (BR-C
 
 | # | Document | Version | Use |
 | --- | --- | --- | --- |
-| 1 | PMS-BRD (anchor) | v1.0 rev 0.9 | Glossary, roles, end-to-end process (steps 9–13), cross-module rules, integrations, system-wide NFRs |
-| 2 | PMS-BRD-M2-AMS | v1.0 rev 0.1 | Attendance hand-over to salary (§3.3, §7.4), reopen after a salary dispute (§7.3) |
+| 1 | PMS-BRD (anchor) | v1.0 rev 0.14 | Glossary, roles, end-to-end process (steps 9–13), cross-module rules, integrations, system-wide NFRs |
+| 2 | PMS-BRD-M2-AMS | v1.0 rev 0.2 | Attendance hand-over to salary (§3.3, §7.4), reopen after a salary dispute (§7.3) |
 | 3 | UX Journey Index and UX Summaries SCR-SMS-01, SCR-SMS-02 (salary items on SCR-SH-03, SCR-SH-04) | v1.0 (D-34) | Journeys, screens, fields, actions |
 | 4 | PMS – Business Requirements Document (baseline) §9 | v1.0 (D-09) | Salary entity, wage formula, rules SMS-R1 to R4, user stories SMS-US1 to US4 |
-| 5 | Decision log | D-01 to D-90 | Approved decisions |
+| 5 | Decision log | D-01 to D-103 | Approved decisions |
 
 ## 3. Module overview and scope
 
@@ -144,7 +145,7 @@ stateDiagram-v2
 | MANAGER_APPROVED | Manager Approved | Approved by the approver; waiting for the employee to accept or dispute; counts in earnings (FR-CMN-002) | Manager / Admin |
 | ACCEPTED | Accepted | Confirmed by the employee; final; counts in earnings | Employee |
 | DISPUTED | Disputed | Questioned by the employee with a remark; waiting for the approver to keep as is or reopen the attendance; not counted in earnings; the attendance shows "Salary disputed" (INT-10) | Employee |
-| VOIDED | Voided | No longer valid because the linked attendance was reopened; final; kept for history, hidden by default, excluded from every total; void reason kept (D-25, BR-CMN-16) | System (SYS-SMS, SYS-REC) |
+| VOIDED | Voided | No longer valid because the linked attendance was reopened or, as found by the nightly reconciliation, is no longer Approved (D-90); final; kept for history, hidden by default, excluded from every total; void reason kept (D-25, BR-CMN-16) | System (SYS-SMS, SYS-REC) |
 
 Only one non-voided salary record exists per attendance (D-25, NFR-06). Salary records are never deleted; Is Active is not set by any user action (BR-CMN-06).
 
@@ -251,7 +252,7 @@ All requirements are priority Must and phase POC. Salary items in the approvals 
 | BR-SMS-12 | The latest dispute remark and the approver's Keep as is explanation are kept as separate values; earlier dispute rounds remain in the audit trail. The system records the Accepted Date and the Disputed Date. | Business | SCR-SMS-01, SCR-SMS-02 | D-90, NFR-05 |
 | BR-SMS-13 | In team views, Needs action shows every Generated and Disputed record regardless of the date range; All records and team totals default to the current month to today and include inactive reports. | Business | SCR-SMS-02 | D-90 |
 
-Cross-module rules that also apply: BR-CMN-01 to BR-CMN-03, BR-CMN-06 to BR-CMN-08, BR-CMN-12, BR-CMN-13, BR-CMN-15 to BR-CMN-18 (anchor §6). BR-CMN-04 and BR-CMN-05 apply through AMS: a salary error is corrected by reopening and resubmitting the attendance.
+Cross-module rules that also apply: BR-CMN-01 to BR-CMN-03, BR-CMN-06 to BR-CMN-08, BR-CMN-11 to BR-CMN-19 (anchor §6). BR-CMN-04 and BR-CMN-05 apply through AMS: a salary error is corrected by reopening and resubmitting the attendance.
 
 ## 9. Data requirements
 

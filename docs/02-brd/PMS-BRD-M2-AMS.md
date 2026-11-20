@@ -13,6 +13,7 @@ Date: November 2026
 | Version | Revision | Date | Author | Change remark |
 | --- | --- | --- | --- | --- |
 | 1.0 | 0.1 | 19-Nov-2026 | Rajesh Verma | First draft from UX v1.0 (D-34), PMS-BRD v1.0 rev 0.5 and decisions D-01 to D-77 |
+| 1.0 | 0.2 | 20-Nov-2026 | Rajesh Verma | BRD set consistency check (D-103): references to PMS-BRD rev 0.14 and D-01 to D-103; BR-CMN-11, 14, 19 in §8; OI-01 in §4.2 and §16 |
 
 ### 1.2 Review and approval
 
@@ -37,10 +38,10 @@ Glossary, roles, the end-to-end process, cross-module rules (BR-CMN) and system-
 
 | # | Document | Version | Use |
 | --- | --- | --- | --- |
-| 1 | PMS-BRD (anchor) | v1.0 rev 0.5 | Glossary, roles, end-to-end process, cross-module rules, integrations, system-wide NFRs |
+| 1 | PMS-BRD (anchor) | v1.0 rev 0.14 | Glossary, roles, end-to-end process, cross-module rules, integrations, system-wide NFRs |
 | 2 | UX Journey Index and UX Summaries SCR-AMS-01 to SCR-AMS-03 | v1.0 (D-34) | Journeys, screens, fields, actions |
 | 3 | PMS – Business Requirements Document (baseline) §7 | v1.0 (D-09) | Attendance entity, validations AMS-V1 to V5, user stories AMS-US1 to US4 |
-| 4 | Decision log | D-01 to D-77 | Approved decisions |
+| 4 | Decision log | D-01 to D-103 | Approved decisions |
 
 ## 3. Module overview and scope
 
@@ -98,6 +99,8 @@ R = read, R/W = read and write, A = approve, — = no access.
 | SCR-AMS-02 | Attendance entry | R/W (own) | R/W (own) | — | Own |
 | SCR-AMS-03 | Team attendance review (Pending / History, reopen) | — | R, A (direct reports) | R, A (top-level employee only) | Manager: direct reports; Admin: top-level employee |
 | SCR-SH-04 | Approvals inbox – attendance items | — | A (direct reports) | A (top-level employee) | As SCR-AMS-03 |
+
+The Admin's access to SCR-AMS-03 for the top-level employee is not yet in the UX summary; the update is tracked as anchor OI-01.
 
 ## 5. User journeys and screens
 
@@ -236,7 +239,7 @@ All requirements are priority Must and phase POC. Approve-several-at-once from t
 | BR-AMS-05 | The date of an entry cannot be changed once the entry exists. | Business | SCR-AMS-02 | UX SCR-AMS-02 |
 | BR-AMS-06 | Weekends may carry attendance and are never shown as missing. | Business | SCR-AMS-01 | D-08, D-28 |
 
-Cross-module rules that also apply: BR-CMN-01 to BR-CMN-10, BR-CMN-12, BR-CMN-15, BR-CMN-17, BR-CMN-18 (anchor §6); missing weekdays per FR-CMN-004.
+Cross-module rules that also apply: BR-CMN-01 to BR-CMN-12, BR-CMN-14, BR-CMN-15, BR-CMN-17 to BR-CMN-19 (anchor §6); missing weekdays per FR-CMN-004.
 
 ## 9. Data requirements
 
@@ -329,7 +332,7 @@ System-wide NFRs (anchor §8) apply; AMS has no module-specific additions. The h
 
 ## 16. Open items
 
-Cross-module open items that affect AMS are in the anchor §12: OI-02 (pending items of a deactivated employee), OI-03 (whether today counts as a missing day), OI-04 (pending items on a manager change) and OI-08 (AMS UX updates). AMS has no module-only open items.
+Cross-module open items that affect AMS are in the anchor §12: OI-01 (Admin opens SCR-AMS-03 for the top-level employee), OI-02 (pending items of a deactivated employee), OI-03 (whether today counts as a missing day), OI-04 (pending items on a manager change) and OI-08 (AMS UX updates). AMS has no module-only open items.
 
 | Id | Question | Owner | Due | Status / decision |
 | --- | --- | --- | --- | --- |

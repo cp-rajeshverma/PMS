@@ -18,3 +18,5 @@ date,stage,outcome,module,activity,requests,input,cache_write,cache_read,output,
 2026-11-20,2,PMS-BRD-M5-SUP,SUP,"§5–§6 (UM, AUTH) question, draft and review",11,26,18987,2581732,15381,2616126,measured,D-99,"Difference between session readings at 28 and 39 requests"
 2026-11-20,2,PMS-BRD-M5-SUP,SUP,"Audit and activity log questions; §4, §7–§11 draft and review; anchor rev 0.12",7,18,189894,1601935,16457,1808304,measured,D-101,"Difference between session readings at 39 and 46 requests"
 2026-11-20,2,PMS-BRD-M5-SUP,SUP,"§12–§14 draft and review; anchor rev 0.13; handoff and prompt outcome",7,22,12539,1915103,9515,1937179,measured,D-102,"Difference between session readings at 46 and 53 requests"
+2026-11-20,X,SMD refresh,ALL,Dashboard refresh 20 Nov,,,,,,,not-recorded,637739a,"No usage reading was taken for this refresh"
+2026-11-20,2,BRD consistency check,ALL,"Context load; consistency check of the six BRD documents (CC-01 to CC-28); fixes, anchor rev 0.14, module rev 0.2; consistency report; OI-12",31,70,197063,6703115,40479,6940727,measured,D-103,"Difference between session readings at 3 and 34 requests"
