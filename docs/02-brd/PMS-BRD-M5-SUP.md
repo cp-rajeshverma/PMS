@@ -105,7 +105,26 @@ Terms already in the anchor glossary (Employee Id, Admin, temporary password, so
 
 ## 4. Admin functions and master data
 
-To be drafted (need-basis result).
+Need-basis result: **Phase 2 (D-57) – no POC requirements in this section.** The Admin's employee master data work (onboarding, Admin-owned fields, deactivation, password reset) is in PMS-BRD-M1-EIMS. No business value is changeable by the Admin in the POC: each is fixed by an approved decision and changes only through a release or a deployment setting (OI-05 closed, D-97). An Admin configuration screen is Phase 2.
+
+The audit log and activity log (§8) use the ADM prefix (FR-ADM-1xx, as in the template) but are POC requirements; they are the only part of ADM in the POC (D-101).
+
+**Fixed business values in the POC (for reference; defined in the cited decisions)**
+
+| Value | POC setting | Source |
+| --- | --- | --- |
+| Session idle timeout | 30 minutes | D-26, FR-AUTH-020 |
+| Lock after failed sign-ins | 5 failed attempts in a row, locked 15 minutes | D-26, FR-AUTH-005 |
+| Password policy | At least 8 characters, upper and lower case, a number, a special character, not containing the Employee Id, different from the current password | D-28, D-97, D-99, VR-AUTH-01 |
+| Nightly reconciliation time | 01:00 IST | D-24, JOB-CMN-01 |
+| Remarks length | Maximum 500 characters | BR-CMN-03 |
+| Leave types | Casual, Sick, Earned (full days) | D-04, PMS-BRD-M3-LMS |
+| Attendance time steps | 15 minutes, 00:00 to 23:45 | D-31, D-77, PMS-BRD-M2-AMS |
+| Activity log retention | 90 days in Production | D-101, FR-ADM-116 |
+
+| Req id | Requirement | Priority | Phase | UX ref | Acceptance criteria (Given / When / Then) |
+| --- | --- | --- | --- | --- | --- |
+| – | No POC requirements (Phase 2: configuration values, lookups and master data maintained by the Admin) | – | Phase 2 | – | – |
 
 ## 5. User and access management
 
@@ -164,7 +183,7 @@ Business policy only; the architecture is in PMS-HLD-Part01-Architecture-and-Des
 | Req id | Requirement | Priority | Phase | UX ref | Acceptance criteria (Given / When / Then) |
 | --- | --- | --- | --- | --- | --- |
 | FR-AUTH-010 | Set password (first sign-in or after a reset): the user enters a new password and confirms it, with no way to skip. On save the temporary password stops working, "Password saved." is shown and the dashboard opens. | Must | POC | SCR-SH-02, UJ-SH-02 | Given a temporary password was used, when a valid new password is saved, then the dashboard opens and the temporary password is refused at the next sign-in. |
-| FR-AUTH-011 | Change password: any signed-in user can open Change password from the user menu, enter the current password, the new password and its confirmation, and save; Cancel returns to the dashboard. A wrong current password shows "Current password is incorrect." | Must | POC | SCR-SH-02, SCR-SH-00 | Given a signed-in user, when the current password is wrong, then "Current password is incorrect." is shown and the password is not changed. |
+| FR-AUTH-011 | Change password: any signed-in user can open Change password from the user menu, enter the current password, the new password and its confirmation, and save; Cancel returns to the dashboard. A wrong current password shows "Current password is incorrect." On save, all the user's other open sessions end; the session in which the password was changed continues (D-100). | Must | POC | SCR-SH-02, SCR-SH-00, D-100 | Given a signed-in user, when the current password is wrong, then "Current password is incorrect." is shown and the password is not changed. Given EMP0007 is signed in on two browsers, when the password is changed in one, then the other's next action opens the sign-in page. |
 | FR-AUTH-012 | A new password must meet the password policy – at least 8 characters, an upper-case and a lower-case letter, a number, a special character, not the Employee Id (D-28) – and differ from the current or temporary password (D-97). A checklist shows each rule as met (✓) or not (○), not by colour alone. Otherwise "The new password does not meet all the rules below." or "Passwords do not match." is shown. There is no password history or expiry in the POC (Future). | Must | POC | SCR-SH-02, D-28, D-97 | Given "Emp0007!x" for EMP0007, when saved, then it is refused because it contains the Employee Id. Given the new password equals the current one, then it is refused. |
 | FR-AUTH-013 | A temporary password does not expire; it stays valid until it is replaced at sign-in or by a later reset (FR-UM-006). It is shown only once, to the Admin (NFR-EIMS-02). How it reaches the employee is open item OI-EIMS-01. | Must | POC | D-97, FR-EIMS-005, FR-EIMS-041 | Given a temporary password issued 10 days ago and not used, when the employee signs in with it, then Set password opens. |
 | FR-AUTH-014 | Passwords are never stored or shown in readable form; Show / Hide reveals only what the user is typing on the sign-in page. | Must | POC | SCR-SH-01, NFR-03 | Given any screen, report or log, then no password appears in readable form. |
@@ -176,7 +195,7 @@ Business policy only; the architecture is in PMS-HLD-Part01-Architecture-and-Des
 | --- | --- | --- | --- | --- | --- |
 | FR-AUTH-020 | A session ends after 30 minutes without activity. The next action opens the sign-in page with "Your session has expired. Please sign in again." (FR-CMN-016); unsaved entries are lost. There is no warning before the timeout (Future). | Must | POC | SCR-SH-00, D-26, D-97 | Given a user is idle for 30 minutes, when they click a menu item, then the sign-in page shows the expiry message. |
 | FR-AUTH-021 | A user may be signed in on several browsers at the same time; each session times out on its own. | Must | POC | D-97 | Given EMP0007 is signed in on two browsers, then both work, and logging out of one does not end the other. |
-| FR-AUTH-022 | All the user's sessions end at once when the Admin deactivates the user or resets the password (FR-UM-006, FR-UM-007); the next action in any of them opens the sign-in page. | Must | POC | D-97 | Given EMP0007 is signed in, when the Admin resets the password, then EMP0007's next action opens the sign-in page. |
+| FR-AUTH-022 | All the user's sessions end at once when the Admin deactivates the user or resets the password (FR-UM-006, FR-UM-007); when the user changes their own password, all their other sessions end (FR-AUTH-011). The next action in an ended session opens the sign-in page. | Must | POC | D-97, D-100 | Given EMP0007 is signed in, when the Admin resets the password, then EMP0007's next action opens the sign-in page. |
 | FR-AUTH-023 | Log out is in the user menu and needs no confirmation. It ends the session in PMS and in the identity provider and opens the sign-in page without a message; the browser Back button does not show PMS pages again. | Must | POC | SCR-SH-00, UJ-SH-05, D-97 | Given a signed-in user logs out, when they press Back, then the sign-in page is shown, not the previous screen. |
 | FR-AUTH-024 | The header shows the signed-in user's name, role and Employee Id; for the PMS Administrator it shows "PMS Administrator" without an Employee Id (open item OI-11). | Must | POC | SCR-SH-00, FR-CMN-015, OI-11 | Given the Admin signs in, then the header shows "PMS Administrator" and no Employee Id. |
 
@@ -198,23 +217,113 @@ Business policy only; the architecture is in PMS-HLD-Part01-Architecture-and-Des
 
 ## 7. Notification engine
 
-To be drafted (need-basis result).
+Need-basis result: **Phase 2 (D-57) – no POC requirements in this section.** The POC sends no email or SMS (anchor C-05). Users are guided in the application by dashboard reminders, to-do items and the approvals inbox (anchor §5.3); the individual in-app notifications are listed in each module BRD §10 (NOT-EIMS, NOT-AMS, NOT-LMS, NOT-SMS). Channels, templates, preferences, delivery, reminders and escalation are Phase 2.
+
+| Req id | Requirement | Priority | Phase | UX ref | Acceptance criteria (Given / When / Then) |
+| --- | --- | --- | --- | --- | --- |
+| – | No POC requirements (Phase 2: email / SMS notifications) | – | Phase 2 | – | – |
 
 ## 8. Audit and activity log
 
-To be drafted.
+PMS keeps two logs (D-98, D-101). The **audit log** is a business record of every change to business data: which value changed from what to what, in which process, by whom and when. The **activity log** is an operational record of how the system ran: every operation's entry, completed steps and exit, so that the complete execution flow of a user action or job can be followed when investigating an issue or a functional breakdown. Both are POC requirements (anchor BR-CMN-19, NFR-09); there is no screen to view them in the POC (viewer Phase 2). Security events (sign-in, lock, password and account changes) are recorded by the identity provider (FR-AUTH-030). Record-level audit fields stay on every record (BR-CMN-02, BR-CMN-07, NFR-05).
+
+### 8.1 Audit log
+
+| Req id | Requirement | Priority | Phase | UX ref | Acceptance criteria (Given / When / Then) |
+| --- | --- | --- | --- | --- | --- |
+| FR-ADM-101 | Every create, update and status change of a business record – employee (including the Admin-owned fields), profile change request, attendance, leave, salary record – and of a user account (role, enabled / active) is written to the audit log, one entry per changed field, with: record type and id, field, old value, new value, process (use case or job, e.g. UJ-EIMS-06, JOB-CMN-01), user (Employee Id, Admin or System), date and time (IST) and the flow reference (FR-ADM-113). | Must | POC | BR-CMN-19, D-101 | Given the Admin changes EMP0007's hourly wage rate from 250.00 to 300.00, then the audit log holds one entry: Employee EMP0007, Hourly Wage Rate, 250.00 → 300.00, UJ-EIMS-06, Admin, date and time. |
+| FR-ADM-102 | A record's creation is recorded with its initial values; a status change records the old and new status, together with the remarks entered (BR-CMN-03). Changes made by the system (salary generation, voiding, reconciliation) are recorded with user "System" and the job or event as process. | Must | POC | BR-CMN-19, D-101 | Given attendance is reopened, then the audit log shows attendance Approved → Rejected by the manager with the remarks, and the salary record Disputed → Voided by System. |
+| FR-ADM-103 | Audit entries cannot be changed or deleted, and are kept as long as the record they belong to (records are never physically deleted, BR-CMN-06). | Must | POC | BR-CMN-19, D-101 | Given an audit entry exists, then no user, Admin included, can change or remove it. |
+| FR-ADM-104 | Sensitive values (D-71 sensitive attributes, hourly wage rate, salary amounts) are kept in full in the audit log, protected like the record itself. Passwords and temporary passwords are never recorded; a password change is recorded as an event without a value. | Must | POC | D-101, NFR-03 | Given a password reset, then the audit log shows the reset of the account and no password value. |
+| FR-ADM-105 | There is no screen to view the audit log in the POC (Phase 2). IT operations extract a record's history for an investigation at the request of the HR Manager or Finance Manager. | Must | POC | D-101 | Given the HR Manager asks for EMP0007's change history, then IT operations can provide every change of that record in time order with old and new values. |
+
+### 8.2 Activity log
+
+| Req id | Requirement | Priority | Phase | UX ref | Acceptance criteria (Given / When / Then) |
+| --- | --- | --- | --- | --- | --- |
+| FR-ADM-111 | Every service operation (API) writes an activity log entry on entry, on the completion of each significant intermediate step and on exit; the exit entry holds the result (success, or error with its reason) and the duration. Every entry holds the module, operation, process (use case or job), user, date and time (IST) and flow reference. | Must | POC | NFR-09, D-98, D-101 | Given a manager approves attendance, then the AMS activity log shows entry, the steps completed (for example "checked approver", "status set to Approved", "hand-over sent to salary") and exit with result and duration. |
+| FR-ADM-112 | Scheduled jobs and hand-over events (JOB-CMN-01, INT-01, INT-02) are logged the same way: start, each completed step and end, with the result and counts (for example records created, voided, mismatches). | Must | POC | NFR-09, D-101 | Given the nightly reconciliation runs, then the activity log shows its start, each step and its end with the counts. |
+| FR-ADM-113 | Each user action and each job run gets one flow reference, which is carried through every module, operation and event it triggers, so that all its activity and audit entries can be read in sequence. | Must | POC | NFR-09, D-101 | Given attendance approval creates a salary record, then the AMS and SMS entries of that approval share one flow reference and read in time order. |
+| FR-ADM-114 | When a system error message is shown to a user, it includes "Reference: <flow reference>" so the user can quote it to support (UX update, OI-11). | Must | POC | D-101, OI-11 | Given saving fails for a technical reason, then the error message shows a reference that finds the flow in the activity log. |
+| FR-ADM-115 | The activity log never holds passwords, temporary passwords or session secrets. Personally identifiable and confidential information – the sensitive employee attributes (D-71), hourly wage rates, salary amounts and free-text remarks – is masked; entries hold ids, statuses, counts and outcomes only. | Must | POC | D-101, NFR-EIMS-01 | Given an employee submits a profile, then the activity log shows the Employee Id and status change but not the date of birth, address or mobile number. |
+| FR-ADM-116 | The activity log is read only by IT operations, for investigation; there is no viewer screen in the POC (Phase 2). Entries are kept 90 days in Production. | Must | POC | D-101 | Given an entry is older than 90 days in Production, then it is no longer kept. |
+| FR-ADM-117 | Refused requests – access outside the role or data scope (FR-UM-015) and validation or business-rule refusals – are logged with the reason, user and flow reference. | Must | POC | D-99, D-101 | Given an Employee opens an Admin page, then the activity log shows the refused request with the user and reason. |
+
+**User stories**
+
+| Id | As a | I want to | So that |
+| --- | --- | --- | --- |
+| US-ADM-01 | HR Manager or Finance Manager | get the full change history of a record, with old and new values, who and when | I can answer questions and disputes about the data |
+| US-ADM-02 | IT operations (support) | follow one user action or job through every module, step by step, with a reference the user can quote | I can find the cause of an issue or a functional breakdown quickly |
 
 ## 9. Document management
 
-To be drafted (need-basis result).
+Need-basis result: **Phase 2 (D-57) – no POC requirements in this section.** No module in the POC stores attachments or documents (PMS-BRD-M1-EIMS to M4-SMS). Attachment types, size, access and retention are Phase 2.
+
+| Req id | Requirement | Priority | Phase | UX ref | Acceptance criteria (Given / When / Then) |
+| --- | --- | --- | --- | --- | --- |
+| – | No POC requirements (Phase 2: documents and attachments) | – | Phase 2 | – | – |
 
 ## 10. Business and validation rules
 
-To be drafted.
+Cross-module rules are in the anchor §6 and referenced here: BR-CMN-01 (manager and top-level approval), BR-CMN-06 (inactive employees cannot sign in), BR-CMN-08 (no self-approval), BR-CMN-14 (manager with reports cannot be deactivated), BR-CMN-19 (audit log).
+
+| Rule id | Rule | Type (business / validation) | Applies to | Source |
+| --- | --- | --- | --- | --- |
+| VR-AUTH-01 | A new password has at least 8 characters, an upper-case and a lower-case letter, a number and a special character; it does not contain the Employee Id and differs from the current or temporary password. | Validation | SCR-SH-02 | D-28, D-97, D-99 |
+| VR-AUTH-02 | The confirmation equals the new password; in change mode the current password must be correct. | Validation | SCR-SH-02 | UX SCR-SH-02 |
+| VR-AUTH-03 | Employee Id and password are required to sign in; the Employee Id is not case-sensitive. | Validation | SCR-SH-01 | UX SCR-SH-01 |
+| BR-AUTH-01 | After 5 failed sign-ins in a row the account is locked for 15 minutes; the lock ends after 15 minutes or on an Admin password reset; a successful sign-in sets the count to zero; unknown Employee Ids are never locked. | Business | SCR-SH-01 | D-26, D-97 |
+| BR-AUTH-02 | Sign-in messages never reveal whether an Employee Id exists; the inactive-account message is shown only after the correct password. | Business | SCR-SH-01 | NFR-03, D-97 |
+| BR-AUTH-03 | A temporary password does not expire, must be replaced before any other screen can be used, and stops working when a later reset issues a new one. | Business | SCR-SH-01, SCR-SH-02 | D-07, D-97 |
+| BR-AUTH-04 | A session ends after 30 minutes idle; several sessions per user are allowed. All sessions end on deactivation or Admin password reset; the user's other sessions end when they change their own password. | Business | All screens | D-26, D-97, D-100 |
+| BR-UM-01 | Every employee has exactly one user account, whose user name is the Employee Id; accounts are created only by Admin onboarding, never removed, and their user names are never reused. | Business | SCR-EIMS-02 | D-02, D-71, D-97 |
+| BR-UM-02 | There is one PMS Administrator account, set up at installation; it is not an employee and cannot be deactivated or changed in PMS. | Business | SCR-EIMS-01, SCR-EIMS-02 | D-24, D-97 |
+| BR-UM-03 | Every user holds one role (Employee, Manager or Admin); the role is set by the Admin and takes effect at the next sign-in. | Business | SCR-EIMS-02, SCR-SH-00 | D-29, D-97 |
+| BR-UM-04 | Every request is checked against the user's role and data scope; a request outside them shows the neutral no-access page and reveals no data. | Business | All screens | Anchor §4.3, NFR-03, D-99 |
+| BR-ADM-01 | Audit entries are written for every change of a business record or user account, cannot be changed or deleted, and are kept as long as the record. | Business | All modules | BR-CMN-19, D-101 |
+| BR-ADM-02 | Logs never hold passwords; the activity log masks personally identifiable and confidential information and is kept 90 days in Production. | Business | All modules | NFR-09, D-101 |
 
 ## 11. Data requirements
 
-To be drafted.
+The user account is held in the identity provider, not in a PMS module database (D-29); the audit and activity logs are records kept by every module, not business entities (anchor C-01).
+
+### 11.1 User account
+
+| Entity | Attribute | Description | Type / format | Mandatory | Sensitive (Y / N) |
+| --- | --- | --- | --- | --- | --- |
+| User account | User name | Employee Id (EMP + 4 digits) or the Admin user name; not case-sensitive | Text | Y | N |
+| User account | Password | Own or temporary password; never stored or shown in readable form | Secret | Y | Y |
+| User account | Temporary password flag | Password must be replaced at the next sign-in | Yes / No | Y | N |
+| User account | Role | Employee, Manager or Admin | Code | Y | N |
+| User account | Enabled | No when the employee is inactive | Yes / No | Y | N |
+| User account | Failed sign-in count | Failed attempts in a row since the last success | Number | Y | N |
+| User account | Locked until | End of the current lock, if any | Date-time (IST) | N | N |
+
+### 11.2 Audit log entry
+
+| Entity | Attribute | Description | Type / format | Mandatory | Sensitive (Y / N) |
+| --- | --- | --- | --- | --- | --- |
+| Audit log entry | Flow reference | Reference of the user action or job run (FR-ADM-113) | Text | Y | N |
+| Audit log entry | Record type, Record id | Changed record (e.g. Employee EMP0007, Attendance id) | Text | Y | N |
+| Audit log entry | Field | Changed field, or "created" / "status" | Text | Y | N |
+| Audit log entry | Old value, New value | Values before and after the change | Text | N (empty on creation) | Y when the field is sensitive |
+| Audit log entry | Process | Use case or job (UJ-…, JOB-…) | Text | Y | N |
+| Audit log entry | Changed by | Employee Id, Admin or System | Text | Y | N |
+| Audit log entry | Changed at | Date and time | Date-time (IST) | Y | N |
+
+### 11.3 Activity log entry
+
+| Entity | Attribute | Description | Type / format | Mandatory | Sensitive (Y / N) |
+| --- | --- | --- | --- | --- | --- |
+| Activity log entry | Flow reference | Reference of the user action or job run | Text | Y | N |
+| Activity log entry | Module, Operation | Module and service operation (API) or job | Text | Y | N |
+| Activity log entry | Process | Use case or job (UJ-…, JOB-…) | Text | Y | N |
+| Activity log entry | Stage | Entry, step (with a short step name) or exit | Code | Y | N |
+| Activity log entry | Result, Reason | On exit or refusal: success or error, with the reason | Text | N | N (masked, FR-ADM-115) |
+| Activity log entry | Duration | Time from entry to exit | Milliseconds | N | N |
+| Activity log entry | User | Employee Id, Admin or System | Text | Y | N |
+| Activity log entry | Logged at | Date and time | Date-time (IST) | Y | N |
 
 ## 12. Non-functional requirements (supporting-specific)
 

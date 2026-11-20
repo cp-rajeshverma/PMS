@@ -23,6 +23,7 @@ Date: November 2026
 | 1.0 | 0.9 | 19-Nov-2026 | Rajesh Verma | OI-10 (SMS UX updates) (D-90) |
 | 1.0 | 0.10 | 19-Nov-2026 | Rajesh Verma | SMS status in §2.3 and §11 (D-94) |
 | 1.0 | 0.11 | 20-Nov-2026 | Rajesh Verma | SUP rules (D-97): OI-05 closed; §3.3 SUP row worded technology-neutral; future scope for password history and expiry and a warning before idle timeout (§13.1); OI-11 (SUP UX updates) |
+| 1.0 | 0.12 | 20-Nov-2026 | Rajesh Verma | BR-CMN-19 (audit log) and NFR-09 (activity log and observability); OI-11 extended with the error reference (D-101) |
 
 ### 1.2 Review and approval
 
@@ -377,6 +378,7 @@ Rules that affect two or more modules are defined here once and referenced by id
 | BR-CMN-16 | Voided salary records are excluded from every total and earnings figure (dashboard and salary screens); they stay visible on request. | SMS, Shell | D-25 |
 | BR-CMN-17 | Wages come only from approved attendance; approved leave earns no wage. | LMS, SMS | D-05 (S6); baseline SMS-R3 |
 | BR-CMN-18 | All dates and times are Indian Standard Time; all amounts are in INR with 2 decimals. | All | D-08 |
+| BR-CMN-19 | Every create, update and status change of a business record and of a user account is written to an audit log, one entry per changed field with old and new value, process, user (or System), date and time and flow reference. Audit entries cannot be changed or deleted and are kept as long as the record; passwords are never recorded. Detailed in PMS-BRD-M5-SUP §8.1. | EIMS, AMS, LMS, SMS, SUP | D-98, D-101 |
 
 ## 7. Integrations and cross-module jobs
 
@@ -410,6 +412,7 @@ Module-specific NFRs are in each module BRD §13. Targets are sized for about 10
 | NFR-06 | Data integrity | Records are never physically deleted (BR-CMN-06); one attendance entry per employee per day; exactly one non-voided salary record per approved attendance; the hourly wage rate is copied at generation (BR-CMN-13); a change by another user is detected rather than overwritten (FR-CMN-014); amounts kept to 2 decimals in INR. | 0 mismatches after nightly reconciliation (KPI-04); 100 % wage accuracy (KPI-02) |
 | NFR-07 | Scalability | Each module can scale on its own as the number of employees grows, without redesign. | 100 employees in year 1; scale out per module to 10×; load-tested to 2× (200 employees, 50 concurrent users) (D-59) |
 | NFR-08 | Maintainability / configurability | Each module can be changed, tested and deployed on its own; the design stays technology-neutral so the backend can later move to another platform; separate Development, QA and Production environments. | D-10, D-11, D-12, D-18 |
+| NFR-09 | Logging and observability | Every service operation, scheduled job and hand-over event writes an activity log of its entry, each completed step and its exit (result, duration), with process, user, date and time; one flow reference per user action or job run links the entries across modules and is shown in system error messages, so a complete execution flow can be followed when investigating an issue. Passwords are never logged; personally identifiable and confidential information is masked. Detailed in PMS-BRD-M5-SUP §8.2. | 100 % of service operations, jobs and events logged with a flow reference; 0 unmasked sensitive values in log review; kept 90 days in Production (D-98, D-101) |
 
 ### 8.1 Business volumetrics (input to HLD)
 
@@ -495,7 +498,7 @@ Running list, completed as the anchor is drafted.
 | OI-08 | Update the AMS UX (D-77): discard action for Draft and Rejected attendance (SCR-AMS-01, SCR-AMS-02); "Leave on this day" flag on draft or rejected attendance; "Over 12 h" flag for approvers (SCR-AMS-03, SCR-SH-04); History default current month incl. inactive reports | Product owner | Before HLD Part02 | Open |
 | OI-09 | Update the LMS UX (D-84, D-88): Team leave History date range filter, defaulting to the current month and including inactive reports (SCR-LMS-03); submitted time in Pending rows; "Also away" empty for the top-level employee; "Requested" shows the first submission date (SCR-LMS-01, SCR-LMS-03) | Product owner | Before HLD Part02 | Open |
 | OI-10 | Update the SMS UX (D-90): Team salary must not list the manager's own records (BR-CMN-08, SCR-SMS-02 mockup); separate notes for the dispute remark and the manager's Keep as is explanation, and repeated disputes after Keep as is (SCR-SMS-01, SCR-SMS-02, SCR-SH-04); Accepted Date; Team salary All records default current month to today incl. inactive reports, Needs action not filtered by date (SCR-SMS-02); Admin dashboard reconciliation tile shows result, records created / voided and mismatches (SCR-SH-03); UX Journey Index UJ-SYS-02 adds voiding of stale records | Product owner | Before HLD Part02 | Open |
-| OI-11 | Update the shell UX for the SUP rules (D-97): SCR-SH-01 shows the inactive-account message only after the correct password; SCR-SH-00 header for the PMS Administrator (no Employee Id); UX summaries SCR-SH-01, SCR-SH-02, SCR-SH-00, SCR-EIMS-01, SCR-EIMS-02 refer to the identity provider instead of the product name | Product owner | Before HLD Part02 | Open |
+| OI-11 | Update the shell UX for the SUP rules (D-97): SCR-SH-01 shows the inactive-account message only after the correct password; SCR-SH-00 header for the PMS Administrator (no Employee Id); UX summaries SCR-SH-01, SCR-SH-02, SCR-SH-00, SCR-EIMS-01, SCR-EIMS-02 refer to the identity provider instead of the product name; system error messages show "Reference: <flow reference>" (D-101, NFR-09) | Product owner | Before HLD Part02 | Open |
 
 Approved decisions are kept in `docs/decisions/decision-log.md`.
 
