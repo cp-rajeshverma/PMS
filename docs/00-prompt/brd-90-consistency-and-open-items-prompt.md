@@ -4,9 +4,9 @@
 | --- | --- |
 | Document | docs/02-brd/reviews/PMS-BRD-Consistency-Report.md (check result); docs/02-brd/reviews/PMS-BRD-Open-Items-Note.md (note for the HR Manager); fixes in docs/02-brd/PMS-BRD*.md |
 | Template | templates/00-prompt/set-90-consistency-and-open-items-prompt-template.md (prompt template; the report structure is given in the prompt) |
-| Used | – |
-| Outcome | – |
-| Status | Ready for the next session |
+| Used | 20 Nov 2026 (one session; commits 8ee59d7, f13416a) |
+| Outcome | Part A: consistency report CC-01 to CC-28 – 26 editorial and 1 content finding fixed (SUP approval no longer pending OI-11), business question OI-12 raised; anchor rev 0.14, module BRDs rev 0.2 (D-103). Part B: open-items note; on the user's instruction the six business open items were decided in the session (option A, product owner on behalf of the HR Manager) instead of left open; anchor rev 0.15, module BRDs rev 0.3 (D-104). Token log rows measured; SMD refresh of 20 Nov logged as not-recorded |
+| Status | Done |
 
 ## Prompt
 
