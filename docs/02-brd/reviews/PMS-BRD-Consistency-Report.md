@@ -13,6 +13,7 @@ Date: November 2026
 | Version | Revision | Date | Author | Change remark |
 | --- | --- | --- | --- | --- |
 | 1.0 | 0.1 | 20-Nov-2026 | Rajesh Verma | Consistency check of the BRD set; findings CC-01 to CC-28; editorial and content fixes applied; open item OI-12 raised (D-103) |
+| 1.0 | 0.2 | 20-Nov-2026 | Rajesh Verma | OI-12 closed (D-104) |
 
 ### 1.2 Review and approval
 
@@ -68,7 +69,7 @@ Checked against: the UX Journey Index v1.0 (journeys, screens, navigation map, s
 | PMS-BRD-M5-SUP | 2 | – | – | 2 |
 | **Total** | **26** | **1** | **1** | **28** |
 
-All editorial and content findings are fixed. The business question is open item OI-12.
+All editorial and content findings are fixed. The business question became open item OI-12, closed on 20-Nov-2026 (D-104).
 
 ## 4. Findings
 
@@ -87,7 +88,7 @@ All editorial and content findings are fixed. The business question is open item
 | CC-11 | PMS-BRD | §12 | OI-02, OI-03, OI-04 | Due points refer to module BRDs already drafted; OI-02 wording omits the employee's own salary records awaiting acceptance or a dispute decision | Editorial | Due "Before BRD sign-off (Stage 2 gate)"; OI-02 wording widened – Fixed |
 | CC-12 | PMS-BRD | §12 | OI-01 | UX Journey Index actor and screen-role columns also show "Manager" only for the reviews the Admin performs for the top-level employee | Editorial | Added to OI-01 – Fixed |
 | CC-13 | PMS-BRD | §12 | OI-06 | The 17 UX summaries still show "0.1 / Draft – in review" although approved with the UX set (D-34) | Editorial | Added to OI-06 – Fixed |
-| CC-14 | PMS-BRD | §2.4, §6 | Top-level employee (BR-CMN-01) | Text assumes one top-level employee; nothing limits "None – top-level" to one (FR-EIMS-014, VR-EIMS-05, BR-LMS-09) | Business question | Open item OI-12 raised (HR Manager); added to the EIMS and LMS approval conditions – Open |
+| CC-14 | PMS-BRD | §2.4, §6 | Top-level employee (BR-CMN-01) | Text assumes one top-level employee; nothing limits "None – top-level" to one (FR-EIMS-014, VR-EIMS-05, BR-LMS-09) | Business question | Open item OI-12 raised (HR Manager); added to the EIMS and LMS approval conditions – Closed (D-104): exactly one top-level employee |
 | CC-15 | PMS-BRD-M1-EIMS | §1.1, §2.2 | References | Anchor rev 0.3 and D-01 to D-72 | Editorial | Anchor rev 0.14, D-01 to D-103, rev 0.2 row – Fixed |
 | CC-16 | PMS-BRD-M1-EIMS | §8 | Cross-module rules | BR-CMN-19 (audit log) not listed | Editorial | Added – Fixed |
 | CC-17 | PMS-BRD-M1-EIMS | §7.1, §7.2, §15 | FR-EIMS-005, FR-EIMS-018 | No link to FR-UM-006 / FR-UM-007 (D-97); acceptance said any sign-in attempt shows the inactive message, approved rule shows it only after the correct password | Editorial | Links added; acceptance corrected; traceability rows updated – Fixed |
@@ -107,6 +108,6 @@ All editorial and content findings are fixed. The business question is open item
 
 | Id | Question | Owner | Due | Status |
 | --- | --- | --- | --- | --- |
-| OI-12 | May more than one employee have no manager ("None – top-level")? If yes, the Admin approves all their records and "Also away" stays empty for each; if no, onboarding and manager changes must refuse a second top-level employee | HR Manager | Before BRD sign-off (Stage 2 gate) | Open – prepared for decision in PMS-BRD-Open-Items-Note |
+| OI-12 | May more than one employee have no manager ("None – top-level")? If yes, the Admin approves all their records and "Also away" stays empty for each; if no, onboarding and manager changes must refuse a second top-level employee | HR Manager | Before BRD sign-off (Stage 2 gate) | Closed (D-104): exactly one top-level employee |
 
-Open items blocking BRD approval after this check: OI-02, OI-03, OI-04, OI-12 (anchor §12) and OI-EIMS-01, OI-EIMS-02 (PMS-BRD-M1-EIMS §16). UX update items OI-01 and OI-06 to OI-11 are due before HLD Part02.
+Open items blocking BRD approval after this check (all closed on 20-Nov-2026, D-104): OI-02, OI-03, OI-04, OI-12 (anchor §12) and OI-EIMS-01, OI-EIMS-02 (PMS-BRD-M1-EIMS §16). UX update items OI-01 and OI-06 to OI-11 are due before HLD Part02.

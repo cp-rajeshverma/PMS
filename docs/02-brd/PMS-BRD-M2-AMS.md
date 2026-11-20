@@ -14,6 +14,7 @@ Date: November 2026
 | --- | --- | --- | --- | --- |
 | 1.0 | 0.1 | 19-Nov-2026 | Rajesh Verma | First draft from UX v1.0 (D-34), PMS-BRD v1.0 rev 0.5 and decisions D-01 to D-77 |
 | 1.0 | 0.2 | 20-Nov-2026 | Rajesh Verma | BRD set consistency check (D-103): references to PMS-BRD rev 0.14 and D-01 to D-103; BR-CMN-11, 14, 19 in §8; OI-01 in §4.2 and §16 |
+| 1.0 | 0.3 | 20-Nov-2026 | Rajesh Verma | Business open items decided (D-104): FR-AMS-003 today never missing; OI-02, OI-03, OI-04 closed in §14 and §16 |
 
 ### 1.2 Review and approval
 
@@ -159,7 +160,7 @@ All requirements are priority Must and phase POC. Approve-several-at-once from t
 | --- | --- | --- | --- | --- | --- |
 | FR-AMS-001 | The employee sees a month calendar (Monday to Sunday) with each day's status badge, from and to time and hours; days with leave show a Leave badge; today is highlighted and future days are greyed. The month can be moved back to the joining month and forward to the current month. | Must | POC | SCR-AMS-01 | Given today is 19-Nov, when the employee clicks Next month, then December is not offered. |
 | FR-AMS-002 | Tiles for the shown month: approved hours (and days), waiting for approval, needs your action (Draft or Rejected) and missing weekdays. | Must | POC | SCR-AMS-01 | Given 3 approved days of 8 h, then the tile shows 24 h (3 days). |
-| FR-AMS-003 | Missing weekdays (FR-CMN-004) are outlined "Missing" in the calendar; this is a reminder only. | Must | POC | SCR-AMS-01, D-28, OI-03 | Given a past Wednesday with no attendance and no leave, then it shows "Missing"; a Saturday never does. |
+| FR-AMS-003 | Missing weekdays (FR-CMN-004) are outlined "Missing" in the calendar; this is a reminder only; today is never shown as missing. | Must | POC | SCR-AMS-01, D-28, D-104 | Given a past Wednesday with no attendance and no leave, then it shows "Missing"; a Saturday never does, and today never does. |
 | FR-AMS-004 | A Calendar / List toggle shows the same month as a table: date, from, to, hours, status, approver remarks. | Must | POC | SCR-AMS-01, D-24 | Given List view, then each active entry of the month is one row. |
 | FR-AMS-005 | Clicking an empty or missing day up to today opens a new entry with the date filled in; clicking a day with an entry opens it; a leave day and future days offer no entry. | Must | POC | SCR-AMS-01 | Given a day with approved leave, when the employee clicks it, then no entry form opens. |
 | FR-AMS-006 | Until the profile is approved, a banner says "Your profile must be approved before you can enter attendance." and "+ Enter attendance" is disabled. | Must | POC | SCR-AMS-01, BR-CMN-09 | Given a Submitted profile, then the button is disabled. |
@@ -319,7 +320,7 @@ System-wide NFRs (anchor §8) apply; AMS has no module-specific additions. The h
 | Dependency | DEP-AMS-01 | EIMS provides the approved profile, joining date and approver (anchor DEP-03, INT-03, INT-04). |
 | Dependency | DEP-AMS-02 | LMS provides leave dates (INT-06). AMS may be built before LMS; until LMS exists there is no leave, so the check passes and is completed when LMS is delivered. |
 | Dependency | DEP-AMS-03 | SMS provides the salary status for reopen (INT-10) and consumes the hand-over events (INT-01, INT-02). |
-| Dependency | DEP-AMS-04 | Open items OI-02, OI-03 and OI-04 (anchor §12) are decided before this document is approved (anchor DEP-06). |
+| Dependency | DEP-AMS-04 | Open items OI-02, OI-03 and OI-04 (anchor §12) were decided before approval (D-104, anchor DEP-06). |
 
 ## 15. Traceability matrix
 
@@ -332,7 +333,7 @@ System-wide NFRs (anchor §8) apply; AMS has no module-specific additions. The h
 
 ## 16. Open items
 
-Cross-module open items that affect AMS are in the anchor §12: OI-01 (Admin opens SCR-AMS-03 for the top-level employee), OI-02 (pending items of a deactivated employee), OI-03 (whether today counts as a missing day), OI-04 (pending items on a manager change) and OI-08 (AMS UX updates). AMS has no module-only open items.
+Cross-module open items that affect AMS are in the anchor §12: OI-01 (Admin opens SCR-AMS-03 for the top-level employee), OI-02 (pending items of a deactivated employee), OI-03 (whether today counts as a missing day) and OI-04 (pending items on a manager change) – all three closed (D-104) – and OI-08 (AMS UX updates). AMS has no module-only open items.
 
 | Id | Question | Owner | Due | Status / decision |
 | --- | --- | --- | --- | --- |

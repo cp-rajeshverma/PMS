@@ -26,6 +26,7 @@ Date: November 2026
 | 1.0 | 0.12 | 20-Nov-2026 | Rajesh Verma | BR-CMN-19 (audit log) and NFR-09 (activity log and observability); OI-11 extended with the error reference (D-101) |
 | 1.0 | 0.13 | 20-Nov-2026 | Rajesh Verma | SUP status in §2.3 and §11 (D-102) |
 | 1.0 | 0.14 | 20-Nov-2026 | Rajesh Verma | BRD set consistency check (D-103): §2.2 decision range; §2.3 module revisions, SUP approval no longer pending OI-11, OI-12 added for EIMS and LMS; §2.4 Employee Id, Top-level employee, Voided, Reconciliation; §2.5 US and OI prefixes; §4.2 SYS-REC; §5.1 step 4; FR-CMN-004, FR-CMN-015; BR-CMN-05 source; INT-08, JOB-CMN-01; NFR-03; §12 OI-01 to OI-04 and OI-06 updated, OI-12 added |
+| 1.0 | 0.15 | 20-Nov-2026 | Rajesh Verma | Business open items decided (D-104): BR-CMN-01 (one top-level employee), BR-CMN-06 (pending items on deactivation), FR-CMN-004 (missing days up to yesterday), R-02, glossary, §3.3 and §13.1 (bulk import Phase 2); OI-02, OI-03, OI-04, OI-12 closed; module status in §2.3 |
 
 ### 1.2 Review and approval
 
@@ -79,11 +80,11 @@ Users of the BRD set:
 
 | Module | Document | Business owner / SME | Version | Status |
 | --- | --- | --- | --- | --- |
-| EIMS – Employee Information | PMS-BRD-M1-EIMS | HR Manager, Finance Manager | v1.0 rev 0.2 | Drafted – approval pending OI-02, OI-04, OI-12, OI-EIMS-01, OI-EIMS-02 |
-| AMS – Attendance | PMS-BRD-M2-AMS | HR Manager, Finance Manager | v1.0 rev 0.2 | Drafted – approval pending OI-02, OI-03, OI-04 |
-| LMS – Leave | PMS-BRD-M3-LMS | HR Manager, Finance Manager | v1.0 rev 0.2 | Drafted – approval pending OI-02, OI-04, OI-12 |
-| SMS – Salary | PMS-BRD-M4-SMS | HR Manager, Finance Manager | v1.0 rev 0.2 | Drafted – approval pending OI-02, OI-04 |
-| SUP – Supporting functions | PMS-BRD-M5-SUP | HR Manager, Finance Manager | v1.0 rev 0.2 | Drafted – approval pending OI-02, OI-04 (UX update OI-11 is due before HLD Part02) |
+| EIMS – Employee Information | PMS-BRD-M1-EIMS | HR Manager, Finance Manager | v1.0 rev 0.3 | Drafted – business open items closed (D-104); ready for stakeholder review |
+| AMS – Attendance | PMS-BRD-M2-AMS | HR Manager, Finance Manager | v1.0 rev 0.3 | Drafted – business open items closed (D-104); ready for stakeholder review |
+| LMS – Leave | PMS-BRD-M3-LMS | HR Manager, Finance Manager | v1.0 rev 0.3 | Drafted – business open items closed (D-104); ready for stakeholder review |
+| SMS – Salary | PMS-BRD-M4-SMS | HR Manager, Finance Manager | v1.0 rev 0.3 | Drafted – business open items closed (D-104); ready for stakeholder review |
+| SUP – Supporting functions | PMS-BRD-M5-SUP | HR Manager, Finance Manager | v1.0 rev 0.3 | Drafted – business open items closed (D-104); ready for stakeholder review (UX update OI-11 is due before HLD Part02) |
 
 ### 2.4 Glossary and abbreviations
 
@@ -96,7 +97,7 @@ Users of the BRD set:
 | Shell | The single web app that hosts every module screen: login, dashboard, approvals inbox, menu (ADR-001) |
 | Employee Id | System-generated unique id (EMP0001, EMP0002, …); also the sign-in user name (the PMS Administrator account uses a fixed user name instead, D-97) |
 | Manager Id | Employee Id of an employee's manager, set by Admin; the manager approves the employee's records |
-| Top-level employee | Employee with no manager ("None – top-level"); Admin approves their records. Whether more than one is allowed is open item OI-12 |
+| Top-level employee | Employee with no manager ("None – top-level"); Admin approves their records. There is exactly one (D-104) |
 | Direct report | Employee whose Manager Id is the given manager |
 | Admin | System role that onboards and maintains employees; has no personal records (D-24) |
 | Temporary password | Password issued by the system at onboarding or Admin reset; must be replaced at next sign-in |
@@ -183,7 +184,7 @@ The application is deliberately small – four functional modules, each a separa
 | Module | In scope (POC) | Phase 2 / Future |
 | --- | --- | --- |
 | Shell (common) | Login, set / change password, dashboard per role, approvals inbox, role-based menu | Future: runtime micro-frontends instead of build-time packages (ADR-001) |
-| EIMS – Employee Information | Admin onboarding (Employee Id and temporary password), profile complete / submit / withdraw / approve, profile change requests for approved profiles, Admin-owned fields (role, manager, rate, date of joining), deactivation, password reset, employee directory | – |
+| EIMS – Employee Information | Admin onboarding (Employee Id and temporary password), profile complete / submit / withdraw / approve, profile change requests for approved profiles, Admin-owned fields (role, manager, rate, date of joining), deactivation, password reset, employee directory; employees onboarded one by one | Phase 2: bulk import of employees (D-104) |
 | AMS – Attendance | Daily attendance entry (15-minute steps), submit, approve / reject, reopen after a salary dispute, month calendar and list | Future: shifts, breaks, overnight work, biometric or clock-in integration |
 | LMS – Leave | Full-day Casual / Sick / Earned leave, submit, cancel while Submitted, approve / reject, past and future dates | Future: leave balances, accruals and entitlement checks; half-day leave; cancelling approved leave |
 | SMS – Salary | Automatic daily wage from approved attendance, manager approval, employee accept (single or several) or dispute, keep as is or reopen, earnings for a period | Future: paid leave in salary; statutory deductions (PF, ESI, PT, TDS); allowances; payslips; monthly payroll runs |
@@ -345,7 +346,7 @@ The dashboard (SCR-SH-03), approvals inbox (SCR-SH-04) and shell layout (SCR-SH-
 | FR-CMN-001 | After sign-in, every user lands on a dashboard whose content depends on the role (Employee, Manager, Admin). | Must | POC | UJ-SH-01, UJ-SH-03, SCR-SH-03 |
 | FR-CMN-002 | Employees and managers see tiles for: hours this month (approved attendance), earnings this month (Manager Approved and Accepted salary records, excluding Voided and Disputed), leave this month (approved days and pending count) and profile status. | Must | POC | SCR-SH-03, D-25 |
 | FR-CMN-003 | Employees and managers see a "Things to do" list: rejected items to fix, missing attendance days, salary records to review and pending requests. Each item opens the screen where the user can act. With nothing to do, the list shows "You're all caught up." | Must | POC | SCR-SH-03 |
-| FR-CMN-004 | A missing attendance day is a Monday to Friday date, from the date of joining, with no attendance and no leave. It is a reminder only; weekend entries stay allowed. | Must | POC | D-28, D-08, OI-03 |
+| FR-CMN-004 | A missing attendance day is a Monday to Friday date, from the date of joining up to yesterday, with no attendance and no leave; today is never shown as missing. It is a reminder only; weekend entries stay allowed. | Must | POC | D-28, D-08, D-104 |
 | FR-CMN-005 | Until the profile is approved, the dashboard shows a banner asking the employee to complete the profile before entering attendance and leave, with a link to My Profile. | Must | POC | SCR-SH-03 |
 | FR-CMN-006 | Managers also see "Waiting for your approval" with counts per module and a link to the approvals inbox; the card is hidden when nothing is waiting. | Must | POC | SCR-SH-03 |
 | FR-CMN-007 | The Admin sees tiles for active employees, profiles not yet approved, items waiting for the Admin and the last reconciliation run, a list of recently onboarded employees and an "Onboard employee" action. The Admin has no personal tiles. | Must | POC | SCR-SH-03, D-24 |
@@ -364,12 +365,12 @@ Rules that affect two or more modules are defined here once and referenced by id
 
 | Rule id | Rule | Modules affected | Source (decision / UX) |
 | --- | --- | --- | --- |
-| BR-CMN-01 | Every employee has a Manager Id, set by the Admin. A manager approves the records of their direct reports only. The top-level employee (no manager) has all records approved by the Admin. | EIMS, AMS, LMS, SMS | D-01 (C1), D-07 (O3), D-58; baseline BR-C1 |
+| BR-CMN-01 | Every employee has a Manager Id, set by the Admin. A manager approves the records of their direct reports only. There is exactly one top-level employee (no manager); the Admin approves all their records. | EIMS, AMS, LMS, SMS | D-01 (C1), D-07 (O3), D-58, D-104; baseline BR-C1 |
 | BR-CMN-02 | Every business record carries Status, Approver Id, Approved Date and Remarks. | EIMS, AMS, LMS, SMS | D-01 (C2); baseline BR-C2 |
 | BR-CMN-03 | Remarks are required to reject a record, to reopen attendance and to close a dispute with Keep as is; maximum 500 characters. | EIMS, AMS, LMS, SMS | D-01, D-33, SCR-SH-04; baseline BR-C3 |
 | BR-CMN-04 | A rejected record goes back to its owner, who can correct and resubmit it. | EIMS, AMS, LMS | D-01 (C4); baseline BR-C4 |
 | BR-CMN-05 | Approved attendance and leave records are locked. An approved profile is changed only through a profile change request, which is approved like any other record; the profile stays Approved meanwhile (D-70). The only way to change approved attendance is a reopen after a salary dispute (BR-CMN-15). | EIMS, AMS, LMS | D-70 (replaces D-02 E2); baseline BR-C5 |
-| BR-CMN-06 | Records are never physically deleted; an Is Active flag marks soft-deleted records. An inactive employee cannot sign in, and their history is kept. | EIMS, AMS, LMS, SMS, SUP | D-01 (C5), EIMS-US6; baseline BR-C6 |
+| BR-CMN-06 | Records are never physically deleted; an Is Active flag marks soft-deleted records. An inactive employee cannot sign in, and their history is kept. When an employee is deactivated, items waiting for a decision (submitted attendance, leave and profile items, salary disputes) stay with the approver, who can still decide them; drafts, rejected items and salary records waiting for acceptance stay as they are and are kept for history. | EIMS, AMS, LMS, SMS, SUP | D-01 (C5), EIMS-US6, D-104; baseline BR-C6 |
 | BR-CMN-07 | Every record carries Created By, Created Date, Updated By and Updated Date, set by the system. | EIMS, AMS, LMS, SMS | D-01; baseline BR-C7 |
 | BR-CMN-08 | No one approves their own records. A manager's own records are approved by their own manager (or by the Admin if the manager is the top-level employee). | EIMS, AMS, LMS, SMS | D-01; baseline BR-C8 |
 | BR-CMN-09 | Only an employee with an approved profile can enter attendance or request leave. | EIMS, AMS, LMS | Baseline AMS-V5, LMS-V6; SCR-SH-03 |
@@ -464,7 +465,7 @@ Likelihood and impact: High / Medium / Low.
 | Risk id | Risk | Likelihood | Impact | Mitigation | Owner |
 | --- | --- | --- | --- | --- | --- |
 | R-01 | An attendance-approved hand-over to SMS is lost, so no salary record is created. | Low | High | Reliable hand-over designed in HLD; nightly reconciliation creates any missed record (JOB-CMN-01, KPI-04). | Enterprise Architect |
-| R-02 | Approvals stall when a manager is absent, since the POC has no delegation. | Medium | Medium | Dashboard and inbox show pending counts; Admin can reassign the manager (BR-CMN-13, OI-04); delegation recorded as Future scope. | HR Manager |
+| R-02 | Approvals stall when a manager is absent, since the POC has no delegation. | Medium | Medium | Dashboard and inbox show pending counts; Admin can reassign the manager, and waiting items move to the new manager (BR-CMN-13, FR-EIMS-017, D-104); delegation recorded as Future scope. | HR Manager |
 | R-03 | The dispute and reopen cycle creates a second valid salary record for the same day. | Low | High | Exactly one non-voided salary record per attendance (NFR-06); generation repeated safely; reconciliation checks it (KPI-04). | Enterprise Architect |
 | R-04 | Personal data (date of birth, parents' names, address, wages) is seen by someone outside the allowed scope. | Low | High | Role and data-scope check on every request (NFR-03, §4.3); Admin has no access to others' attendance, leave or salary (D-58); synthetic test data only. | Enterprise Architect |
 | R-05 | Stakeholders expect full payroll features (deductions, payslips, payroll runs) during the POC. | Medium | Medium | Approved scope and out-of-scope list (§3.3); new needs go through the decision log as Phase 2 or Future. | Product owner |
@@ -493,9 +494,9 @@ Running list, completed as the anchor is drafted.
 | Id | Question | Owner | Due | Status / decision |
 | --- | --- | --- | --- | --- |
 | OI-01 | Update the UX summaries so Admin can open the review screen for the top-level employee's records (SCR-SH-04 roles text, SCR-AMS-03, SCR-LMS-03, SCR-SMS-02), read limited to those records (D-58); also the UX Journey Index actor column (UJ-AMS-03, UJ-AMS-04, UJ-LMS-04, UJ-SMS-01, UJ-SMS-03) and screen catalogue roles (SCR-AMS-03, SCR-LMS-03, SCR-SMS-02), to show "Admin for top-level" | Product owner | Before HLD Part02 | Open |
-| OI-02 | What happens to a deactivated employee's pending items (own submissions, own salary records still waiting for acceptance or a dispute decision, and items waiting for their approval as manager)? | HR Manager | Before BRD sign-off (Stage 2 gate) | Open |
-| OI-03 | Missing attendance reminder (FR-CMN-004): does it include today, or only days up to yesterday? | HR Manager | Before BRD sign-off (Stage 2 gate) | Open |
-| OI-04 | When the Admin changes an employee's manager (BR-CMN-13), who decides the items already waiting for approval – the old or the new manager? | HR Manager | Before BRD sign-off (Stage 2 gate) | Open |
+| OI-02 | What happens to a deactivated employee's pending items (own submissions, own salary records still waiting for acceptance or a dispute decision, and items waiting for their approval as manager)? | HR Manager | Before BRD sign-off (Stage 2 gate) | Closed (D-104): items waiting for a decision stay with the approver and can be decided; drafts, rejected items and salary records waiting for acceptance stay as they are (BR-CMN-06) |
+| OI-03 | Missing attendance reminder (FR-CMN-004): does it include today, or only days up to yesterday? | HR Manager | Before BRD sign-off (Stage 2 gate) | Closed (D-104): only days up to yesterday; today is never missing (FR-CMN-004) |
+| OI-04 | When the Admin changes an employee's manager (BR-CMN-13), who decides the items already waiting for approval – the old or the new manager? | HR Manager | Before BRD sign-off (Stage 2 gate) | Closed (D-104): waiting items move to the new manager (FR-EIMS-017, FR-UM-014) |
 | OI-05 | Which business values must the PMS Administrator be able to change without a release (for example idle timeout, lockout limits, reconciliation time, remarks length)? Today all are fixed by decisions. | Product owner | Before PMS-BRD-M5-SUP (ADM is Phase 2) | Closed (D-97): none in the POC; all values stay fixed by decisions and change only by release or deployment setting; an Admin configuration screen is ADM, Phase 2 |
 | OI-06 | UX Journey Index still shows the reconciliation time for UJ-SYS-02 as "TBD"; it was set to 01:00 IST (D-24). Correct the UX document; also the 17 UX summaries still show version / status "0.1 / Draft – in review" although approved with the UX set (D-34). | Product owner | Before HLD Part02 | Open |
 | OI-07 | Update the UX for the profile change request and the withdrawal of a submitted new profile (D-70): SCR-EIMS-03, SCR-EIMS-04, SCR-SH-03, SCR-SH-04, UX Journey Index (UJ-EIMS-05, status list) | Product owner | Before HLD Part02 | Open |
@@ -503,7 +504,7 @@ Running list, completed as the anchor is drafted.
 | OI-09 | Update the LMS UX (D-84, D-88): Team leave History date range filter, defaulting to the current month and including inactive reports (SCR-LMS-03); submitted time in Pending rows; "Also away" empty for the top-level employee; "Requested" shows the first submission date (SCR-LMS-01, SCR-LMS-03) | Product owner | Before HLD Part02 | Open |
 | OI-10 | Update the SMS UX (D-90): Team salary must not list the manager's own records (BR-CMN-08, SCR-SMS-02 mockup); separate notes for the dispute remark and the manager's Keep as is explanation, and repeated disputes after Keep as is (SCR-SMS-01, SCR-SMS-02, SCR-SH-04); Accepted Date; Team salary All records default current month to today incl. inactive reports, Needs action not filtered by date (SCR-SMS-02); Admin dashboard reconciliation tile shows result, records created / voided and mismatches (SCR-SH-03); UX Journey Index UJ-SYS-02 adds voiding of stale records | Product owner | Before HLD Part02 | Open |
 | OI-11 | Update the shell UX for the SUP rules (D-97): SCR-SH-01 shows the inactive-account message only after the correct password; SCR-SH-00 header for the PMS Administrator (no Employee Id); UX summaries SCR-SH-01, SCR-SH-02, SCR-SH-00, SCR-EIMS-01, SCR-EIMS-02 refer to the identity provider instead of the product name; system error messages show "Reference: <flow reference>" (D-101, NFR-09) | Product owner | Before HLD Part02 | Open |
-| OI-12 | May more than one employee have no manager ("None – top-level")? If yes, the Admin approves all their records and "Also away" stays empty for each of them; if no, onboarding and manager changes must refuse a second top-level employee (BR-CMN-01, FR-EIMS-014, VR-EIMS-05, BR-LMS-09) | HR Manager | Before BRD sign-off (Stage 2 gate) | Open |
+| OI-12 | May more than one employee have no manager ("None – top-level")? If yes, the Admin approves all their records and "Also away" stays empty for each of them; if no, onboarding and manager changes must refuse a second top-level employee (BR-CMN-01, FR-EIMS-014, VR-EIMS-05, BR-LMS-09) | HR Manager | Before BRD sign-off (Stage 2 gate) | Closed (D-104): exactly one top-level employee (BR-CMN-01, FR-EIMS-014, VR-EIMS-05) |
 
 Approved decisions are kept in `docs/decisions/decision-log.md`.
 
@@ -516,7 +517,7 @@ Approved decisions are kept in `docs/decisions/decision-log.md`.
 | Supporting functions | §3.3, D-57 | Phase 2: ADM (configuration and master data), NM (email / SMS notifications), DM (documents) |
 | Shell | ADR-001, D-23 | Future: module screens loaded at run time instead of being built into the shell |
 | EIMS – manager view | §4.2, D-63 | Future: skip-level (indirect reports) view for managers |
-| EIMS – employees | D-71 | Future: reactivating an inactive employee; onboarding before the joining date (pre-boarding) |
+| EIMS – employees | D-71, D-104 | Future: reactivating an inactive employee; onboarding before the joining date (pre-boarding). Phase 2: bulk import of employees |
 | Approvals | R-02 | Future: delegation of approvals when a manager is absent |
 | AMS | §3.3, D-03 | Future: shifts, breaks, overnight work, biometric or clock-in integration |
 | LMS | §3.3, D-04, D-84 | Future: leave balances, accruals and entitlement checks; half-day leave; cancelling approved leave |

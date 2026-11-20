@@ -14,6 +14,7 @@ Date: November 2026
 | --- | --- | --- | --- | --- |
 | 1.0 | 0.1 | 18-Nov-2026 | Rajesh Verma | First draft from UX v1.0 (D-34), PMS-BRD v1.0 rev 0.3 and decisions D-01 to D-72 |
 | 1.0 | 0.2 | 20-Nov-2026 | Rajesh Verma | BRD set consistency check (D-103): references to PMS-BRD rev 0.14 and D-01 to D-103; BR-CMN-19 in §8; FR-EIMS-005 and FR-EIMS-018 linked to FR-UM-006 and FR-UM-007 (D-97); INT-08 outcome; OI-12 in §14; OI-11 and OI-12 in §16 |
+| 1.0 | 0.3 | 20-Nov-2026 | Rajesh Verma | Business open items decided (D-104): §3.2 and §13 onboarding one by one (bulk import Phase 2); §6.2, FR-EIMS-018 pending items on deactivation; §6.3, FR-EIMS-017 waiting items move to the new manager; FR-EIMS-014, VR-EIMS-05 one top-level employee; NOT-EIMS-06 temporary password by company email; OI-EIMS-01, OI-EIMS-02 closed; §14, §16, §17 |
 
 ### 1.2 Review and approval
 
@@ -59,7 +60,7 @@ EIMS covers steps 1, 3 and 4 of the end-to-end process (anchor §5.1) and journe
 
 | In scope (POC) | Phase 2 / Future | Out of scope (reason) |
 | --- | --- | --- |
-| Onboard an employee: basic details, role, manager, hourly wage rate; system-generated Employee Id and temporary password | Future: onboarding before the joining date (pre-boarding) (D-71) | Self-registration – employees are created by the Admin only (baseline §4) |
+| Onboard an employee one by one: basic details, role, manager, hourly wage rate; system-generated Employee Id and temporary password | Future: onboarding before the joining date (pre-boarding) (D-71). Phase 2: bulk import of employees (D-104) | Self-registration – employees are created by the Admin only (baseline §4) |
 | Complete, save as draft, submit and withdraw (before decision) the own profile | – | – |
 | Approve or reject a profile (manager; Admin for the top-level employee) | – | – |
 | Profile change request for an approved profile: draft, submit, withdraw, approve or reject (D-70) | – | – |
@@ -163,7 +164,7 @@ stateDiagram-v2
 | From | To | Action | Actor | Condition / rule |
 | --- | --- | --- | --- | --- |
 | – | Active | Create employee | Admin | – |
-| Active | Inactive | Deactivate | Admin | Confirmation required; blocked while the employee is a manager with active direct reports (BR-CMN-14); effect on open items per OI-02 |
+| Active | Inactive | Deactivate | Admin | Confirmation required; blocked while the employee is a manager with active direct reports (BR-CMN-14); items waiting for a decision stay with the approver, other open items stay as they are (BR-CMN-06, D-104) |
 | Inactive | Active | – | – | Not allowed in the POC; reactivation is Future scope (D-71) |
 
 ### 6.3 Profile change request lifecycle
@@ -200,7 +201,7 @@ stateDiagram-v2
 | Rejected | Submitted | Resubmit | Employee | As for Draft → Submitted (BR-CMN-04) |
 | Draft, Submitted, Rejected | Withdrawn | Withdraw | Employee | Submitted only before a decision (D-72) |
 
-If the Admin changes the employee's manager while a request is Submitted, the request is decided according to open item OI-04 (anchor §12).
+If the Admin changes the employee's manager while a request is Submitted, the request moves to the new manager (or to the Admin for the top-level employee) and is decided there (FR-EIMS-017, D-104).
 
 ## 7. Functional requirements
 
@@ -232,11 +233,11 @@ All requirements are priority Must and phase POC unless stated otherwise. Approv
 | FR-EIMS-011 | Creation is refused with field-level messages for a duplicate or invalid email, a future date of joining, a missing manager choice or an invalid rate. | Must | POC | SCR-EIMS-02, VR-EIMS-02, VR-EIMS-04, VR-EIMS-06 | Given an email already used by any employee (active or inactive), when the Admin saves, then the form shows the duplicate-email message and nothing is created. |
 | FR-EIMS-012 | In edit mode name and email are read only (maintained by the employee); the Admin can change date of joining, role, manager and hourly wage rate. Saving does not change the profile status. | Must | POC | SCR-EIMS-02, BR-CMN-13 | Given an Approved employee, when the Admin changes the rate and saves, then the profile stays Approved and "Changes saved." is shown. |
 | FR-EIMS-013 | A new hourly wage rate applies only to salary records generated after the change. | Must | POC | BR-CMN-13 | Given salary records exist at INR 250, when the rate changes to INR 300, then existing records keep 250 and the next generated record uses 300. |
-| FR-EIMS-014 | The manager list offers only active employees with the Manager role, excluding the employee and anyone who would create a reporting loop; "None – top-level" means the Admin approves this employee's records. | Must | POC | SCR-EIMS-02, VR-EIMS-05, D-71 | Given A manages B, when the Admin edits A, then B is not offered as A's manager. |
+| FR-EIMS-014 | The manager list offers only active employees with the Manager role, excluding the employee and anyone who would create a reporting loop; "None – top-level" means the Admin approves this employee's records and can be chosen only if no other active employee is top-level; otherwise the form names the current top-level employee. | Must | POC | SCR-EIMS-02, VR-EIMS-05, D-71, D-104 | Given A manages B, when the Admin edits A, then B is not offered as A's manager. Given C is the top-level employee, when the Admin chooses "None – top-level" for D, then saving is refused with a message naming C. |
 | FR-EIMS-015 | A change of date of joining is accepted only if no attendance or leave (other than Cancelled) lies before the new date and the employee is still at least 18 on it; otherwise the blocking records are shown. | Must | POC | D-71, INT-09 | Given attendance on 05-Nov, when the Admin sets the joining date to 10-Nov, then the change is refused and the 05-Nov attendance is named. |
 | FR-EIMS-016 | Changing a Manager's role to Employee is blocked while they have active direct reports; the message lists the reports. | Must | POC | D-71 | Given a manager with 3 active reports, when the Admin selects role Employee, then saving is refused and the 3 reports are listed. |
-| FR-EIMS-017 | After a manager change, new submissions go to the new manager (or the Admin for top-level). Items already waiting are handled per open item OI-04. | Must | POC | BR-CMN-01, OI-04 | Given B's manager changes from M1 to M2, when B submits attendance afterwards, then it appears in M2's inbox. |
-| FR-EIMS-018 | The Admin deactivates an employee after confirmation: the employee becomes Inactive, can no longer sign in, and all records are kept; the user account is disabled and all open sessions end (FR-UM-007). Deactivation is blocked for a manager with active direct reports, listing them. | Must | POC | SCR-EIMS-02, UJ-EIMS-07, BR-CMN-06, BR-CMN-14 | Given an employee with no reports, when the Admin confirms Deactivate, then "<name> deactivated." is shown and a sign-in with the correct password shows the inactive-account message. |
+| FR-EIMS-017 | After a manager change, new submissions go to the new manager (or the Admin for top-level). Items already waiting move to the new manager and are decided there; the old manager no longer sees them. | Must | POC | BR-CMN-01, D-104 | Given B's manager changes from M1 to M2, when B submits attendance afterwards, then it appears in M2's inbox. Given B's leave was waiting in M1's inbox, then after the change it is in M2's inbox and not in M1's. |
+| FR-EIMS-018 | The Admin deactivates an employee after confirmation: the employee becomes Inactive, can no longer sign in, and all records are kept; the user account is disabled and all open sessions end (FR-UM-007). Items waiting for a decision stay with the approver and can still be decided; other open items stay as they are (BR-CMN-06). Deactivation is blocked for a manager with active direct reports, listing them. | Must | POC | SCR-EIMS-02, UJ-EIMS-07, BR-CMN-06, BR-CMN-14 | Given an employee with no reports, when the Admin confirms Deactivate, then "<name> deactivated." is shown and a sign-in with the correct password shows the inactive-account message. |
 
 **User stories**
 
@@ -301,7 +302,7 @@ All requirements are priority Must and phase POC unless stated otherwise. Approv
 | VR-EIMS-02 | Email is in a valid format and unique across all employees, active and inactive. | Validation | SCR-EIMS-02, SCR-EIMS-03 | D-02, D-71; baseline EIMS-V2 |
 | VR-EIMS-03 | Mobile number is exactly 10 digits; it does not have to be unique. | Validation | SCR-EIMS-03 | D-02, D-71; baseline EIMS-V3 |
 | VR-EIMS-04 | Date of joining is not later than today. | Validation | SCR-EIMS-02 | D-02, D-71; baseline EIMS-V4 |
-| VR-EIMS-05 | The manager is an active employee with the Manager role, is not the employee, and does not create a reporting loop; or "None – top-level". | Validation | SCR-EIMS-02 | D-02, D-71; baseline EIMS-V5 |
+| VR-EIMS-05 | The manager is an active employee with the Manager role, is not the employee, and does not create a reporting loop; or "None – top-level", allowed only if no other active employee is top-level. | Validation | SCR-EIMS-02 | D-02, D-71, D-104; baseline EIMS-V5 |
 | VR-EIMS-06 | Hourly wage rate is greater than 0, with up to 2 decimals (INR). | Validation | SCR-EIMS-02 | D-02; baseline EIMS-V6 |
 | VR-EIMS-07 | First, middle and last name: up to 50 characters each. Father's and mother's name, place of birth, last employer, address lines, city and state: up to 100 characters each. | Validation | SCR-EIMS-02, SCR-EIMS-03 | UX SCR-EIMS-02, SCR-EIMS-03 |
 | VR-EIMS-08 | Zip / PIN code: exactly 6 digits when the country is India; otherwise 3 to 10 letters, digits, spaces or hyphens. | Validation | SCR-EIMS-03 | UX SCR-EIMS-03, D-71 |
@@ -382,7 +383,7 @@ The POC has no email or SMS (C-05); all notifications are in-app, through the da
 | NOT-EIMS-03 | Profile or change request withdrawn | Approver | In-app: approvals inbox | Immediately | Item removed from the inbox and counts |
 | NOT-EIMS-04 | Profile or change request rejected | Employee | In-app: dashboard "Things to do"; banner on My Profile | Immediately | "Profile returned – please correct" with the approver's remarks |
 | NOT-EIMS-05 | Profile or change request approved | Employee | In-app: profile status tile and My Profile banner | Immediately | Status shown as Approved; for a change request, the new values are shown |
-| NOT-EIMS-06 | Employee created or password reset | Admin | In-app: one-time panel with Copy | Immediately, once | Employee Id and temporary password (handed to the employee as per OI-EIMS-01) |
+| NOT-EIMS-06 | Employee created or password reset | Admin | In-app: one-time panel with Copy | Immediately, once | Employee Id and temporary password (the Admin sends it to the employee by company email, outside PMS; replaced at the first sign-in, FR-AUTH-006, D-104) |
 
 ## 11. Scheduled jobs and integrations
 
@@ -421,7 +422,7 @@ System-wide NFRs (anchor §8) apply; module-specific additions:
 
 | Volume type | Year 1 | Growth % per year | Peak |
 | --- | --- | --- | --- |
-| Employees (records) | About 100 | 0 % (20 % headroom) | All employees onboarded at go-live (see OI-EIMS-02) |
+| Employees (records) | About 100 | 0 % (20 % headroom) | All employees onboarded one by one at go-live; bulk import Phase 2 (D-104) |
 | Profile approvals | About 100 | 0 % | Go-live weeks |
 | Profile change requests | About 50 | 0 % | – |
 | Admin changes (role, manager, rate, joining date) and deactivations | Not estimated | – | – |
@@ -435,7 +436,7 @@ System-wide NFRs (anchor §8) apply; module-specific additions:
 | Constraint | C-EIMS-02 | EIMS holds two business entities, Employee and Profile change request – the agreed exception to one entity per module (D-70). |
 | Dependency | DEP-EIMS-01 | Identity provider for user accounts, roles, temporary passwords and sign-in blocking (anchor DEP-01, INT-08). |
 | Dependency | DEP-EIMS-02 | INT-09 needs AMS and LMS. EIMS is built first (anchor DEP-03); until AMS and LMS exist there are no records to check, so the joining-date check is completed when they are delivered. |
-| Dependency | DEP-EIMS-03 | Open items OI-02, OI-04 and OI-12 (anchor §12) are decided before this document is approved (anchor DEP-06). |
+| Dependency | DEP-EIMS-03 | Open items OI-02, OI-04, OI-12 (anchor §12), OI-EIMS-01 and OI-EIMS-02 were decided before approval (D-104, anchor DEP-06). |
 
 ## 15. Traceability matrix
 
@@ -454,12 +455,12 @@ System-wide NFRs (anchor §8) apply; module-specific additions:
 
 ## 16. Open items
 
-Cross-module open items OI-02 (pending items of a deactivated employee), OI-04 (pending items on a manager change) OI-07 (UX updates for the change request), OI-11 (UX summaries SCR-EIMS-01 and SCR-EIMS-02 to name the identity provider) and OI-12 (whether more than one top-level employee is allowed) are in the anchor §12.
+Cross-module open items OI-02 (pending items of a deactivated employee; closed, D-104), OI-04 (pending items on a manager change; closed, D-104), OI-07 (UX updates for the change request), OI-11 (UX summaries SCR-EIMS-01 and SCR-EIMS-02 to name the identity provider) and OI-12 (whether more than one top-level employee is allowed; closed, D-104) are in the anchor §12.
 
 | Id | Question | Owner | Due | Status / decision |
 | --- | --- | --- | --- | --- |
-| OI-EIMS-01 | How does the Admin hand the temporary password to the employee (in person, phone, company email outside PMS)? PMS only shows it once to the Admin. | HR Manager | Before approval of this document | Open |
-| OI-EIMS-02 | At go-live, are all employees onboarded one by one by the Admin, or is a bulk import needed (not in the approved UX)? | HR Manager | Before approval of this document | Open |
+| OI-EIMS-01 | How does the Admin hand the temporary password to the employee (in person, phone, company email outside PMS)? PMS only shows it once to the Admin. | HR Manager | Before approval of this document | Closed (D-104): the Admin sends it by company email, outside PMS; the employee must replace it at the first sign-in (FR-AUTH-006) |
+| OI-EIMS-02 | At go-live, are all employees onboarded one by one by the Admin, or is a bulk import needed (not in the approved UX)? | HR Manager | Before approval of this document | Closed (D-104): one by one with SCR-EIMS-02; bulk import Phase 2 |
 
 ## 17. Appendix
 
@@ -471,4 +472,5 @@ Cross-module open items OI-02 (pending items of a deactivated employee), OI-04 (
 | Deactivation | D-71, BR-EIMS-07 | Reactivating an inactive employee |
 | Passwords | Anchor §13.1 | Self-service password reset |
 | Directory | D-63 | Skip-level view for managers |
+| Onboarding | D-104 | Phase 2: bulk import of employees |
 | Documents | D-57 | Supporting documents attached to the profile (DM, Phase 2) |

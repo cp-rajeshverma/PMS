@@ -14,6 +14,7 @@ Date: November 2026
 | --- | --- | --- | --- | --- |
 | 1.0 | 0.1 | 19-Nov-2026 | Rajesh Verma | First draft from UX v1.0 (D-34), PMS-BRD v1.0 rev 0.9 and decisions D-01 to D-90 |
 | 1.0 | 0.2 | 20-Nov-2026 | Rajesh Verma | BRD set consistency check (D-103): references to PMS-BRD rev 0.14, PMS-BRD-M2-AMS rev 0.2 and D-01 to D-103; BR-CMN-11, 14, 19 in §8; Voided status meaning (D-90) |
+| 1.0 | 0.3 | 20-Nov-2026 | Rajesh Verma | Business open items decided (D-104): OI-02 and OI-04 shown as closed in §14 and §16 (no requirement change) |
 
 ### 1.2 Review and approval
 
@@ -344,7 +345,7 @@ System-wide NFRs (anchor §8) apply; SMS has no module-specific additions. Gener
 | Constraint | C-SMS-03 | EIMS keeps only the current hourly wage rate; records generated late or after a reopen use the rate at the time of generation (D-90). |
 | Dependency | DEP-SMS-01 | AMS provides attendance approval and reopen hand-overs and all approved attendance for the reconciliation (INT-01, INT-02, JOB-CMN-01; anchor DEP-02 message broker, DEP-03 build order). |
 | Dependency | DEP-SMS-02 | EIMS provides the hourly wage rate, employee details and approver (INT-03 to INT-05). |
-| Dependency | DEP-SMS-03 | Open items OI-02 and OI-04 (anchor §12) are decided before this document is approved (anchor DEP-06); OI-01, OI-06 and OI-10 are closed before HLD Part02. |
+| Dependency | DEP-SMS-03 | Open items OI-02 and OI-04 (anchor §12) were decided before approval (D-104, anchor DEP-06); OI-01, OI-06 and OI-10 are closed before HLD Part02. |
 
 ## 15. Traceability matrix
 
@@ -360,7 +361,7 @@ System-wide NFRs (anchor §8) apply; SMS has no module-specific additions. Gener
 
 ## 16. Open items
 
-Cross-module open items that affect SMS are in the anchor §12: OI-01 (Admin opens SCR-SMS-02 for the top-level employee), OI-02 (pending items of a deactivated employee, incl. salary records waiting for approval or acceptance), OI-04 (pending salary approvals and disputes on a manager change), OI-06 (UX Journey Index reconciliation time "TBD", set to 01:00 IST) and OI-10 (SMS UX updates). SMS has no module-only open items.
+Cross-module open items that affect SMS are in the anchor §12: OI-01 (Admin opens SCR-SMS-02 for the top-level employee), OI-02 (pending items of a deactivated employee, incl. salary records waiting for approval or acceptance), OI-04 (pending salary approvals and disputes on a manager change; OI-02 and OI-04 closed, D-104), OI-06 (UX Journey Index reconciliation time "TBD", set to 01:00 IST) and OI-10 (SMS UX updates). SMS has no module-only open items.
 
 | Id | Question | Owner | Due | Status / decision |
 | --- | --- | --- | --- | --- |

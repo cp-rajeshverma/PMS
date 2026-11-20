@@ -14,6 +14,7 @@ Date: November 2026
 | --- | --- | --- | --- | --- |
 | 1.0 | 0.1 | 19-Nov-2026 | Rajesh Verma | First draft from UX v1.0 (D-34), PMS-BRD v1.0 rev 0.7 and decisions D-01 to D-84 |
 | 1.0 | 0.2 | 20-Nov-2026 | Rajesh Verma | BRD set consistency check (D-103): references to PMS-BRD rev 0.14 and D-01 to D-103; BR-CMN-11, 14, 19 in §8; OI-12 in §14 and §16 |
+| 1.0 | 0.3 | 20-Nov-2026 | Rajesh Verma | Business open items decided (D-104): OI-02, OI-04, OI-12 closed in §14 and §16 |
 
 ### 1.2 Review and approval
 
@@ -300,7 +301,7 @@ System-wide NFRs (anchor §8) apply; LMS has no module-specific additions.
 | Constraint | C-LMS-02 | Dates are IST (D-08, BR-CMN-18). |
 | Dependency | DEP-LMS-01 | EIMS provides the approved profile, joining date, approver and direct reports (anchor DEP-03, INT-03, INT-04). |
 | Dependency | DEP-LMS-02 | AMS provides attendance dates (INT-06). LMS may be built before AMS; until AMS exists there is no attendance, so the check passes and is completed when AMS is delivered. |
-| Dependency | DEP-LMS-03 | Open items OI-02, OI-04 and OI-12 (anchor §12) are decided before this document is approved (anchor DEP-06). |
+| Dependency | DEP-LMS-03 | Open items OI-02, OI-04 and OI-12 (anchor §12) were decided before approval (D-104, anchor DEP-06). |
 
 ## 15. Traceability matrix
 
@@ -313,7 +314,7 @@ System-wide NFRs (anchor §8) apply; LMS has no module-specific additions.
 
 ## 16. Open items
 
-Cross-module open items that affect LMS are in the anchor §12: OI-01 (Admin opens SCR-LMS-03 for the top-level employee), OI-02 (pending items of a deactivated employee), OI-04 (pending items on a manager change), OI-09 (LMS UX updates) and OI-12 (whether more than one top-level employee is allowed; affects "Also away", BR-LMS-09). LMS has no module-only open items.
+Cross-module open items that affect LMS are in the anchor §12: OI-01 (Admin opens SCR-LMS-03 for the top-level employee), OI-02 (pending items of a deactivated employee), OI-04 (pending items on a manager change) and OI-12 (exactly one top-level employee; "Also away" stays empty for that employee, BR-LMS-09) – all three closed (D-104) – and OI-09 (LMS UX updates). LMS has no module-only open items.
 
 | Id | Question | Owner | Due | Status / decision |
 | --- | --- | --- | --- | --- |
