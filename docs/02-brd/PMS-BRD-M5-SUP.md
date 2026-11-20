@@ -12,7 +12,7 @@ Date: November 2026
 
 | Version | Revision | Date | Author | Change remark |
 | --- | --- | --- | --- | --- |
-| 1.0 | 0.1 | 20-Nov-2026 | Rajesh Verma | First draft from UX v1.0 (D-34), PMS-BRD v1.0 rev 0.11, PMS-BRD-M1-EIMS v1.0 rev 0.1 and decisions D-01 to D-97 |
+| 1.0 | 0.1 | 20-Nov-2026 | Rajesh Verma | First draft from UX v1.0 (D-34), PMS-BRD v1.0 rev 0.12, PMS-BRD-M1-EIMS v1.0 rev 0.1 and decisions D-01 to D-101 |
 
 ### 1.2 Review and approval
 
@@ -43,12 +43,12 @@ The Admin screens that drive user management – onboarding, role, deactivation 
 
 | # | Document | Version | Use |
 | --- | --- | --- | --- |
-| 1 | PMS-BRD (anchor) | v1.0 rev 0.11 | Glossary, scope (§3.3), roles and role catalogue (§4.2), role × module access (§4.3), end-to-end step 2 (§5.1), journeys UJ-SH-01, 02, 05 (§5.2), FR-CMN-015, 016 (§5.3), BR-CMN-01, 06, 08, INT-08, NFR-03 to NFR-05, C-05, C-06, DEP-01, R-04 |
+| 1 | PMS-BRD (anchor) | v1.0 rev 0.12 | Glossary, scope (§3.3), roles and role catalogue (§4.2), role × module access (§4.3), end-to-end step 2 (§5.1), journeys UJ-SH-01, 02, 05 (§5.2), FR-CMN-015, 016 (§5.3), BR-CMN-01, 06, 08, 19, INT-08, NFR-03 to NFR-05, NFR-09, C-05, C-06, DEP-01, R-04 |
 | 2 | PMS-BRD-M1-EIMS | v1.0 rev 0.1 | Admin screens that drive user management: FR-EIMS-005, 010, 012, 016, 018, 040, 041; hand-over to the identity provider (§3.3, INT-08) |
 | 3 | PMS-BRD-M2-AMS, PMS-BRD-M3-LMS, PMS-BRD-M4-SMS | v1.0 rev 0.1 | Consumers of sign-in, roles and data scope |
 | 4 | UX Journey Index (navigation map, user menu) and UX Summaries SCR-SH-00, SCR-SH-01, SCR-SH-02, SCR-EIMS-01, SCR-EIMS-02, with their mockups | v1.0 (D-34) | Journeys, screens, fields, messages |
 | 5 | PMS – Business Requirements Document (baseline) §4 | v1.0 (D-09) | Roles, permissions matrix, login (Employee Id and password, no single sign-on, no self-registration) |
-| 6 | Decision log | D-01 to D-97 | Approved decisions, in particular D-01, D-07, D-24, D-26, D-28, D-29, D-57, D-58, D-63, D-71, D-97 |
+| 6 | Decision log | D-01 to D-101 | Approved decisions, in particular D-01, D-07, D-24, D-26, D-28, D-29, D-57, D-58, D-63, D-71, D-97 to D-101 |
 
 ### 2.3 Terms used in this document
 
@@ -327,12 +327,49 @@ The user account is held in the identity provider, not in a PMS module database 
 
 ## 12. Non-functional requirements (supporting-specific)
 
-To be drafted.
+System-wide NFRs are in the anchor §8 and apply in full: NFR-01 (sign-in and password pages within the page-load target), NFR-02 (the identity provider is part of PMS availability), NFR-03 (security), NFR-05 (auditability) and NFR-09 (activity log). The requirements below add the supporting-specific measures.
+
+| NFR id | Category | Requirement | Measure / target |
+| --- | --- | --- | --- |
+| NFR-SUP-01 | Security | Passwords and temporary passwords are never stored, shown, logged or sent in readable form; a temporary password is visible only once, to the Admin (FR-AUTH-014, NFR-EIMS-02). | 0 readable passwords found in security testing and log review |
+| NFR-SUP-02 | Security | Every role × screen and role × action combination is checked against the role and data scope, including direct links to screens and records outside the scope (FR-UM-013, FR-UM-015). | 0 access-control defects in security testing (anchor NFR-03); every screen tested by direct link for each role |
+| NFR-SUP-03 | Security | Sign-in messages do not reveal whether an Employee Id exists, and the lock applies as in BR-AUTH-01. | Verified in security testing for unknown, active, inactive and locked accounts |
+| NFR-SUP-04 | Privacy | The activity log holds no unmasked personally identifiable or confidential information (FR-ADM-115). | 0 unmasked sensitive values in log review (NFR-09, NFR-EIMS-01) |
+| NFR-SUP-05 | Auditability | Every change of a business record or user account can be found in the audit log with old and new value, process, user and time, and every user action or job run can be followed end to end by its flow reference. | 100 % of changes made in testing found in the audit log; 100 % of tested flows traceable across modules by one reference |
+
+**Volumetrics (input to HLD)**
+
+| Volume type | Year 1 | Growth % per year | Notes |
+| --- | --- | --- | --- |
+| User accounts | About 101 (about 100 employees and 1 Admin) | 0 % (20 % headroom) | Anchor §8.1 |
+| Sign-ins per day | Not estimated | – | Peak periods as anchor §8.1 |
+| Audit and activity log entries | Not estimated | – | Sized in the HLD from the record volumes in anchor §8.1 |
 
 ## 13. Traceability matrix
 
-To be drafted.
+| Capability | Screen id | Req id | Rule ids | Test ref (later) |
+| --- | --- | --- | --- | --- |
+| Sign in (UJ-SH-01) | SCR-SH-01 | FR-AUTH-001 to 008; FR-UM-002 | VR-AUTH-03; BR-AUTH-01, 02; BR-CMN-06 | |
+| Set password on first sign-in (UJ-SH-02) | SCR-SH-01, SCR-SH-02 | FR-AUTH-006, 010, 012 to 015 | VR-AUTH-01, 02; BR-AUTH-03 | |
+| Change password (user menu) | SCR-SH-00, SCR-SH-02 | FR-AUTH-011, 012, 015 | VR-AUTH-01, 02; BR-AUTH-04 | |
+| Session and log out (UJ-SH-05) | SCR-SH-00 | FR-AUTH-020 to 024 | BR-AUTH-04 | |
+| Security events | – | FR-AUTH-030 | – | |
+| User account at onboarding (UJ-EIMS-01, UJ-SYS-04) | SCR-EIMS-02 | FR-UM-001 to 003 (with FR-EIMS-010, 040, 041) | BR-UM-01 | |
+| PMS Administrator account | – | FR-UM-004, 005 | BR-UM-02 | |
+| Password reset (UJ-EIMS-08) | SCR-EIMS-01 | FR-UM-006 (with FR-EIMS-005) | BR-AUTH-01, 03, 04 | |
+| Deactivation (UJ-EIMS-07) | SCR-EIMS-02 | FR-UM-007 (with FR-EIMS-018) | BR-AUTH-04; BR-CMN-06, 14 | |
+| Role (UJ-EIMS-01, UJ-EIMS-06) | SCR-EIMS-02 | FR-UM-010, 011 (with FR-EIMS-012, 016) | BR-UM-03 | |
+| Authorization (all journeys) | SCR-SH-00 and all screens | FR-UM-012 to 015 | BR-UM-04; BR-CMN-01, 08 | |
+| Audit log (all modules) | – | FR-ADM-101 to 105 | BR-ADM-01; BR-CMN-19 | |
+| Activity log (all modules) | – | FR-ADM-111 to 117 | BR-ADM-02 | |
+| Admin functions and master data, notifications, documents | – | None (Phase 2, §4, §7, §9) | – | – |
+
+Counts: functional requirements 45 (FR-UM 13, FR-AUTH 20, FR-ADM 12); rules 13 (VR-AUTH-01 to 03, BR-AUTH-01 to 04, BR-UM-01 to 04, BR-ADM-01, 02); supporting NFRs 5; user stories 10 (US-UM-01 to 03, US-AUTH-01 to 05, US-ADM-01, 02).
 
 ## 14. Open items
 
-To be drafted.
+Cross-module open items that affect SUP are in the anchor §12 and are not repeated: OI-02 (pending items of a deactivated employee), OI-04 (pending items on a manager change, FR-UM-014) and OI-11 (shell UX updates for SUP and the error reference). OI-EIMS-01 (how the temporary password reaches the employee) is in PMS-BRD-M1-EIMS.
+
+| Id | Question | Owner | Due | Status / decision |
+| --- | --- | --- | --- | --- |
+| OI-SUP-01 | Does changing one's own password end the user's other open sessions? | Product owner | Before §6 approval | Closed (D-100): yes; the session in which the password was changed continues |

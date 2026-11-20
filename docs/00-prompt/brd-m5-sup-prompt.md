@@ -4,9 +4,9 @@
 | --- | --- |
 | Document | docs/02-brd/PMS-BRD-M5-SUP.md |
 | Template | templates/02-brd/brd-sup-template.md |
-| Used | – |
-| Outcome | – |
-| Status | Ready for the next session |
+| Used | 20 Nov 2026 |
+| Outcome | All sections reviewed (D-97 to D-102): SUP rules incl. OI-05 closed (D-97); §1–§3 with the activity-log addition (D-98); §5–§6 (D-99); own password change ends other sessions (D-100); audit and activity log, §4, §7–§11 (D-101); §12–§14 (D-102); anchor rev 0.11 to 0.13 (OI-11, BR-CMN-19, NFR-09, SUP status); approval pending OI-02, OI-04, OI-11 |
+| Status | Done – reuse only to revise SUP |
 
 ## Prompt
 

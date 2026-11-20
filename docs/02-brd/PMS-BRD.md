@@ -24,6 +24,7 @@ Date: November 2026
 | 1.0 | 0.10 | 19-Nov-2026 | Rajesh Verma | SMS status in §2.3 and §11 (D-94) |
 | 1.0 | 0.11 | 20-Nov-2026 | Rajesh Verma | SUP rules (D-97): OI-05 closed; §3.3 SUP row worded technology-neutral; future scope for password history and expiry and a warning before idle timeout (§13.1); OI-11 (SUP UX updates) |
 | 1.0 | 0.12 | 20-Nov-2026 | Rajesh Verma | BR-CMN-19 (audit log) and NFR-09 (activity log and observability); OI-11 extended with the error reference (D-101) |
+| 1.0 | 0.13 | 20-Nov-2026 | Rajesh Verma | SUP status in §2.3 and §11 (D-102) |
 
 ### 1.2 Review and approval
 
@@ -81,7 +82,7 @@ Users of the BRD set:
 | AMS – Attendance | PMS-BRD-M2-AMS | HR Manager, Finance Manager | v1.0 rev 0.1 | Drafted – approval pending OI-02, OI-03, OI-04 |
 | LMS – Leave | PMS-BRD-M3-LMS | HR Manager, Finance Manager | v1.0 rev 0.1 | Drafted – approval pending OI-02, OI-04 |
 | SMS – Salary | PMS-BRD-M4-SMS | HR Manager, Finance Manager | v1.0 rev 0.1 | Drafted – approval pending OI-02, OI-04 |
-| SUP – Supporting functions | PMS-BRD-M5-SUP | HR Manager, Finance Manager | – | Not started (need-basis assessment after M1–M4, D-53) |
+| SUP – Supporting functions | PMS-BRD-M5-SUP | HR Manager, Finance Manager | v1.0 rev 0.1 | Drafted – approval pending OI-02, OI-04, OI-11 |
 
 ### 2.4 Glossary and abbreviations
 
@@ -474,12 +475,12 @@ Functional requirement and rule counts for the modules are filled in as each mod
 
 | Module | Journeys | Screens | Functional requirements | Rules | Coverage status |
 | --- | --- | --- | --- | --- | --- |
-| Shared (this anchor) | 2: UJ-SH-03, UJ-SH-04 | 3: SCR-SH-00, SCR-SH-03, SCR-SH-04 | 15: FR-CMN-001 to FR-CMN-016 | 18: BR-CMN-01 to BR-CMN-18 | Drafted |
+| Shared (this anchor) | 2: UJ-SH-03, UJ-SH-04 | 3: SCR-SH-00, SCR-SH-03, SCR-SH-04 | 15: FR-CMN-001 to FR-CMN-016 | 19: BR-CMN-01 to BR-CMN-19 | Drafted |
 | M1 – EIMS | 10: UJ-EIMS-01 to UJ-EIMS-09, UJ-SYS-04 | 4: SCR-EIMS-01 to SCR-EIMS-04 | 32: FR-EIMS-001 to FR-EIMS-041 | 20: VR-EIMS-01 to 10, BR-EIMS-01 to 10 | Drafted (pending open items) |
 | M2 – AMS | 4: UJ-AMS-01 to UJ-AMS-04 | 3: SCR-AMS-01 to SCR-AMS-03 | 27: FR-AMS-001 to FR-AMS-032 | 13: VR-AMS-01 to 07, BR-AMS-01 to 06 | Drafted (pending open items) |
 | M3 – LMS | 4: UJ-LMS-01 to UJ-LMS-04 | 3: SCR-LMS-01 to SCR-LMS-03 | 25: FR-LMS-001 to FR-LMS-028 | 16: VR-LMS-01 to 07, BR-LMS-01 to 09 | Drafted (pending open items) |
 | M4 – SMS | 7: UJ-SMS-01 to UJ-SMS-04, UJ-SYS-01 to UJ-SYS-03 | 2: SCR-SMS-01, SCR-SMS-02 | 31: FR-SMS-001 to FR-SMS-046 | 17: VR-SMS-01 to 04, BR-SMS-01 to 13 | Drafted (pending open items) |
-| M5 – SUP | 3: UJ-SH-01, UJ-SH-02, UJ-SH-05 | 2: SCR-SH-01, SCR-SH-02 | In PMS-BRD-M5-SUP | – | Not started |
+| M5 – SUP | 3: UJ-SH-01, UJ-SH-02, UJ-SH-05 | 2: SCR-SH-01, SCR-SH-02 | 45: FR-UM-001 to 015, FR-AUTH-001 to 030, FR-ADM-101 to 117 | 13: VR-AUTH-01 to 03, BR-AUTH-01 to 04, BR-UM-01 to 04, BR-ADM-01, 02 | Drafted (pending open items) |
 | **Total** | **30** | **17** | | | |
 
 ## 12. Open items
