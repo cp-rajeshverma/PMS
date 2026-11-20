@@ -14,10 +14,11 @@ display_names: { driven_by: { Manual: Manual, BMAD: Agile } }
 planned_dates: TBD             # to be decided based on progress
 target_go_live: TBD
 
-token_usage:                   # internal view only (PR-04); never in the customer build
+token_usage:                   # internal sections of the single dashboard (PR-04, D-96); removed manually before sharing with the customer
   log: memory/usage/token-log.csv
   level: [stage, outcome]
-  internal_output: smd/web/PMS_SMD_Dashboard_internal.html
+  sessions: memory/usage/session-readings.csv
+  output: smd/web/PMS_SMD_Dashboard.html   # one dashboard; sections "Token utilization – stage › outcome (internal view)" and "Token readings – whole session (internal view)"
   effective_weights: { input: 1, cache_write: 2, cache_read: 0.1, output: 5 }
 
 pipelines:

@@ -114,6 +114,7 @@ Log token consumption per **stage + outcome/artifact** in `memory/usage/token-lo
 1. Take a cumulative usage reading when the session starts.
 2. Each time an outcome/artifact is completed (usually at its commit), take a new reading and append one row with the difference since the previous reading. One session with three outcomes = three rows.
 3. Columns: `date, stage (0–8 or X), outcome (artifact code or module-wise outcome name), module, activity, requests, input, cache_write, cache_read, output, total, source (measured|estimated|not-recorded), ref (commit / decision), note`.
-4. Never invent figures. Token data is internal: it appears only in the internal dashboard copy, never in customer-facing documents.
+4. Never invent figures. Every reading is also appended, as taken, to `memory/usage/session-readings.csv` (`date, session, checkpoint, requests, input, cache_write, cache_read, output, total, instructions_pct, files_pct, documents_pct, conversation_pct, other_pct, source, ref, note`).
+5. Token data is internal: the single SMD dashboard shows it in two sections marked "(internal view)" – remove both manually before the dashboard is shared with the customer (D-96); never in customer-facing documents.
 
 Readings: Claude app / Cowork – ask for the session's usage explanation; Claude Code – `/cost`; API – Admin usage report.

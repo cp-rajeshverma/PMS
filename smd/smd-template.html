@@ -200,7 +200,7 @@ function vOverview(){
   <div class="grid g2">
     <div class="card"><h2>What changed since the last update</h2>${D.changes_since_last.map(c=>`<div class="item next"><b>${esc(c.id)}</b> ${esc(c.change)}<small>${c.from?esc(c.from)+' → ':''}${esc(c.to||'')}</small></div>`).join('')}</div>
     <div class="card"><h2>Timeline (actual)</h2>${gantt()}<div class="small muted">Planned dates will be added once set; bars show actual start to finish (or today).</div></div>
-  </div>/*TK-START*/${TK?tokenCard():''}/*TK-END*/`;
+  </div>/*TK-START*/${TK&&TK.stages.length?tokenCard():''}${TK&&TK.sessions&&TK.sessions.length?sessionCard():''}/*TK-END*/`;
 }
 /*TK-START*/function tokenCard(){
   const n=v=>v==null?'–':v>=1e6?(v/1e6).toFixed(2)+'M':v>=1e3?(v/1e3).toFixed(0)+'K':String(v);
@@ -210,6 +210,15 @@ function vOverview(){
   return `<div class="card"><h2>Token utilization – stage › outcome <span class="muted small">(internal view)</span></h2>
   <div class="small muted">Total ${n(TK.total)} tokens · effective ${n(TK.effective)} (input×1, cache write×2, cache read×0.1, output×5) · ${TK.measured_rows} measured row(s), ${TK.unrecorded_rows} not recorded · source memory/usage/token-log.csv · built ${esc(TK.built)}</div>
   <table class="tbl" style="width:100%;margin-top:8px"><thead><tr><th>Stage › outcome / artifact</th><th>Module</th><th>Tokens</th><th>Effective</th><th>Requests</th><th></th></tr></thead><tbody>${rows}</tbody></table></div>`;
+}
+function sessionCard(){
+  const n=v=>v==null?'–':v>=1e6?(v/1e6).toFixed(2)+'M':v>=1e3?(v/1e3).toFixed(0)+'K':String(v);
+  const sp=x=>x?`instructions ${x.instructions}% · files and commands ${x.files}% · documents ${x.documents}% · conversation ${x.conversation}% · other ${x.other}%`:'<span class="muted">no split recorded</span>';
+  const rows=TK.sessions.map(s=>`<tr style="background:var(--line)"><td><b>${esc(s.session)}</b></td><td><b>${s.latest.requests??'–'}</b></td><td><b>${n(s.latest.total)}</b></td><td><b>${n(s.latest.effective)}</b></td><td class="small">${sp(s.latest.split)}</td></tr>`+
+    s.readings.map(r=>`<tr><td style="padding-left:18px">${fd(r.date)} · ${esc(r.checkpoint)}${r.ref?' · '+esc(r.ref):''}</td><td>${r.requests??'–'}</td><td>${n(r.total)}</td><td>${n(r.effective)}</td><td class="small muted">input ${n(r.input)} · cache write ${n(r.cache_write)} · cache read ${n(r.cache_read)} · output ${n(r.output)}${r.note?' · '+esc(r.note):''}</td></tr>`).join('')).join('');
+  return `<div class="card"><h2>Token readings – whole session <span class="muted small">(internal view)</span></h2>
+  <div class="small muted">Cumulative readings per working session (latest reading in bold = session total so far); effective = input×1 + cache write×2 + cache read×0.1 + output×5 · source memory/usage/session-readings.csv · the group split is an estimate</div>
+  <table class="tbl" style="width:100%;margin-top:8px"><thead><tr><th>Session › reading</th><th>Requests</th><th>Tokens</th><th>Effective</th><th>Detail</th></tr></thead><tbody>${rows}</tbody></table></div>`;
 }/*TK-END*/
 function gantt(){
   const rows = ST.filter(s=>s.actual_start);

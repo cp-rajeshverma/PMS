@@ -54,8 +54,8 @@ We are continuing <Step n: HLD>. Today: HLD Part01a Principles, Patterns and Dec
    - Customer-facing documents follow <customer-facing rule id>: author "<author name and role>",
      no mention of <excluded names> anywhere in the document.
    - <Usage-logging rule id>: take a usage reading at session start and at every outcome commit;
-     append one row per outcome with the difference to <usage log file>, quoting any text that
-     contains commas; never invent figures.
+     append one row per outcome with the difference to <usage log file> and the reading itself to
+     <session readings file>, quoting any text that contains commas; never invent figures.
    - Commit locally after each approved review with a clear message; I do the git push.
    - Work on my files on my computer (device shell), not by copying them to the cloud. Keep
      scratch files in $HOME (the device shell cannot write /tmp) and never read leftovers from /tmp.

@@ -1,13 +1,13 @@
 # Token usage log (internal – PR-04)
 
-`token-log.csv` records token consumption at **stage + outcome/artifact** level. Internal only: it feeds the internal SMD build (`smd/web/PMS_SMD_Dashboard_internal.html`) and never the customer-facing dashboard (PR-03).
+`token-log.csv` records token consumption at **stage + outcome/artifact** level. `session-readings.csv` keeps every cumulative session reading as taken, with its group split (instructions, files and commands, documents, conversation, other). Both are internal: they feed the two "(internal view)" sections of the single SMD dashboard `smd/web/PMS_SMD_Dashboard.html`, which are removed manually before the dashboard is shared with the customer (D-96, PR-03).
 
 ## When to log – per outcome, not per session
 
 A session can produce several outcomes, so log at **outcome checkpoints**:
 
 1. At session start (or right after the previous outcome is logged) take a **cumulative usage reading** for the session.
-2. When an outcome/artifact is completed (typically at its commit), take a new cumulative reading and append **one row with the difference** since the previous reading.
+2. When an outcome/artifact is completed (typically at its commit), take a new cumulative reading and append **one row with the difference** since the previous reading. Also append the reading itself to `session-readings.csv` (columns: `date, session, checkpoint, requests, input, cache_write, cache_read, output, total, instructions_pct, files_pct, documents_pct, conversation_pct, other_pct, source, ref, note`; the group percentages come from the usage explanation).
 3. Work that is not an artifact (reviews, refactors, dashboards, housekeeping) is logged against the closest outcome or as stage `X`.
 4. If a session ends mid-outcome, log the partial delta with the same `outcome` value; the dashboard sums rows.
 

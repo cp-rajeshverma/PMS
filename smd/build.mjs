@@ -1,4 +1,4 @@
-// SMD build – injects smd-data.json into smd-template.html → web/PMS_SMD_Dashboard.html
+// SMD build – injects smd-data.json and the token logs into smd-template.html → web/PMS_SMD_Dashboard.html (single dashboard, D-96)
 // Zero dependencies (Node built-ins only). Usage: node smd/build.mjs
 import fs from 'node:fs';
 import path from 'node:path';
@@ -8,8 +8,8 @@ const SMD = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(SMD, '..');
 const WEB = path.join(SMD, 'web');
 const OUT = path.join(WEB, 'PMS_SMD_Dashboard.html');
-const OUT_INT = path.join(WEB, 'PMS_SMD_Dashboard_internal.html');   // internal only (PR-04), git-ignored
 const TOKEN_LOG = path.join(ROOT, 'memory', 'usage', 'token-log.csv');
+const SESSION_LOG = path.join(ROOT, 'memory', 'usage', 'session-readings.csv');
 
 const data = JSON.parse(fs.readFileSync(path.join(SMD, 'smd-data.json'), 'utf8'));
 const tpl = fs.readFileSync(path.join(SMD, 'smd-template.html'), 'utf8');
@@ -38,12 +38,7 @@ const json = JSON.stringify(data)
   .replace(/<\/(script)/gi, '<\\/$1')
   .split(String.fromCharCode(0x2028)).join('\\u2028')
   .split(String.fromCharCode(0x2029)).join('\\u2029');
-// customer build: the internal token panel (between TK markers) is removed entirely – no token data or code (PR-03 / PR-04)
-const stripInternal = t => t.replace(/<!--TK-START-->[\s\S]*?<!--TK-END-->/g, '').replace(/\/\*TK-START\*\/[\s\S]*?\/\*TK-END\*\//g, '');
-const html = stripInternal(tpl).replace('/*SMD_DATA*/', () => json);
-if (/token/i.test(stripInternal(tpl))) { console.error('Audience error – customer template still contains token content'); process.exit(1); }
-
-// 3b. internal build – token utilization per stage › outcome from memory/usage/token-log.csv (PR-04)
+// 3b. token utilization per stage › outcome (token-log.csv) and whole-session readings (session-readings.csv) – internal sections (PR-04, D-96)
 function parseCsv(txt) {
   const rows = []; let row = [], cur = '', q = false;
   for (let i = 0; i < txt.length; i++) {
@@ -74,21 +69,32 @@ if (fs.existsSync(TOKEN_LOG)) {
     outcomes: Object.values(s.outcomes).map(o => { const src = [...o.sources]; return { ...o, effective: Math.round(o.effective),
       source: src.length === 1 ? src[0] : src.filter(x => x !== 'not-recorded').join('+'), sources: undefined }; }) }));
   tokens = { built: data.meta.generated_at, total: list.reduce((t, s) => t + s.total, 0), effective: list.reduce((t, s) => t + s.effective, 0),
-    measured_rows: rows.filter(r => r.source === 'measured').length, unrecorded_rows: rows.filter(r => r.source === 'not-recorded').length, stages: list };
+    measured_rows: rows.filter(r => r.source === 'measured').length, unrecorded_rows: rows.filter(r => r.source === 'not-recorded').length, stages: list, sessions: [] };
 }
+if (fs.existsSync(SESSION_LOG)) {
+  const num = v => (v === '' || v == null ? null : Number(v));
+  const eff = r => (num(r.input) || 0) + 2 * (num(r.cache_write) || 0) + 0.1 * (num(r.cache_read) || 0) + 5 * (num(r.output) || 0);
+  const by = {};
+  for (const r of parseCsv(fs.readFileSync(SESSION_LOG, 'utf8'))) {
+    const s = by[r.session] ??= { session: r.session, readings: [] };
+    s.readings.push({ date: r.date, checkpoint: r.checkpoint, requests: num(r.requests), input: num(r.input), cache_write: num(r.cache_write),
+      cache_read: num(r.cache_read), output: num(r.output), total: num(r.total), effective: Math.round(eff(r)), source: r.source, ref: r.ref, note: r.note,
+      split: r.instructions_pct === '' ? null : { instructions: num(r.instructions_pct), files: num(r.files_pct), documents: num(r.documents_pct), conversation: num(r.conversation_pct), other: num(r.other_pct) } });
+  }
+  tokens ??= { built: data.meta.generated_at, total: 0, effective: 0, measured_rows: 0, unrecorded_rows: 0, stages: [] };
+  tokens.sessions = Object.values(by).map(s => ({ ...s, latest: s.readings[s.readings.length - 1] }));
+}
+const html = tpl.replace('/*SMD_DATA*/', () => json).replace('/*SMD_TOKENS*/', () => JSON.stringify(tokens).replace(/<\/(script)/gi, '<\\/$1'));
 
 fs.mkdirSync(WEB, { recursive: true });
-if (/token/i.test(html)) { console.error('Audience error – customer dashboard contains token text (neutralise it per smd-config neutral_patterns)'); process.exit(1); }
 fs.writeFileSync(OUT, html, 'utf8');
-if (tokens) fs.writeFileSync(OUT_INT, tpl.replace('/*SMD_DATA*/', () => json)
-  .replace('/*SMD_TOKENS*/', () => JSON.stringify(tokens).replace(/<\/(script)/gi, '<\\/$1')), 'utf8');
 // 1×1 transparent PNG used by the page to detect "opened inside a checkout"
 fs.writeFileSync(path.join(WEB, '.smd-anchor.png'), Buffer.from(
   'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=', 'base64'));
 
 const kb = (fs.statSync(OUT).size / 1024).toFixed(1);
 console.log(`SMD build OK → ${path.relative(ROOT, OUT)} (${kb} KB)`);
-if (tokens) console.log(`Internal build → ${path.relative(ROOT, OUT_INT)} (token rows: ${tokens.measured_rows} measured, ${tokens.unrecorded_rows} not recorded; git-ignored)`);
+if (tokens) console.log(`Token sections (internal – remove manually before sharing with the customer): ${tokens.measured_rows} measured, ${tokens.unrecorded_rows} not recorded outcome row(s); ${tokens.sessions.length} session(s) with readings`);
 console.log(`Linked paths checked: ${paths.size}; broken: ${broken.length}`);
 broken.forEach(p => console.log('  BROKEN LINK:', p));
 if (fs.statSync(OUT).size > 2 * 1024 * 1024) console.log('WARNING: output exceeds 2 MB');

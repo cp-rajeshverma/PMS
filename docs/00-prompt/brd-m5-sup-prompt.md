@@ -82,7 +82,8 @@ need-basis entry only (Phase 2, D-57).
      no mention of AI tools, agents or assistants anywhere in the document.
    - PR-04: take a usage reading at session start and at every outcome commit (in the Claude app:
      "show me where this session's tokens went"); append one row per outcome with the difference to
-     memory/usage/token-log.csv, quoting any text that contains commas; never invent figures.
+     memory/usage/token-log.csv and the reading itself, with its group split, to
+     memory/usage/session-readings.csv; quote any text that contains commas; never invent figures.
    - Commit locally after each approved review with a clear message; I do the git push.
    - Work on my files on my computer (device shell), not by copying them to the cloud. The device
      shell cannot write /tmp – keep scratch files in $HOME and never read leftovers from /tmp.

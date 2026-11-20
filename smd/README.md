@@ -22,7 +22,7 @@ Overview (pipeline strip, KPIs, Done / Doing / Next, changes, timeline) · Stage
 | `smd-data.json` | Current dashboard data (source copy of the embedded block) |
 | `smd-template.html` | Renderer (HTML + CSS + vanilla JS, empty data placeholder) |
 | `build.mjs` | Injects the data into the template, checks every linked path, writes `web/` |
-| `web/` | Generated output: `PMS_SMD_Dashboard.html` (customer), `.smd-anchor.png` (checkout detection) and `PMS_SMD_Dashboard_internal.html` (internal only, git-ignored: adds token utilization per stage › outcome from `memory/usage/token-log.csv`, rule PR-04) |
+| `web/` | Generated output: `PMS_SMD_Dashboard.html` (one dashboard, D-96) and `.smd-anchor.png` (checkout detection). Its Overview ends with two internal sections – token utilization per stage › outcome (`memory/usage/token-log.csv`) and whole-session token readings (`memory/usage/session-readings.csv`), rule PR-04 |
 | `snapshots/` | Data snapshot per refresh (history and trend) |
 | `CHANGELOG.md` | One entry per refresh |
 
@@ -32,4 +32,4 @@ Run `smd/prompt/smd-update-prompt.md` with an agent that has access to the repos
 
 ## Audience rule
 
-The dashboard is customer-facing (project rule PR-03 / D-60): it never names AI tools or agents. Agent tooling folders, agent instructions and memory are excluded; working sessions are summarised only.
+The dashboard is customer-facing (project rule PR-03 / D-60): it never names AI tools or agents. Agent tooling folders, agent instructions and memory are excluded; working sessions are summarised only. **Before sharing the dashboard with the customer, remove the two "(internal view)" token sections** (everything between the `TK-START` / `TK-END` markers in the generated file) (D-96).

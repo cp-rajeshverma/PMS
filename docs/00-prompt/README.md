@@ -11,7 +11,7 @@ Each prompt is self-contained: paste it into a new session with the PMS folder (
 | brd-m2-ams-prompt.md | docs/02-brd/PMS-BRD-M2-AMS.md | Used 19 Nov 2026 – drafted, approval pending open items | D-77 to D-81 |
 | brd-m3-lms-prompt.md | docs/02-brd/PMS-BRD-M3-LMS.md | Used 19 Nov 2026 – drafted, approval pending open items | D-84 to D-88 |
 | brd-m4-sms-prompt.md | docs/02-brd/PMS-BRD-M4-SMS.md | Used 19 Nov 2026 – drafted, approval pending open items | D-90 to D-94 |
-| brd-m5-sup-prompt.md | docs/02-brd/PMS-BRD-M5-SUP.md | Ready – next session (UM and AUTH; ADM, NM, DM need basis only) | from D-96 |
+| brd-m5-sup-prompt.md | docs/02-brd/PMS-BRD-M5-SUP.md | Ready – next session (UM and AUTH; ADM, NM, DM need basis only) | from D-97 |
 
 New prompt and execute-prompt files start from the templates in `templates/00-prompt/` (D-95): one pair per document template, named after the prompt file they produce – for example `brd-mN-mod-prompt-template.md` and `execute-prompt-file-brd-mN-mod-prompt-template.md`.
 
