@@ -12,7 +12,8 @@ Each prompt is self-contained: paste it into a new session with the PMS folder (
 | brd-m3-lms-prompt.md | docs/02-brd/PMS-BRD-M3-LMS.md | Used 19 Nov 2026 – drafted, approval pending open items | D-84 to D-88 |
 | brd-m4-sms-prompt.md | docs/02-brd/PMS-BRD-M4-SMS.md | Used 19 Nov 2026 – drafted, approval pending open items | D-90 to D-94 |
 | brd-m5-sup-prompt.md | docs/02-brd/PMS-BRD-M5-SUP.md | Used 20 Nov 2026 – drafted, approval pending open items (UM, AUTH, audit and activity log; ADM, NM, DM Phase 2) | D-97 to D-102 |
+| brd-90-consistency-and-open-items-prompt.md | docs/02-brd/reviews/PMS-BRD-Consistency-Report.md, docs/02-brd/reviews/PMS-BRD-Open-Items-Note.md (fixes in the BRD set) | Ready – next session (Stage 2 closure: consistency check, then open-items note for the HR Manager) | from D-103 |
 
 New prompt and execute-prompt files start from the templates in `templates/00-prompt/` (D-95): one pair per document template, named after the prompt file they produce – for example `brd-mN-mod-prompt-template.md` and `execute-prompt-file-brd-mN-mod-prompt-template.md`.
 
-**Execute prompts:** `execute-prompt-file-<prompt>.md` holds the short message to paste into a new session to run a prompt file – one per prompt file (anchor, M1-EIMS, M2-AMS, M3-LMS, M4-SMS, M5-SUP). The SDLC dashboard refresh has its own in `smd/prompt/execute-prompt-file-smd-update-prompt.md`.
+**Execute prompts:** `execute-prompt-file-<prompt>.md` holds the short message to paste into a new session to run a prompt file – one per prompt file (anchor, M1-EIMS, M2-AMS, M3-LMS, M4-SMS, M5-SUP, BRD consistency and open items). The SDLC dashboard refresh has its own in `smd/prompt/execute-prompt-file-smd-update-prompt.md`.
