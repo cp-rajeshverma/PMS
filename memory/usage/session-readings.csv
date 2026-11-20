@@ -5,3 +5,4 @@ date,session,checkpoint,requests,input,cache_write,cache_read,output,total,instr
 2026-11-20,"2026-11-19 SMS BRD, SMD refresh, prompt templates",After the single dashboard change (D-96),113,264,1139172,32081652,119028,33340116,50.6,38.6,6.2,2.6,1.9,measured,D-96,Adds one dashboard with two internal token sections
 2026-11-20,2026-11-20 SUP BRD,Session start (after context load),17,38,92698,2291403,3305,2387444,56.7,41.5,0.6,0.7,0.6,measured,,"Taken after loading the context, before the gap questions"
 2026-11-20,2026-11-20 SUP BRD,After §1–§3 approval (D-98),28,66,147252,4652927,21111,4821356,48.4,37.5,7.6,1.8,4.8,measured,D-98,"Covers context load, gap questions (D-97) and §1–§3"
+2026-11-20,2026-11-20 SUP BRD,After §5–§6 approval (D-99),39,92,166239,7234659,36492,7437482,48.8,36.9,7.5,2.2,4.7,measured,D-99,"Adds the authorization question and §5–§6"

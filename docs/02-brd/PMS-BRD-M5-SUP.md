@@ -109,11 +109,92 @@ To be drafted (need-basis result).
 
 ## 5. User and access management
 
-To be drafted.
+User accounts are held in the identity provider (anchor DEP-01, INT-08). The Admin works on them only through the EIMS screens SCR-EIMS-01 and SCR-EIMS-02; the screen behaviour is in PMS-BRD-M1-EIMS and is referenced here. The reporting line (Manager Id) is EIMS master data (BR-CMN-01); delegation of approvals and access reviews are not part of the POC (anchor §13.1, R-02).
+
+### 5.1 User accounts
+
+| Req id | Requirement | Priority | Phase | UX ref | Acceptance criteria (Given / When / Then) |
+| --- | --- | --- | --- | --- | --- |
+| FR-UM-001 | Every employee has exactly one user account, created when the Admin onboards the employee (FR-EIMS-010): the user name is the Employee Id (FR-EIMS-040), the role is the one chosen by the Admin, the password is the temporary password (FR-EIMS-041) and the account is enabled. | Must | POC | SCR-EIMS-02, UJ-EIMS-01, UJ-SYS-04, INT-08 | Given the Admin saves a valid new employee, when the employee is created as EMP0013, then a user account EMP0013 exists with the chosen role, enabled, and its next sign-in opens Set password. |
+| FR-UM-002 | Accounts are created only by Admin onboarding; there is no self-registration. | Must | POC | SCR-SH-01, baseline §4 | Given the sign-in page, then it offers no way to register a new account. |
+| FR-UM-003 | A user account is never removed. When the employee is deactivated, the account is disabled and kept; its user name (Employee Id) is never reused (D-71). | Must | POC | BR-CMN-06, FR-EIMS-040 | Given EMP0012 is deactivated, when a new employee is onboarded, then the new account is not EMP0012 and EMP0012 still exists, disabled. |
+| FR-UM-004 | One PMS Administrator account is set up when PMS is installed, with a fixed user name that is not in the Employee Id format and an initial password that must be replaced at the first sign-in. The Admin account follows the same password policy, lockout and idle timeout as every user (§6). | Must | POC | D-24, D-97 | Given PMS is newly installed, when the Admin signs in with the initial password, then Set password opens and no other screen can be reached before a new password is saved. |
+| FR-UM-005 | The Admin account is not an employee: it has no employee record, is not listed in the directory and cannot be chosen as a manager (BR-EIMS-08). It cannot be deactivated and its role cannot be changed in PMS; its password is reset by IT operations outside PMS. | Must | POC | D-24, D-97 | Given the Admin opens Employees, then the Admin account is not listed and offers no Reset password, Edit or Deactivate. |
+| FR-UM-006 | Password reset (behind FR-EIMS-005): the new temporary password replaces the current password and any earlier temporary password, which stop working; any lock and the failed-attempt count are cleared; all the user's open sessions end at once; the next sign-in opens Set password. | Must | POC | SCR-EIMS-01, UJ-EIMS-08, D-07, D-97 | Given EMP0007 is locked and signed in on another browser, when the Admin resets the password, then the other session returns to sign-in at its next action, the old password is refused, and the new temporary password signs in at once and opens Set password. |
+| FR-UM-007 | Deactivation (behind FR-EIMS-018): the account is disabled at once and all the user's open sessions end; the user can no longer sign in (FR-AUTH-004). There is no reactivation in the POC (BR-EIMS-07). | Must | POC | SCR-EIMS-02, UJ-EIMS-07, BR-CMN-06, D-97 | Given EMP0009 is signed in, when the Admin deactivates EMP0009, then EMP0009's next action returns to the sign-in page and the next sign-in with the correct password shows the inactive-account message. |
+
+### 5.2 Roles and authorization
+
+| Req id | Requirement | Priority | Phase | UX ref | Acceptance criteria (Given / When / Then) |
+| --- | --- | --- | --- | --- | --- |
+| FR-UM-010 | Every user holds exactly one role: Employee or Manager for employees, Admin for the PMS Administrator account only (anchor §4.2). The role is held with the user account, chosen by the Admin at onboarding and changed only by the Admin (FR-EIMS-012); it is not part of profile approval (BR-EIMS-09). A Manager cannot be changed to Employee while they have active direct reports (FR-EIMS-016). | Must | POC | SCR-EIMS-02, D-29, D-71 | Given the onboarding form, then the role list offers Employee and Manager only. |
+| FR-UM-011 | A role change takes effect at the user's next sign-in; until then the menu stays as it was, but every request is checked against the current role (FR-UM-013). | Must | POC | D-97 | Given EMP0007 is signed in as Employee, when the Admin changes the role to Manager, then Approvals appears only after EMP0007 signs in again. Given a signed-in Manager is changed to Employee, when they open Team attendance, then access is refused (FR-UM-015). |
+| FR-UM-012 | The menu shows only the items the role can use, as in the navigation map: Employee – Home, My Profile, Attendance, Leave, Salary; Manager – the same plus Approvals, the Team tabs and Employees (team); Admin – Home, Approvals, Employees (FR-CMN-015). | Must | POC | SCR-SH-00, UX Journey Index navigation map, D-24 | Given the Admin signs in, then the menu shows Home, Approvals and Employees only. |
+| FR-UM-013 | PMS checks every request – opening a screen, reading data, taking an action – against the user's role and data scope, not only by hiding menu items: Employee – own records; Manager – own records plus direct reports' records (current Manager Id, no skip-level, D-63); Admin – all employee master data, plus the top-level employee's records for review and decision only, with no other access to attendance, leave or salary (D-58). No one approves their own records (BR-CMN-08). | Must | POC | Anchor §4.3, NFR-03, R-04 | Given manager M1 manages B but not C, when M1 requests C's attendance, then no data of C is returned and access is refused. |
+| FR-UM-014 | A manager's data scope follows the current Manager Id: after the Admin changes an employee's manager, the new manager sees and approves that employee's new items from then on, and the old manager no longer sees the employee. Items already waiting follow open item OI-04. | Must | POC | BR-CMN-01, FR-EIMS-017, OI-04 | Given B's manager changes from M1 to M2, when M1 opens My Team, then B is not listed; when M2 opens it, B is listed. |
+| FR-UM-015 | A request outside the user's role or data scope (for example a saved link to another employee's record or to an Admin page) opens a neutral page "You don't have access to this page." with a link to Home. No data of the record is shown, and the message does not reveal whether the record exists. The attempt is written to the activity log (§8). | Must | POC | D-99 | Given an Employee opens a link to SCR-EIMS-02, then "You don't have access to this page." is shown with a link to Home and no employee data. |
+
+**User stories**
+
+| Id | As a | I want to | So that |
+| --- | --- | --- | --- |
+| US-UM-01 | Employee or Manager | see only the menu items and records my role and data scope allow | I find my work quickly and nobody sees data they should not |
+| US-UM-02 | PMS Administrator | have a user account created and disabled together with the employee, and reset a forgotten or locked password | employees can sign in from day one and leavers cannot |
+| US-UM-03 | HR Manager | have every request checked against the user's role and data scope | personal data is seen only by the employee, their manager and the Admin (R-04) |
 
 ## 6. Authentication and session
 
-To be drafted.
+Business policy only; the architecture is in PMS-HLD-Part01-Architecture-and-Design §9. Sign-in, password and session rules apply to every account, the PMS Administrator included.
+
+### 6.1 Sign in – SCR-SH-01 (UJ-SH-01)
+
+| Req id | Requirement | Priority | Phase | UX ref | Acceptance criteria (Given / When / Then) |
+| --- | --- | --- | --- | --- | --- |
+| FR-AUTH-001 | Users sign in with their Employee Id (the Admin with the Admin user name) and password. The Employee Id is not case-sensitive. There is no single sign-on and no second sign-in factor in the POC. A valid sign-in opens the dashboard (FR-CMN-001). | Must | POC | SCR-SH-01, UJ-SH-01, D-01 | Given EMP0007 has an own password, when they sign in as "emp0007" with it, then the dashboard opens. |
+| FR-AUTH-002 | Both fields are required; an empty field shows "Enter your Employee Id." or "Enter your password." under it and nothing is sent. While signing in, the button shows "Signing in…" and is disabled. | Must | POC | SCR-SH-01 | Given the password is empty, when the user clicks Sign in, then "Enter your password." is shown and no sign-in attempt is counted. |
+| FR-AUTH-003 | A wrong password or an unknown Employee Id shows the same message, "Employee Id or password is incorrect. Please try again.", and clears the password. The message never reveals whether the Employee Id exists. | Must | POC | SCR-SH-01, NFR-03, D-97 | Given EMP9999 does not exist and EMP0007 does, when each is tried with a wrong password, then both show the same message. |
+| FR-AUTH-004 | An inactive account cannot sign in. The message "Your account is inactive. Contact your PMS administrator." is shown only when the correct password is entered; a wrong password shows the message of FR-AUTH-003. | Must | POC | SCR-SH-01, BR-CMN-06, D-97 | Given EMP0009 is inactive, when signing in with the correct password, then the inactive message is shown; with a wrong password, the generic message is shown. |
+| FR-AUTH-005 | After 5 failed sign-ins in a row the account is locked for 15 minutes; while locked, every sign-in is refused, even with the correct password, with "Too many failed attempts. Your account is locked for 15 minutes." The lock ends after 15 minutes or when the Admin resets the password (FR-UM-006). A successful sign-in sets the failed-attempt count back to zero. Unknown Employee Ids are never locked and always get the message of FR-AUTH-003. | Must | POC | SCR-SH-01, D-26, D-97 | Given 4 failed attempts for EMP0007, when the 5th fails, then the locked message is shown and a correct password is refused for 15 minutes. |
+| FR-AUTH-006 | A sign-in with a temporary password opens Set password (FR-AUTH-010); no other screen can be reached until an own password is saved. | Must | POC | SCR-SH-01, SCR-SH-02, UJ-SH-02, FR-EIMS-041 | Given a new employee signs in with the temporary password, when they open the dashboard address directly, then Set password is shown again. |
+| FR-AUTH-007 | A forgotten password is handled by the Admin; the sign-in page says "Forgot your password? Contact your PMS administrator." There is no self-service reset (C-06). | Must | POC | SCR-SH-01, D-07 | Given the sign-in page, then the help text is shown and no reset link is offered. |
+| FR-AUTH-008 | When sign-in is not possible for technical reasons, the page shows "PMS is unavailable right now. Please try again shortly." and no attempt is counted. | Must | POC | SCR-SH-01 | Given the identity provider cannot be reached, when the user signs in, then the unavailable message is shown. |
+
+### 6.2 Passwords – SCR-SH-02 (UJ-SH-02, change password)
+
+| Req id | Requirement | Priority | Phase | UX ref | Acceptance criteria (Given / When / Then) |
+| --- | --- | --- | --- | --- | --- |
+| FR-AUTH-010 | Set password (first sign-in or after a reset): the user enters a new password and confirms it, with no way to skip. On save the temporary password stops working, "Password saved." is shown and the dashboard opens. | Must | POC | SCR-SH-02, UJ-SH-02 | Given a temporary password was used, when a valid new password is saved, then the dashboard opens and the temporary password is refused at the next sign-in. |
+| FR-AUTH-011 | Change password: any signed-in user can open Change password from the user menu, enter the current password, the new password and its confirmation, and save; Cancel returns to the dashboard. A wrong current password shows "Current password is incorrect." | Must | POC | SCR-SH-02, SCR-SH-00 | Given a signed-in user, when the current password is wrong, then "Current password is incorrect." is shown and the password is not changed. |
+| FR-AUTH-012 | A new password must meet the password policy – at least 8 characters, an upper-case and a lower-case letter, a number, a special character, not the Employee Id (D-28) – and differ from the current or temporary password (D-97). A checklist shows each rule as met (✓) or not (○), not by colour alone. Otherwise "The new password does not meet all the rules below." or "Passwords do not match." is shown. There is no password history or expiry in the POC (Future). | Must | POC | SCR-SH-02, D-28, D-97 | Given "Emp0007!x" for EMP0007, when saved, then it is refused because it contains the Employee Id. Given the new password equals the current one, then it is refused. |
+| FR-AUTH-013 | A temporary password does not expire; it stays valid until it is replaced at sign-in or by a later reset (FR-UM-006). It is shown only once, to the Admin (NFR-EIMS-02). How it reaches the employee is open item OI-EIMS-01. | Must | POC | D-97, FR-EIMS-005, FR-EIMS-041 | Given a temporary password issued 10 days ago and not used, when the employee signs in with it, then Set password opens. |
+| FR-AUTH-014 | Passwords are never stored or shown in readable form; Show / Hide reveals only what the user is typing on the sign-in page. | Must | POC | SCR-SH-01, NFR-03 | Given any screen, report or log, then no password appears in readable form. |
+| FR-AUTH-015 | If a password cannot be saved for technical reasons, "Password could not be saved. Please try again." is shown and the old password stays valid. | Must | POC | SCR-SH-02 | Given the save fails, then the message is shown and the previous password still signs in. |
+
+### 6.3 Session and log out – SCR-SH-00 (UJ-SH-05)
+
+| Req id | Requirement | Priority | Phase | UX ref | Acceptance criteria (Given / When / Then) |
+| --- | --- | --- | --- | --- | --- |
+| FR-AUTH-020 | A session ends after 30 minutes without activity. The next action opens the sign-in page with "Your session has expired. Please sign in again." (FR-CMN-016); unsaved entries are lost. There is no warning before the timeout (Future). | Must | POC | SCR-SH-00, D-26, D-97 | Given a user is idle for 30 minutes, when they click a menu item, then the sign-in page shows the expiry message. |
+| FR-AUTH-021 | A user may be signed in on several browsers at the same time; each session times out on its own. | Must | POC | D-97 | Given EMP0007 is signed in on two browsers, then both work, and logging out of one does not end the other. |
+| FR-AUTH-022 | All the user's sessions end at once when the Admin deactivates the user or resets the password (FR-UM-006, FR-UM-007); the next action in any of them opens the sign-in page. | Must | POC | D-97 | Given EMP0007 is signed in, when the Admin resets the password, then EMP0007's next action opens the sign-in page. |
+| FR-AUTH-023 | Log out is in the user menu and needs no confirmation. It ends the session in PMS and in the identity provider and opens the sign-in page without a message; the browser Back button does not show PMS pages again. | Must | POC | SCR-SH-00, UJ-SH-05, D-97 | Given a signed-in user logs out, when they press Back, then the sign-in page is shown, not the previous screen. |
+| FR-AUTH-024 | The header shows the signed-in user's name, role and Employee Id; for the PMS Administrator it shows "PMS Administrator" without an Employee Id (open item OI-11). | Must | POC | SCR-SH-00, FR-CMN-015, OI-11 | Given the Admin signs in, then the header shows "PMS Administrator" and no Employee Id. |
+
+### 6.4 Security events
+
+| Req id | Requirement | Priority | Phase | UX ref | Acceptance criteria (Given / When / Then) |
+| --- | --- | --- | --- | --- | --- |
+| FR-AUTH-030 | The identity provider records every successful and failed sign-in, lock, log out, password set, change and reset, account creation, role change and deactivation, with the user, who performed it (the user or the Admin) and the date and time (IST). Passwords are never recorded. There is no screen to view these records in the POC (Phase 2, ADM); they are available to IT operations for investigation and are part of the activity flow in §8. | Must | POC | D-97, D-98, NFR-05 | Given the Admin resets EMP0007's password, then a record shows the reset of EMP0007 by the Admin with date and time and no password. |
+
+**User stories**
+
+| Id | As a | I want to | So that |
+| --- | --- | --- | --- |
+| US-AUTH-01 | User (any role) | sign in with my Employee Id and password | I can reach my work in PMS |
+| US-AUTH-02 | New employee | replace my temporary password with my own at the first sign-in | only I know my password |
+| US-AUTH-03 | User (any role) | change my password at any time | I can keep my account safe |
+| US-AUTH-04 | User (any role) | log out, and be signed out automatically when I leave PMS idle | nobody else can use my session |
+| US-AUTH-05 | HR Manager | have accounts locked after repeated failed sign-ins and messages that do not reveal valid Employee Ids | passwords cannot be guessed easily (R-04) |
 
 ## 7. Notification engine
 
