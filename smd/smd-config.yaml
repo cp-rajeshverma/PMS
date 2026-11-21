@@ -47,6 +47,7 @@ mapping:   # repo path glob -> stage / artifact type
   - { glob: "docs/01-ux/_generator/**",             stage: 1, type: Tooling, kind: code }
   - { glob: "docs/01-ux/mockups/html/assets/**",    stage: 1, type: Tooling, kind: code }
   - { glob: "docs/02-brd/*.md",                     stage: 2, type: BRD }
+  - { glob: "docs/02-brd/reviews/*.md",             stage: 2, type: Review }
   - { glob: "docs/03-hld/**",                       stage: 3, type: HLD }
   - { glob: "docs/04-standards/**",                 stage: 3, type: Standard }
   - { glob: "docs/decisions/decision-log.md",       feed: decisions }
