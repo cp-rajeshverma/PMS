@@ -17,6 +17,7 @@ Date: November 2026
 | 1.0 | 0.3 | 20-Nov-2026 | Rajesh Verma | Business open items decided (D-104): FR-UM-014 waiting items move to the new manager; FR-AUTH-013 temporary password by company email; §14 open items closed |
 | 1.0 | 0.4 | 21-Nov-2026 | Rajesh Verma | UX set v1.1 approved (D-105): FR-AUTH-024, FR-ADM-114 references; OI-11 closed in §14 |
 | 1.0 | 0.5 | 21-Nov-2026 | Rajesh Verma | Stakeholder review held (D-106): reviewers recorded in §1.2, verdict approved with no comments |
+| 1.0 | 1.0 | 21-Nov-2026 | Rajesh Verma | Approved baseline v1.0 (D-107); later changes only through change requests |
 
 ### 1.2 Review and approval
 
@@ -24,7 +25,7 @@ Reviewer names are sample names for the POC; each review decision was confirmed 
 
 | Role | Name | Date | Decision |
 | --- | --- | --- | --- |
-| Product owner | Rajesh Verma | | |
+| Product owner | Rajesh Verma | 21-Nov-2026 | Approved – signed off (D-107) |
 | Business analyst | Ananya Desai (sample reviewer, POC – confirmed by Rajesh Verma) | 21-Nov-2026 | Reviewed – approved, no comments |
 | Module business owner / SME | Sunil Bhatt (sample reviewer, POC – confirmed by Rajesh Verma) | 21-Nov-2026 | Reviewed – approved, no comments |
 | Module business owner / SME | Meenakshi Pillai (sample reviewer, POC – confirmed by Rajesh Verma) | 21-Nov-2026 | Reviewed – approved, no comments |

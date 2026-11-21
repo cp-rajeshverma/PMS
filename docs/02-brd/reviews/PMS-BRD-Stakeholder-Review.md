@@ -53,4 +53,4 @@ Findings raised: none. Open items remaining in the BRD set: none (OI-01 to OI-12
 
 ## 6. Outcome
 
-The BRD set is accepted by the stakeholder review and is ready for sign-off (Stage 2 gate).
+The BRD set is accepted by the stakeholder review and was signed off by the product owner on 21 November 2026 as the approved baseline v1.0 (D-107); the Stage 2 gate is passed.

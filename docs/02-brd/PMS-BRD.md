@@ -29,6 +29,7 @@ Date: November 2026
 | 1.0 | 0.15 | 20-Nov-2026 | Rajesh Verma | Business open items decided (D-104): BR-CMN-01 (one top-level employee), BR-CMN-06 (pending items on deactivation), FR-CMN-004 (missing days up to yesterday), R-02, glossary, §3.3 and §13.1 (bulk import Phase 2); OI-02, OI-03, OI-04, OI-12 closed; module status in §2.3 |
 | 1.0 | 0.16 | 21-Nov-2026 | Rajesh Verma | UX set v1.1 approved (D-105): §2.2 UX input versions; §4.3 note; FR-CMN-015 source; OI-01, OI-06 to OI-11 closed; module BRD revisions in §2.3 |
 | 1.0 | 0.17 | 21-Nov-2026 | Rajesh Verma | Stakeholder review held (D-106): reviewers recorded in §1.2, verdict approved with no comments; HR Manager confirmed the business decisions of D-104; R-07 updated; module BRD revisions in §2.3 |
+| 1.0 | 1.0 | 21-Nov-2026 | Rajesh Verma | Approved baseline v1.0 (D-107); later changes only through change requests |
 
 ### 1.2 Review and approval
 
@@ -36,7 +37,7 @@ Reviewer names are sample names for the POC; each review decision was confirmed 
 
 | Role | Name | Date | Decision |
 | --- | --- | --- | --- |
-| Product owner | Rajesh Verma | | |
+| Product owner | Rajesh Verma | 21-Nov-2026 | Approved – signed off (D-107) |
 | Business analyst | Ananya Desai (sample reviewer, POC – confirmed by Rajesh Verma) | 21-Nov-2026 | Reviewed – approved, no comments |
 | Business stakeholder | Sunil Bhatt (sample reviewer, POC – confirmed by Rajesh Verma) | 21-Nov-2026 | Reviewed – approved, no comments |
 | Business stakeholder | Meenakshi Pillai (sample reviewer, POC – confirmed by Rajesh Verma) | 21-Nov-2026 | Reviewed – approved, no comments |
@@ -82,11 +83,11 @@ Users of the BRD set:
 
 | Module | Document | Business owner / SME | Version | Status |
 | --- | --- | --- | --- | --- |
-| EIMS – Employee Information | PMS-BRD-M1-EIMS | HR Manager, Finance Manager | v1.0 rev 0.5 | Reviewed – approved by the stakeholder review (D-106); sign-off pending |
-| AMS – Attendance | PMS-BRD-M2-AMS | HR Manager, Finance Manager | v1.0 rev 0.5 | Reviewed – approved by the stakeholder review (D-106); sign-off pending |
-| LMS – Leave | PMS-BRD-M3-LMS | HR Manager, Finance Manager | v1.0 rev 0.5 | Reviewed – approved by the stakeholder review (D-106); sign-off pending |
-| SMS – Salary | PMS-BRD-M4-SMS | HR Manager, Finance Manager | v1.0 rev 0.5 | Reviewed – approved by the stakeholder review (D-106); sign-off pending |
-| SUP – Supporting functions | PMS-BRD-M5-SUP | HR Manager, Finance Manager | v1.0 rev 0.5 | Reviewed – approved by the stakeholder review (D-106); sign-off pending |
+| EIMS – Employee Information | PMS-BRD-M1-EIMS | HR Manager, Finance Manager | v1.0 (approved baseline) | Approved (D-107) |
+| AMS – Attendance | PMS-BRD-M2-AMS | HR Manager, Finance Manager | v1.0 (approved baseline) | Approved (D-107) |
+| LMS – Leave | PMS-BRD-M3-LMS | HR Manager, Finance Manager | v1.0 (approved baseline) | Approved (D-107) |
+| SMS – Salary | PMS-BRD-M4-SMS | HR Manager, Finance Manager | v1.0 (approved baseline) | Approved (D-107) |
+| SUP – Supporting functions | PMS-BRD-M5-SUP | HR Manager, Finance Manager | v1.0 (approved baseline) | Approved (D-107) |
 
 ### 2.4 Glossary and abbreviations
 
@@ -481,12 +482,12 @@ Functional requirement and rule counts for the modules are filled in as each mod
 
 | Module | Journeys | Screens | Functional requirements | Rules | Coverage status |
 | --- | --- | --- | --- | --- | --- |
-| Shared (this anchor) | 2: UJ-SH-03, UJ-SH-04 | 3: SCR-SH-00, SCR-SH-03, SCR-SH-04 | 15: FR-CMN-001 to FR-CMN-016 | 19: BR-CMN-01 to BR-CMN-19 | Drafted |
-| M1 – EIMS | 10: UJ-EIMS-01 to UJ-EIMS-09, UJ-SYS-04 | 4: SCR-EIMS-01 to SCR-EIMS-04 | 32: FR-EIMS-001 to FR-EIMS-041 | 20: VR-EIMS-01 to 10, BR-EIMS-01 to 10 | Drafted (pending open items) |
-| M2 – AMS | 4: UJ-AMS-01 to UJ-AMS-04 | 3: SCR-AMS-01 to SCR-AMS-03 | 27: FR-AMS-001 to FR-AMS-032 | 13: VR-AMS-01 to 07, BR-AMS-01 to 06 | Drafted (pending open items) |
-| M3 – LMS | 4: UJ-LMS-01 to UJ-LMS-04 | 3: SCR-LMS-01 to SCR-LMS-03 | 25: FR-LMS-001 to FR-LMS-028 | 16: VR-LMS-01 to 07, BR-LMS-01 to 09 | Drafted (pending open items) |
-| M4 – SMS | 7: UJ-SMS-01 to UJ-SMS-04, UJ-SYS-01 to UJ-SYS-03 | 2: SCR-SMS-01, SCR-SMS-02 | 31: FR-SMS-001 to FR-SMS-046 | 17: VR-SMS-01 to 04, BR-SMS-01 to 13 | Drafted (pending open items) |
-| M5 – SUP | 3: UJ-SH-01, UJ-SH-02, UJ-SH-05 | 2: SCR-SH-01, SCR-SH-02 | 45: FR-UM-001 to 015, FR-AUTH-001 to 030, FR-ADM-101 to 117 | 13: VR-AUTH-01 to 03, BR-AUTH-01 to 04, BR-UM-01 to 04, BR-ADM-01, 02 | Drafted (pending open items) |
+| Shared (this anchor) | 2: UJ-SH-03, UJ-SH-04 | 3: SCR-SH-00, SCR-SH-03, SCR-SH-04 | 15: FR-CMN-001 to FR-CMN-016 | 19: BR-CMN-01 to BR-CMN-19 | Approved (D-107) |
+| M1 – EIMS | 10: UJ-EIMS-01 to UJ-EIMS-09, UJ-SYS-04 | 4: SCR-EIMS-01 to SCR-EIMS-04 | 32: FR-EIMS-001 to FR-EIMS-041 | 20: VR-EIMS-01 to 10, BR-EIMS-01 to 10 | Approved (D-107) |
+| M2 – AMS | 4: UJ-AMS-01 to UJ-AMS-04 | 3: SCR-AMS-01 to SCR-AMS-03 | 27: FR-AMS-001 to FR-AMS-032 | 13: VR-AMS-01 to 07, BR-AMS-01 to 06 | Approved (D-107) |
+| M3 – LMS | 4: UJ-LMS-01 to UJ-LMS-04 | 3: SCR-LMS-01 to SCR-LMS-03 | 25: FR-LMS-001 to FR-LMS-028 | 16: VR-LMS-01 to 07, BR-LMS-01 to 09 | Approved (D-107) |
+| M4 – SMS | 7: UJ-SMS-01 to UJ-SMS-04, UJ-SYS-01 to UJ-SYS-03 | 2: SCR-SMS-01, SCR-SMS-02 | 31: FR-SMS-001 to FR-SMS-046 | 17: VR-SMS-01 to 04, BR-SMS-01 to 13 | Approved (D-107) |
+| M5 – SUP | 3: UJ-SH-01, UJ-SH-02, UJ-SH-05 | 2: SCR-SH-01, SCR-SH-02 | 45: FR-UM-001 to 015, FR-AUTH-001 to 030, FR-ADM-101 to 117 | 13: VR-AUTH-01 to 03, BR-AUTH-01 to 04, BR-UM-01 to 04, BR-ADM-01, 02 | Approved (D-107) |
 | **Total** | **30** | **17** | | | |
 
 ## 12. Open items

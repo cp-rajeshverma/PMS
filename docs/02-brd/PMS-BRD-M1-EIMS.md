@@ -17,6 +17,7 @@ Date: November 2026
 | 1.0 | 0.3 | 20-Nov-2026 | Rajesh Verma | Business open items decided (D-104): §3.2 and §13 onboarding one by one (bulk import Phase 2); §6.2, FR-EIMS-018 pending items on deactivation; §6.3, FR-EIMS-017 waiting items move to the new manager; FR-EIMS-014, VR-EIMS-05 one top-level employee; NOT-EIMS-06 temporary password by company email; OI-EIMS-01, OI-EIMS-02 closed; §14, §16, §17 |
 | 1.0 | 0.4 | 21-Nov-2026 | Rajesh Verma | UX set v1.1 approved (D-105): OI-07, OI-11 shown as closed in §16 |
 | 1.0 | 0.5 | 21-Nov-2026 | Rajesh Verma | Stakeholder review held (D-106): reviewers recorded in §1.2, verdict approved with no comments |
+| 1.0 | 1.0 | 21-Nov-2026 | Rajesh Verma | Approved baseline v1.0 (D-107); later changes only through change requests |
 
 ### 1.2 Review and approval
 
@@ -24,7 +25,7 @@ Reviewer names are sample names for the POC; each review decision was confirmed 
 
 | Role | Name | Date | Decision |
 | --- | --- | --- | --- |
-| Product owner | Rajesh Verma | | |
+| Product owner | Rajesh Verma | 21-Nov-2026 | Approved – signed off (D-107) |
 | Business analyst | Ananya Desai (sample reviewer, POC – confirmed by Rajesh Verma) | 21-Nov-2026 | Reviewed – approved, no comments |
 | Module business owner / SME | Sunil Bhatt (sample reviewer, POC – confirmed by Rajesh Verma) | 21-Nov-2026 | Reviewed – approved, no comments |
 | Module business owner / SME | Meenakshi Pillai (sample reviewer, POC – confirmed by Rajesh Verma) | 21-Nov-2026 | Reviewed – approved, no comments |
