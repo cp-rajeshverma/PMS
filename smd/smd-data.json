@@ -520,11 +520,25 @@
        "status": "Completed"
       },
       {
-       "id": "M2.7",
-       "name": "BRD set signed off",
+       "id": "M2.6b",
+       "name": "Consistency check and business open items decided (D-103, D-104)",
        "planned": null,
-       "actual": null,
-       "status": "Not Started"
+       "actual": "2026-11-20",
+       "status": "Completed"
+      },
+      {
+       "id": "M2.6c",
+       "name": "UX set v1.1 approved (D-105)",
+       "planned": null,
+       "actual": "2026-11-21",
+       "status": "Completed"
+      },
+      {
+       "id": "M2.7",
+       "name": "BRD set signed off – approved baseline v1.0 (D-107)",
+       "planned": null,
+       "actual": "2026-11-21",
+       "status": "Completed"
       }
      ]
     },
@@ -6381,7 +6395,8 @@
    "Three repository folders are not covered by this view and are not indexed: an internal working-files folder under docs/ (D-83, now 13 files), an internal screenshots folder at the repository root, and a new internal prompt-templates folder templates/00-prompt/ (D-95, 26 files; declared internal, to be excluded). Proposed mapping: add exclude lines \"docs/00-prompt/**\" and \"templates/00-prompt/**\" (and the screenshots folder) to smd-config.yaml.",
    "FR numbering has gaps in every module BRD (e.g. 31 requirements used in FR-SMS-001..046; 45 in FR-UM-001..015, FR-AUTH-001..030, FR-ADM-101..117), by design; counts are taken from PMS-BRD §11.",
    "Folder docs/02-brd/reviews/ (consistency report, open-items note, stakeholder review record) is still not covered by the mapping; the consistency report and stakeholder review record are linked as review evidence (RV-09, RV-11). Proposed mapping line: { glob: \"docs/02-brd/reviews/*.md\", stage: 2, type: Review }.",
-   "BRD reviewer names are sample names for the POC (D-106); each review decision was confirmed by the product owner."
+   "BRD reviewer names are sample names for the POC (D-106); each review decision was confirmed by the product owner.",
+   "Correction 21 Nov: Stage 2 milestones completed (consistency check, UX v1.1, sign-off) were added after the 14:52 refresh."
   ]
  }
 }

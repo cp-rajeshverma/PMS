@@ -201,7 +201,7 @@ function vOverview(){
   <div class="grid g2">
     <div class="card"><h2>What changed since the last update</h2>${D.changes_since_last.map(c=>`<div class="item next"><b>${esc(c.id)}</b> ${esc(c.change)}<small>${c.from?esc(c.from)+' → ':''}${esc(c.to||'')}</small></div>`).join('')}</div>
     <div class="card"><h2>Timeline (actual)</h2>${gantt()}<div class="small muted">Planned dates will be added once set; bars show actual start to finish (or today).</div></div>
-  </div>/*TK-START*/${TK&&TK.stages.length?tokenCard():''}${TK&&TK.sessions&&TK.sessions.length?sessionCard():''}/*TK-END*/`;
+  </div>${''/*TK-START*/+(TK&&TK.stages.length?tokenCard():'')+(TK&&TK.sessions&&TK.sessions.length?sessionCard():'')/*TK-END*/}`;
 }
 /*TK-START*/function tokenCard(){
   const n=v=>v==null?'–':v>=1e6?(v/1e6).toFixed(2)+'M':v>=1e3?(v/1e3).toFixed(0)+'K':String(v);

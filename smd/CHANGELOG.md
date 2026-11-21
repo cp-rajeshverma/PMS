@@ -1,5 +1,10 @@
 # SMD changelog
 
+## 2026-11-21 – correction (no new refresh)
+
+- Stage 2 milestones completed: consistency check and business open items (D-103, D-104), UX set v1.1 (D-105), BRD set signed off (D-107); the Overview "Done" list now shows them.
+- Template fix: the internal-section marker no longer shows as text above the token card; removing everything between the TK-START and TK-END markers still leaves a working page.
+
 ## 2026-11-21 14:52 IST – refresh (Stage 2 BRD completed; gate passed)
 
 - Refreshed from commit `fd2e5eb` (4 commits since `21aa65f`: `d42c33f` to `fd2e5eb`); clean working tree.
