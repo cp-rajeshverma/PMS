@@ -1,12 +1,12 @@
 {
  "meta": {
   "smd_version": "1.0",
-  "generated_at": "2026-11-20T23:19+05:30",
+  "generated_at": "2026-11-21T14:52+05:30",
   "generated_by": "SMD update run",
   "repo_root": "D:\\POC\\PMS",
-  "repo_commit": "21aa65f",
-  "working_tree_note": "Clean working tree at 21aa65f.",
-  "previous_snapshot": "snapshots/2026-11-20_1948.json",
+  "repo_commit": "fd2e5eb",
+  "working_tree_note": "Clean working tree at fd2e5eb.",
+  "previous_snapshot": "snapshots/2026-11-20_2319.json",
   "repo_rel_prefix": "../../",
   "remote_base_url": "https://github.com/cp-rajeshverma/PMS/blob/main/",
   "audience": "customer-facing (rule PR-03 applied)",
@@ -46,6 +46,12 @@
     "decisions": 104,
     "commits": 98,
     "artifacts_done": 40
+   },
+   {
+    "date": "2026-11-21",
+    "decisions": 107,
+    "commits": 102,
+    "artifacts_done": 41
    }
   ]
  },
@@ -67,7 +73,7 @@
   },
   "target_go_live": null,
   "health": "G",
-  "health_reason": "No Critical or High finding open: the six business open items OI-02, OI-03, OI-04, OI-12, OI-EIMS-01 and OI-EIMS-02 were decided (D-104) after the BRD set consistency check (D-103). Remaining open items are UX document updates (OI-01, OI-06 to OI-11) due before HLD Part02; BRD reviewers are not yet named (R-07). Planned dates to be set based on progress."
+  "health_reason": "Stage 2 (Business Requirements) completed: BRD set signed off as approved baseline v1.0 (D-107) after the stakeholder review (D-106) and UX v1.1 (D-105). No open findings or open items. Stage 3 (Solution Design) is next; planned dates to be set based on progress."
  },
  "people": [
   {
@@ -108,7 +114,7 @@
    "name": "PMS transformation (POC)",
    "status": "In Progress",
    "health": "G",
-   "current_stage": 2,
+   "current_stage": 3,
    "crs": [],
    "stages": [
     {
@@ -343,13 +349,13 @@
      "name": "Business Requirements",
      "repo_step": "Step 3",
      "driven_by": "Manual",
-     "status": "In Progress",
+     "status": "Completed",
      "owner": "Rajesh Verma",
      "planned_start": null,
      "planned_end": null,
      "actual_start": "2026-11-18",
-     "actual_end": null,
-     "percent": 85,
+     "actual_end": "2026-11-21",
+     "percent": 100,
      "source": "declared",
      "gate": {
       "criteria": [
@@ -369,32 +375,32 @@
         "evidence": "docs/02-brd/reviews/PMS-BRD-Consistency-Report.md"
        },
        {
-        "text": "Stakeholder review: BA, HR Manager, Finance Manager, Security / IT owner (names pending, R-07)",
-        "met": false,
-        "evidence": null
+        "text": "Stakeholder review: BA, HR Manager, Finance Manager, Security / IT owner – approved, no comments (D-106; sample reviewer names for the POC)",
+        "met": true,
+        "evidence": "docs/02-brd/reviews/PMS-BRD-Stakeholder-Review.md"
        },
        {
-        "text": "Mockups ↔ BRD gaps closed (UX updates OI-01, OI-06 to OI-11)",
-        "met": false,
-        "evidence": null
+        "text": "Mockups ↔ BRD gaps closed: UX set v1.1 (OI-01, OI-06 to OI-11 closed, D-105)",
+        "met": true,
+        "evidence": "docs/01-ux/ux-journey-index.md"
        },
        {
-        "text": "BRD set signed off",
-        "met": false,
-        "evidence": null
+        "text": "BRD set signed off as approved baseline v1.0 (D-107)",
+        "met": true,
+        "evidence": "docs/decisions/decision-log.md"
        }
       ],
-      "decision": "Pending",
-      "decided_by": null,
-      "date": null
+      "decision": "Passed",
+      "decided_by": "Rajesh Verma",
+      "date": "2026-11-21"
      },
      "steps": [
       {
        "id": "S2.1",
        "name": "BRD anchor (PMS-BRD)",
        "agent": null,
-       "status": "In Review",
-       "date": "2026-11-20",
+       "status": "Completed",
+       "date": "2026-11-21",
        "artifact": "PMS-BRD"
       },
       {
@@ -447,11 +453,27 @@
       },
       {
        "id": "S2.8",
+       "name": "UX alignment (UX set v1.1)",
+       "agent": null,
+       "status": "Completed",
+       "date": "2026-11-21",
+       "artifact": "PMS-UX-JOURNEYS"
+      },
+      {
+       "id": "S2.9",
+       "name": "Stakeholder review",
+       "agent": null,
+       "status": "Completed",
+       "date": "2026-11-21",
+       "artifact": "PMS-BRD"
+      },
+      {
+       "id": "S2.10",
        "name": "Stakeholder review and sign-off",
        "agent": null,
-       "status": "Not Started",
-       "date": null,
-       "artifact": null
+       "status": "Completed",
+       "date": "2026-11-21",
+       "artifact": "PMS-BRD"
       }
      ],
      "milestones": [
@@ -1382,16 +1404,16 @@
    "type": "UX journey index",
    "stage": 1,
    "step": "Journey index",
-   "version": "1.0",
+   "version": "1.1",
    "status": "Approved",
    "completed": "2026-11-15",
-   "last_updated": "2026-11-15",
+   "last_updated": "2026-11-21",
    "path": "docs/01-ux/ux-journey-index.md",
    "source": "declared",
    "reviewers": [
     "Rajesh Verma"
    ],
-   "summary": "30 user journeys (26 user-facing, 4 backend jobs) across 17 screens inside one shell app; approved D-34.",
+   "summary": "30 user journeys (26 user-facing, 4 backend jobs) across 17 screens inside one shell app; approved D-34. Updated to v1.1 (D-105).",
    "depends_on": [],
    "files": [],
    "module": "ALL",
@@ -1407,10 +1429,10 @@
    "stage": 1,
    "step": "Shell screens",
    "module": "ALL",
-   "version": "UX set 1.0 (summary 0.1)",
+   "version": "1.1",
    "status": "Approved",
    "completed": "2026-11-15",
-   "last_updated": "2026-11-15",
+   "last_updated": "2026-11-21",
    "path": "docs/01-ux/ux-summary/scr-sh-01-login.md",
    "files": [
     {
@@ -1434,7 +1456,7 @@
     "PMS-UX-JOURNEYS"
    ],
    "png_inferred": true,
-   "summary": "Roles: All. Lets an active employee sign in to PMS with Employee Id and password, and routes first-time users to set their own password.",
+   "summary": "Roles: All. Lets an active employee sign in to PMS with Employee Id and password, and routes first-time users to set their own password. Updated to v1.1 (D-105).",
    "pipeline": "PMS-TX-01",
    "author": "Rajesh Verma",
    "planned": null,
@@ -1447,10 +1469,10 @@
    "stage": 1,
    "step": "Shell screens",
    "module": "ALL",
-   "version": "UX set 1.0 (summary 0.1)",
+   "version": "1.1",
    "status": "Approved",
    "completed": "2026-11-15",
-   "last_updated": "2026-11-15",
+   "last_updated": "2026-11-21",
    "path": "docs/01-ux/ux-summary/scr-sh-02-set-password.md",
    "files": [
     {
@@ -1470,7 +1492,7 @@
     "PMS-UX-JOURNEYS"
    ],
    "png_inferred": false,
-   "summary": "Roles: All. Lets a user replace a temporary password with their own (first login or after an Admin reset), or change their password at any time.",
+   "summary": "Roles: All. Lets a user replace a temporary password with their own (first login or after an Admin reset), or change their password at any time. Updated to v1.1 (D-105).",
    "pipeline": "PMS-TX-01",
    "author": "Rajesh Verma",
    "planned": null,
@@ -1483,10 +1505,10 @@
    "stage": 1,
    "step": "Shell screens",
    "module": "ALL",
-   "version": "UX set 1.0 (summary 0.1)",
+   "version": "1.1",
    "status": "Approved",
    "completed": "2026-11-15",
-   "last_updated": "2026-11-15",
+   "last_updated": "2026-11-21",
    "path": "docs/01-ux/ux-summary/scr-sh-03-dashboard.md",
    "files": [
     {
@@ -1510,7 +1532,7 @@
     "PMS-UX-JOURNEYS"
    ],
    "png_inferred": true,
-   "summary": "Roles: All. Shows each user, right after login, what needs their action and where they stand, so nothing is missed.",
+   "summary": "Roles: All. Shows each user, right after login, what needs their action and where they stand, so nothing is missed. Updated to v1.1 (D-105).",
    "pipeline": "PMS-TX-01",
    "author": "Rajesh Verma",
    "planned": null,
@@ -1523,10 +1545,10 @@
    "stage": 1,
    "step": "Shell screens",
    "module": "ALL",
-   "version": "UX set 1.0 (summary 0.1)",
+   "version": "1.1",
    "status": "Approved",
    "completed": "2026-11-15",
-   "last_updated": "2026-11-15",
+   "last_updated": "2026-11-21",
    "path": "docs/01-ux/ux-summary/scr-sh-04-approvals.md",
    "files": [
     {
@@ -1550,7 +1572,7 @@
     "PMS-UX-JOURNEYS"
    ],
    "png_inferred": true,
-   "summary": "Roles: Manager, Admin. One place for a manager's daily approval routine, so they can clear all pending items across modules quickly (D-24 / UXQ-03).",
+   "summary": "Roles: Manager, Admin. One place for a manager's daily approval routine, so they can clear all pending items across modules quickly (D-24 / UXQ-03). Updated to v1.1 (D-105).",
    "pipeline": "PMS-TX-01",
    "author": "Rajesh Verma",
    "planned": null,
@@ -1563,10 +1585,10 @@
    "stage": 1,
    "step": "EIMS screens",
    "module": "EIMS",
-   "version": "UX set 1.0 (summary 0.1)",
+   "version": "1.1",
    "status": "Approved",
    "completed": "2026-11-15",
-   "last_updated": "2026-11-15",
+   "last_updated": "2026-11-21",
    "path": "docs/01-ux/ux-summary/scr-eims-01-directory.md",
    "files": [
     {
@@ -1590,7 +1612,7 @@
     "PMS-UX-JOURNEYS"
    ],
    "png_inferred": true,
-   "summary": "Roles: Manager (team), Admin (all). Lets Admin find and manage any employee, and lets a manager see who is in their team.",
+   "summary": "Roles: Manager (team), Admin (all). Lets Admin find and manage any employee, and lets a manager see who is in their team. Updated to v1.1 (D-105).",
    "pipeline": "PMS-TX-01",
    "author": "Rajesh Verma",
    "planned": null,
@@ -1603,10 +1625,10 @@
    "stage": 1,
    "step": "EIMS screens",
    "module": "EIMS",
-   "version": "UX set 1.0 (summary 0.1)",
+   "version": "1.1",
    "status": "Approved",
    "completed": "2026-11-15",
-   "last_updated": "2026-11-15",
+   "last_updated": "2026-11-21",
    "path": "docs/01-ux/ux-summary/scr-eims-02-admin-form.md",
    "files": [
     {
@@ -1626,7 +1648,7 @@
     "PMS-UX-JOURNEYS"
    ],
    "png_inferred": false,
-   "summary": "Roles: Admin. Lets Admin onboard a new employee with the minimum details needed to sign in, and later maintain the Admin-owned details (manager, role, wage rate, active status).",
+   "summary": "Roles: Admin. Lets Admin onboard a new employee with the minimum details needed to sign in, and later maintain the Admin-owned details (manager, role, wage rate, active status). Updated to v1.1 (D-105).",
    "pipeline": "PMS-TX-01",
    "author": "Rajesh Verma",
    "planned": null,
@@ -1639,10 +1661,10 @@
    "stage": 1,
    "step": "EIMS screens",
    "module": "EIMS",
-   "version": "UX set 1.0 (summary 0.1)",
+   "version": "1.1",
    "status": "Approved",
    "completed": "2026-11-15",
-   "last_updated": "2026-11-15",
+   "last_updated": "2026-11-21",
    "path": "docs/01-ux/ux-summary/scr-eims-03-my-profile.md",
    "files": [
     {
@@ -1666,7 +1688,7 @@
     "PMS-UX-JOURNEYS"
    ],
    "png_inferred": true,
-   "summary": "Roles: All. Lets employees complete and maintain their own personal details and submit them for their manager's approval.",
+   "summary": "Roles: All. Lets employees complete and maintain their own personal details and submit them for their manager's approval. Updated to v1.1 (D-105).",
    "pipeline": "PMS-TX-01",
    "author": "Rajesh Verma",
    "planned": null,
@@ -1679,10 +1701,10 @@
    "stage": 1,
    "step": "EIMS screens",
    "module": "EIMS",
-   "version": "UX set 1.0 (summary 0.1)",
+   "version": "1.1",
    "status": "Approved",
    "completed": "2026-11-15",
-   "last_updated": "2026-11-15",
+   "last_updated": "2026-11-21",
    "path": "docs/01-ux/ux-summary/scr-eims-04-profile-review.md",
    "files": [
     {
@@ -1706,7 +1728,7 @@
     "PMS-UX-JOURNEYS"
    ],
    "png_inferred": true,
-   "summary": "Roles: Manager, Admin. Lets the approver check a submitted profile and approve or reject it, seeing exactly what changed for an update.",
+   "summary": "Roles: Manager, Admin. Lets the approver check a submitted profile and approve or reject it, seeing exactly what changed for an update. Updated to v1.1 (D-105).",
    "pipeline": "PMS-TX-01",
    "author": "Rajesh Verma",
    "planned": null,
@@ -1719,10 +1741,10 @@
    "stage": 1,
    "step": "AMS screens",
    "module": "AMS",
-   "version": "UX set 1.0 (summary 0.1)",
+   "version": "1.1",
    "status": "Approved",
    "completed": "2026-11-15",
-   "last_updated": "2026-11-15",
+   "last_updated": "2026-11-21",
    "path": "docs/01-ux/ux-summary/scr-ams-01-my-attendance.md",
    "files": [
     {
@@ -1746,7 +1768,7 @@
     "PMS-UX-JOURNEYS"
    ],
    "png_inferred": true,
-   "summary": "Roles: All. Gives employees a month-at-a-glance view of their attendance, what is approved, what needs action, and which weekdays are missing.",
+   "summary": "Roles: All. Gives employees a month-at-a-glance view of their attendance, what is approved, what needs action, and which weekdays are missing. Updated to v1.1 (D-105).",
    "pipeline": "PMS-TX-01",
    "author": "Rajesh Verma",
    "planned": null,
@@ -1759,10 +1781,10 @@
    "stage": 1,
    "step": "AMS screens",
    "module": "AMS",
-   "version": "UX set 1.0 (summary 0.1)",
+   "version": "1.1",
    "status": "Approved",
    "completed": "2026-11-15",
-   "last_updated": "2026-11-15",
+   "last_updated": "2026-11-21",
    "path": "docs/01-ux/ux-summary/scr-ams-02-entry.md",
    "files": [
     {
@@ -1786,7 +1808,7 @@
     "PMS-UX-JOURNEYS"
    ],
    "png_inferred": true,
-   "summary": "Roles: All. Lets an employee record one day's working times and submit them for approval, or fix a rejected entry.",
+   "summary": "Roles: All. Lets an employee record one day's working times and submit them for approval, or fix a rejected entry. Updated to v1.1 (D-105).",
    "pipeline": "PMS-TX-01",
    "author": "Rajesh Verma",
    "planned": null,
@@ -1799,10 +1821,10 @@
    "stage": 1,
    "step": "AMS screens",
    "module": "AMS",
-   "version": "UX set 1.0 (summary 0.1)",
+   "version": "1.1",
    "status": "Approved",
    "completed": "2026-11-15",
-   "last_updated": "2026-11-15",
+   "last_updated": "2026-11-21",
    "path": "docs/01-ux/ux-summary/scr-ams-03-team-review.md",
    "files": [
     {
@@ -1826,7 +1848,7 @@
     "PMS-UX-JOURNEYS"
    ],
    "png_inferred": true,
-   "summary": "Roles: Manager. Lets a manager approve or reject direct reports' attendance, review history, and reopen an approved day when its salary is disputed.",
+   "summary": "Roles: Manager. Lets a manager approve or reject direct reports' attendance, review history, and reopen an approved day when its salary is disputed. Updated to v1.1 (D-105).",
    "pipeline": "PMS-TX-01",
    "author": "Rajesh Verma",
    "planned": null,
@@ -1839,10 +1861,10 @@
    "stage": 1,
    "step": "LMS screens",
    "module": "LMS",
-   "version": "UX set 1.0 (summary 0.1)",
+   "version": "1.1",
    "status": "Approved",
    "completed": "2026-11-15",
-   "last_updated": "2026-11-15",
+   "last_updated": "2026-11-21",
    "path": "docs/01-ux/ux-summary/scr-lms-01-my-leave.md",
    "files": [
     {
@@ -1866,7 +1888,7 @@
     "PMS-UX-JOURNEYS"
    ],
    "png_inferred": true,
-   "summary": "Roles: All. Shows employees all their leave requests and their status, and lets them cancel a pending request or fix a rejected one.",
+   "summary": "Roles: All. Shows employees all their leave requests and their status, and lets them cancel a pending request or fix a rejected one. Updated to v1.1 (D-105).",
    "pipeline": "PMS-TX-01",
    "author": "Rajesh Verma",
    "planned": null,
@@ -1879,10 +1901,10 @@
    "stage": 1,
    "step": "LMS screens",
    "module": "LMS",
-   "version": "UX set 1.0 (summary 0.1)",
+   "version": "1.1",
    "status": "Approved",
    "completed": "2026-11-15",
-   "last_updated": "2026-11-15",
+   "last_updated": "2026-11-21",
    "path": "docs/01-ux/ux-summary/scr-lms-02-request.md",
    "files": [
     {
@@ -1906,7 +1928,7 @@
     "PMS-UX-JOURNEYS"
    ],
    "png_inferred": true,
-   "summary": "Roles: All. Lets an employee request full-day leave for a date range, or correct a rejected request, and submit it to their manager.",
+   "summary": "Roles: All. Lets an employee request full-day leave for a date range, or correct a rejected request, and submit it to their manager. Updated to v1.1 (D-105).",
    "pipeline": "PMS-TX-01",
    "author": "Rajesh Verma",
    "planned": null,
@@ -1919,10 +1941,10 @@
    "stage": 1,
    "step": "LMS screens",
    "module": "LMS",
-   "version": "UX set 1.0 (summary 0.1)",
+   "version": "1.1",
    "status": "Approved",
    "completed": "2026-11-15",
-   "last_updated": "2026-11-15",
+   "last_updated": "2026-11-21",
    "path": "docs/01-ux/ux-summary/scr-lms-03-team-review.md",
    "files": [
     {
@@ -1946,7 +1968,7 @@
     "PMS-UX-JOURNEYS"
    ],
    "png_inferred": true,
-   "summary": "Roles: Manager. Lets a manager approve or reject direct reports' leave, seeing who else in the team is away on those dates.",
+   "summary": "Roles: Manager. Lets a manager approve or reject direct reports' leave, seeing who else in the team is away on those dates. Updated to v1.1 (D-105).",
    "pipeline": "PMS-TX-01",
    "author": "Rajesh Verma",
    "planned": null,
@@ -1959,10 +1981,10 @@
    "stage": 1,
    "step": "SMS screens",
    "module": "SMS",
-   "version": "UX set 1.0 (summary 0.1)",
+   "version": "1.1",
    "status": "Approved",
    "completed": "2026-11-15",
-   "last_updated": "2026-11-15",
+   "last_updated": "2026-11-21",
    "path": "docs/01-ux/ux-summary/scr-sms-01-my-salary.md",
    "files": [
     {
@@ -1986,7 +2008,7 @@
     "PMS-UX-JOURNEYS"
    ],
    "png_inferred": true,
-   "summary": "Roles: All. Shows employees their daily wages for a period, and lets them accept or dispute each record once their manager has approved it.",
+   "summary": "Roles: All. Shows employees their daily wages for a period, and lets them accept or dispute each record once their manager has approved it. Updated to v1.1 (D-105).",
    "pipeline": "PMS-TX-01",
    "author": "Rajesh Verma",
    "planned": null,
@@ -1999,10 +2021,10 @@
    "stage": 1,
    "step": "SMS screens",
    "module": "SMS",
-   "version": "UX set 1.0 (summary 0.1)",
+   "version": "1.1",
    "status": "Approved",
    "completed": "2026-11-15",
-   "last_updated": "2026-11-15",
+   "last_updated": "2026-11-21",
    "path": "docs/01-ux/ux-summary/scr-sms-02-team-review.md",
    "files": [
     {
@@ -2026,7 +2048,7 @@
     "PMS-UX-JOURNEYS"
    ],
    "png_inferred": true,
-   "summary": "Roles: Manager. Lets a manager approve the team's generated wages and resolve disputes, with team totals for the period.",
+   "summary": "Roles: Manager. Lets a manager approve the team's generated wages and resolve disputes, with team totals for the period. Updated to v1.1 (D-105).",
    "pipeline": "PMS-TX-01",
    "author": "Rajesh Verma",
    "planned": null,
@@ -2039,10 +2061,10 @@
    "stage": 1,
    "step": "Shell screens",
    "module": "ALL",
-   "version": "UX set 1.0 (summary 0.1)",
+   "version": "1.1",
    "status": "Approved",
    "completed": "2026-11-15",
-   "last_updated": "2026-11-15",
+   "last_updated": "2026-11-21",
    "path": "docs/01-ux/ux-summary/scr-sh-00-layout.md",
    "files": [
     {
@@ -2066,7 +2088,7 @@
     "PMS-UX-JOURNEYS"
    ],
    "png_inferred": true,
-   "summary": "Roles: All. Gives every PMS screen one consistent frame: header, role-based menu and user menu, so users always know where they are and what they can do.",
+   "summary": "Roles: All. Gives every PMS screen one consistent frame: header, role-based menu and user menu, so users always know where they are and what they can do. Updated to v1.1 (D-105).",
    "pipeline": "PMS-TX-01",
    "author": "Rajesh Verma",
    "planned": null,
@@ -2081,7 +2103,7 @@
    "version": "—",
    "status": "Approved",
    "completed": "2026-11-15",
-   "last_updated": "2026-11-15",
+   "last_updated": "2026-11-21",
    "path": "docs/01-ux/_generator/build.py",
    "source": "git",
    "files": [
@@ -2113,23 +2135,23 @@
    "type": "BRD",
    "stage": 2,
    "step": "BRD anchor",
-   "version": "v1.0 rev 0.15",
-   "status": "In Review",
+   "version": "v1.0 (approved baseline)",
+   "status": "Approved",
    "started": "2026-11-18",
-   "completed": null,
-   "last_updated": "2026-11-20",
+   "completed": "2026-11-21",
+   "last_updated": "2026-11-21",
    "path": "docs/02-brd/PMS-BRD.md",
    "source": "declared",
    "reviewers": [
-    "[BA]",
-    "[HR Manager]",
-    "[Finance Manager]"
+    "Ananya Desai (sample reviewer)",
+    "Sunil Bhatt (sample reviewer)",
+    "Meenakshi Pillai (sample reviewer)"
    ],
    "depends_on": [
     "PMS-UX-JOURNEYS",
     "PMS-TPL-BRD-ANCHOR"
    ],
-   "summary": "Business context, roles, end-to-end process, cross-module rules BR-CMN-01..19, integrations, system-wide NFR-01..09, risks R-01..R-08 and open items OI-01..OI-12. All sections drafted (D-69); BRD set consistency check done (D-103); business open items OI-02, OI-03, OI-04, OI-12 closed (D-104); UX update items OI-01, OI-06 to OI-11 remain; ready for stakeholder review.",
+   "summary": "Business context, roles, end-to-end process, cross-module rules BR-CMN-01..19, integrations, system-wide NFR-01..09, risks R-01..R-08 and open items OI-01..OI-12. All sections drafted (D-69); BRD set consistency check done (D-103); business open items OI-02, OI-03, OI-04, OI-12 closed (D-104); UX update items OI-01, OI-06 to OI-11 remain; UX aligned (D-105); stakeholder review approved (D-106); signed off as approved baseline v1.0 (D-107).",
    "files": [],
    "module": "ALL",
    "pipeline": "PMS-TX-01",
@@ -2143,17 +2165,17 @@
    "stage": 2,
    "step": "Module BRD EIMS",
    "module": "EIMS",
-   "version": "v1.0 rev 0.3",
-   "status": "Draft",
+   "version": "v1.0 (approved baseline)",
+   "status": "Approved",
    "started": "2026-11-18",
-   "completed": null,
-   "last_updated": "2026-11-20",
+   "completed": "2026-11-21",
+   "last_updated": "2026-11-21",
    "path": "docs/02-brd/PMS-BRD-M1-EIMS.md",
    "source": "declared",
    "reviewers": [
-    "[BA]",
-    "[HR Manager]",
-    "[Finance Manager]"
+    "Ananya Desai (sample reviewer)",
+    "Sunil Bhatt (sample reviewer)",
+    "Meenakshi Pillai (sample reviewer)"
    ],
    "depends_on": [
     "PMS-BRD",
@@ -2163,7 +2185,7 @@
     "PMS-UX-SCR-EIMS-03",
     "PMS-UX-SCR-EIMS-04"
    ],
-   "summary": "All sections drafted and reviewed section by section (D-76); 32 functional requirements FR-EIMS-xxx with acceptance criteria; consistency check fixes (D-103); business open items closed (D-104); ready for stakeholder review.",
+   "summary": "All sections drafted and reviewed section by section (D-76); 32 functional requirements FR-EIMS-xxx with acceptance criteria; consistency check fixes (D-103); business open items closed (D-104); UX aligned (D-105); stakeholder review approved (D-106); signed off as approved baseline v1.0 (D-107).",
    "files": [],
    "pipeline": "PMS-TX-01",
    "author": "Rajesh Verma",
@@ -2176,17 +2198,17 @@
    "stage": 2,
    "step": "Module BRD AMS",
    "module": "AMS",
-   "version": "v1.0 rev 0.3",
-   "status": "Draft",
+   "version": "v1.0 (approved baseline)",
+   "status": "Approved",
    "started": "2026-11-19",
-   "completed": null,
-   "last_updated": "2026-11-20",
+   "completed": "2026-11-21",
+   "last_updated": "2026-11-21",
    "path": "docs/02-brd/PMS-BRD-M2-AMS.md",
    "source": "declared",
    "reviewers": [
-    "[BA]",
-    "[HR Manager]",
-    "[Finance Manager]"
+    "Ananya Desai (sample reviewer)",
+    "Sunil Bhatt (sample reviewer)",
+    "Meenakshi Pillai (sample reviewer)"
    ],
    "depends_on": [
     "PMS-BRD",
@@ -2195,7 +2217,7 @@
     "PMS-UX-SCR-AMS-02",
     "PMS-UX-SCR-AMS-03"
    ],
-   "summary": "All sections drafted and reviewed section by section (D-81); 27 functional requirements FR-AMS-xxx with acceptance criteria; consistency check fixes (D-103); business open items closed (D-104); ready for stakeholder review.",
+   "summary": "All sections drafted and reviewed section by section (D-81); 27 functional requirements FR-AMS-xxx with acceptance criteria; consistency check fixes (D-103); business open items closed (D-104); UX aligned (D-105); stakeholder review approved (D-106); signed off as approved baseline v1.0 (D-107).",
    "files": [],
    "pipeline": "PMS-TX-01",
    "author": "Rajesh Verma",
@@ -2208,10 +2230,10 @@
    "stage": 2,
    "step": "Module BRD LMS",
    "module": "LMS",
-   "version": "v1.0 rev 0.3",
-   "status": "Draft",
-   "completed": null,
-   "last_updated": "2026-11-20",
+   "version": "v1.0 (approved baseline)",
+   "status": "Approved",
+   "completed": "2026-11-21",
+   "last_updated": "2026-11-21",
    "path": "docs/02-brd/PMS-BRD-M3-LMS.md",
    "source": "declared",
    "depends_on": [
@@ -2221,11 +2243,11 @@
     "PMS-UX-SCR-LMS-02",
     "PMS-UX-SCR-LMS-03"
    ],
-   "summary": "All sections drafted and reviewed section by section (D-85 to D-88); 25 functional requirements FR-LMS-001..028 with acceptance criteria, user stories US-LMS-01..05, rules VR-LMS-01..07 and BR-LMS-01..09; consistency check fixes (D-103); business open items closed (D-104); ready for stakeholder review.",
+   "summary": "All sections drafted and reviewed section by section (D-85 to D-88); 25 functional requirements FR-LMS-001..028 with acceptance criteria, user stories US-LMS-01..05, rules VR-LMS-01..07 and BR-LMS-01..09; consistency check fixes (D-103); business open items closed (D-104); UX aligned (D-105); stakeholder review approved (D-106); signed off as approved baseline v1.0 (D-107).",
    "reviewers": [
-    "[BA]",
-    "[HR Manager]",
-    "[Finance Manager]"
+    "Ananya Desai (sample reviewer)",
+    "Sunil Bhatt (sample reviewer)",
+    "Meenakshi Pillai (sample reviewer)"
    ],
    "files": [],
    "pipeline": "PMS-TX-01",
@@ -2240,10 +2262,10 @@
    "stage": 2,
    "step": "Module BRD SMS",
    "module": "SMS",
-   "version": "v1.0 rev 0.3",
-   "status": "Draft",
-   "completed": null,
-   "last_updated": "2026-11-20",
+   "version": "v1.0 (approved baseline)",
+   "status": "Approved",
+   "completed": "2026-11-21",
+   "last_updated": "2026-11-21",
    "path": "docs/02-brd/PMS-BRD-M4-SMS.md",
    "source": "declared",
    "depends_on": [
@@ -2252,11 +2274,11 @@
     "PMS-UX-SCR-SMS-01",
     "PMS-UX-SCR-SMS-02"
    ],
-   "summary": "All sections drafted and reviewed section by section (D-90 to D-94); 31 functional requirements FR-SMS-001..046 with acceptance criteria, user stories US-SMS-01..06, rules VR-SMS-01..04 and BR-SMS-01..13; consistency check fixes (D-103); business open items closed (D-104); ready for stakeholder review.",
+   "summary": "All sections drafted and reviewed section by section (D-90 to D-94); 31 functional requirements FR-SMS-001..046 with acceptance criteria, user stories US-SMS-01..06, rules VR-SMS-01..04 and BR-SMS-01..13; consistency check fixes (D-103); business open items closed (D-104); UX aligned (D-105); stakeholder review approved (D-106); signed off as approved baseline v1.0 (D-107).",
    "reviewers": [
-    "[BA]",
-    "[HR Manager]",
-    "[Finance Manager]"
+    "Ananya Desai (sample reviewer)",
+    "Sunil Bhatt (sample reviewer)",
+    "Meenakshi Pillai (sample reviewer)"
    ],
    "files": [],
    "pipeline": "PMS-TX-01",
@@ -2271,10 +2293,10 @@
    "stage": 2,
    "step": "Module BRD SUP",
    "module": "ALL",
-   "version": "v1.0 rev 0.3",
-   "status": "Draft",
-   "completed": null,
-   "last_updated": "2026-11-20",
+   "version": "v1.0 (approved baseline)",
+   "status": "Approved",
+   "completed": "2026-11-21",
+   "last_updated": "2026-11-21",
    "path": "docs/02-brd/PMS-BRD-M5-SUP.md",
    "source": "declared",
    "depends_on": [
@@ -2285,12 +2307,12 @@
     "PMS-UX-SCR-SH-01",
     "PMS-UX-SCR-SH-02"
    ],
-   "summary": "All sections drafted and reviewed section by section (D-97 to D-102). Need-basis result: user management (UM) and authentication (AUTH) in the POC; audit log and activity log (FR-ADM-101..117) as the only POC part of administration; administration, notifications and documents Phase 2. 45 functional requirements (FR-UM 13, FR-AUTH 20, FR-ADM 12) with acceptance criteria, 13 rules, NFR-SUP-01..05; consistency check fixes (D-103); business open items closed (D-104); ready for stakeholder review.",
+   "summary": "All sections drafted and reviewed section by section (D-97 to D-102). Need-basis result: user management (UM) and authentication (AUTH) in the POC; audit log and activity log (FR-ADM-101..117) as the only POC part of administration; administration, notifications and documents Phase 2. 45 functional requirements (FR-UM 13, FR-AUTH 20, FR-ADM 12) with acceptance criteria, 13 rules, NFR-SUP-01..05; consistency check fixes (D-103); business open items closed (D-104); UX aligned (D-105); stakeholder review approved (D-106); signed off as approved baseline v1.0 (D-107).",
    "reviewers": [
-    "[BA]",
-    "[HR Manager]",
-    "[Finance Manager]",
-    "[Security / IT owner]"
+    "Ananya Desai (sample reviewer)",
+    "Sunil Bhatt (sample reviewer)",
+    "Meenakshi Pillai (sample reviewer)",
+    "Arvind Kulkarni (sample reviewer)"
    ],
    "files": [],
    "pipeline": "PMS-TX-01",
@@ -2625,6 +2647,43 @@
    "verdict": "Approved-with-comments",
    "path": "docs/02-brd/reviews/PMS-BRD-Consistency-Report.md",
    "title": "BRD set consistency check (D-103): 28 findings – 27 fixed, 1 raised as OI-12"
+  },
+  {
+   "id": "RV-10",
+   "type": "peer",
+   "artifacts": [
+    "PMS-UX-JOURNEYS"
+   ],
+   "reviewers": [
+    "Rajesh Verma"
+   ],
+   "date": "2026-11-21",
+   "verdict": "Approved",
+   "path": "docs/01-ux/ux-journey-index.md",
+   "title": "UX set v1.1 approval (D-105): BRD open items OI-01, OI-06 to OI-11 applied"
+  },
+  {
+   "id": "RV-11",
+   "type": "stage-exit",
+   "artifacts": [
+    "PMS-BRD",
+    "PMS-BRD-M1-EIMS",
+    "PMS-BRD-M2-AMS",
+    "PMS-BRD-M3-LMS",
+    "PMS-BRD-M4-SMS",
+    "PMS-BRD-M5-SUP"
+   ],
+   "reviewers": [
+    "Ananya Desai (sample reviewer)",
+    "Sunil Bhatt (sample reviewer)",
+    "Meenakshi Pillai (sample reviewer)",
+    "Arvind Kulkarni (sample reviewer)",
+    "Rajesh Verma"
+   ],
+   "date": "2026-11-21",
+   "verdict": "Approved",
+   "path": "docs/02-brd/reviews/PMS-BRD-Stakeholder-Review.md",
+   "title": "BRD set stakeholder review and sign-off (D-106, D-107)"
   }
  ],
  "findings": [
@@ -2726,10 +2785,10 @@
    "target": "PMS-UX-SCR-SH-04",
    "category": "Inconsistent",
    "severity": "Medium",
-   "status": "Open",
+   "status": "Resolved",
    "owner": "Product owner",
-   "due": "Before HLD Part02",
-   "summary": "Update UX summaries so Admin can open the review screen for the top-level employee's records (SCR-SH-04, SCR-AMS-03, SCR-LMS-03, SCR-SMS-02) (D-58).",
+   "due": "Before HLD Part02 – closed 2026-11-21",
+   "summary": "Update UX summaries so Admin can open the review screen for the top-level employee's records (SCR-SH-04, SCR-AMS-03, SCR-LMS-03, SCR-SMS-02) (D-58). Closed (D-105): UX set v1.1.",
    "origin": "declared"
   },
   {
@@ -2739,10 +2798,10 @@
    "target": "PMS-UX-SCR-EIMS-03",
    "category": "Inconsistent",
    "severity": "Medium",
-   "status": "Open",
+   "status": "Resolved",
    "owner": "Product owner",
-   "due": "Before HLD Part02",
-   "summary": "Update UX for the profile change request and withdrawal of a submitted new profile (D-70): SCR-EIMS-03, SCR-EIMS-04, SCR-SH-03, SCR-SH-04, journey index.",
+   "due": "Before HLD Part02 – closed 2026-11-21",
+   "summary": "Update UX for the profile change request and withdrawal of a submitted new profile (D-70): SCR-EIMS-03, SCR-EIMS-04, SCR-SH-03, SCR-SH-04, journey index. Closed (D-105): UX set v1.1.",
    "origin": "declared"
   },
   {
@@ -2752,10 +2811,10 @@
    "target": "PMS-UX-SCR-AMS-01",
    "category": "Inconsistent",
    "severity": "Medium",
-   "status": "Open",
+   "status": "Resolved",
    "owner": "Product owner",
-   "due": "Before HLD Part02",
-   "summary": "Update AMS UX (D-77): discard Draft / Rejected attendance, \"Leave on this day\" and \"Over 12 h\" flags, history default current month.",
+   "due": "Before HLD Part02 – closed 2026-11-21",
+   "summary": "Update AMS UX (D-77): discard Draft / Rejected attendance, \"Leave on this day\" and \"Over 12 h\" flags, history default current month. Closed (D-105): UX set v1.1.",
    "origin": "declared"
   },
   {
@@ -2765,10 +2824,10 @@
    "target": "PMS-UX-SCR-LMS-03",
    "category": "Inconsistent",
    "severity": "Medium",
-   "status": "Open",
+   "status": "Resolved",
    "owner": "Product owner",
-   "due": "Before HLD Part02",
-   "summary": "Update LMS UX (D-84, D-88): team leave History date range filter (current-month default, inactive reports included), submitted time in Pending rows, \"Also away\" empty for the top-level employee, \"Requested\" shows first submission date (SCR-LMS-01, SCR-LMS-03).",
+   "due": "Before HLD Part02 – closed 2026-11-21",
+   "summary": "Update LMS UX (D-84, D-88): team leave History date range filter (current-month default, inactive reports included), submitted time in Pending rows, \"Also away\" empty for the top-level employee, \"Requested\" shows first submission date (SCR-LMS-01, SCR-LMS-03). Closed (D-105): UX set v1.1.",
    "origin": "declared"
   },
   {
@@ -2778,10 +2837,10 @@
    "target": "PMS-UX-SCR-SMS-02",
    "category": "Inconsistent",
    "severity": "Medium",
-   "status": "Open",
+   "status": "Resolved",
    "owner": "Product owner",
-   "due": "Before HLD Part02",
-   "summary": "Update SMS UX (D-90): Team salary must not list the manager's own records; separate notes for dispute remark and Keep as is explanation, repeated disputes; Accepted Date; team filter defaults; reconciliation tile details; journey index UJ-SYS-02 voiding (SCR-SMS-01, SCR-SMS-02, SCR-SH-03, SCR-SH-04).",
+   "due": "Before HLD Part02 – closed 2026-11-21",
+   "summary": "Update SMS UX (D-90): Team salary must not list the manager's own records; separate notes for dispute remark and Keep as is explanation, repeated disputes; Accepted Date; team filter defaults; reconciliation tile details; journey index UJ-SYS-02 voiding (SCR-SMS-01, SCR-SMS-02, SCR-SH-03, SCR-SH-04). Closed (D-105): UX set v1.1.",
    "origin": "declared"
   },
   {
@@ -2791,10 +2850,10 @@
    "target": "PMS-UX-SCR-SH-01",
    "category": "Inconsistent",
    "severity": "Medium",
-   "status": "Open",
+   "status": "Resolved",
    "owner": "Product owner",
-   "due": "Before HLD Part02",
-   "summary": "Update the shell UX for the supporting-function rules (D-97, D-101): inactive-account message only after the correct password (SCR-SH-01); header for the PMS Administrator without Employee Id (SCR-SH-00); UX summaries refer to the identity provider; system error messages show a flow reference.",
+   "due": "Before HLD Part02 – closed 2026-11-21",
+   "summary": "Update the shell UX for the supporting-function rules (D-97, D-101): inactive-account message only after the correct password (SCR-SH-01); header for the PMS Administrator without Employee Id (SCR-SH-00); UX summaries refer to the identity provider; system error messages show a flow reference. Closed (D-105): UX set v1.1.",
    "origin": "declared"
   },
   {
@@ -2804,10 +2863,10 @@
    "target": "PMS-UX-JOURNEYS",
    "category": "Inconsistent",
    "severity": "Low",
-   "status": "Open",
+   "status": "Resolved",
    "owner": "Product owner",
-   "due": "Before HLD Part02",
-   "summary": "Journey index shows reconciliation time for UJ-SYS-02 as \"TBD\"; set to 01:00 IST (D-24).",
+   "due": "Before HLD Part02 – closed 2026-11-21",
+   "summary": "Journey index shows reconciliation time for UJ-SYS-02 as \"TBD\"; set to 01:00 IST (D-24). Closed (D-105): UX set v1.1.",
    "origin": "declared"
   },
   {
@@ -2817,10 +2876,10 @@
    "target": "PMS-UX-SCR-SH-00",
    "category": "Inconsistent",
    "severity": "Low",
-   "status": "Open",
+   "status": "Resolved",
    "owner": "Product owner",
-   "due": "With the next UX update",
-   "summary": "All 17 UX summaries still show \"0.1 / Draft – in review\" although the UX set was approved (D-34). Now tracked in OI-06 (D-103).",
+   "due": "With the next UX update – closed 2026-11-21",
+   "summary": "All 17 UX summaries still show \"0.1 / Draft – in review\" although the UX set was approved (D-34). Now tracked in OI-06 (D-103). Closed (D-105): UX set v1.1.",
    "origin": "inferred"
   },
   {
@@ -2876,6 +2935,39 @@
   }
  ],
  "decisions": [
+  {
+   "id": "D-107",
+   "title": "Step 3 (BRD, Stage 2) approved – BRD set signed off as approved baseline v1.0",
+   "date": "2026-11-21",
+   "author": "Rajesh Verma",
+   "area": "Gate",
+   "stage": 2,
+   "summary": "Step 3 (BRD, SDLC Stage 2) approved: BRD set signed off by the product owner as the approved baseline v1.0 – PMS-BRD, PMS-BRD-M1-EIMS, M2-AMS, M3-LMS, M4-SMS, M5-SUP (revision row 1.0 in each), after the consistency check (D-103), business decisions (D-104), UX v1.1 (D-105) and stakeholder review (D-106); no open items remain; anchor §2.3 and §11 show Approved. Later BRD changes only through change requests. Next: Stage 3 Solution Design (HLD) from the frozen templates",
+   "path": "docs/decisions/decision-log.md",
+   "status": "Approved"
+  },
+  {
+   "id": "D-106",
+   "title": "Stakeholder review of the BRD set",
+   "date": "2026-11-21",
+   "author": "Rajesh Verma",
+   "area": "BRD",
+   "stage": 2,
+   "summary": "Stakeholder review of the BRD set held 21 Nov 2026 (record docs/02-brd/reviews/PMS-BRD-Stakeholder-Review.md): BA, HR Manager, Finance Manager and Security / IT owner approve with no comments; sample reviewer names for the POC (Ananya Desai, Sunil Bhatt, Meenakshi Pillai, Arvind Kulkarni), each decision confirmed by the product owner on behalf of the role; HR Manager confirms D-104; R-07 mitigated; anchor rev 0.17, module BRDs rev 0.5",
+   "path": "docs/decisions/decision-log.md",
+   "status": "Approved"
+  },
+  {
+   "id": "D-105",
+   "title": "UX set v1.1 approved (OI-01, OI-06 to OI-11 closed)",
+   "date": "2026-11-21",
+   "author": "Rajesh Verma",
+   "area": "UX",
+   "stage": 2,
+   "summary": "UX set v1.1 approved by the product owner: Journey Index v1.1, 17 UX summaries v1.1, 17 mockups rebuilt from the generator, 15 screenshots retaken; closes OI-01, OI-06 to OI-11 and F-SMD-01 (UX changes from D-58, D-70, D-77, D-84, D-88, D-90, D-97, D-99, D-101, D-104). BRD references updated: anchor rev 0.16 (§2.2 UX v1.1, §12 open items closed), module BRDs rev 0.4 (open-item references). Stage 2 gate criterion \"Mockups ↔ BRD gaps closed\" met",
+   "path": "docs/decisions/decision-log.md",
+   "status": "Approved"
+  },
   {
    "id": "D-104",
    "title": "Business open items decided (OI-02, OI-03, OI-04, OI-12, OI-EIMS-01, OI-EIMS-02)",
@@ -4034,6 +4126,54 @@
  ],
  "activity": [
   {
+   "date": "2026-11-21",
+   "actor": "Rajesh Verma",
+   "kind": "human",
+   "type": "session",
+   "summary": "Working session handoff: UX set v1.1 approved (D-105); stakeholder review of the BRD set approved (D-106, sample reviewer names for the POC); BRD set signed off as approved baseline v1.0 (D-107); next: Stage 3 Solution Design.",
+   "ref": null
+  },
+  {
+   "date": "2026-11-21",
+   "actor": "Rajesh Verma",
+   "kind": "human",
+   "type": "gate",
+   "summary": "Stage 2 Business Requirements gate Passed (D-107); Stage 2 completed; current stage 3.",
+   "ref": "#/stage/2"
+  },
+  {
+   "date": "2026-11-21",
+   "actor": "Rajesh Verma",
+   "kind": "human",
+   "type": "commit",
+   "summary": "brd: BRD set signed off as approved baseline v1.0; Stage 2 gate passed; decision D-107; session handoff",
+   "ref": "fd2e5eb"
+  },
+  {
+   "date": "2026-11-21",
+   "actor": "Rajesh Verma",
+   "kind": "human",
+   "type": "commit",
+   "summary": "brd: stakeholder review of the BRD set (sample reviewers, approved); anchor rev 0.17, module BRDs rev 0.5; decision D-106",
+   "ref": "e08f21a"
+  },
+  {
+   "date": "2026-11-21",
+   "actor": "Rajesh Verma",
+   "kind": "human",
+   "type": "commit",
+   "summary": "ux: UX set v1.1 (OI-01, OI-06 to OI-11): journey index, 17 UX summaries, generator and mockups, screenshots; BRD anchor rev 0.16, module BRDs rev 0.4; decision D-105",
+   "ref": "81b1945"
+  },
+  {
+   "date": "2026-11-21",
+   "actor": "Rajesh Verma",
+   "kind": "human",
+   "type": "commit",
+   "summary": "chore(smd): refresh dashboard 2026-11-20",
+   "ref": "d42c33f"
+  },
+  {
    "date": "2026-11-20",
    "actor": "Rajesh Verma",
    "kind": "human",
@@ -4988,8 +5128,8 @@
   },
   {
    "id": "R-07",
-   "summary": "Business stakeholders are not yet named, which may delay reviews and sign-off.",
-   "likelihood": "Medium",
+   "summary": "Business stakeholders are not yet named, which may delay reviews and sign-off; mitigated for the POC with sample reviewer names, each decision confirmed by the product owner (D-106).",
+   "likelihood": "Low",
    "impact": "Medium",
    "owner": "Product owner",
    "status": "Open",
@@ -5007,28 +5147,28 @@
  ],
  "next_actions": [
   {
-   "item": "Name BRD reviewers (BA, HR Manager, Finance Manager, Security / IT owner) and plan the stakeholder review",
-   "owner": "Product owner",
-   "when": "Before BRD sign-off",
-   "ref": "R-07"
-  },
-  {
-   "item": "HR Manager confirms the business decisions taken on 20 Nov (D-104) at the stakeholder review",
-   "owner": "HR Manager",
-   "when": "At stakeholder review",
-   "ref": "OI-02"
-  },
-  {
-   "item": "Apply UX updates OI-01, OI-06 to OI-11 (incl. UX summary status, F-SMD-01)",
-   "owner": "Product owner",
-   "when": "Before HLD Part02",
-   "ref": "OI-11"
-  },
-  {
-   "item": "BRD set sign-off, then start HLD (Stage 3) from the frozen templates",
+   "item": "Write the HLD session prompts from the frozen templates and plan Stage 3",
    "owner": "Rajesh Verma",
-   "when": "After stakeholder review",
+   "when": "Next working session",
    "ref": "#/stage/3"
+  },
+  {
+   "item": "Draft HLD Part01 (Architecture and design) and Part01a (Principles, patterns and decisions)",
+   "owner": "Rajesh Verma",
+   "when": "Stage 3",
+   "ref": "#/stage/3"
+  },
+  {
+   "item": "Set planned dates for Stage 3 onwards and the target go-live",
+   "owner": "Product owner",
+   "when": "Stage 3 start",
+   "ref": "#/stage/3"
+  },
+  {
+   "item": "Replace the sample reviewer names with real names if the customer shares them",
+   "owner": "Product owner",
+   "when": "When available",
+   "ref": "R-07"
   }
  ],
  "repo_files": [
@@ -5040,7 +5180,7 @@
    "size": 1939,
    "created": "2026-11-15",
    "last_updated": "2026-11-18",
-   "last_author": "Rajesh Verma",
+   "last_author": "cp-rajeshverma",
    "module": "ALL",
    "links": [
     "PMS-GOV-README"
@@ -5051,10 +5191,10 @@
    "folder": "docs/01-ux/_generator",
    "kind": "code",
    "ext": ".py",
-   "size": 23571,
+   "size": 26835,
    "created": "2026-11-15",
-   "last_updated": "2026-11-15",
-   "last_author": "Rajesh Verma",
+   "last_updated": "2026-11-21",
+   "last_author": "cp-rajeshverma",
    "module": "AMS",
    "links": []
   },
@@ -5063,10 +5203,10 @@
    "folder": "docs/01-ux/_generator",
    "kind": "code",
    "ext": ".py",
-   "size": 19437,
+   "size": 19424,
    "created": "2026-11-15",
-   "last_updated": "2026-11-15",
-   "last_author": "Rajesh Verma",
+   "last_updated": "2026-11-21",
+   "last_author": "cp-rajeshverma",
    "module": "ALL",
    "links": []
   },
@@ -5078,7 +5218,7 @@
    "size": 854,
    "created": "2026-11-15",
    "last_updated": "2026-11-19",
-   "last_author": "Rajesh Verma",
+   "last_author": "cp-rajeshverma",
    "module": "ALL",
    "links": [
     "PMS-UX-GENERATOR"
@@ -5089,10 +5229,10 @@
    "folder": "docs/01-ux/_generator",
    "kind": "code",
    "ext": ".py",
-   "size": 25970,
+   "size": 29163,
    "created": "2026-11-15",
-   "last_updated": "2026-11-15",
-   "last_author": "Rajesh Verma",
+   "last_updated": "2026-11-21",
+   "last_author": "cp-rajeshverma",
    "module": "EIMS",
    "links": []
   },
@@ -5101,10 +5241,10 @@
    "folder": "docs/01-ux/_generator",
    "kind": "code",
    "ext": ".py",
-   "size": 19740,
+   "size": 21236,
    "created": "2026-11-15",
-   "last_updated": "2026-11-15",
-   "last_author": "Rajesh Verma",
+   "last_updated": "2026-11-21",
+   "last_author": "cp-rajeshverma",
    "module": "LMS",
    "links": []
   },
@@ -5113,10 +5253,10 @@
    "folder": "docs/01-ux/_generator",
    "kind": "code",
    "ext": ".py",
-   "size": 27465,
+   "size": 30288,
    "created": "2026-11-15",
-   "last_updated": "2026-11-15",
-   "last_author": "Rajesh Verma",
+   "last_updated": "2026-11-21",
+   "last_author": "cp-rajeshverma",
    "module": "ALL",
    "links": []
   },
@@ -5125,10 +5265,10 @@
    "folder": "docs/01-ux/_generator",
    "kind": "code",
    "ext": ".py",
-   "size": 18805,
+   "size": 20730,
    "created": "2026-11-15",
-   "last_updated": "2026-11-15",
-   "last_author": "Rajesh Verma",
+   "last_updated": "2026-11-21",
+   "last_author": "cp-rajeshverma",
    "module": "SMS",
    "links": []
   },
@@ -5139,8 +5279,8 @@
    "ext": ".css",
    "size": 13710,
    "created": "2026-11-15",
-   "last_updated": "2026-11-15",
-   "last_author": "Rajesh Verma",
+   "last_updated": "2026-11-19",
+   "last_author": "cp-rajeshverma",
    "module": "ALL",
    "links": [
     "PMS-UX-GENERATOR"
@@ -5151,10 +5291,10 @@
    "folder": "docs/01-ux/mockups/html/assets",
    "kind": "code",
    "ext": ".js",
-   "size": 1812,
+   "size": 1799,
    "created": "2026-11-15",
-   "last_updated": "2026-11-15",
-   "last_author": "Rajesh Verma",
+   "last_updated": "2026-11-21",
+   "last_author": "cp-rajeshverma",
    "module": "ALL",
    "links": [
     "PMS-UX-GENERATOR"
@@ -5165,10 +5305,10 @@
    "folder": "docs/01-ux/mockups/html",
    "kind": "artifact",
    "ext": ".html",
-   "size": 9750,
+   "size": 10067,
    "created": "2026-11-15",
-   "last_updated": "2026-11-15",
-   "last_author": "Rajesh Verma",
+   "last_updated": "2026-11-21",
+   "last_author": "cp-rajeshverma",
    "module": "AMS",
    "links": [
     "PMS-UX-SCR-AMS-01"
@@ -5179,10 +5319,10 @@
    "folder": "docs/01-ux/mockups/html",
    "kind": "artifact",
    "ext": ".html",
-   "size": 9870,
+   "size": 11556,
    "created": "2026-11-15",
-   "last_updated": "2026-11-15",
-   "last_author": "Rajesh Verma",
+   "last_updated": "2026-11-21",
+   "last_author": "cp-rajeshverma",
    "module": "AMS",
    "links": [
     "PMS-UX-SCR-AMS-02"
@@ -5193,10 +5333,10 @@
    "folder": "docs/01-ux/mockups/html",
    "kind": "artifact",
    "ext": ".html",
-   "size": 11332,
+   "size": 12671,
    "created": "2026-11-15",
-   "last_updated": "2026-11-15",
-   "last_author": "Rajesh Verma",
+   "last_updated": "2026-11-21",
+   "last_author": "cp-rajeshverma",
    "module": "AMS",
    "links": [
     "PMS-UX-SCR-AMS-03"
@@ -5209,8 +5349,8 @@
    "ext": ".html",
    "size": 9528,
    "created": "2026-11-15",
-   "last_updated": "2026-11-15",
-   "last_author": "Rajesh Verma",
+   "last_updated": "2026-11-21",
+   "last_author": "cp-rajeshverma",
    "module": "EIMS",
    "links": [
     "PMS-UX-SCR-EIMS-01"
@@ -5223,8 +5363,8 @@
    "ext": ".html",
    "size": 9449,
    "created": "2026-11-15",
-   "last_updated": "2026-11-15",
-   "last_author": "Rajesh Verma",
+   "last_updated": "2026-11-21",
+   "last_author": "cp-rajeshverma",
    "module": "EIMS",
    "links": [
     "PMS-UX-SCR-EIMS-02"
@@ -5235,10 +5375,10 @@
    "folder": "docs/01-ux/mockups/html",
    "kind": "artifact",
    "ext": ".html",
-   "size": 9948,
+   "size": 12609,
    "created": "2026-11-15",
-   "last_updated": "2026-11-15",
-   "last_author": "Rajesh Verma",
+   "last_updated": "2026-11-21",
+   "last_author": "cp-rajeshverma",
    "module": "EIMS",
    "links": [
     "PMS-UX-SCR-EIMS-03"
@@ -5249,10 +5389,10 @@
    "folder": "docs/01-ux/mockups/html",
    "kind": "artifact",
    "ext": ".html",
-   "size": 6670,
+   "size": 7202,
    "created": "2026-11-15",
-   "last_updated": "2026-11-15",
-   "last_author": "Rajesh Verma",
+   "last_updated": "2026-11-21",
+   "last_author": "cp-rajeshverma",
    "module": "EIMS",
    "links": [
     "PMS-UX-SCR-EIMS-04"
@@ -5265,8 +5405,8 @@
    "ext": ".html",
    "size": 8371,
    "created": "2026-11-15",
-   "last_updated": "2026-11-15",
-   "last_author": "Rajesh Verma",
+   "last_updated": "2026-11-21",
+   "last_author": "cp-rajeshverma",
    "module": "LMS",
    "links": [
     "PMS-UX-SCR-LMS-01"
@@ -5279,8 +5419,8 @@
    "ext": ".html",
    "size": 9310,
    "created": "2026-11-15",
-   "last_updated": "2026-11-15",
-   "last_author": "Rajesh Verma",
+   "last_updated": "2026-11-21",
+   "last_author": "cp-rajeshverma",
    "module": "LMS",
    "links": [
     "PMS-UX-SCR-LMS-02"
@@ -5291,10 +5431,10 @@
    "folder": "docs/01-ux/mockups/html",
    "kind": "artifact",
    "ext": ".html",
-   "size": 10359,
+   "size": 11914,
    "created": "2026-11-15",
-   "last_updated": "2026-11-15",
-   "last_author": "Rajesh Verma",
+   "last_updated": "2026-11-21",
+   "last_author": "cp-rajeshverma",
    "module": "LMS",
    "links": [
     "PMS-UX-SCR-LMS-03"
@@ -5305,10 +5445,10 @@
    "folder": "docs/01-ux/mockups/html",
    "kind": "artifact",
    "ext": ".html",
-   "size": 2965,
+   "size": 4007,
    "created": "2026-11-15",
-   "last_updated": "2026-11-15",
-   "last_author": "Rajesh Verma",
+   "last_updated": "2026-11-21",
+   "last_author": "cp-rajeshverma",
    "module": "ALL",
    "links": [
     "PMS-UX-SCR-SH-00"
@@ -5319,10 +5459,10 @@
    "folder": "docs/01-ux/mockups/html",
    "kind": "artifact",
    "ext": ".html",
-   "size": 4271,
+   "size": 4339,
    "created": "2026-11-15",
-   "last_updated": "2026-11-15",
-   "last_author": "Rajesh Verma",
+   "last_updated": "2026-11-21",
+   "last_author": "cp-rajeshverma",
    "module": "ALL",
    "links": [
     "PMS-UX-SCR-SH-01"
@@ -5335,8 +5475,8 @@
    "ext": ".html",
    "size": 4632,
    "created": "2026-11-15",
-   "last_updated": "2026-11-15",
-   "last_author": "Rajesh Verma",
+   "last_updated": "2026-11-21",
+   "last_author": "cp-rajeshverma",
    "module": "ALL",
    "links": [
     "PMS-UX-SCR-SH-02"
@@ -5347,10 +5487,10 @@
    "folder": "docs/01-ux/mockups/html",
    "kind": "artifact",
    "ext": ".html",
-   "size": 8705,
+   "size": 8890,
    "created": "2026-11-15",
-   "last_updated": "2026-11-15",
-   "last_author": "Rajesh Verma",
+   "last_updated": "2026-11-21",
+   "last_author": "cp-rajeshverma",
    "module": "ALL",
    "links": [
     "PMS-UX-SCR-SH-03"
@@ -5361,10 +5501,10 @@
    "folder": "docs/01-ux/mockups/html",
    "kind": "artifact",
    "ext": ".html",
-   "size": 14069,
+   "size": 15517,
    "created": "2026-11-15",
-   "last_updated": "2026-11-15",
-   "last_author": "Rajesh Verma",
+   "last_updated": "2026-11-21",
+   "last_author": "cp-rajeshverma",
    "module": "ALL",
    "links": [
     "PMS-UX-SCR-SH-04"
@@ -5375,10 +5515,10 @@
    "folder": "docs/01-ux/mockups/html",
    "kind": "artifact",
    "ext": ".html",
-   "size": 10456,
+   "size": 10798,
    "created": "2026-11-15",
-   "last_updated": "2026-11-15",
-   "last_author": "Rajesh Verma",
+   "last_updated": "2026-11-21",
+   "last_author": "cp-rajeshverma",
    "module": "SMS",
    "links": [
     "PMS-UX-SCR-SMS-01"
@@ -5389,10 +5529,10 @@
    "folder": "docs/01-ux/mockups/html",
    "kind": "artifact",
    "ext": ".html",
-   "size": 13034,
+   "size": 14676,
    "created": "2026-11-15",
-   "last_updated": "2026-11-15",
-   "last_author": "Rajesh Verma",
+   "last_updated": "2026-11-21",
+   "last_author": "cp-rajeshverma",
    "module": "SMS",
    "links": [
     "PMS-UX-SCR-SMS-02"
@@ -5403,10 +5543,10 @@
    "folder": "docs/01-ux/mockups/png",
    "kind": "image",
    "ext": ".png",
-   "size": 160827,
+   "size": 165586,
    "created": "2026-11-15",
-   "last_updated": "2026-11-15",
-   "last_author": "Rajesh Verma",
+   "last_updated": "2026-11-21",
+   "last_author": "cp-rajeshverma",
    "module": "ALL",
    "links": [
     "PMS-UX-SCR-AMS-01"
@@ -5417,10 +5557,10 @@
    "folder": "docs/01-ux/mockups/png",
    "kind": "image",
    "ext": ".png",
-   "size": 118391,
+   "size": 139614,
    "created": "2026-11-15",
-   "last_updated": "2026-11-15",
-   "last_author": "Rajesh Verma",
+   "last_updated": "2026-11-21",
+   "last_author": "cp-rajeshverma",
    "module": "ALL",
    "links": [
     "PMS-UX-SCR-AMS-02"
@@ -5431,10 +5571,10 @@
    "folder": "docs/01-ux/mockups/png",
    "kind": "image",
    "ext": ".png",
-   "size": 134907,
+   "size": 148152,
    "created": "2026-11-15",
-   "last_updated": "2026-11-15",
-   "last_author": "Rajesh Verma",
+   "last_updated": "2026-11-21",
+   "last_author": "cp-rajeshverma",
    "module": "ALL",
    "links": [
     "PMS-UX-SCR-AMS-03"
@@ -5445,10 +5585,10 @@
    "folder": "docs/01-ux/mockups/png",
    "kind": "image",
    "ext": ".png",
-   "size": 208000,
+   "size": 207661,
    "created": "2026-11-15",
-   "last_updated": "2026-11-15",
-   "last_author": "Rajesh Verma",
+   "last_updated": "2026-11-21",
+   "last_author": "cp-rajeshverma",
    "module": "ALL",
    "links": [
     "PMS-UX-SCR-EIMS-01"
@@ -5459,10 +5599,10 @@
    "folder": "docs/01-ux/mockups/png",
    "kind": "image",
    "ext": ".png",
-   "size": 195878,
+   "size": 185064,
    "created": "2026-11-15",
-   "last_updated": "2026-11-15",
-   "last_author": "Rajesh Verma",
+   "last_updated": "2026-11-21",
+   "last_author": "cp-rajeshverma",
    "module": "ALL",
    "links": [
     "PMS-UX-SCR-EIMS-03"
@@ -5473,10 +5613,10 @@
    "folder": "docs/01-ux/mockups/png",
    "kind": "image",
    "ext": ".png",
-   "size": 153549,
+   "size": 157517,
    "created": "2026-11-15",
-   "last_updated": "2026-11-15",
-   "last_author": "Rajesh Verma",
+   "last_updated": "2026-11-21",
+   "last_author": "cp-rajeshverma",
    "module": "ALL",
    "links": [
     "PMS-UX-SCR-EIMS-04"
@@ -5487,10 +5627,10 @@
    "folder": "docs/01-ux/mockups/png",
    "kind": "image",
    "ext": ".png",
-   "size": 158497,
+   "size": 158087,
    "created": "2026-11-15",
-   "last_updated": "2026-11-15",
-   "last_author": "Rajesh Verma",
+   "last_updated": "2026-11-21",
+   "last_author": "cp-rajeshverma",
    "module": "ALL",
    "links": [
     "PMS-UX-SCR-LMS-01"
@@ -5501,10 +5641,10 @@
    "folder": "docs/01-ux/mockups/png",
    "kind": "image",
    "ext": ".png",
-   "size": 126792,
+   "size": 119366,
    "created": "2026-11-15",
-   "last_updated": "2026-11-15",
-   "last_author": "Rajesh Verma",
+   "last_updated": "2026-11-21",
+   "last_author": "cp-rajeshverma",
    "module": "ALL",
    "links": [
     "PMS-UX-SCR-LMS-02"
@@ -5515,10 +5655,10 @@
    "folder": "docs/01-ux/mockups/png",
    "kind": "image",
    "ext": ".png",
-   "size": 110627,
+   "size": 116504,
    "created": "2026-11-15",
-   "last_updated": "2026-11-15",
-   "last_author": "Rajesh Verma",
+   "last_updated": "2026-11-21",
+   "last_author": "cp-rajeshverma",
    "module": "ALL",
    "links": [
     "PMS-UX-SCR-LMS-03"
@@ -5529,10 +5669,10 @@
    "folder": "docs/01-ux/mockups/png",
    "kind": "image",
    "ext": ".png",
-   "size": 87092,
+   "size": 82868,
    "created": "2026-11-15",
-   "last_updated": "2026-11-15",
-   "last_author": "Rajesh Verma",
+   "last_updated": "2026-11-21",
+   "last_author": "cp-rajeshverma",
    "module": "ALL",
    "links": [
     "PMS-UX-SCR-SH-00"
@@ -5543,10 +5683,10 @@
    "folder": "docs/01-ux/mockups/png",
    "kind": "image",
    "ext": ".png",
-   "size": 66919,
+   "size": 63503,
    "created": "2026-11-15",
-   "last_updated": "2026-11-15",
-   "last_author": "Rajesh Verma",
+   "last_updated": "2026-11-21",
+   "last_author": "cp-rajeshverma",
    "module": "ALL",
    "links": [
     "PMS-UX-SCR-SH-01"
@@ -5557,10 +5697,10 @@
    "folder": "docs/01-ux/mockups/png",
    "kind": "image",
    "ext": ".png",
-   "size": 186091,
+   "size": 176410,
    "created": "2026-11-15",
-   "last_updated": "2026-11-15",
-   "last_author": "Rajesh Verma",
+   "last_updated": "2026-11-21",
+   "last_author": "cp-rajeshverma",
    "module": "ALL",
    "links": [
     "PMS-UX-SCR-SMS-01"
@@ -5571,10 +5711,10 @@
    "folder": "docs/01-ux/mockups/png",
    "kind": "image",
    "ext": ".png",
-   "size": 153767,
+   "size": 210709,
    "created": "2026-11-15",
-   "last_updated": "2026-11-15",
-   "last_author": "Rajesh Verma",
+   "last_updated": "2026-11-21",
+   "last_author": "cp-rajeshverma",
    "module": "ALL",
    "links": [
     "PMS-UX-SCR-SMS-02"
@@ -5585,10 +5725,10 @@
    "folder": "docs/01-ux/mockups/png",
    "kind": "image",
    "ext": ".png",
-   "size": 142094,
+   "size": 149565,
    "created": "2026-11-15",
-   "last_updated": "2026-11-15",
-   "last_author": "Rajesh Verma",
+   "last_updated": "2026-11-21",
+   "last_author": "cp-rajeshverma",
    "module": "ALL",
    "links": [
     "PMS-UX-SCR-SH-03"
@@ -5599,10 +5739,10 @@
    "folder": "docs/01-ux/mockups/png",
    "kind": "image",
    "ext": ".png",
-   "size": 169202,
+   "size": 195396,
    "created": "2026-11-15",
-   "last_updated": "2026-11-15",
-   "last_author": "Rajesh Verma",
+   "last_updated": "2026-11-21",
+   "last_author": "cp-rajeshverma",
    "module": "ALL",
    "links": [
     "PMS-UX-SCR-SH-04"
@@ -5613,10 +5753,10 @@
    "folder": "docs/01-ux",
    "kind": "artifact",
    "ext": ".md",
-   "size": 10166,
+   "size": 10969,
    "created": "2026-11-15",
-   "last_updated": "2026-11-19",
-   "last_author": "Rajesh Verma",
+   "last_updated": "2026-11-21",
+   "last_author": "cp-rajeshverma",
    "module": "ALL",
    "links": [
     "PMS-UX-JOURNEYS"
@@ -5627,10 +5767,10 @@
    "folder": "docs/01-ux/ux-summary",
    "kind": "artifact",
    "ext": ".md",
-   "size": 3141,
+   "size": 3510,
    "created": "2026-11-15",
-   "last_updated": "2026-11-19",
-   "last_author": "Rajesh Verma",
+   "last_updated": "2026-11-21",
+   "last_author": "cp-rajeshverma",
    "module": "AMS",
    "links": [
     "PMS-UX-SCR-AMS-01"
@@ -5641,10 +5781,10 @@
    "folder": "docs/01-ux/ux-summary",
    "kind": "artifact",
    "ext": ".md",
-   "size": 3525,
+   "size": 4285,
    "created": "2026-11-15",
-   "last_updated": "2026-11-19",
-   "last_author": "Rajesh Verma",
+   "last_updated": "2026-11-21",
+   "last_author": "cp-rajeshverma",
    "module": "AMS",
    "links": [
     "PMS-UX-SCR-AMS-02"
@@ -5655,10 +5795,10 @@
    "folder": "docs/01-ux/ux-summary",
    "kind": "artifact",
    "ext": ".md",
-   "size": 3124,
+   "size": 3804,
    "created": "2026-11-15",
-   "last_updated": "2026-11-19",
-   "last_author": "Rajesh Verma",
+   "last_updated": "2026-11-21",
+   "last_author": "cp-rajeshverma",
    "module": "AMS",
    "links": [
     "PMS-UX-SCR-AMS-03"
@@ -5669,10 +5809,10 @@
    "folder": "docs/01-ux/ux-summary",
    "kind": "artifact",
    "ext": ".md",
-   "size": 3073,
+   "size": 3193,
    "created": "2026-11-15",
-   "last_updated": "2026-11-19",
-   "last_author": "Rajesh Verma",
+   "last_updated": "2026-11-21",
+   "last_author": "cp-rajeshverma",
    "module": "EIMS",
    "links": [
     "PMS-UX-SCR-EIMS-01"
@@ -5683,10 +5823,10 @@
    "folder": "docs/01-ux/ux-summary",
    "kind": "artifact",
    "ext": ".md",
-   "size": 4280,
+   "size": 4667,
    "created": "2026-11-15",
-   "last_updated": "2026-11-19",
-   "last_author": "Rajesh Verma",
+   "last_updated": "2026-11-21",
+   "last_author": "cp-rajeshverma",
    "module": "EIMS",
    "links": [
     "PMS-UX-SCR-EIMS-02"
@@ -5697,10 +5837,10 @@
    "folder": "docs/01-ux/ux-summary",
    "kind": "artifact",
    "ext": ".md",
-   "size": 4116,
+   "size": 5933,
    "created": "2026-11-15",
-   "last_updated": "2026-11-19",
-   "last_author": "Rajesh Verma",
+   "last_updated": "2026-11-21",
+   "last_author": "cp-rajeshverma",
    "module": "EIMS",
    "links": [
     "PMS-UX-SCR-EIMS-03"
@@ -5711,10 +5851,10 @@
    "folder": "docs/01-ux/ux-summary",
    "kind": "artifact",
    "ext": ".md",
-   "size": 2944,
+   "size": 3453,
    "created": "2026-11-15",
-   "last_updated": "2026-11-19",
-   "last_author": "Rajesh Verma",
+   "last_updated": "2026-11-21",
+   "last_author": "cp-rajeshverma",
    "module": "EIMS",
    "links": [
     "PMS-UX-SCR-EIMS-04"
@@ -5725,10 +5865,10 @@
    "folder": "docs/01-ux/ux-summary",
    "kind": "artifact",
    "ext": ".md",
-   "size": 3022,
+   "size": 3086,
    "created": "2026-11-15",
-   "last_updated": "2026-11-19",
-   "last_author": "Rajesh Verma",
+   "last_updated": "2026-11-21",
+   "last_author": "cp-rajeshverma",
    "module": "LMS",
    "links": [
     "PMS-UX-SCR-LMS-01"
@@ -5739,10 +5879,10 @@
    "folder": "docs/01-ux/ux-summary",
    "kind": "artifact",
    "ext": ".md",
-   "size": 3071,
+   "size": 3079,
    "created": "2026-11-15",
-   "last_updated": "2026-11-19",
-   "last_author": "Rajesh Verma",
+   "last_updated": "2026-11-21",
+   "last_author": "cp-rajeshverma",
    "module": "LMS",
    "links": [
     "PMS-UX-SCR-LMS-02"
@@ -5753,10 +5893,10 @@
    "folder": "docs/01-ux/ux-summary",
    "kind": "artifact",
    "ext": ".md",
-   "size": 2575,
+   "size": 3461,
    "created": "2026-11-15",
-   "last_updated": "2026-11-19",
-   "last_author": "Rajesh Verma",
+   "last_updated": "2026-11-21",
+   "last_author": "cp-rajeshverma",
    "module": "LMS",
    "links": [
     "PMS-UX-SCR-LMS-03"
@@ -5767,10 +5907,10 @@
    "folder": "docs/01-ux/ux-summary",
    "kind": "artifact",
    "ext": ".md",
-   "size": 3418,
+   "size": 4281,
    "created": "2026-11-15",
-   "last_updated": "2026-11-19",
-   "last_author": "Rajesh Verma",
+   "last_updated": "2026-11-21",
+   "last_author": "cp-rajeshverma",
    "module": "ALL",
    "links": [
     "PMS-UX-SCR-SH-00"
@@ -5781,10 +5921,10 @@
    "folder": "docs/01-ux/ux-summary",
    "kind": "artifact",
    "ext": ".md",
-   "size": 3396,
+   "size": 3740,
    "created": "2026-11-15",
-   "last_updated": "2026-11-19",
-   "last_author": "Rajesh Verma",
+   "last_updated": "2026-11-21",
+   "last_author": "cp-rajeshverma",
    "module": "ALL",
    "links": [
     "PMS-UX-SCR-SH-01"
@@ -5795,10 +5935,10 @@
    "folder": "docs/01-ux/ux-summary",
    "kind": "artifact",
    "ext": ".md",
-   "size": 2828,
+   "size": 3124,
    "created": "2026-11-15",
-   "last_updated": "2026-11-19",
-   "last_author": "Rajesh Verma",
+   "last_updated": "2026-11-21",
+   "last_author": "cp-rajeshverma",
    "module": "ALL",
    "links": [
     "PMS-UX-SCR-SH-02"
@@ -5809,10 +5949,10 @@
    "folder": "docs/01-ux/ux-summary",
    "kind": "artifact",
    "ext": ".md",
-   "size": 3943,
+   "size": 4420,
    "created": "2026-11-15",
-   "last_updated": "2026-11-19",
-   "last_author": "Rajesh Verma",
+   "last_updated": "2026-11-21",
+   "last_author": "cp-rajeshverma",
    "module": "ALL",
    "links": [
     "PMS-UX-SCR-SH-03"
@@ -5823,10 +5963,10 @@
    "folder": "docs/01-ux/ux-summary",
    "kind": "artifact",
    "ext": ".md",
-   "size": 4015,
+   "size": 4644,
    "created": "2026-11-15",
-   "last_updated": "2026-11-19",
-   "last_author": "Rajesh Verma",
+   "last_updated": "2026-11-21",
+   "last_author": "cp-rajeshverma",
    "module": "ALL",
    "links": [
     "PMS-UX-SCR-SH-04"
@@ -5837,10 +5977,10 @@
    "folder": "docs/01-ux/ux-summary",
    "kind": "artifact",
    "ext": ".md",
-   "size": 3754,
+   "size": 4092,
    "created": "2026-11-15",
-   "last_updated": "2026-11-19",
-   "last_author": "Rajesh Verma",
+   "last_updated": "2026-11-21",
+   "last_author": "cp-rajeshverma",
    "module": "SMS",
    "links": [
     "PMS-UX-SCR-SMS-01"
@@ -5851,10 +5991,10 @@
    "folder": "docs/01-ux/ux-summary",
    "kind": "artifact",
    "ext": ".md",
-   "size": 3593,
+   "size": 4647,
    "created": "2026-11-15",
-   "last_updated": "2026-11-19",
-   "last_author": "Rajesh Verma",
+   "last_updated": "2026-11-21",
+   "last_author": "cp-rajeshverma",
    "module": "SMS",
    "links": [
     "PMS-UX-SCR-SMS-02"
@@ -5865,9 +6005,9 @@
    "folder": "docs/02-brd",
    "kind": "artifact",
    "ext": ".md",
-   "size": 45844,
+   "size": 46761,
    "created": "2026-11-18",
-   "last_updated": "2026-11-20",
+   "last_updated": "2026-11-21",
    "last_author": "cp-rajeshverma",
    "module": "EIMS",
    "links": [
@@ -5879,9 +6019,9 @@
    "folder": "docs/02-brd",
    "kind": "artifact",
    "ext": ".md",
-   "size": 29934,
+   "size": 30853,
    "created": "2026-11-19",
-   "last_updated": "2026-11-20",
+   "last_updated": "2026-11-21",
    "last_author": "cp-rajeshverma",
    "module": "AMS",
    "links": [
@@ -5893,9 +6033,9 @@
    "folder": "docs/02-brd",
    "kind": "artifact",
    "ext": ".md",
-   "size": 29420,
+   "size": 30304,
    "created": "2026-11-19",
-   "last_updated": "2026-11-20",
+   "last_updated": "2026-11-21",
    "last_author": "cp-rajeshverma",
    "module": "LMS",
    "links": [
@@ -5911,9 +6051,9 @@
    "links": [
     "PMS-BRD-M4-SMS"
    ],
-   "size": 43456,
+   "size": 44398,
    "created": "2026-11-19",
-   "last_updated": "2026-11-20",
+   "last_updated": "2026-11-21",
    "last_author": "cp-rajeshverma"
   },
   {
@@ -5921,9 +6061,9 @@
    "folder": "docs/02-brd",
    "kind": "artifact",
    "ext": ".md",
-   "size": 47630,
+   "size": 48638,
    "created": "2026-11-20",
-   "last_updated": "2026-11-20",
+   "last_updated": "2026-11-21",
    "last_author": "cp-rajeshverma",
    "module": "ALL",
    "links": [
@@ -5935,9 +6075,9 @@
    "folder": "docs/02-brd",
    "kind": "artifact",
    "ext": ".md",
-   "size": 59003,
+   "size": 59968,
    "created": "2026-11-18",
-   "last_updated": "2026-11-20",
+   "last_updated": "2026-11-21",
    "last_author": "cp-rajeshverma",
    "module": "ALL",
    "links": [
@@ -5952,7 +6092,7 @@
    "size": 1532,
    "created": "2026-11-15",
    "last_updated": "2026-11-15",
-   "last_author": "Rajesh Verma",
+   "last_author": "cp-rajeshverma",
    "module": "ALL",
    "links": [
     "PMS-GOV-ADR001"
@@ -5963,9 +6103,9 @@
    "folder": "docs/decisions",
    "kind": "artifact",
    "ext": ".md",
-   "size": 34038,
+   "size": 35507,
    "created": "2026-11-15",
-   "last_updated": "2026-11-20",
+   "last_updated": "2026-11-21",
    "last_author": "cp-rajeshverma",
    "module": "ALL",
    "links": [
@@ -5980,7 +6120,7 @@
    "size": 1212,
    "created": "2026-11-18",
    "last_updated": "2026-11-19",
-   "last_author": "Rajesh Verma",
+   "last_author": "cp-rajeshverma",
    "module": "ALL",
    "links": [
     "PMS-TPL-UX-JOURNEY-INDEX"
@@ -5994,7 +6134,7 @@
    "size": 1515,
    "created": "2026-11-18",
    "last_updated": "2026-11-19",
-   "last_author": "Rajesh Verma",
+   "last_author": "cp-rajeshverma",
    "module": "ALL",
    "links": [
     "PMS-TPL-UX-SUMMARY"
@@ -6008,7 +6148,7 @@
    "size": 6006,
    "created": "2026-11-18",
    "last_updated": "2026-11-18",
-   "last_author": "Rajesh Verma",
+   "last_author": "cp-rajeshverma",
    "module": "ALL",
    "links": [
     "PMS-TPL-BRD-ANCHOR"
@@ -6022,7 +6162,7 @@
    "size": 4817,
    "created": "2026-11-18",
    "last_updated": "2026-11-18",
-   "last_author": "Rajesh Verma",
+   "last_author": "cp-rajeshverma",
    "module": "ALL",
    "links": [
     "PMS-TPL-BRD-MODULE"
@@ -6036,7 +6176,7 @@
    "size": 4652,
    "created": "2026-11-18",
    "last_updated": "2026-11-18",
-   "last_author": "Rajesh Verma",
+   "last_author": "cp-rajeshverma",
    "module": "ALL",
    "links": [
     "PMS-TPL-BRD-SUP"
@@ -6050,7 +6190,7 @@
    "size": 19522,
    "created": "2026-11-18",
    "last_updated": "2026-11-18",
-   "last_author": "Rajesh Verma",
+   "last_author": "cp-rajeshverma",
    "module": "ALL",
    "links": [
     "PMS-TPL-HLD-PART01-ARCHITECTURE-AND-DESIGN"
@@ -6064,7 +6204,7 @@
    "size": 35291,
    "created": "2026-11-18",
    "last_updated": "2026-11-18",
-   "last_author": "Rajesh Verma",
+   "last_author": "cp-rajeshverma",
    "module": "ALL",
    "links": [
     "PMS-TPL-HLD-PART01A-PRINCIPLES-PATTERNS-DECISIONS"
@@ -6078,7 +6218,7 @@
    "size": 6120,
    "created": "2026-11-18",
    "last_updated": "2026-11-18",
-   "last_author": "Rajesh Verma",
+   "last_author": "cp-rajeshverma",
    "module": "ALL",
    "links": [
     "PMS-TPL-HLD-PART02-ANCHOR-FUNCTIONAL"
@@ -6092,7 +6232,7 @@
    "size": 8960,
    "created": "2026-11-18",
    "last_updated": "2026-11-19",
-   "last_author": "Rajesh Verma",
+   "last_author": "cp-rajeshverma",
    "module": "ALL",
    "links": [
     "PMS-TPL-HLD-PART02-MODULE-FUNCTIONAL"
@@ -6106,7 +6246,7 @@
    "size": 10635,
    "created": "2026-11-18",
    "last_updated": "2026-11-18",
-   "last_author": "Rajesh Verma",
+   "last_author": "cp-rajeshverma",
    "module": "ALL",
    "links": [
     "PMS-TPL-HLD-PART02-SUP-FUNCTIONAL"
@@ -6120,7 +6260,7 @@
    "size": 6636,
    "created": "2026-11-18",
    "last_updated": "2026-11-18",
-   "last_author": "Rajesh Verma",
+   "last_author": "cp-rajeshverma",
    "module": "ALL",
    "links": [
     "PMS-TPL-HLD-PART03-ANCHOR-DATAMODEL"
@@ -6134,7 +6274,7 @@
    "size": 4080,
    "created": "2026-11-18",
    "last_updated": "2026-11-18",
-   "last_author": "Rajesh Verma",
+   "last_author": "cp-rajeshverma",
    "module": "ALL",
    "links": [
     "PMS-TPL-HLD-PART03-MODULE-DATAMODEL"
@@ -6148,7 +6288,7 @@
    "size": 4219,
    "created": "2026-11-18",
    "last_updated": "2026-11-18",
-   "last_author": "Rajesh Verma",
+   "last_author": "cp-rajeshverma",
    "module": "ALL",
    "links": [
     "PMS-TPL-HLD-PART03-SUP-DATAMODEL"
@@ -6159,79 +6299,72 @@
   {
    "entity": "stage",
    "id": "S2",
-   "change": "Stage 2 progress (consistency check done, business open items decided)",
-   "from": "80%",
-   "to": "85%"
-  },
-  {
-   "entity": "health",
-   "id": "PMS",
-   "change": "No High finding open after D-104",
-   "from": "A",
-   "to": "G"
-  },
-  {
-   "entity": "artifact",
-   "id": "PMS-BRD",
-   "change": "Version bump (D-103, D-104): consistency fixes, OI-12 raised and closed, BR-CMN-01, BR-CMN-06, FR-CMN-004 updated",
-   "from": "v1.0 rev 0.13",
-   "to": "v1.0 rev 0.15"
-  },
-  {
-   "entity": "artifact",
-   "id": "PMS-BRD-M1-EIMS to M5-SUP",
-   "change": "Version bump (D-103, D-104): references, cross-module rule lists, business decisions applied",
-   "from": "v1.0 rev 0.1",
-   "to": "v1.0 rev 0.3"
-  },
-  {
-   "entity": "step",
-   "id": "S2.7",
-   "change": "New step: BRD set consistency check and business open items",
-   "from": null,
-   "to": "Completed"
+   "change": "Stage 2 Business Requirements completed",
+   "from": "In Progress · 85%",
+   "to": "Completed · 100%"
   },
   {
    "entity": "gate",
    "id": "S2",
-   "change": "Gate criteria \"business open items decided\" and new \"consistency check\" met",
-   "from": "1 of 5 met",
-   "to": "3 of 6 met"
+   "change": "Gate decision (D-107), all 6 criteria met",
+   "from": "Pending",
+   "to": "Passed"
+  },
+  {
+   "entity": "pipeline",
+   "id": "PMS-TX-01",
+   "change": "Current stage moves to Solution Design (HLD)",
+   "from": "2",
+   "to": "3"
+  },
+  {
+   "entity": "artifact",
+   "id": "PMS-BRD and PMS-BRD-M1-EIMS to M5-SUP",
+   "change": "Signed off as approved baseline (D-107)",
+   "from": "In Review / Draft · rev 0.15 / 0.3",
+   "to": "Approved · v1.0"
+  },
+  {
+   "entity": "artifact",
+   "id": "PMS-UX-JOURNEYS and 17 screens",
+   "change": "UX set v1.1 approved (D-105)",
+   "from": "1.0",
+   "to": "1.1"
   },
   {
    "entity": "review",
-   "id": "RV-09",
-   "change": "New review: BRD set consistency check (D-103)",
+   "id": "RV-10, RV-11",
+   "change": "New reviews: UX v1.1 approval; BRD stakeholder review and sign-off",
    "from": null,
-   "to": "Approved-with-comments"
+   "to": "Approved"
   },
   {
    "entity": "finding",
-   "id": "OI-02, OI-03, OI-04, OI-EIMS-01, OI-EIMS-02",
-   "change": "Closed (D-104)",
+   "id": "OI-01, OI-06 to OI-11, F-SMD-01",
+   "change": "Closed (D-105)",
    "from": "Open",
    "to": "Resolved"
-  },
-  {
-   "entity": "finding",
-   "id": "OI-12",
-   "change": "New open item raised by the consistency check and closed the same day (D-104)",
-   "from": null,
-   "to": "Resolved"
-  },
-  {
-   "entity": "decision",
-   "id": "D-103, D-104",
-   "change": "2 new decisions",
-   "from": "102",
-   "to": "104"
   },
   {
    "entity": "risk",
-   "id": "R-02",
-   "change": "Mitigation updated: waiting items move to the new manager (D-104)",
-   "from": "Open",
-   "to": "Open"
+   "id": "R-07",
+   "change": "Mitigated for the POC (D-106)",
+   "from": "Medium",
+   "to": "Low"
+  },
+  {
+   "entity": "decision",
+   "id": "D-105 to D-107",
+   "change": "3 new decisions",
+   "from": "104",
+   "to": "107"
+  },
+  {
+   "entity": "repo_file",
+   "id": "65 files",
+   "change": "Dates, authors and sizes refreshed (UX v1.1, BRD revisions)",
+   "from": null,
+   "to": null
   }
  ],
  "data_quality": {
@@ -6239,7 +6372,7 @@
   "artifacts_inferred": 0,
   "artifacts_git": 2,
   "artifacts_config": 7,
-  "neutralised_items": 29,
+  "neutralised_items": 32,
   "warnings": [
    "No artifact carries an smd: front-matter block yet; status comes from document control tables, the decision log and git.",
    "Screenshot (PNG) to screen mapping is inferred from file names (15 of 17 screens; SCR-EIMS-02 and SCR-SH-02 have no screenshot).",
@@ -6247,7 +6380,8 @@
    "Internal tooling folders, working memory and session notes are excluded from this customer-facing view; session activity is summarised only.",
    "Three repository folders are not covered by this view and are not indexed: an internal working-files folder under docs/ (D-83, now 13 files), an internal screenshots folder at the repository root, and a new internal prompt-templates folder templates/00-prompt/ (D-95, 26 files; declared internal, to be excluded). Proposed mapping: add exclude lines \"docs/00-prompt/**\" and \"templates/00-prompt/**\" (and the screenshots folder) to smd-config.yaml.",
    "FR numbering has gaps in every module BRD (e.g. 31 requirements used in FR-SMS-001..046; 45 in FR-UM-001..015, FR-AUTH-001..030, FR-ADM-101..117), by design; counts are taken from PMS-BRD §11.",
-   "New repository folder docs/02-brd/reviews/ (BRD consistency report and open-items decision note, D-103, D-104) is not covered by the mapping; the consistency report is linked only as review RV-09 evidence. Proposed mapping line: { glob: \"docs/02-brd/reviews/*.md\", stage: 2, type: Review }."
+   "Folder docs/02-brd/reviews/ (consistency report, open-items note, stakeholder review record) is still not covered by the mapping; the consistency report and stakeholder review record are linked as review evidence (RV-09, RV-11). Proposed mapping line: { glob: \"docs/02-brd/reviews/*.md\", stage: 2, type: Review }.",
+   "BRD reviewer names are sample names for the POC (D-106); each review decision was confirmed by the product owner."
   ]
  }
 }

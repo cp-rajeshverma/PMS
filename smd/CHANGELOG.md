@@ -1,5 +1,14 @@
 # SMD changelog
 
+## 2026-11-21 14:52 IST – refresh (Stage 2 BRD completed; gate passed)
+
+- Refreshed from commit `fd2e5eb` (4 commits since `21aa65f`: `d42c33f` to `fd2e5eb`); clean working tree.
+- **Stage 2 BRD Completed, 85% → 100%; gate Passed (D-107)**: UX set v1.1 (D-105), stakeholder review approved (D-106, sample reviewer names for the POC), BRD set signed off as approved baseline v1.0. Current stage moves to 3 (Solution Design).
+- Health **Green** (unchanged): no open findings or open items.
+- Findings: OI-01, OI-06 to OI-11 and F-SMD-01 closed (D-105). Risk R-07 mitigated (Low).
+- Data: 49 artifacts (41 approved), 108 decisions / ADRs (+3), 16 open items / findings (0 open), 11 reviews (+RV-10, RV-11), 8 risks, 81 linked repository files (65 refreshed), 0 broken links.
+- Warnings: folder docs/02-brd/reviews/ still not mapped (mapping line proposed); sample reviewer names noted. Customer-facing filtering: 32 texts neutralised (+3).
+
 ## 2026-11-20 23:19 IST – refresh (BRD consistency check; business open items decided)
 
 - Refreshed from commit `21aa65f` (5 commits since `b4e141a`: `637739a` to `21aa65f`); clean working tree.
