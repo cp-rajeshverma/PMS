@@ -16,18 +16,19 @@ Date: November 2026
 | 1.0 | 0.2 | 20-Nov-2026 | Rajesh Verma | BRD set consistency check (D-103): references to PMS-BRD rev 0.14, module BRDs rev 0.2 and D-01 to D-103; FR-AUTH-012 password wording (D-99) |
 | 1.0 | 0.3 | 20-Nov-2026 | Rajesh Verma | Business open items decided (D-104): FR-UM-014 waiting items move to the new manager; FR-AUTH-013 temporary password by company email; §14 open items closed |
 | 1.0 | 0.4 | 21-Nov-2026 | Rajesh Verma | UX set v1.1 approved (D-105): FR-AUTH-024, FR-ADM-114 references; OI-11 closed in §14 |
+| 1.0 | 0.5 | 21-Nov-2026 | Rajesh Verma | Stakeholder review held (D-106): reviewers recorded in §1.2, verdict approved with no comments |
 
 ### 1.2 Review and approval
 
-Names are added when the customer shares them.
+Reviewer names are sample names for the POC; each review decision was confirmed by Rajesh Verma (product owner) on behalf of the role (D-106). Review record: docs/02-brd/reviews/PMS-BRD-Stakeholder-Review.md.
 
 | Role | Name | Date | Decision |
 | --- | --- | --- | --- |
 | Product owner | Rajesh Verma | | |
-| Business analyst | [BA] | | |
-| Module business owner / SME | [HR Manager] | | |
-| Module business owner / SME | [Finance Manager] | | |
-| Security / IT owner | [Security / IT owner] | | |
+| Business analyst | Ananya Desai (sample reviewer, POC – confirmed by Rajesh Verma) | 21-Nov-2026 | Reviewed – approved, no comments |
+| Module business owner / SME | Sunil Bhatt (sample reviewer, POC – confirmed by Rajesh Verma) | 21-Nov-2026 | Reviewed – approved, no comments |
+| Module business owner / SME | Meenakshi Pillai (sample reviewer, POC – confirmed by Rajesh Verma) | 21-Nov-2026 | Reviewed – approved, no comments |
+| Security / IT owner | Arvind Kulkarni (sample reviewer, POC – confirmed by Rajesh Verma) | 21-Nov-2026 | Reviewed – approved, no comments |
 
 ## 2. Introduction
 

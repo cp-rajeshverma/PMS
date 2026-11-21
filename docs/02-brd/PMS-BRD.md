@@ -28,17 +28,18 @@ Date: November 2026
 | 1.0 | 0.14 | 20-Nov-2026 | Rajesh Verma | BRD set consistency check (D-103): §2.2 decision range; §2.3 module revisions, SUP approval no longer pending OI-11, OI-12 added for EIMS and LMS; §2.4 Employee Id, Top-level employee, Voided, Reconciliation; §2.5 US and OI prefixes; §4.2 SYS-REC; §5.1 step 4; FR-CMN-004, FR-CMN-015; BR-CMN-05 source; INT-08, JOB-CMN-01; NFR-03; §12 OI-01 to OI-04 and OI-06 updated, OI-12 added |
 | 1.0 | 0.15 | 20-Nov-2026 | Rajesh Verma | Business open items decided (D-104): BR-CMN-01 (one top-level employee), BR-CMN-06 (pending items on deactivation), FR-CMN-004 (missing days up to yesterday), R-02, glossary, §3.3 and §13.1 (bulk import Phase 2); OI-02, OI-03, OI-04, OI-12 closed; module status in §2.3 |
 | 1.0 | 0.16 | 21-Nov-2026 | Rajesh Verma | UX set v1.1 approved (D-105): §2.2 UX input versions; §4.3 note; FR-CMN-015 source; OI-01, OI-06 to OI-11 closed; module BRD revisions in §2.3 |
+| 1.0 | 0.17 | 21-Nov-2026 | Rajesh Verma | Stakeholder review held (D-106): reviewers recorded in §1.2, verdict approved with no comments; HR Manager confirmed the business decisions of D-104; R-07 updated; module BRD revisions in §2.3 |
 
 ### 1.2 Review and approval
 
-Names are added when the customer shares them.
+Reviewer names are sample names for the POC; each review decision was confirmed by Rajesh Verma (product owner) on behalf of the role (D-106). Review record: docs/02-brd/reviews/PMS-BRD-Stakeholder-Review.md.
 
 | Role | Name | Date | Decision |
 | --- | --- | --- | --- |
 | Product owner | Rajesh Verma | | |
-| Business analyst | [BA] | | |
-| Business stakeholder | [HR Manager] | | |
-| Business stakeholder | [Finance Manager] | | |
+| Business analyst | Ananya Desai (sample reviewer, POC – confirmed by Rajesh Verma) | 21-Nov-2026 | Reviewed – approved, no comments |
+| Business stakeholder | Sunil Bhatt (sample reviewer, POC – confirmed by Rajesh Verma) | 21-Nov-2026 | Reviewed – approved, no comments |
+| Business stakeholder | Meenakshi Pillai (sample reviewer, POC – confirmed by Rajesh Verma) | 21-Nov-2026 | Reviewed – approved, no comments |
 
 ## 2. Introduction
 
@@ -81,11 +82,11 @@ Users of the BRD set:
 
 | Module | Document | Business owner / SME | Version | Status |
 | --- | --- | --- | --- | --- |
-| EIMS – Employee Information | PMS-BRD-M1-EIMS | HR Manager, Finance Manager | v1.0 rev 0.4 | Drafted – business open items closed (D-104), UX aligned (D-105); ready for stakeholder review |
-| AMS – Attendance | PMS-BRD-M2-AMS | HR Manager, Finance Manager | v1.0 rev 0.4 | Drafted – business open items closed (D-104), UX aligned (D-105); ready for stakeholder review |
-| LMS – Leave | PMS-BRD-M3-LMS | HR Manager, Finance Manager | v1.0 rev 0.4 | Drafted – business open items closed (D-104), UX aligned (D-105); ready for stakeholder review |
-| SMS – Salary | PMS-BRD-M4-SMS | HR Manager, Finance Manager | v1.0 rev 0.4 | Drafted – business open items closed (D-104), UX aligned (D-105); ready for stakeholder review |
-| SUP – Supporting functions | PMS-BRD-M5-SUP | HR Manager, Finance Manager | v1.0 rev 0.4 | Drafted – business open items closed (D-104), UX aligned (D-105); ready for stakeholder review |
+| EIMS – Employee Information | PMS-BRD-M1-EIMS | HR Manager, Finance Manager | v1.0 rev 0.5 | Reviewed – approved by the stakeholder review (D-106); sign-off pending |
+| AMS – Attendance | PMS-BRD-M2-AMS | HR Manager, Finance Manager | v1.0 rev 0.5 | Reviewed – approved by the stakeholder review (D-106); sign-off pending |
+| LMS – Leave | PMS-BRD-M3-LMS | HR Manager, Finance Manager | v1.0 rev 0.5 | Reviewed – approved by the stakeholder review (D-106); sign-off pending |
+| SMS – Salary | PMS-BRD-M4-SMS | HR Manager, Finance Manager | v1.0 rev 0.5 | Reviewed – approved by the stakeholder review (D-106); sign-off pending |
+| SUP – Supporting functions | PMS-BRD-M5-SUP | HR Manager, Finance Manager | v1.0 rev 0.5 | Reviewed – approved by the stakeholder review (D-106); sign-off pending |
 
 ### 2.4 Glossary and abbreviations
 
@@ -471,7 +472,7 @@ Likelihood and impact: High / Medium / Low.
 | R-04 | Personal data (date of birth, parents' names, address, wages) is seen by someone outside the allowed scope. | Low | High | Role and data-scope check on every request (NFR-03, §4.3); Admin has no access to others' attendance, leave or salary (D-58); synthetic test data only. | Enterprise Architect |
 | R-05 | Stakeholders expect full payroll features (deductions, payslips, payroll runs) during the POC. | Medium | Medium | Approved scope and out-of-scope list (§3.3); new needs go through the decision log as Phase 2 or Future. | Product owner |
 | R-06 | Design, code or tests drift from the approved requirements and decisions. | Medium | High | Approval gate at each delivery step; decision log; BRD → HLD → code → test traceability (KPI-05, §11). | Product owner |
-| R-07 | Business stakeholders are not yet named, which may delay reviews and sign-off. | Medium | Medium | Review roles fixed now (§1.2); names added when shared; product owner tracks review dates. | Product owner |
+| R-07 | Business stakeholders are not yet named, which may delay reviews and sign-off. | Low | Medium | Mitigated for the POC (D-106): sample reviewer names recorded in §1.2, each review decision confirmed by the product owner on behalf of the role; real names replace them if the customer shares them. | Product owner |
 | R-08 | Open items (§12) stay unresolved and hold up the module BRDs. | Medium | Medium | Each open item has an owner and a due point; reviewed at each section review. | Product owner |
 
 ## 11. Traceability roll-up
