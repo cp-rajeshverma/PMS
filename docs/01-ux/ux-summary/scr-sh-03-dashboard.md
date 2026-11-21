@@ -7,8 +7,8 @@
 | Roles | Employee / Manager / Admin (different content per role) |
 | User journeys | UJ-SH-01, UJ-SH-03; entry point to UJ-EIMS-02/04, UJ-AMS-01/02, UJ-LMS-01, UJ-SMS-02 |
 | Mockup | `docs/01-ux/mockups/html/scr-sh-03-dashboard.html` |
-| Version / status | 0.1 / Draft – in review |
-| Last updated | 2026-11-16 |
+| Version / status | 1.1 / Approved (D-105; v1.0 D-34) |
+| Last updated | 2026-11-21 |
 
 ## 1. Purpose
 
@@ -16,9 +16,9 @@ Shows each user, right after login, what needs their action and where they stand
 
 ## 2. Description
 
-- **Employee:** four tiles (hours this month, earnings this month excluding voided, leave this month, profile status); a "Things to do" list (rejected items to fix, missing attendance days, salary records to review, pending requests); recent activity.
+- **Employee:** four tiles (hours this month, earnings this month excluding voided, leave this month, profile status – with the status of an open profile change request, D-70); a "Things to do" list (rejected items to fix, including a rejected profile change request; missing attendance days up to yesterday; salary records to review; pending requests); recent activity.
 - **Manager:** same as Employee, plus a "Waiting for your approval" card with counts per module and a button to the approvals inbox.
-- **Admin:** tiles for active employees, profiles not yet approved, items waiting for Admin, and the last reconciliation run (UJ-SYS-02); recently onboarded employees; "+ Onboard employee" button.
+- **Admin:** tiles for active employees, profiles not yet approved, items waiting for Admin (all the top-level employee's items), and the last reconciliation run with its time, result, records created and voided and mismatches logged (UJ-SYS-02, D-90); recently onboarded employees; "+ Onboard employee" button.
 
 ## 3. Navigation
 
@@ -39,10 +39,10 @@ Shows each user, right after login, what needs their action and where they stand
 | Hours this month | Tile | – | – | Sum of approved Attendance hours, current month | None |
 | Earnings this month | Tile | – | Excludes Voided and Disputed | Sum of Salary.dayWageAmount (Manager Approved + Accepted) | None |
 | Leave this month | Tile | – | – | Approved Leave days in month; pending count | None |
-| Profile status | Badge | – | – | Employee.status | None |
+| Profile status | Badge + text | – | – | Employee.status; open profile change request status | None |
 | Things to do | List | – | – | Rejected records, missing days, salary to review, pending requests | None |
 | Approval counts | List | – | – | Items where approver = user, by module | None |
-| Last reconciliation | Badge + text | – | – | Reconciliation job run log | None |
+| Last reconciliation | Badge + text | – | – | Reconciliation run log: run time, result, records created, records voided, mismatches logged | None |
 
 ## 5. Actions
 
@@ -58,7 +58,8 @@ Shows each user, right after login, what needs their action and where they stand
 | --- | --- |
 | D-25 | Voided salary excluded from earnings |
 | D-24 / UXQ-04 | Admin has no personal tiles |
-| UXQ-11 / D-28 | "Missing attendance" reminder for Mon–Fri days with no attendance or leave, from date of joining |
+| UXQ-11 / D-28, D-104 | "Missing attendance" reminder for Mon–Fri days with no attendance or leave, from date of joining up to yesterday (today never missing) |
+| D-90 | Reconciliation tile shows records created and voided and mismatches |
 
 ## 7. Screen states
 

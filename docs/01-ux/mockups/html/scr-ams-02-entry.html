@@ -7,7 +7,7 @@
 <link rel="stylesheet" href="assets/pms-mockup.css">
 </head>
 <body>
-<div class="mock-bar" role="region" aria-label="Mockup controls"><strong>Mockup controls</strong>View as: <label><input type="radio" name="role" value="employee" checked> Employee</label><label><input type="radio" name="role" value="manager"> Manager</label> Case: <select id="case" aria-label="Case"><option value="new">New entry</option><option value="fix">Fix rejected (Thu 12 Nov)</option><option value="approved">View approved (Tue 10 Nov)</option><option value="leave">Leave clash (pick Thu 05 Nov, submit)</option></select><span class="mock-id">SCR-AMS-02 · Attendance entry · v0.1</span></div>
+<div class="mock-bar" role="region" aria-label="Mockup controls"><strong>Mockup controls</strong>View as: <label><input type="radio" name="role" value="employee" checked> Employee</label><label><input type="radio" name="role" value="manager"> Manager</label> Case: <select id="case" aria-label="Case"><option value="new">New entry</option><option value="fix">Fix rejected (Thu 12 Nov)</option><option value="approved">View approved (Tue 10 Nov)</option><option value="leave">Leave clash (pick Thu 05 Nov, submit)</option><option value="discard">Draft on a leave day (Fri 06 Nov, discard)</option></select><span class="mock-id">SCR-AMS-02 · Attendance entry · v1.1</span></div>
 <div class="app">
   <header class="header">
     <div class="brand"><div class="brand-mark" aria-hidden="true">P</div>PMS <small>Payroll Management System</small></div>
@@ -39,9 +39,11 @@
     <div class="alert info" style="display:flex;justify-content:space-between;align-items:center">
       <span>Hours worked</span><b id="hrs" style="font-size:18px">—</b>
     </div>
-    <div class="alert warn" id="longWarn" hidden style="margin-top:12px">Over 12 hours — please check the times before submitting.</div>
+    <div class="alert warn" id="longWarn" hidden style="margin-top:12px">Over 12 hours – please confirm the times.
+      <label style="display:flex;gap:6px;margin-top:6px"><input type="checkbox" id="longOk"> I confirm these times are correct</label></div>
     <div class="form-actions">
       <a class="btn" href="scr-ams-01-my-attendance.html">Cancel</a>
+      <button type="button" class="btn danger" id="disc" style="display:none">Discard</button>
       <button type="button" class="btn" id="draft">Save draft</button>
       <button type="submit" class="btn primary" id="submit">Submit for approval</button>
     </div>
@@ -54,13 +56,18 @@
       <li>From time must be before To time; overnight shifts are not supported.</li>
       <li>Not allowed on a day with submitted or approved leave.</li>
       <li>After approval the entry is locked and your salary record for the day is generated automatically.</li>
+      <li>A draft or rejected entry can be discarded, for example a day you did not work; the date becomes free again.</li>
     </ul>
   </div>
 </div>
 
-    <div class="footer">PMS POC · v0.1</div>
+    <div class="footer">PMS POC · v1.1</div>
   </main>
 </div>
+
+<div class="modal-bg" id="dcModal" role="dialog" aria-modal="true" aria-labelledby="dcT"><div class="modal"><h2 id="dcT">Discard attendance</h2>
+  <p>This entry is removed from your calendar, list and totals, and the date can be entered again. It is kept in the history.</p>
+  <div class="actions"><button class="btn" id="dcNo">Cancel</button><button class="btn danger" id="dcYes">Discard</button></div></div></div>
 
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 <script src="assets/pms-mockup.js"></script>
@@ -70,6 +77,7 @@ const TODAY = '2026-11-16', DOJ = '2025-07-01';
 const ATT = {
   '2026-11-02': { f: '09:00', t: '17:30', st: 'Approved' },
   '2026-11-03': { f: '09:00', t: '17:00', st: 'Approved' },
+  '2026-11-06': { f: '09:00', t: '13:00', st: 'Draft' },
   '2026-11-09': { f: '09:00', t: '18:00', st: 'Approved' },
   '2026-11-10': { f: '09:30', t: '17:30', st: 'Approved' },
   '2026-11-11': { f: '09:00', t: '17:00', st: 'Approved' },
@@ -92,6 +100,7 @@ function load(iso, fix) {
   [$('dt'), $('ft'), $('tt')].forEach(x => x.readOnly = locked);
   $('dt').readOnly = !!a;
   $('submit').style.display = $('draft').style.display = locked ? 'none' : '';
+  $('disc').style.display = a && (a.st === 'Draft' || a.st === 'Rejected') ? '' : 'none';
   $('ttl').textContent = a ? (locked ? 'Attendance · ' + nice(iso) : 'Edit attendance · ' + nice(iso)) : 'Enter attendance';
   $('stBadge').innerHTML = a ? '<span class="badge b-' + a.st.toLowerCase() + '">' + a.st + '</span>' : '';
   const b = $('banner'); b.style.display = 'none';
@@ -115,9 +124,13 @@ function validate() {
   return !bad;
 }
 $('draft').onclick = () => { toast('Draft saved.'); };
-$('form').addEventListener('submit', e => { e.preventDefault(); if (!validate()) return; toast('Attendance for ' + nice($('dt').value) + ' submitted to Rahul Mehta.'); setTimeout(() => location.href = 'scr-ams-01-my-attendance.html', 1100); });
+$('disc').onclick = () => $('dcModal').classList.add('open');
+$('dcNo').onclick = () => $('dcModal').classList.remove('open');
+$('dcYes').onclick = () => { $('dcModal').classList.remove('open'); toast('Attendance for ' + nice($('dt').value) + ' discarded.'); setTimeout(() => location.href = 'scr-ams-01-my-attendance.html', 1100); };
+$('form').addEventListener('submit', e => { e.preventDefault(); if (!validate()) return; if (hrs($('ft').value, $('tt').value) > 12 && !$('longOk').checked) { toast('Over 12 hours – please confirm the times.'); return; } toast('Attendance for ' + nice($('dt').value) + ' submitted to Rahul Mehta.'); setTimeout(() => location.href = 'scr-ams-01-my-attendance.html', 1100); });
 const cs = $('case');
-cs.addEventListener('change', () => { const v = cs.value; load(v === 'new' ? '' : v === 'fix' ? '2026-11-12' : v === 'leave' ? '' : '2026-11-10'); if (v === 'leave') { $('dt').value = '2026-11-05'; } });
+cs.addEventListener('change', () => { const v = cs.value; load(v === 'new' ? '' : v === 'fix' ? '2026-11-12' : v === 'leave' ? '' : v === 'discard' ? '2026-11-06' : '2026-11-10');
+  if (v === 'discard') { const b = $('banner'); b.className = 'alert warn'; b.textContent = 'You now have approved leave on this day. This draft cannot be submitted – discard it.'; b.style.display = ''; } if (v === 'leave') { $('dt').value = '2026-11-05'; } });
 const initial = P.get('case') === 'fix' ? '2026-11-12' : (P.get('date') || '');
 cs.value = P.get('case') === 'fix' ? 'fix' : (ATT[initial] && ATT[initial].st === 'Approved' ? 'approved' : 'new');
 load(initial);

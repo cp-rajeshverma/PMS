@@ -27,6 +27,7 @@ Date: November 2026
 | 1.0 | 0.13 | 20-Nov-2026 | Rajesh Verma | SUP status in §2.3 and §11 (D-102) |
 | 1.0 | 0.14 | 20-Nov-2026 | Rajesh Verma | BRD set consistency check (D-103): §2.2 decision range; §2.3 module revisions, SUP approval no longer pending OI-11, OI-12 added for EIMS and LMS; §2.4 Employee Id, Top-level employee, Voided, Reconciliation; §2.5 US and OI prefixes; §4.2 SYS-REC; §5.1 step 4; FR-CMN-004, FR-CMN-015; BR-CMN-05 source; INT-08, JOB-CMN-01; NFR-03; §12 OI-01 to OI-04 and OI-06 updated, OI-12 added |
 | 1.0 | 0.15 | 20-Nov-2026 | Rajesh Verma | Business open items decided (D-104): BR-CMN-01 (one top-level employee), BR-CMN-06 (pending items on deactivation), FR-CMN-004 (missing days up to yesterday), R-02, glossary, §3.3 and §13.1 (bulk import Phase 2); OI-02, OI-03, OI-04, OI-12 closed; module status in §2.3 |
+| 1.0 | 0.16 | 21-Nov-2026 | Rajesh Verma | UX set v1.1 approved (D-105): §2.2 UX input versions; §4.3 note; FR-CMN-015 source; OI-01, OI-06 to OI-11 closed; module BRD revisions in §2.3 |
 
 ### 1.2 Review and approval
 
@@ -60,9 +61,9 @@ Users of the BRD set:
 
 | # | Document | Version | Use |
 | --- | --- | --- | --- |
-| 1 | UX Journey Index (`docs/01-ux/ux-journey-index.md`) | v1.0, approved (D-34) | Journeys, screens, navigation, status lists |
-| 2 | UX Summaries (`docs/01-ux/ux-summary/*.md`, 17 screens) | v0.1, approved with the UX set (D-34) | Fields, actions, rules per screen |
-| 3 | UX mockups (`docs/01-ux/mockups/html/*.html`, 17 screens) | approved (D-34) | Screen behaviour and layout |
+| 1 | UX Journey Index (`docs/01-ux/ux-journey-index.md`) | v1.1, approved (D-105; v1.0 D-34) | Journeys, screens, navigation, status lists |
+| 2 | UX Summaries (`docs/01-ux/ux-summary/*.md`, 17 screens) | v1.1, approved (D-105) | Fields, actions, rules per screen |
+| 3 | UX mockups (`docs/01-ux/mockups/html/*.html`, 17 screens) | v1.1, approved (D-105) | Screen behaviour and layout |
 | 4 | PMS – Business Requirements Document (baseline) | v1.0 (D-09) | Input only; content redistributed into this BRD set (D-53) |
 | 5 | Decision log (`docs/decisions/decision-log.md`) | D-01 to D-103 | Approved decisions |
 | 6 | ADR-001 Frontend composition (`docs/decisions/adr/`) | Accepted (D-23) | Shell and module frontend constraint |
@@ -80,11 +81,11 @@ Users of the BRD set:
 
 | Module | Document | Business owner / SME | Version | Status |
 | --- | --- | --- | --- | --- |
-| EIMS – Employee Information | PMS-BRD-M1-EIMS | HR Manager, Finance Manager | v1.0 rev 0.3 | Drafted – business open items closed (D-104); ready for stakeholder review |
-| AMS – Attendance | PMS-BRD-M2-AMS | HR Manager, Finance Manager | v1.0 rev 0.3 | Drafted – business open items closed (D-104); ready for stakeholder review |
-| LMS – Leave | PMS-BRD-M3-LMS | HR Manager, Finance Manager | v1.0 rev 0.3 | Drafted – business open items closed (D-104); ready for stakeholder review |
-| SMS – Salary | PMS-BRD-M4-SMS | HR Manager, Finance Manager | v1.0 rev 0.3 | Drafted – business open items closed (D-104); ready for stakeholder review |
-| SUP – Supporting functions | PMS-BRD-M5-SUP | HR Manager, Finance Manager | v1.0 rev 0.3 | Drafted – business open items closed (D-104); ready for stakeholder review (UX update OI-11 is due before HLD Part02) |
+| EIMS – Employee Information | PMS-BRD-M1-EIMS | HR Manager, Finance Manager | v1.0 rev 0.4 | Drafted – business open items closed (D-104), UX aligned (D-105); ready for stakeholder review |
+| AMS – Attendance | PMS-BRD-M2-AMS | HR Manager, Finance Manager | v1.0 rev 0.4 | Drafted – business open items closed (D-104), UX aligned (D-105); ready for stakeholder review |
+| LMS – Leave | PMS-BRD-M3-LMS | HR Manager, Finance Manager | v1.0 rev 0.4 | Drafted – business open items closed (D-104), UX aligned (D-105); ready for stakeholder review |
+| SMS – Salary | PMS-BRD-M4-SMS | HR Manager, Finance Manager | v1.0 rev 0.4 | Drafted – business open items closed (D-104), UX aligned (D-105); ready for stakeholder review |
+| SUP – Supporting functions | PMS-BRD-M5-SUP | HR Manager, Finance Manager | v1.0 rev 0.4 | Drafted – business open items closed (D-104), UX aligned (D-105); ready for stakeholder review |
 
 ### 2.4 Glossary and abbreviations
 
@@ -251,7 +252,7 @@ Screen-level access is in each module BRD §4.2. R = read, R/W = read and write,
 
 Notes:
 
-- Admin has no access to other employees' attendance, leave or salary (D-58). For the top-level employee only, Admin opens the module review screen to see the detail and decide (open item OI-01).
+- Admin has no access to other employees' attendance, leave or salary (D-58). For the top-level employee only, Admin opens the module review screen to see the detail and decide (UX v1.1, D-105).
 - A manager never sees or approves their own records in approval views (BR-CMN-08).
 - Inactive employees cannot sign in; their history is kept (BR-CMN-06).
 
@@ -356,7 +357,7 @@ The dashboard (SCR-SH-03), approvals inbox (SCR-SH-04) and shell layout (SCR-SH-
 | FR-CMN-012 | For a disputed salary record the approver can choose Keep as is (explanation required; record returns to Manager Approved) or Reopen attendance (after confirming the effect: attendance back to Rejected, salary record Voided). | Must | POC | D-33, D-07, D-25 |
 | FR-CMN-013 | Each inbox item can be opened in its module review screen for full detail. | Must | POC | SCR-SH-04 |
 | FR-CMN-014 | If an item was changed by someone else meanwhile, the user is told to refresh. In a bulk approval, items that fail stay selected with their own error; the others are approved. | Must | POC | SCR-SH-04 |
-| FR-CMN-015 | Every screen opens inside one layout: header with the user's name, role and Employee Id (for the PMS Administrator no Employee Id – FR-AUTH-024, OI-11); a menu filtered by role (navigation map in the UX Journey Index); an Approvals menu item with the pending count; a user menu with Change password and Log out. | Must | POC | SCR-SH-00 |
+| FR-CMN-015 | Every screen opens inside one layout: header with the user's name, role and Employee Id (for the PMS Administrator no Employee Id – FR-AUTH-024); a menu filtered by role (navigation map in the UX Journey Index); an Approvals menu item with the pending count; a user menu with Change password and Log out. | Must | POC | SCR-SH-00 |
 | FR-CMN-016 | When the session has expired, the user returns to the sign-in page with the message "Your session has expired. Please sign in again." | Must | POC | SCR-SH-00, D-26 |
 
 ## 6. Cross-module business rules
@@ -493,17 +494,17 @@ Running list, completed as the anchor is drafted.
 
 | Id | Question | Owner | Due | Status / decision |
 | --- | --- | --- | --- | --- |
-| OI-01 | Update the UX summaries so Admin can open the review screen for the top-level employee's records (SCR-SH-04 roles text, SCR-AMS-03, SCR-LMS-03, SCR-SMS-02), read limited to those records (D-58); also the UX Journey Index actor column (UJ-AMS-03, UJ-AMS-04, UJ-LMS-04, UJ-SMS-01, UJ-SMS-03) and screen catalogue roles (SCR-AMS-03, SCR-LMS-03, SCR-SMS-02), to show "Admin for top-level" | Product owner | Before HLD Part02 | Open |
+| OI-01 | Update the UX summaries so Admin can open the review screen for the top-level employee's records (SCR-SH-04 roles text, SCR-AMS-03, SCR-LMS-03, SCR-SMS-02), read limited to those records (D-58); also the UX Journey Index actor column (UJ-AMS-03, UJ-AMS-04, UJ-LMS-04, UJ-SMS-01, UJ-SMS-03) and screen catalogue roles (SCR-AMS-03, SCR-LMS-03, SCR-SMS-02), to show "Admin for top-level" | Product owner | Before HLD Part02 | Closed (D-105): UX v1.1 |
 | OI-02 | What happens to a deactivated employee's pending items (own submissions, own salary records still waiting for acceptance or a dispute decision, and items waiting for their approval as manager)? | HR Manager | Before BRD sign-off (Stage 2 gate) | Closed (D-104): items waiting for a decision stay with the approver and can be decided; drafts, rejected items and salary records waiting for acceptance stay as they are (BR-CMN-06) |
 | OI-03 | Missing attendance reminder (FR-CMN-004): does it include today, or only days up to yesterday? | HR Manager | Before BRD sign-off (Stage 2 gate) | Closed (D-104): only days up to yesterday; today is never missing (FR-CMN-004) |
 | OI-04 | When the Admin changes an employee's manager (BR-CMN-13), who decides the items already waiting for approval – the old or the new manager? | HR Manager | Before BRD sign-off (Stage 2 gate) | Closed (D-104): waiting items move to the new manager (FR-EIMS-017, FR-UM-014) |
 | OI-05 | Which business values must the PMS Administrator be able to change without a release (for example idle timeout, lockout limits, reconciliation time, remarks length)? Today all are fixed by decisions. | Product owner | Before PMS-BRD-M5-SUP (ADM is Phase 2) | Closed (D-97): none in the POC; all values stay fixed by decisions and change only by release or deployment setting; an Admin configuration screen is ADM, Phase 2 |
-| OI-06 | UX Journey Index still shows the reconciliation time for UJ-SYS-02 as "TBD"; it was set to 01:00 IST (D-24). Correct the UX document; also the 17 UX summaries still show version / status "0.1 / Draft – in review" although approved with the UX set (D-34). | Product owner | Before HLD Part02 | Open |
-| OI-07 | Update the UX for the profile change request and the withdrawal of a submitted new profile (D-70): SCR-EIMS-03, SCR-EIMS-04, SCR-SH-03, SCR-SH-04, UX Journey Index (UJ-EIMS-05, status list) | Product owner | Before HLD Part02 | Open |
-| OI-08 | Update the AMS UX (D-77): discard action for Draft and Rejected attendance (SCR-AMS-01, SCR-AMS-02); "Leave on this day" flag on draft or rejected attendance; "Over 12 h" flag for approvers (SCR-AMS-03, SCR-SH-04); History default current month incl. inactive reports | Product owner | Before HLD Part02 | Open |
-| OI-09 | Update the LMS UX (D-84, D-88): Team leave History date range filter, defaulting to the current month and including inactive reports (SCR-LMS-03); submitted time in Pending rows; "Also away" empty for the top-level employee; "Requested" shows the first submission date (SCR-LMS-01, SCR-LMS-03) | Product owner | Before HLD Part02 | Open |
-| OI-10 | Update the SMS UX (D-90): Team salary must not list the manager's own records (BR-CMN-08, SCR-SMS-02 mockup); separate notes for the dispute remark and the manager's Keep as is explanation, and repeated disputes after Keep as is (SCR-SMS-01, SCR-SMS-02, SCR-SH-04); Accepted Date; Team salary All records default current month to today incl. inactive reports, Needs action not filtered by date (SCR-SMS-02); Admin dashboard reconciliation tile shows result, records created / voided and mismatches (SCR-SH-03); UX Journey Index UJ-SYS-02 adds voiding of stale records | Product owner | Before HLD Part02 | Open |
-| OI-11 | Update the shell UX for the SUP rules (D-97): SCR-SH-01 shows the inactive-account message only after the correct password; SCR-SH-00 header for the PMS Administrator (no Employee Id); UX summaries SCR-SH-01, SCR-SH-02, SCR-SH-00, SCR-EIMS-01, SCR-EIMS-02 refer to the identity provider instead of the product name; system error messages show "Reference: <flow reference>" (D-101, NFR-09) | Product owner | Before HLD Part02 | Open |
+| OI-06 | UX Journey Index still shows the reconciliation time for UJ-SYS-02 as "TBD"; it was set to 01:00 IST (D-24). Correct the UX document; also the 17 UX summaries still show version / status "0.1 / Draft – in review" although approved with the UX set (D-34). | Product owner | Before HLD Part02 | Closed (D-105): UX v1.1 |
+| OI-07 | Update the UX for the profile change request and the withdrawal of a submitted new profile (D-70): SCR-EIMS-03, SCR-EIMS-04, SCR-SH-03, SCR-SH-04, UX Journey Index (UJ-EIMS-05, status list) | Product owner | Before HLD Part02 | Closed (D-105): UX v1.1 |
+| OI-08 | Update the AMS UX (D-77): discard action for Draft and Rejected attendance (SCR-AMS-01, SCR-AMS-02); "Leave on this day" flag on draft or rejected attendance; "Over 12 h" flag for approvers (SCR-AMS-03, SCR-SH-04); History default current month incl. inactive reports | Product owner | Before HLD Part02 | Closed (D-105): UX v1.1 |
+| OI-09 | Update the LMS UX (D-84, D-88): Team leave History date range filter, defaulting to the current month and including inactive reports (SCR-LMS-03); submitted time in Pending rows; "Also away" empty for the top-level employee; "Requested" shows the first submission date (SCR-LMS-01, SCR-LMS-03) | Product owner | Before HLD Part02 | Closed (D-105): UX v1.1 |
+| OI-10 | Update the SMS UX (D-90): Team salary must not list the manager's own records (BR-CMN-08, SCR-SMS-02 mockup); separate notes for the dispute remark and the manager's Keep as is explanation, and repeated disputes after Keep as is (SCR-SMS-01, SCR-SMS-02, SCR-SH-04); Accepted Date; Team salary All records default current month to today incl. inactive reports, Needs action not filtered by date (SCR-SMS-02); Admin dashboard reconciliation tile shows result, records created / voided and mismatches (SCR-SH-03); UX Journey Index UJ-SYS-02 adds voiding of stale records | Product owner | Before HLD Part02 | Closed (D-105): UX v1.1 |
+| OI-11 | Update the shell UX for the SUP rules (D-97): SCR-SH-01 shows the inactive-account message only after the correct password; SCR-SH-00 header for the PMS Administrator (no Employee Id); UX summaries SCR-SH-01, SCR-SH-02, SCR-SH-00, SCR-EIMS-01, SCR-EIMS-02 refer to the identity provider instead of the product name; system error messages show "Reference: <flow reference>" (D-101, NFR-09) | Product owner | Before HLD Part02 | Closed (D-105): UX v1.1 |
 | OI-12 | May more than one employee have no manager ("None – top-level")? If yes, the Admin approves all their records and "Also away" stays empty for each of them; if no, onboarding and manager changes must refuse a second top-level employee (BR-CMN-01, FR-EIMS-014, VR-EIMS-05, BR-LMS-09) | HR Manager | Before BRD sign-off (Stage 2 gate) | Closed (D-104): exactly one top-level employee (BR-CMN-01, FR-EIMS-014, VR-EIMS-05) |
 
 Approved decisions are kept in `docs/decisions/decision-log.md`.

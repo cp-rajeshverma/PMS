@@ -7,8 +7,8 @@
 | Roles | Employee, Manager (own salary; Manager also sees a "Team" tab) |
 | User journeys | UJ-SMS-02, UJ-SMS-04 |
 | Mockup | `docs/01-ux/mockups/html/scr-sms-01-my-salary.html` |
-| Version / status | 0.1 / Draft – in review |
-| Last updated | 2026-11-16 |
+| Version / status | 1.1 / Approved (D-105; v1.0 D-34) |
+| Last updated | 2026-11-21 |
 
 ## 1. Purpose
 
@@ -34,7 +34,8 @@ Tiles: earned in period (Accepted + Manager Approved), to review (count and amou
 | Rate (₹/h) | Number | – | Copied at generation (SMS-R2) | Salary.dayWageRate | None |
 | Amount | Currency, 2 decimals | – | Hours × Rate | Salary.dayWageAmount | None |
 | Status | Badge | – | Generated, Manager Approved, Accepted, Disputed, Voided | Salary.status | None |
-| Notes | Text | – | – | Salary.remarks (dispute remark or void reason) | None |
+| Notes | Text | – | – | Your latest dispute remark, the manager's Keep as is explanation and the void reason, each shown as its own note (D-90) | None |
+| Accepted date | Text under the status | – | – | Salary.acceptedDate (set by the system) | None |
 | Dispute remark (dialog) | Text area | Y | Not blank, max 500 | Salary.remarks | Employee |
 | Period, Show voided | Dates, checkbox | N | From ≤ To | – | User |
 
@@ -52,6 +53,7 @@ Tiles: earned in period (Accepted + Manager Approved), to review (count and amou
 | --- | --- |
 | S3 / D-05 | Amount = hours × rate, 2 decimals, INR |
 | S5 / D-05 | Manager approves first, then employee accepts or disputes |
+| D-90 | After Keep as is the record is Manager Approved again and can be accepted or disputed again; Accepted Date and Disputed Date set by the system |
 | SMS-R2 | Rate fixed at generation |
 | SMS-R4 | No one edits hours, rate or amount |
 | D-25 | Voided: visible on demand, excluded from totals |

@@ -7,12 +7,12 @@
 | Roles | Employee, Manager (own profile) |
 | User journeys | UJ-EIMS-02, UJ-EIMS-04, UJ-EIMS-05 |
 | Mockup | `docs/01-ux/mockups/html/scr-eims-03-my-profile.html` |
-| Version / status | 0.1 / Draft – in review |
-| Last updated | 2026-11-16 |
+| Version / status | 1.1 / Approved (D-105; v1.0 D-34) |
+| Last updated | 2026-11-21 |
 
 ## 1. Purpose
 
-Lets employees complete and maintain their own personal details and submit them for their manager's approval.
+Lets employees complete their own personal details and submit them for their manager's approval, and change an approved profile through a profile change request (D-70).
 
 ## 2. Description
 
@@ -21,9 +21,19 @@ A status banner explains where the profile stands. A read-only "Set by your admi
 | Status | Behaviour |
 | --- | --- |
 | Draft | Editable; Save draft + Submit for approval |
-| Submitted | Read-only; banner "waiting for <manager>" |
-| Approved | Read-only with **Edit profile**; editing shows a warning that the profile goes back for approval |
+| Submitted | Read-only; banner "waiting for <manager>"; **Withdraw** returns it to Draft until a decision is taken (D-70) |
+| Approved | Read-only with **Request a change**; replaced by a link to the open request when one exists |
 | Rejected | Editable; red banner with the manager's remarks |
+
+Profile change request (approved profile only; one open request per employee, D-70, D-72). The profile stays Approved and in use by all modules until the request is approved; the header shows both badges, e.g. "Approved" and "Change request: Submitted".
+
+| Request status | Behaviour |
+| --- | --- |
+| Draft | Fields pre-filled with the approved values and editable; changed fields are marked with a "Changed" badge; Save draft, Submit change request, Withdraw request |
+| Submitted | Read-only, showing the requested values; banner "waiting for <manager>"; Withdraw request until a decision is taken |
+| Rejected | Editable; red banner with the manager's remarks; Submit change request again, or Withdraw request |
+| Approved | Request closed; the new values are the approved profile |
+| Withdrawn | Request closed; a new request can be started |
 
 ## 3. Navigation
 
@@ -54,15 +64,18 @@ A status banner explains where the profile stands. A read-only "Set by your admi
 | Action | Who | Result | Status change | Message shown |
 | --- | --- | --- | --- | --- |
 | Save draft | Owner | Saved without validation of required fields | Stays Draft / Rejected | "Draft saved." |
-| Submit for approval | Owner | Validated and sent to manager | Draft / Rejected / Approved → Submitted | "Profile submitted to <manager> for approval." |
-| Edit profile | Owner | Unlocks fields, shows re-approval warning | – (until submitted) | Warning banner |
+| Submit for approval | Owner | Validated and sent to manager | Draft / Rejected → Submitted | "Profile submitted to <manager> for approval." |
+| Withdraw (profile) | Owner | Profile back to editing, removed from the approver's inbox | Submitted → Draft (before decision) | "Profile withdrawn. You can edit it again." |
+| Request a change | Owner | Opens a change request filled with the approved values | Request: – → Draft | Change request banner |
+| Submit change request | Owner | Validated; needs at least one changed value; sent to manager | Request: Draft / Rejected → Submitted | "Change request submitted to <manager> for approval." / "No changes to submit." |
+| Withdraw request | Owner | Request closed; approved profile unchanged | Request: Draft / Submitted (before decision) / Rejected → Withdrawn | "Change request withdrawn." |
 
 ## 6. Business rules applied
 
 | Rule Id | Summary |
 | --- | --- |
-| E2 / D-02, BR-C5 | Edit after approval goes back to Submitted |
-| BR-C4 | Rejected profile can be fixed and resubmitted |
+| D-70, D-72, BR-CMN-05, BR-CMN-11 | An approved profile changes only through a profile change request; it stays Approved meanwhile (replaces D-02 E2) |
+| BR-CMN-04 | Rejected profile or request can be fixed and resubmitted |
 | AMS-V5, LMS-V6 | Attendance and leave need an approved profile |
 | EIMS-V1 to V4 | Field validations |
 
@@ -74,7 +87,7 @@ A status banner explains where the profile stands. A read-only "Set by your admi
 | Loading | Form skeleton |
 | Validation error | Field-level messages + toast "Please correct the highlighted fields." |
 | System error | Alert: "Profile could not be saved. Please try again." |
-| Read-only (Submitted / Approved) | Inputs locked; actions hidden |
+| Read-only (Submitted / Approved / request Submitted) | Inputs locked; only Withdraw or Request a change offered |
 
 ## 8. Accessibility
 
@@ -84,4 +97,4 @@ Sections use headings; every input has a label; errors are linked to inputs and 
 
 | Id | Question | Owner | Status |
 | --- | --- | --- | --- |
-| UXQ-14 | While an approved profile is being re-approved, other modules keep using the last approved data and the employee keeps working normally. OK? | Product owner | Accepted (D-29) – yes |
+| UXQ-14 | While an approved profile is being re-approved, other modules keep using the last approved data and the employee keeps working normally. OK? | Product owner | Accepted (D-29) – yes; superseded by the profile change request (D-70): the profile stays Approved while a request is open |

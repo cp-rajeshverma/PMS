@@ -40,10 +40,10 @@ S01_MODAL = r"""
 S01_SCRIPT = COMMON + r"""
 const $ = id => document.getElementById(id);
 const S = [
-  { id: 1, d: '2026-11-02', f: '09:00', t: '17:30', h: 8.5, r: 250, st: 'Accepted' },
+  { id: 1, d: '2026-11-02', f: '09:00', t: '17:30', h: 8.5, r: 250, st: 'Accepted', acc: '04 Nov' },
   { id: 2, d: '2026-11-03', f: '09:00', t: '18:00', h: 9.0, r: 250, st: 'Voided', note: 'Attendance reopened after dispute (05 Nov). Replaced by the record below.' },
-  { id: 3, d: '2026-11-03', f: '09:00', t: '17:00', h: 8.0, r: 250, st: 'Accepted', note: 'Regenerated after correction' },
-  { id: 4, d: '2026-11-09', f: '09:00', t: '18:00', h: 9.0, r: 250, st: 'Manager Approved' },
+  { id: 3, d: '2026-11-03', f: '09:00', t: '17:00', h: 8.0, r: 250, st: 'Accepted', note: 'Regenerated after correction', acc: '09 Nov' },
+  { id: 4, d: '2026-11-09', f: '09:00', t: '18:00', h: 9.0, r: 250, st: 'Manager Approved', rm: 'I think I left at 17:30.', ex: 'Badge log shows 18:00 out; wage is correct.' },
   { id: 5, d: '2026-11-10', f: '09:30', t: '17:30', h: 8.0, r: 250, st: 'Manager Approved' },
   { id: 6, d: '2026-11-11', f: '09:00', t: '17:00', h: 8.0, r: 250, st: 'Manager Approved' }
 ];
@@ -54,7 +54,7 @@ function render() {
   $('rows').innerHTML = rows.map(s => { const v = s.st === 'Voided', rev = s.st === 'Manager Approved';
     return '<tr data-id="' + s.id + '"' + (v ? ' style="color:var(--text-3)"' : '') + '><td>' + (rev ? '<input type="checkbox" class="sel" aria-label="Select ' + sh(s.d) + '">' : '') + '</td>' +
     '<td style="white-space:nowrap;font-weight:500">' + sh(s.d) + '</td><td>' + s.f + '–' + s.t + '</td><td class="num">' + s.h.toFixed(2) + '</td><td class="num">' + s.r.toFixed(2) + '</td>' +
-    '<td class="num"' + (v ? ' style="text-decoration:line-through"' : '') + '>' + inr(s.h * s.r) + '</td><td>' + badge(s.st) + '</td><td class="small" style="max-width:240px">' + (s.note || (s.rm ? 'Your remark: "' + s.rm + '"' : '<span class="muted">—</span>')) + '</td><td class="act">' +
+    '<td class="num"' + (v ? ' style="text-decoration:line-through"' : '') + '>' + inr(s.h * s.r) + '</td><td>' + badge(s.st) + (s.acc ? '<div class="small muted">Accepted ' + s.acc + '</div>' : '') + '</td><td class="small" style="max-width:240px">' + ([s.note, s.rm ? 'Your remark: "' + s.rm + '"' : '', s.ex ? 'Manager\'s explanation (kept as is): "' + s.ex + '"' : ''].filter(Boolean).join('<br>') || '<span class="muted">—</span>') + '</td><td class="act">' +
     (rev ? '<button class="btn primary sm" data-a="ok">Accept</button><button class="btn danger sm" data-a="dp">Dispute</button>' : '<span class="muted small">—</span>') + '</td></tr>'; }).join('');
   const sum = st => inP.filter(s => st.includes(s.st)).reduce((n, s) => n + s.h * s.r, 0), cnt = st => inP.filter(s => s.st === st).length;
   $('tE').textContent = inr(sum(['Accepted', 'Manager Approved'])); $('tot').textContent = inr(sum(['Accepted', 'Manager Approved']));
@@ -67,10 +67,10 @@ function sync() { const n = document.querySelectorAll('.sel:checked').length; $(
 $('all').onchange = e => { document.querySelectorAll('.sel').forEach(c => c.checked = e.target.checked); sync(); };
 $('rows').addEventListener('change', e => { if (e.target.classList.contains('sel')) sync(); });
 $('bulkClear').onclick = () => { document.querySelectorAll('.sel').forEach(c => c.checked = false); sync(); };
-$('bulkAccept').onclick = () => { const ids = [...document.querySelectorAll('.sel:checked')].map(c => +c.closest('tr').dataset.id); ids.forEach(id => S.find(s => s.id === id).st = 'Accepted'); render(); toast(ids.length + ' salary record(s) accepted.'); };
+$('bulkAccept').onclick = () => { const ids = [...document.querySelectorAll('.sel:checked')].map(c => +c.closest('tr').dataset.id); ids.forEach(id => { const s = S.find(x => x.id === id); s.st = 'Accepted'; s.acc = '16 Nov'; }); render(); toast(ids.length + ' salary record(s) accepted.'); };
 let cur;
 $('rows').addEventListener('click', e => { const b = e.target.closest('button[data-a]'); if (!b) return; cur = S.find(s => s.id === +b.closest('tr').dataset.id);
-  if (b.dataset.a === 'ok') { cur.st = 'Accepted'; render(); toast('Salary for ' + sh(cur.d) + ' accepted.'); }
+  if (b.dataset.a === 'ok') { cur.st = 'Accepted'; cur.acc = '16 Nov'; render(); toast('Salary for ' + sh(cur.d) + ' accepted.'); }
   else { $('dWhat').textContent = sh(cur.d) + ' · ' + cur.f + '–' + cur.t + ' · ' + cur.h.toFixed(2) + ' h × ₹ ' + cur.r + ' = ' + inr(cur.h * cur.r); $('dText').value = ''; $('dErr').hidden = true; $('dModal').classList.add('open'); $('dText').focus(); } });
 $('dNo').onclick = () => $('dModal').classList.remove('open');
 $('dYes').onclick = () => { if (!$('dText').value.trim()) { $('dErr').hidden = false; return; } $('dModal').classList.remove('open'); cur.st = 'Disputed'; cur.rm = $('dText').value.trim(); render(); toast('Dispute sent to Rahul Mehta.'); };
@@ -84,13 +84,15 @@ def s01():
 
 
 # ---------------------------------------------------------------- SCR-SMS-02
-S02_HEAD = r"""<div><h1>Team salary</h1><p class="lead">Approve your team's generated wages and resolve disputes.</p></div>"""
+S02_HEAD = r"""<div><h1>Team salary</h1><p class="lead">Approve your direct reports' generated wages and resolve disputes (Admin: the top-level employee's). Your own salary records are not listed here.</p></div>"""
 
 S02_BODY = r"""
-<div class="tabs"><a href="scr-sms-01-my-salary.html">My salary</a><a href="#" class="on">Team</a></div>
+<div class="tabs" data-roles="manager"><a href="scr-sms-01-my-salary.html">My salary</a><a href="#" class="on">Team</a></div>
+<div class="alert info" data-roles="admin" style="margin-bottom:12px">You see only the top-level employee's salary records, for approval and dispute decisions (D-58).</div>
 <div class="tabs" id="sub" style="border-bottom:0;margin-bottom:8px"><a href="#" class="on" data-t="pending">Needs action<span class="count" id="cP"></span></a><a href="#" data-t="all">All records</a></div>
 <div class="toolbar">
-  <select class="in" id="fEmp" style="width:220px" aria-label="Employee"><option value="">All team members</option><option>Anita Sharma</option><option>Vikram Singh</option><option>Neha Gupta</option><option>Arjun Rao</option></select>
+  <select class="in" id="fEmp" style="width:220px" aria-label="Employee" data-roles="manager"><option value="">All team members</option><option>Anita Sharma</option><option>Vikram Singh</option><option>Neha Gupta</option><option>Arjun Rao</option><option>Karan Das (inactive)</option></select>
+  <span class="small muted" id="nHint">Needs action ignores the date range.</span>
   <input class="in" type="date" id="fFrom" value="2026-11-01" style="width:170px" aria-label="From date"><span class="muted">to</span>
   <input class="in" type="date" id="fTo" value="2026-11-16" style="width:170px" aria-label="To date">
   <label class="small" style="display:inline-flex;gap:6px;align-items:center"><input type="checkbox" id="showV"> Show voided</label>
@@ -117,6 +119,11 @@ const $ = id => document.getElementById(id);
 let tab = 'pending';
 const S = [
   { id: 1, emp: 'Vikram Singh', eid: 'EMP0008', d: '2026-11-10', h: 9.0, r: 250, st: 'Disputed', rm: 'I left at 17:00, not 18:00.' },
+  { id: 12, emp: 'Neha Gupta', eid: 'EMP0009', d: '2026-10-29', h: 8.0, r: 275, st: 'Disputed', rm: 'Still think 08:30 start is missing.', ex: 'Attendance shows 09:00 start as you entered it.' },
+  { id: 13, emp: 'Arjun Rao', eid: 'EMP0010', d: '2026-10-30', h: 7.0, r: 250, st: 'Generated' },
+  { id: 14, emp: 'Karan Das (inactive)', eid: 'EMP0011', d: '2026-11-04', h: 8.0, r: 250, st: 'Accepted', inactive: true },
+  { id: 15, emp: 'Rahul Mehta', eid: 'EMP0002', d: '2026-11-12', h: 8.5, r: 600, st: 'Generated', top: true },
+  { id: 16, emp: 'Rahul Mehta', eid: 'EMP0002', d: '2026-11-11', h: 9.0, r: 600, st: 'Accepted', top: true },
   { id: 2, emp: 'Neha Gupta', eid: 'EMP0009', d: '2026-11-11', h: 8.5, r: 275, st: 'Generated' },
   { id: 3, emp: 'Arjun Rao', eid: 'EMP0010', d: '2026-11-11', h: 6.0, r: 250, st: 'Generated' },
   { id: 4, emp: 'Anita Sharma', eid: 'EMP0007', d: '2026-11-11', h: 8.0, r: 250, st: 'Manager Approved' },
@@ -130,19 +137,21 @@ const S = [
 ];
 const needs = s => s.st === 'Generated' || s.st === 'Disputed';
 function render() {
-  const e = $('fEmp').value, fr = $('fFrom').value, to = $('fTo').value, sv = $('showV').checked;
-  const inP = S.filter(s => (!e || s.emp === e) && s.d >= fr && s.d <= to);
-  const rows = inP.filter(s => (tab === 'pending' ? needs(s) : (sv || s.st !== 'Voided'))).sort((a, b) => (b.st === 'Disputed') - (a.st === 'Disputed') || b.d.localeCompare(a.d));
-  $('cP').textContent = S.filter(needs).length;
+  const adm = ROLE === 'admin', e = adm ? '' : $('fEmp').value, fr = $('fFrom').value, to = $('fTo').value, sv = $('showV').checked;
+  const mine = S.filter(s => !!s.top === adm && (!e || s.emp === e));
+  const inP = mine.filter(s => s.d >= fr && s.d <= to);
+  $('nHint').style.display = tab === 'pending' ? '' : 'none';
+  const rows = (tab === 'pending' ? mine.filter(needs) : inP.filter(s => sv || s.st !== 'Voided')).sort((a, b) => (b.st === 'Disputed') - (a.st === 'Disputed') || b.d.localeCompare(a.d));
+  $('cP').textContent = S.filter(s => needs(s) && !!s.top === adm).length;
   $('rows').innerHTML = rows.map(s => { const v = s.st === 'Voided';
     return '<tr data-id="' + s.id + '"' + (v ? ' style="color:var(--text-3)"' : '') + '><td>' + (s.st === 'Generated' ? '<input type="checkbox" class="sel" aria-label="Select ' + s.emp + ' ' + sh(s.d) + '">' : '') + '</td>' +
-    '<td style="white-space:nowrap"><div style="font-weight:500">' + s.emp + '</div><div class="small muted">' + s.eid + '</div></td><td style="white-space:nowrap">' + sh(s.d) + '</td><td class="num">' + s.h.toFixed(2) + '</td><td class="num">' + s.r.toFixed(2) + '</td>' +
-    '<td class="num"' + (v ? ' style="text-decoration:line-through"' : '') + '>' + inr(s.h * s.r) + '</td><td>' + badge(s.st) + '</td><td class="small" style="max-width:220px">' + (s.rm ? 'Employee: "' + s.rm + '"' : s.note || '<span class="muted">—</span>') + '</td><td class="act">' +
+    '<td style="white-space:nowrap"><div style="font-weight:500">' + s.emp.replace(' (inactive)', '') + (s.inactive ? ' <span class="badge b-inactive">Inactive</span>' : '') + '</div><div class="small muted">' + s.eid + '</div></td><td style="white-space:nowrap">' + sh(s.d) + '</td><td class="num">' + s.h.toFixed(2) + '</td><td class="num">' + s.r.toFixed(2) + '</td>' +
+    '<td class="num"' + (v ? ' style="text-decoration:line-through"' : '') + '>' + inr(s.h * s.r) + '</td><td>' + badge(s.st) + (s.st === 'Disputed' && s.ex ? '<div class="small muted">Disputed again</div>' : '') + '</td><td class="small" style="max-width:240px">' + ([s.note, s.rm ? 'Employee\'s remark: "' + s.rm + '"' : '', s.ex ? 'Your explanation (kept as is): "' + s.ex + '"' : ''].filter(Boolean).join('<br>') || '<span class="muted">—</span>') + '</td><td class="act">' +
     (s.st === 'Generated' ? '<button class="btn primary sm" data-a="ok">Approve</button>' : s.st === 'Disputed' ? '<button class="btn sm" data-a="keep">Keep as is</button><button class="btn primary sm" data-a="ro">Reopen attendance</button>' : '<span class="muted small">—</span>') + '</td></tr>'; }).join('');
   $('wrap').style.display = rows.length ? '' : 'none'; $('empty').style.display = rows.length ? 'none' : '';
-  const emps = [...new Set(S.map(s => s.emp))].filter(n => !e || n === e).sort();
+  const emps = [...new Set(mine.map(s => s.emp))].sort();
   $('sumRows').innerHTML = emps.map(n => { const m = inP.filter(s => s.emp === n && (s.st === 'Accepted' || s.st === 'Manager Approved'));
-    return '<tr><td>' + n + '</td><td class="num">' + m.reduce((a, s) => a + s.h, 0).toFixed(2) + '</td><td class="num">' + inr(m.reduce((a, s) => a + s.h * s.r, 0)) + '</td><td class="num">' + inP.filter(s => s.emp === n && needs(s)).length + '</td></tr>'; }).join('');
+    return '<tr><td>' + n.replace(' (inactive)', ' <span class="badge b-inactive">Inactive</span>') + '</td><td class="num">' + m.reduce((a, s) => a + s.h, 0).toFixed(2) + '</td><td class="num">' + inr(m.reduce((a, s) => a + s.h * s.r, 0)) + '</td><td class="num">' + inP.filter(s => s.emp === n && needs(s)).length + '</td></tr>'; }).join('');
   $('all').checked = false; sync();
 }
 function sync() { const n = document.querySelectorAll('.sel:checked').length; $('selCount').textContent = n + ' selected'; $('bulk').classList.toggle('show', n > 0); }
@@ -158,16 +167,17 @@ $('rows').addEventListener('click', e => { const b = e.target.closest('button[da
   else if (b.dataset.a === 'keep') { $('kWhat').textContent = cur.emp + ' · ' + sh(cur.d) + ' · ' + inr(cur.h * cur.r) + ' · Employee: "' + cur.rm + '"'; $('kText').value = ''; $('kErr').hidden = true; $('kModal').classList.add('open'); $('kText').focus(); }
   else { $('roWhat').textContent = cur.emp + ' · ' + sh(cur.d) + ' · ' + cur.h.toFixed(2) + ' h = ' + inr(cur.h * cur.r) + ' · Employee: "' + cur.rm + '"'; $('roModal').classList.add('open'); } });
 $('kNo').onclick = () => $('kModal').classList.remove('open');
-$('kYes').onclick = () => { if (!$('kText').value.trim()) { $('kErr').hidden = false; return; } $('kModal').classList.remove('open'); cur.st = 'Manager Approved'; cur.note = 'Kept as is: "' + $('kText').value.trim() + '"'; cur.rm = null; render(); toast('Dispute closed. ' + cur.emp + ' can accept the record.'); };
+$('kYes').onclick = () => { if (!$('kText').value.trim()) { $('kErr').hidden = false; return; } $('kModal').classList.remove('open'); cur.st = 'Manager Approved'; cur.ex = $('kText').value.trim(); render(); toast('Dispute closed. ' + cur.emp + ' can accept the record.'); };
 $('roNo').onclick = () => $('roModal').classList.remove('open');
-$('roYes').onclick = () => { $('roModal').classList.remove('open'); cur.st = 'Voided'; cur.note = 'Attendance reopened after dispute'; cur.rm = null; render(); toast('Attendance reopened. Salary record voided.'); };
+function onRole() { render(); }
+$('roYes').onclick = () => { $('roModal').classList.remove('open'); cur.st = 'Voided'; cur.note = 'Void reason: attendance reopened after dispute'; render(); toast('Attendance reopened. Salary record voided.'); };
 render();
 """
 
 
 def s02():
     return shell("SCR-SMS-02", "Team salary review", "salary", "My work / Salary / Team", S02_HEAD, S02_BODY, S02_SCRIPT,
-                 roles=("manager",), default="manager", modal=S02_MODAL)
+                 roles=("manager", "admin"), default="manager", modal=S02_MODAL)
 
 
 PAGES = {

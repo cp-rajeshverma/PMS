@@ -4,11 +4,11 @@
 | --- | --- |
 | Screen Id | SCR-SH-04 |
 | Module | Shell (aggregates pending items from EIMS, AMS, LMS, SMS) |
-| Roles | Manager (direct reports), Admin (top-level employee profiles) |
+| Roles | Manager (direct reports), Admin (all items of the top-level employee: profile and change requests, attendance, leave, salary, D-58) |
 | User journeys | UJ-SH-04, UJ-EIMS-03, UJ-AMS-03, UJ-LMS-04, UJ-SMS-01, UJ-SMS-03 |
 | Mockup | `docs/01-ux/mockups/html/scr-sh-04-approvals.html` |
-| Version / status | 0.1 / Draft – in review |
-| Last updated | 2026-11-16 |
+| Version / status | 1.1 / Approved (D-105; v1.0 D-34) |
+| Last updated | 2026-11-21 |
 
 ## 1. Purpose
 
@@ -16,7 +16,7 @@ One place for a manager's daily approval routine, so they can clear all pending 
 
 ## 2. Description
 
-Tabs filter by module (All, Profiles, Attendance, Leave, Salary) with counts. A table lists each item: type, employee, details, submitted time (or the employee's dispute remark), status and actions. Selecting rows shows a bulk bar to approve several at once (UXQ-01). Reject opens a dialog that requires remarks. A disputed salary row offers **Reopen attendance**, which explains the effect (attendance back to Rejected, salary Voided) before confirming.
+Tabs filter by module (All, Profiles, Attendance, Leave, Salary) with counts. A table lists each item: type, employee, details, submitted time (or, for a dispute, the employee's latest remark and – after an earlier Keep as is – the approver's explanation as a separate note, D-90), status and actions. Profile items include new profiles and profile change requests (D-70); attendance items above 12 hours carry an "Over 12 h" flag (D-77). Selecting rows shows a bulk bar to approve several at once (UXQ-01). Reject opens a dialog that requires remarks. A disputed salary row offers **Reopen attendance**, which explains the effect (attendance back to Rejected, salary Voided) before confirming.
 
 ## 3. Navigation
 
@@ -31,8 +31,8 @@ Tabs filter by module (All, Profiles, Attendance, Leave, Salary) with counts. A 
 | --- | --- | --- | --- | --- | --- |
 | Type | Chip | – | – | Source module | None |
 | Employee | Name + Id | – | – | Employee | None |
-| Details | Text | – | – | Record summary (date, times, hours, leave type and range, wage) | None |
-| Submitted / note | Text | – | – | Updated date, or dispute remark | None |
+| Details | Text (+ "Over 12 h" flag) | – | – | Record summary (new profile or change request, date, times, hours, leave type and range, wage) | None |
+| Submitted / note | Text | – | – | Submitted date; for a dispute the Dispute Remark and, if any, the Resolution Explanation | None |
 | Status | Badge | – | – | Record status | None |
 | Remarks (dialog) | Text area | Y for reject / reopen | Not blank, max 500 characters | Record.remarks | Approver |
 
@@ -43,8 +43,8 @@ Tabs filter by module (All, Profiles, Attendance, Leave, Salary) with counts. A 
 | Approve (row) | Manager, Admin | Item removed from inbox (salary rows have Approve only, no Reject) | Submitted → Approved; Salary Generated → Manager Approved | "<Type> for <name> approved." (+ "Salary record will be generated." for attendance) |
 | Approve selected | Manager, Admin | Items removed | As above | "<n> item(s) approved." |
 | Reject | Manager, Admin | Dialog → item returned to employee | Submitted → Rejected | "… rejected and returned to the employee." |
-| Keep as is (dispute) | Manager | Dialog → explanation required | Salary Disputed → Manager Approved | "Dispute closed. <name> can accept the record." |
-| Reopen attendance (dispute) | Manager | Dialog → attendance returned to employee | Attendance Approved → Rejected; Salary → Voided | "Attendance reopened. Salary record voided." |
+| Keep as is (dispute) | Manager, Admin | Dialog → explanation required | Salary Disputed → Manager Approved | "Dispute closed. <name> can accept the record." |
+| Reopen attendance (dispute) | Manager, Admin | Dialog → attendance returned to employee | Attendance Approved → Rejected; Salary → Voided | "Attendance reopened. Salary record voided." |
 | Open | Manager, Admin | Opens module review screen | – | – |
 
 ## 6. Business rules applied
@@ -56,7 +56,9 @@ Tabs filter by module (All, Profiles, Attendance, Leave, Salary) with counts. A 
 | D-07 / O1, O2 | Disputes resolved by reopening attendance; manager cannot reject a generated salary record |
 | D-24 / UXQ-01 | Multi-select approve; reject one at a time |
 | D-25 | Reopen voids the salary record |
-| BR-C1 / O3 | Admin approves the top-level employee's profile |
+| BR-CMN-01, D-58 | Admin approves all records of the top-level employee (there is exactly one, D-104) |
+| D-70 | Profile change requests are approved like profiles |
+| D-104 | After a manager change, waiting items move to the new manager's inbox |
 
 ## 7. Screen states
 

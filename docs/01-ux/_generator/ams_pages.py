@@ -6,6 +6,7 @@ const TODAY = '2026-11-16', DOJ = '2025-07-01';
 const ATT = {
   '2026-11-02': { f: '09:00', t: '17:30', st: 'Approved' },
   '2026-11-03': { f: '09:00', t: '17:00', st: 'Approved' },
+  '2026-11-06': { f: '09:00', t: '13:00', st: 'Draft' },
   '2026-11-09': { f: '09:00', t: '18:00', st: 'Approved' },
   '2026-11-10': { f: '09:30', t: '17:30', st: 'Approved' },
   '2026-11-11': { f: '09:00', t: '17:00', st: 'Approved' },
@@ -47,7 +48,7 @@ A01_BODY = r"""
 <div class="small muted" id="legend" style="margin-top:10px;display:flex;gap:16px;flex-wrap:wrap">
   <span><span class="badge b-approved">Approved</span></span><span><span class="badge b-submitted">Submitted</span></span>
   <span><span class="badge b-rejected">Rejected</span></span><span><span class="badge b-draft">Draft</span></span>
-  <span><span class="badge b-leave">Leave</span></span><span><span class="badge b-warn">Missing</span> weekday reminder</span>
+  <span><span class="badge b-leave">Leave</span></span><span><span class="badge b-warn">Missing</span> weekday reminder (up to yesterday)</span>
 </div>
 <div id="list" class="tbl-wrap" style="display:none">
   <table class="t"><thead><tr><th>Date</th><th>From</th><th>To</th><th class="num">Hours</th><th>Status</th><th>Manager remarks</th><th class="act">Actions</th></tr></thead><tbody id="rows"></tbody></table>
@@ -65,7 +66,7 @@ function build() {
     const a = ATT[iso], lv = LEAVE[iso], future = iso > TODAY, weekday = dow > 0 && dow < 6;
     let inner = '', cls = 'cell';
     if (iso === TODAY) cls += ' today';
-    if (a) { const h = hrs(a.f, a.t); inner = '<span class="badge b-' + a.st.toLowerCase() + '">' + a.st + '</span><span class="h">' + a.f + '–' + (a.t || '…') + (h ? ' · ' + fmtH(h) : '') + '</span>';
+    if (a) { const h = hrs(a.f, a.t), clash = lv && (a.st === 'Draft' || a.st === 'Rejected'); inner = '<span class="badge b-' + a.st.toLowerCase() + '">' + a.st + '</span><span class="h">' + a.f + '–' + (a.t || '…') + (h ? ' · ' + fmtH(h) : '') + '</span>' + (clash ? '<span class="badge b-warn">Leave on this day – discard</span>' : '');
       if (a.st === 'Approved') { apH += h; apD++; } if (a.st === 'Submitted') sub++; if (a.st === 'Rejected' || a.st === 'Draft') act++; }
     else if (lv) inner = '<span class="badge b-leave">Leave</span><span class="h">' + lv + '</span>';
     else if (!future && weekday && iso < TODAY) { inner = '<span class="badge b-warn">Missing</span><span class="h">Click to enter</span>'; cls += ' missing'; miss++; }
@@ -78,7 +79,7 @@ function build() {
   $('tH').textContent = fmtH(apH); $('tD').textContent = apD + ' approved days'; $('tS').textContent = sub; $('tR').textContent = act; $('tM').textContent = miss;
   const days = Object.keys(ATT).sort().reverse();
   $('rows').innerHTML = days.map(iso => { const a = ATT[iso], edit = a.st === 'Rejected' || a.st === 'Draft';
-    return '<tr><td style="white-space:nowrap">' + nice(iso) + '</td><td>' + a.f + '</td><td>' + (a.t || '—') + '</td><td class="num">' + fmtH(hrs(a.f, a.t)) + '</td><td><span class="badge b-' + a.st.toLowerCase() + '">' + a.st + '</span></td><td class="small">' + (a.rm || '<span class="muted">—</span>') + '</td><td class="act"><a class="btn sm" href="scr-ams-02-entry.html?date=' + iso + (a.st === 'Rejected' ? '&case=fix' : '') + '">' + (edit ? 'Edit' : 'View') + '</a></td></tr>'; }).join('');
+    return '<tr><td style="white-space:nowrap">' + nice(iso) + '</td><td>' + a.f + '</td><td>' + (a.t || '—') + '</td><td class="num">' + fmtH(hrs(a.f, a.t)) + '</td><td><span class="badge b-' + a.st.toLowerCase() + '">' + a.st + '</span>' + (LEAVE[iso] && edit ? ' <span class="badge b-warn">Leave on this day – discard</span>' : '') + '</td><td class="small">' + (a.rm || '<span class="muted">—</span>') + '</td><td class="act"><a class="btn sm" href="scr-ams-02-entry.html?date=' + iso + (a.st === 'Rejected' ? '&case=fix' : '') + '">' + (edit ? 'Edit' : 'View') + '</a></td></tr>'; }).join('');
 }
 build();
 $('grid').addEventListener('click', e => { const c = e.target.closest('button.cell'); if (!c) return; const iso = c.dataset.iso; location.href = 'scr-ams-02-entry.html?date=' + iso + (ATT[iso] && ATT[iso].st === 'Rejected' ? '&case=fix' : ''); });
@@ -108,9 +109,11 @@ A02_BODY = r"""
     <div class="alert info" style="display:flex;justify-content:space-between;align-items:center">
       <span>Hours worked</span><b id="hrs" style="font-size:18px">—</b>
     </div>
-    <div class="alert warn" id="longWarn" hidden style="margin-top:12px">Over 12 hours — please check the times before submitting.</div>
+    <div class="alert warn" id="longWarn" hidden style="margin-top:12px">Over 12 hours – please confirm the times.
+      <label style="display:flex;gap:6px;margin-top:6px"><input type="checkbox" id="longOk"> I confirm these times are correct</label></div>
     <div class="form-actions">
       <a class="btn" href="scr-ams-01-my-attendance.html">Cancel</a>
+      <button type="button" class="btn danger" id="disc" style="display:none">Discard</button>
       <button type="button" class="btn" id="draft">Save draft</button>
       <button type="submit" class="btn primary" id="submit">Submit for approval</button>
     </div>
@@ -123,6 +126,7 @@ A02_BODY = r"""
       <li>From time must be before To time; overnight shifts are not supported.</li>
       <li>Not allowed on a day with submitted or approved leave.</li>
       <li>After approval the entry is locked and your salary record for the day is generated automatically.</li>
+      <li>A draft or rejected entry can be discarded, for example a day you did not work; the date becomes free again.</li>
     </ul>
   </div>
 </div>
@@ -138,6 +142,7 @@ function load(iso, fix) {
   [$('dt'), $('ft'), $('tt')].forEach(x => x.readOnly = locked);
   $('dt').readOnly = !!a;
   $('submit').style.display = $('draft').style.display = locked ? 'none' : '';
+  $('disc').style.display = a && (a.st === 'Draft' || a.st === 'Rejected') ? '' : 'none';
   $('ttl').textContent = a ? (locked ? 'Attendance · ' + nice(iso) : 'Edit attendance · ' + nice(iso)) : 'Enter attendance';
   $('stBadge').innerHTML = a ? '<span class="badge b-' + a.st.toLowerCase() + '">' + a.st + '</span>' : '';
   const b = $('banner'); b.style.display = 'none';
@@ -161,33 +166,44 @@ function validate() {
   return !bad;
 }
 $('draft').onclick = () => { toast('Draft saved.'); };
-$('form').addEventListener('submit', e => { e.preventDefault(); if (!validate()) return; toast('Attendance for ' + nice($('dt').value) + ' submitted to Rahul Mehta.'); setTimeout(() => location.href = 'scr-ams-01-my-attendance.html', 1100); });
+$('disc').onclick = () => $('dcModal').classList.add('open');
+$('dcNo').onclick = () => $('dcModal').classList.remove('open');
+$('dcYes').onclick = () => { $('dcModal').classList.remove('open'); toast('Attendance for ' + nice($('dt').value) + ' discarded.'); setTimeout(() => location.href = 'scr-ams-01-my-attendance.html', 1100); };
+$('form').addEventListener('submit', e => { e.preventDefault(); if (!validate()) return; if (hrs($('ft').value, $('tt').value) > 12 && !$('longOk').checked) { toast('Over 12 hours – please confirm the times.'); return; } toast('Attendance for ' + nice($('dt').value) + ' submitted to Rahul Mehta.'); setTimeout(() => location.href = 'scr-ams-01-my-attendance.html', 1100); });
 const cs = $('case');
-cs.addEventListener('change', () => { const v = cs.value; load(v === 'new' ? '' : v === 'fix' ? '2026-11-12' : v === 'leave' ? '' : '2026-11-10'); if (v === 'leave') { $('dt').value = '2026-11-05'; } });
+cs.addEventListener('change', () => { const v = cs.value; load(v === 'new' ? '' : v === 'fix' ? '2026-11-12' : v === 'leave' ? '' : v === 'discard' ? '2026-11-06' : '2026-11-10');
+  if (v === 'discard') { const b = $('banner'); b.className = 'alert warn'; b.textContent = 'You now have approved leave on this day. This draft cannot be submitted – discard it.'; b.style.display = ''; } if (v === 'leave') { $('dt').value = '2026-11-05'; } });
 const initial = P.get('case') === 'fix' ? '2026-11-12' : (P.get('date') || '');
 cs.value = P.get('case') === 'fix' ? 'fix' : (ATT[initial] && ATT[initial].st === 'Approved' ? 'approved' : 'new');
 load(initial);
 if (!ATT[initial] && initial) $('dt').value = initial;
 """
 
-A02_CTRL = r""" Case: <select id="case" aria-label="Case"><option value="new">New entry</option><option value="fix">Fix rejected (Thu 12 Nov)</option><option value="approved">View approved (Tue 10 Nov)</option><option value="leave">Leave clash (pick Thu 05 Nov, submit)</option></select>"""
+A02_MODAL = r"""
+<div class="modal-bg" id="dcModal" role="dialog" aria-modal="true" aria-labelledby="dcT"><div class="modal"><h2 id="dcT">Discard attendance</h2>
+  <p>This entry is removed from your calendar, list and totals, and the date can be entered again. It is kept in the history.</p>
+  <div class="actions"><button class="btn" id="dcNo">Cancel</button><button class="btn danger" id="dcYes">Discard</button></div></div></div>
+"""
+
+A02_CTRL = r""" Case: <select id="case" aria-label="Case"><option value="new">New entry</option><option value="fix">Fix rejected (Thu 12 Nov)</option><option value="approved">View approved (Tue 10 Nov)</option><option value="leave">Leave clash (pick Thu 05 Nov, submit)</option><option value="discard">Draft on a leave day (Fri 06 Nov, discard)</option></select>"""
 
 
 def a02():
     return shell("SCR-AMS-02", "Attendance entry", "attendance", "My work / Attendance / Entry", A02_HEAD, A02_BODY, A02_SCRIPT,
-                 roles=("employee", "manager"), default="employee", extra_controls=A02_CTRL)
+                 roles=("employee", "manager"), default="employee", extra_controls=A02_CTRL, modal=A02_MODAL)
 
 
 # ---------------------------------------------------------------- SCR-AMS-03
-A03_HEAD = r"""<div><h1>Team attendance</h1><p class="lead">Approve your direct reports' daily attendance. Approval generates their salary record.</p></div>"""
+A03_HEAD = r"""<div><h1>Team attendance</h1><p class="lead">Approve your direct reports' daily attendance (Admin: the top-level employee's). Approval generates their salary record. History shows the current month by default and includes reports who became inactive.</p></div>"""
 
 A03_BODY = r"""
-<div class="tabs"><a href="scr-ams-01-my-attendance.html">My attendance</a><a href="#" class="on">Team</a></div>
+<div class="tabs" data-roles="manager"><a href="scr-ams-01-my-attendance.html">My attendance</a><a href="#" class="on">Team</a></div>
+<div class="alert info" data-roles="admin" style="margin-bottom:12px">You see only the top-level employee's attendance, for review and decision (D-58).</div>
 <div class="tabs" id="sub" style="border-bottom:0;margin-bottom:8px">
   <a href="#" class="on" data-t="pending">Pending<span class="count" id="cP"></span></a><a href="#" data-t="history">History</a>
 </div>
 <div class="toolbar">
-  <select class="in" id="fEmp" style="width:220px" aria-label="Employee"><option value="">All team members</option><option>Anita Sharma</option><option>Vikram Singh</option><option>Neha Gupta</option><option>Arjun Rao</option></select>
+  <select class="in" id="fEmp" style="width:220px" aria-label="Employee" data-roles="manager"><option value="">All team members</option><option>Anita Sharma</option><option>Vikram Singh</option><option>Neha Gupta</option><option>Arjun Rao</option><option>Karan Das (inactive)</option></select>
   <input class="in" type="date" id="fFrom" value="2026-11-01" style="width:170px" aria-label="From date"> <span class="muted">to</span>
   <input class="in" type="date" id="fTo" value="2026-11-16" style="width:170px" aria-label="To date">
 </div>
@@ -213,6 +229,10 @@ const R = [
   { id: 1, emp: 'Anita Sharma', eid: 'EMP0007', d: '2026-11-13', f: '09:00', t: '17:30', st: 'Submitted', sub: '13 Nov, 18:02' },
   { id: 2, emp: 'Vikram Singh', eid: 'EMP0008', d: '2026-11-13', f: '10:00', t: '18:00', st: 'Submitted', sub: '13 Nov, 18:15' },
   { id: 3, emp: 'Neha Gupta', eid: 'EMP0009', d: '2026-11-16', f: '08:30', t: '13:00', st: 'Submitted', sub: '16 Nov, 13:05' },
+  { id: 9, emp: 'Arjun Rao', eid: 'EMP0010', d: '2026-11-13', f: '07:00', t: '20:00', st: 'Submitted', sub: '13 Nov, 20:10' },
+  { id: 10, emp: 'Karan Das (inactive)', eid: 'EMP0011', d: '2026-11-04', f: '09:00', t: '17:00', st: 'Approved', by: 'Rahul Mehta, 05 Nov', inactive: true },
+  { id: 11, emp: 'Rahul Mehta', eid: 'EMP0002', d: '2026-11-13', f: '09:00', t: '18:00', st: 'Submitted', sub: '13 Nov, 18:30', top: true },
+  { id: 12, emp: 'Rahul Mehta', eid: 'EMP0002', d: '2026-11-12', f: '09:00', t: '17:30', st: 'Approved', by: 'PMS Administrator, 13 Nov', top: true },
   { id: 4, emp: 'Vikram Singh', eid: 'EMP0008', d: '2026-11-10', f: '09:00', t: '18:00', st: 'Approved', by: 'Rahul Mehta, 11 Nov', disputed: true },
   { id: 5, emp: 'Anita Sharma', eid: 'EMP0007', d: '2026-11-12', f: '09:00', t: '19:30', st: 'Rejected', by: 'Rahul Mehta, 13 Nov', rm: 'Out time looks wrong, please check.' },
   { id: 6, emp: 'Anita Sharma', eid: 'EMP0007', d: '2026-11-11', f: '09:00', t: '17:00', st: 'Approved', by: 'Rahul Mehta, 13 Nov' },
@@ -224,13 +244,14 @@ const DOW = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 const nice = iso => { const d = new Date(iso + 'T00:00:00'); return DOW[d.getDay()] + ' ' + iso.slice(8) + ' Nov'; };
 function render() {
   const e = $('fEmp').value, fr = $('fFrom').value, to = $('fTo').value;
-  const rows = R.filter(r => (tab === 'pending' ? r.st === 'Submitted' : r.st !== 'Submitted') && (!e || r.emp === e) && r.d >= fr && r.d <= to)
+  const adm = ROLE === 'admin';
+  const rows = R.filter(r => !!r.top === adm && (tab === 'pending' ? r.st === 'Submitted' : r.st !== 'Submitted') && (adm || !e || r.emp === e) && r.d >= fr && r.d <= to)
                 .sort((a, b) => tab === 'pending' ? a.d.localeCompare(b.d) : b.d.localeCompare(a.d));
-  $('cP').textContent = R.filter(r => r.st === 'Submitted').length;
+  $('cP').textContent = R.filter(r => r.st === 'Submitted' && !!r.top === adm).length;
   const pend = tab === 'pending';
   $('thead').innerHTML = '<tr>' + (pend ? '<th style="width:36px"><input type="checkbox" id="all" aria-label="Select all"></th>' : '') + '<th>Employee</th><th>Date</th><th>From</th><th>To</th><th class="num">Hours</th><th>' + (pend ? 'Submitted' : 'Decision') + '</th><th>Status</th><th class="act">Actions</th></tr>';
   $('rows').innerHTML = rows.map(r => '<tr data-id="' + r.id + '">' + (pend ? '<td><input type="checkbox" class="sel" aria-label="Select ' + r.emp + ' ' + nice(r.d) + '"></td>' : '') +
-    '<td style="white-space:nowrap"><div style="font-weight:500">' + r.emp + '</div><div class="small muted">' + r.eid + '</div></td><td style="white-space:nowrap">' + nice(r.d) + '</td><td>' + r.f + '</td><td>' + r.t + '</td><td class="num">' + hrs(r.f, r.t).toFixed(1) + ' h</td>' +
+    '<td style="white-space:nowrap"><div style="font-weight:500">' + r.emp.replace(' (inactive)', '') + (r.inactive ? ' <span class="badge b-inactive">Inactive</span>' : '') + '</div><div class="small muted">' + r.eid + '</div></td><td style="white-space:nowrap">' + nice(r.d) + '</td><td>' + r.f + '</td><td>' + r.t + '</td><td class="num">' + hrs(r.f, r.t).toFixed(1) + ' h' + (hrs(r.f, r.t) > 12 ? ' <span class="badge b-warn">Over 12 h</span>' : '') + '</td>' +
     '<td class="small muted">' + (pend ? r.sub : r.by + (r.rm ? '<br>"' + r.rm + '"' : '')) + '</td><td><span class="badge b-' + r.st.toLowerCase() + '">' + r.st + '</span>' + (r.disputed ? ' <span class="badge b-disputed">Salary disputed</span>' : '') + '</td><td class="act">' +
     (pend ? '<button class="btn primary sm" data-a="ok">Approve</button><button class="btn danger sm" data-a="rj">Reject</button>' : r.disputed ? '<button class="btn primary sm" data-a="ro">Reopen</button>' : (r.st === 'Rejected' ? '<span class="muted small">With employee</span>' : '<span class="muted small">Locked</span>')) + '</td></tr>').join('');
   $('wrap').style.display = rows.length ? '' : 'none'; $('empty').style.display = rows.length ? 'none' : '';
@@ -238,7 +259,8 @@ function render() {
   sync();
 }
 function sync() { const n = document.querySelectorAll('.sel:checked').length; $('selCount').textContent = n + ' selected'; $('bulk').classList.toggle('show', n > 0); }
-function decide(ids, st, rm) { ids.forEach(id => { const r = R.find(x => x.id === id); r.st = st; r.by = 'Rahul Mehta, 16 Nov'; if (rm) r.rm = rm; }); render(); }
+function decide(ids, st, rm) { ids.forEach(id => { const r = R.find(x => x.id === id); r.st = st; r.by = (ROLE === 'admin' ? 'PMS Administrator' : 'Rahul Mehta') + ', 16 Nov'; if (rm) r.rm = rm; }); render(); }
+function onRole() { render(); }
 $('sub').addEventListener('click', e => { const a = e.target.closest('a'); if (!a) return; e.preventDefault(); tab = a.dataset.t; document.querySelectorAll('#sub a').forEach(x => x.classList.toggle('on', x === a)); render(); });
 ['fEmp', 'fFrom', 'fTo'].forEach(i => $(i).addEventListener('input', render));
 $('rows').addEventListener('change', e => { if (e.target.classList.contains('sel')) sync(); });
@@ -260,7 +282,7 @@ render();
 
 def a03():
     return shell("SCR-AMS-03", "Team attendance review", "attendance", "My work / Attendance / Team", A03_HEAD, A03_BODY, A03_SCRIPT,
-                 roles=("manager",), default="manager", modal=A03_MODAL)
+                 roles=("manager", "admin"), default="manager", modal=A03_MODAL)
 
 
 PAGES = {

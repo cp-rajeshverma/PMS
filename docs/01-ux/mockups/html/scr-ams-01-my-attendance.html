@@ -7,7 +7,7 @@
 <link rel="stylesheet" href="assets/pms-mockup.css">
 </head>
 <body>
-<div class="mock-bar" role="region" aria-label="Mockup controls"><strong>Mockup controls</strong>View as: <label><input type="radio" name="role" value="employee" checked> Employee</label><label><input type="radio" name="role" value="manager"> Manager</label><span class="mock-id">SCR-AMS-01 · My attendance · v0.1</span></div>
+<div class="mock-bar" role="region" aria-label="Mockup controls"><strong>Mockup controls</strong>View as: <label><input type="radio" name="role" value="employee" checked> Employee</label><label><input type="radio" name="role" value="manager"> Manager</label><span class="mock-id">SCR-AMS-01 · My attendance · v1.1</span></div>
 <div class="app">
   <header class="header">
     <div class="brand"><div class="brand-mark" aria-hidden="true">P</div>PMS <small>Payroll Management System</small></div>
@@ -51,13 +51,13 @@
 <div class="small muted" id="legend" style="margin-top:10px;display:flex;gap:16px;flex-wrap:wrap">
   <span><span class="badge b-approved">Approved</span></span><span><span class="badge b-submitted">Submitted</span></span>
   <span><span class="badge b-rejected">Rejected</span></span><span><span class="badge b-draft">Draft</span></span>
-  <span><span class="badge b-leave">Leave</span></span><span><span class="badge b-warn">Missing</span> weekday reminder</span>
+  <span><span class="badge b-leave">Leave</span></span><span><span class="badge b-warn">Missing</span> weekday reminder (up to yesterday)</span>
 </div>
 <div id="list" class="tbl-wrap" style="display:none">
   <table class="t"><thead><tr><th>Date</th><th>From</th><th>To</th><th class="num">Hours</th><th>Status</th><th>Manager remarks</th><th class="act">Actions</th></tr></thead><tbody id="rows"></tbody></table>
 </div>
 
-    <div class="footer">PMS POC · v0.1</div>
+    <div class="footer">PMS POC · v1.1</div>
   </main>
 </div>
 
@@ -69,6 +69,7 @@ const TODAY = '2026-11-16', DOJ = '2025-07-01';
 const ATT = {
   '2026-11-02': { f: '09:00', t: '17:30', st: 'Approved' },
   '2026-11-03': { f: '09:00', t: '17:00', st: 'Approved' },
+  '2026-11-06': { f: '09:00', t: '13:00', st: 'Draft' },
   '2026-11-09': { f: '09:00', t: '18:00', st: 'Approved' },
   '2026-11-10': { f: '09:30', t: '17:30', st: 'Approved' },
   '2026-11-11': { f: '09:00', t: '17:00', st: 'Approved' },
@@ -92,7 +93,7 @@ function build() {
     const a = ATT[iso], lv = LEAVE[iso], future = iso > TODAY, weekday = dow > 0 && dow < 6;
     let inner = '', cls = 'cell';
     if (iso === TODAY) cls += ' today';
-    if (a) { const h = hrs(a.f, a.t); inner = '<span class="badge b-' + a.st.toLowerCase() + '">' + a.st + '</span><span class="h">' + a.f + '–' + (a.t || '…') + (h ? ' · ' + fmtH(h) : '') + '</span>';
+    if (a) { const h = hrs(a.f, a.t), clash = lv && (a.st === 'Draft' || a.st === 'Rejected'); inner = '<span class="badge b-' + a.st.toLowerCase() + '">' + a.st + '</span><span class="h">' + a.f + '–' + (a.t || '…') + (h ? ' · ' + fmtH(h) : '') + '</span>' + (clash ? '<span class="badge b-warn">Leave on this day – discard</span>' : '');
       if (a.st === 'Approved') { apH += h; apD++; } if (a.st === 'Submitted') sub++; if (a.st === 'Rejected' || a.st === 'Draft') act++; }
     else if (lv) inner = '<span class="badge b-leave">Leave</span><span class="h">' + lv + '</span>';
     else if (!future && weekday && iso < TODAY) { inner = '<span class="badge b-warn">Missing</span><span class="h">Click to enter</span>'; cls += ' missing'; miss++; }
@@ -105,7 +106,7 @@ function build() {
   $('tH').textContent = fmtH(apH); $('tD').textContent = apD + ' approved days'; $('tS').textContent = sub; $('tR').textContent = act; $('tM').textContent = miss;
   const days = Object.keys(ATT).sort().reverse();
   $('rows').innerHTML = days.map(iso => { const a = ATT[iso], edit = a.st === 'Rejected' || a.st === 'Draft';
-    return '<tr><td style="white-space:nowrap">' + nice(iso) + '</td><td>' + a.f + '</td><td>' + (a.t || '—') + '</td><td class="num">' + fmtH(hrs(a.f, a.t)) + '</td><td><span class="badge b-' + a.st.toLowerCase() + '">' + a.st + '</span></td><td class="small">' + (a.rm || '<span class="muted">—</span>') + '</td><td class="act"><a class="btn sm" href="scr-ams-02-entry.html?date=' + iso + (a.st === 'Rejected' ? '&case=fix' : '') + '">' + (edit ? 'Edit' : 'View') + '</a></td></tr>'; }).join('');
+    return '<tr><td style="white-space:nowrap">' + nice(iso) + '</td><td>' + a.f + '</td><td>' + (a.t || '—') + '</td><td class="num">' + fmtH(hrs(a.f, a.t)) + '</td><td><span class="badge b-' + a.st.toLowerCase() + '">' + a.st + '</span>' + (LEAVE[iso] && edit ? ' <span class="badge b-warn">Leave on this day – discard</span>' : '') + '</td><td class="small">' + (a.rm || '<span class="muted">—</span>') + '</td><td class="act"><a class="btn sm" href="scr-ams-02-entry.html?date=' + iso + (a.st === 'Rejected' ? '&case=fix' : '') + '">' + (edit ? 'Edit' : 'View') + '</a></td></tr>'; }).join('');
 }
 build();
 $('grid').addEventListener('click', e => { const c = e.target.closest('button.cell'); if (!c) return; const iso = c.dataset.iso; location.href = 'scr-ams-02-entry.html?date=' + iso + (ATT[iso] && ATT[iso].st === 'Rejected' ? '&case=fix' : ''); });

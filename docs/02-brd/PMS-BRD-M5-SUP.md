@@ -15,6 +15,7 @@ Date: November 2026
 | 1.0 | 0.1 | 20-Nov-2026 | Rajesh Verma | First draft from UX v1.0 (D-34), PMS-BRD v1.0 rev 0.12, PMS-BRD-M1-EIMS v1.0 rev 0.1 and decisions D-01 to D-101 |
 | 1.0 | 0.2 | 20-Nov-2026 | Rajesh Verma | BRD set consistency check (D-103): references to PMS-BRD rev 0.14, module BRDs rev 0.2 and D-01 to D-103; FR-AUTH-012 password wording (D-99) |
 | 1.0 | 0.3 | 20-Nov-2026 | Rajesh Verma | Business open items decided (D-104): FR-UM-014 waiting items move to the new manager; FR-AUTH-013 temporary password by company email; §14 open items closed |
+| 1.0 | 0.4 | 21-Nov-2026 | Rajesh Verma | UX set v1.1 approved (D-105): FR-AUTH-024, FR-ADM-114 references; OI-11 closed in §14 |
 
 ### 1.2 Review and approval
 
@@ -199,7 +200,7 @@ Business policy only; the architecture is in PMS-HLD-Part01-Architecture-and-Des
 | FR-AUTH-021 | A user may be signed in on several browsers at the same time; each session times out on its own. | Must | POC | D-97 | Given EMP0007 is signed in on two browsers, then both work, and logging out of one does not end the other. |
 | FR-AUTH-022 | All the user's sessions end at once when the Admin deactivates the user or resets the password (FR-UM-006, FR-UM-007); when the user changes their own password, all their other sessions end (FR-AUTH-011). The next action in an ended session opens the sign-in page. | Must | POC | D-97, D-100 | Given EMP0007 is signed in, when the Admin resets the password, then EMP0007's next action opens the sign-in page. |
 | FR-AUTH-023 | Log out is in the user menu and needs no confirmation. It ends the session in PMS and in the identity provider and opens the sign-in page without a message; the browser Back button does not show PMS pages again. | Must | POC | SCR-SH-00, UJ-SH-05, D-97 | Given a signed-in user logs out, when they press Back, then the sign-in page is shown, not the previous screen. |
-| FR-AUTH-024 | The header shows the signed-in user's name, role and Employee Id; for the PMS Administrator it shows "PMS Administrator" without an Employee Id (open item OI-11). | Must | POC | SCR-SH-00, FR-CMN-015, OI-11 | Given the Admin signs in, then the header shows "PMS Administrator" and no Employee Id. |
+| FR-AUTH-024 | The header shows the signed-in user's name, role and Employee Id; for the PMS Administrator it shows "PMS Administrator" without an Employee Id (UX v1.1). | Must | POC | SCR-SH-00, FR-CMN-015, D-105 | Given the Admin signs in, then the header shows "PMS Administrator" and no Employee Id. |
 
 ### 6.4 Security events
 
@@ -246,7 +247,7 @@ PMS keeps two logs (D-98, D-101). The **audit log** is a business record of ever
 | FR-ADM-111 | Every service operation (API) writes an activity log entry on entry, on the completion of each significant intermediate step and on exit; the exit entry holds the result (success, or error with its reason) and the duration. Every entry holds the module, operation, process (use case or job), user, date and time (IST) and flow reference. | Must | POC | NFR-09, D-98, D-101 | Given a manager approves attendance, then the AMS activity log shows entry, the steps completed (for example "checked approver", "status set to Approved", "hand-over sent to salary") and exit with result and duration. |
 | FR-ADM-112 | Scheduled jobs and hand-over events (JOB-CMN-01, INT-01, INT-02) are logged the same way: start, each completed step and end, with the result and counts (for example records created, voided, mismatches). | Must | POC | NFR-09, D-101 | Given the nightly reconciliation runs, then the activity log shows its start, each step and its end with the counts. |
 | FR-ADM-113 | Each user action and each job run gets one flow reference, which is carried through every module, operation and event it triggers, so that all its activity and audit entries can be read in sequence. | Must | POC | NFR-09, D-101 | Given attendance approval creates a salary record, then the AMS and SMS entries of that approval share one flow reference and read in time order. |
-| FR-ADM-114 | When a system error message is shown to a user, it includes "Reference: <flow reference>" so the user can quote it to support (UX update, OI-11). | Must | POC | D-101, OI-11 | Given saving fails for a technical reason, then the error message shows a reference that finds the flow in the activity log. |
+| FR-ADM-114 | When a system error message is shown to a user, it includes "Reference: <flow reference>" so the user can quote it to support (UX v1.1, SCR-SH-00). | Must | POC | D-101, D-105 | Given saving fails for a technical reason, then the error message shows a reference that finds the flow in the activity log. |
 | FR-ADM-115 | The activity log never holds passwords, temporary passwords or session secrets. Personally identifiable and confidential information – the sensitive employee attributes (D-71), hourly wage rates, salary amounts and free-text remarks – is masked; entries hold ids, statuses, counts and outcomes only. | Must | POC | D-101, NFR-EIMS-01 | Given an employee submits a profile, then the activity log shows the Employee Id and status change but not the date of birth, address or mobile number. |
 | FR-ADM-116 | The activity log is read only by IT operations, for investigation; there is no viewer screen in the POC (Phase 2). Entries are kept 90 days in Production. | Must | POC | D-101 | Given an entry is older than 90 days in Production, then it is no longer kept. |
 | FR-ADM-117 | Refused requests – access outside the role or data scope (FR-UM-015) and validation or business-rule refusals – are logged with the reason, user and flow reference. | Must | POC | D-99, D-101 | Given an Employee opens an Admin page, then the activity log shows the refused request with the user and reason. |
@@ -370,7 +371,7 @@ Counts: functional requirements 45 (FR-UM 13, FR-AUTH 20, FR-ADM 12); rules 13 (
 
 ## 14. Open items
 
-Cross-module open items that affect SUP are in the anchor §12 and are not repeated: OI-02 (pending items of a deactivated employee) and OI-04 (pending items on a manager change, FR-UM-014) – both closed (D-104) – and OI-11 (shell UX updates for SUP and the error reference). OI-EIMS-01 (how the temporary password reaches the employee; closed, D-104) is in PMS-BRD-M1-EIMS.
+Cross-module open items that affect SUP are in the anchor §12 and are not repeated: OI-02 (pending items of a deactivated employee) and OI-04 (pending items on a manager change, FR-UM-014) – both closed (D-104) – and OI-11 (shell UX updates for SUP and the error reference; closed, D-105). OI-EIMS-01 (how the temporary password reaches the employee; closed, D-104) is in PMS-BRD-M1-EIMS.
 
 | Id | Question | Owner | Due | Status / decision |
 | --- | --- | --- | --- | --- |

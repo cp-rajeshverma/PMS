@@ -15,6 +15,7 @@ Date: November 2026
 | 1.0 | 0.1 | 19-Nov-2026 | Rajesh Verma | First draft from UX v1.0 (D-34), PMS-BRD v1.0 rev 0.5 and decisions D-01 to D-77 |
 | 1.0 | 0.2 | 20-Nov-2026 | Rajesh Verma | BRD set consistency check (D-103): references to PMS-BRD rev 0.14 and D-01 to D-103; BR-CMN-11, 14, 19 in §8; OI-01 in §4.2 and §16 |
 | 1.0 | 0.3 | 20-Nov-2026 | Rajesh Verma | Business open items decided (D-104): FR-AMS-003 today never missing; OI-02, OI-03, OI-04 closed in §14 and §16 |
+| 1.0 | 0.4 | 21-Nov-2026 | Rajesh Verma | UX set v1.1 approved (D-105): §4.2 note, FR-AMS-007, FR-AMS-017 references; OI-01, OI-08 closed in §16 |
 
 ### 1.2 Review and approval
 
@@ -101,7 +102,7 @@ R = read, R/W = read and write, A = approve, — = no access.
 | SCR-AMS-03 | Team attendance review (Pending / History, reopen) | — | R, A (direct reports) | R, A (top-level employee only) | Manager: direct reports; Admin: top-level employee |
 | SCR-SH-04 | Approvals inbox – attendance items | — | A (direct reports) | A (top-level employee) | As SCR-AMS-03 |
 
-The Admin's access to SCR-AMS-03 for the top-level employee is not yet in the UX summary; the update is tracked as anchor OI-01.
+The Admin's access to SCR-AMS-03 for the top-level employee is in the UX summary v1.1 (D-105).
 
 ## 5. User journeys and screens
 
@@ -164,7 +165,7 @@ All requirements are priority Must and phase POC. Approve-several-at-once from t
 | FR-AMS-004 | A Calendar / List toggle shows the same month as a table: date, from, to, hours, status, approver remarks. | Must | POC | SCR-AMS-01, D-24 | Given List view, then each active entry of the month is one row. |
 | FR-AMS-005 | Clicking an empty or missing day up to today opens a new entry with the date filled in; clicking a day with an entry opens it; a leave day and future days offer no entry. | Must | POC | SCR-AMS-01 | Given a day with approved leave, when the employee clicks it, then no entry form opens. |
 | FR-AMS-006 | Until the profile is approved, a banner says "Your profile must be approved before you can enter attendance." and "+ Enter attendance" is disabled. | Must | POC | SCR-AMS-01, BR-CMN-09 | Given a Submitted profile, then the button is disabled. |
-| FR-AMS-007 | A Draft or Rejected entry on a date now covered by submitted or approved leave is marked "Leave on this day – discard". | Must | POC | D-77, OI-08 | Given a Draft on 12-Nov and approved leave on 12-Nov, then the entry shows the flag. |
+| FR-AMS-007 | A Draft or Rejected entry on a date now covered by submitted or approved leave is marked "Leave on this day – discard". | Must | POC | D-77, D-105 | Given a Draft on 12-Nov and approved leave on 12-Nov, then the entry shows the flag. |
 | FR-AMS-008 | If leave data cannot be loaded, attendance is still shown with the note "Leave days unavailable". | Must | POC | SCR-AMS-01 | Given LMS is unavailable, then the calendar shows attendance and the note. |
 
 **User stories**
@@ -184,7 +185,7 @@ All requirements are priority Must and phase POC. Approve-several-at-once from t
 | FR-AMS-014 | Errors are shown at the field: "Date cannot be in the future", "Attendance for this date already exists – Open it", "You have leave on <date>", "To time must be after From time". | Must | POC | SCR-AMS-02 | Given an existing entry for 12-Nov, when the employee picks 12-Nov, then the "already exists – Open it" message links to it. |
 | FR-AMS-015 | Once an entry exists its date cannot be changed. | Must | POC | SCR-AMS-02 | Given a Draft for 12-Nov, then the date field is read only. |
 | FR-AMS-016 | The banner and actions follow the status: Draft – editable; Submitted – read only, "Waiting for approval"; Approved – read only, "Locked – salary record generated"; Rejected – editable, red banner with the approver's remarks. | Must | POC | SCR-AMS-02, BR-CMN-04, BR-CMN-05 | Given a Rejected entry, then the remarks are shown and Submit is available. |
-| FR-AMS-017 | The employee can discard a Draft or Rejected entry after confirmation; it disappears from calendar, list and totals and the date can be entered again. | Must | POC | D-77, OI-08 | Given a reopened (Rejected) entry for a day not worked, when the employee discards it, then the day shows as Missing (if a weekday) and no salary is generated for it. |
+| FR-AMS-017 | The employee can discard a Draft or Rejected entry after confirmation; it disappears from calendar, list and totals and the date can be entered again. | Must | POC | D-77, D-105 | Given a reopened (Rejected) entry for a day not worked, when the employee discards it, then the day shows as Missing (if a weekday) and no salary is generated for it. |
 
 **User stories**
 
@@ -333,7 +334,7 @@ System-wide NFRs (anchor §8) apply; AMS has no module-specific additions. The h
 
 ## 16. Open items
 
-Cross-module open items that affect AMS are in the anchor §12: OI-01 (Admin opens SCR-AMS-03 for the top-level employee), OI-02 (pending items of a deactivated employee), OI-03 (whether today counts as a missing day) and OI-04 (pending items on a manager change) – all three closed (D-104) – and OI-08 (AMS UX updates). AMS has no module-only open items.
+Cross-module open items that affect AMS are in the anchor §12: OI-01 (Admin opens SCR-AMS-03 for the top-level employee; closed, D-105), OI-02 (pending items of a deactivated employee), OI-03 (whether today counts as a missing day) and OI-04 (pending items on a manager change) – all three closed (D-104) – and OI-08 (AMS UX updates; closed, D-105). AMS has no module-only open items.
 
 | Id | Question | Owner | Due | Status / decision |
 | --- | --- | --- | --- | --- |

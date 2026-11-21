@@ -7,7 +7,7 @@
 <link rel="stylesheet" href="assets/pms-mockup.css">
 </head>
 <body>
-<div class="mock-bar" role="region" aria-label="Mockup controls"><strong>Mockup controls</strong>View as: <label><input type="radio" name="role" value="employee" checked> Employee</label><label><input type="radio" name="role" value="manager"> Manager</label> Profile status: <select id="stat" aria-label="Profile status"><option>Draft</option><option>Submitted</option><option selected>Approved</option><option>Rejected</option></select><span class="mock-id">SCR-EIMS-03 · My profile · v0.1</span></div>
+<div class="mock-bar" role="region" aria-label="Mockup controls"><strong>Mockup controls</strong>View as: <label><input type="radio" name="role" value="employee" checked> Employee</label><label><input type="radio" name="role" value="manager"> Manager</label> Profile status: <select id="stat" aria-label="Profile status"><option>Draft</option><option>Submitted</option><option selected>Approved</option><option>Rejected</option><option>CR Draft</option><option>CR Submitted</option><option>CR Rejected</option></select><span class="mock-id">SCR-EIMS-03 · My profile · v1.1</span></div>
 <div class="app">
   <header class="header">
     <div class="brand"><div class="brand-mark" aria-hidden="true">P</div>PMS <small>Payroll Management System</small></div>
@@ -26,7 +26,7 @@
   <nav class="side" aria-label="Main menu"><div class="nav"><a href="scr-sh-03-dashboard.html" data-roles="employee manager admin">Home</a><a href="scr-sh-04-approvals.html" data-roles="manager admin">Approvals <span class="count" id="pending">0</span></a><div class="nav-label" data-roles="employee manager">My work</div><a href="scr-eims-03-my-profile.html" class="active" data-roles="employee manager">My Profile</a><a href="scr-ams-01-my-attendance.html" data-roles="employee manager">Attendance</a><a href="scr-lms-01-my-leave.html" data-roles="employee manager">Leave</a><a href="scr-sms-01-my-salary.html" data-roles="employee manager">Salary</a><div class="nav-label" data-roles="manager admin">People</div><a href="scr-eims-01-directory.html" id="empLink" data-roles="manager admin">Employees</a></div></nav>
   <main class="main">
     <div class="crumbs">My work / My Profile</div>
-    <div class="page-head"><div><h1>My Profile</h1><p class="lead">Your personal details. Your manager approves every change.</p></div><div id="stBadge"></div></div>
+    <div class="page-head"><div><h1>My Profile</h1><p class="lead">Your personal details. Your manager approves your profile and every change request.</p></div><div id="stBadge"></div></div>
 
 <div class="alert" id="banner" style="margin-bottom:16px" role="status"></div>
 <form class="card" id="form" novalidate>
@@ -37,13 +37,15 @@
   </dl>
   <div class="section-title">Name</div><div class="form-grid"><div class="field"><label for="fn" class="req">First name</label><input class="in pf" id="fn" type="text" value="Anita"><div class="err-text" hidden></div></div><div class="field"><label for="mn">Middle name</label><input class="in pf" id="mn" type="text" value=""><div class="err-text" hidden></div></div><div class="field"><label for="ln" class="req">Last name</label><input class="in pf" id="ln" type="text" value="Sharma"><div class="err-text" hidden></div></div></div><div class="section-title">Parents</div><div class="form-grid"><div class="field"><label for="fa" class="req">Father's name</label><input class="in pf" id="fa" type="text" value="Suresh Sharma"><div class="err-text" hidden></div></div><div class="field"><label for="mo" class="req">Mother's name</label><input class="in pf" id="mo" type="text" value="Kamla Sharma"><div class="err-text" hidden></div></div></div><div class="section-title">Birth</div><div class="form-grid"><div class="field"><label for="dob" class="req">Date of birth</label><input class="in pf" id="dob" type="date" value="1998-04-12"><div class="err-text" hidden></div><div class="hint">You must be at least 18 on your date of joining.</div></div><div class="field"><label for="pob" class="req">Place of birth</label><input class="in pf" id="pob" type="text" value="Jaipur"><div class="err-text" hidden></div></div><div class="field"><label for="cob" class="req">Country of birth</label><select class="in pf" id="cob"><option selected>India</option><option>Nepal</option><option>Sri Lanka</option><option>United Arab Emirates</option><option>United Kingdom</option><option>United States</option><option>Other</option></select></div></div><div class="section-title">Employment</div><div class="form-grid"><div class="field"><label for="le">Last employer</label><input class="in pf" id="le" type="text" value="Acme Retail Pvt Ltd"><div class="err-text" hidden></div></div></div><div class="section-title">Address</div><div class="form-grid"><div class="field"><label for="a1" class="req">Address line 1</label><input class="in pf" id="a1" type="text" value="Flat 402, Lotus Residency"><div class="err-text" hidden></div></div><div class="field"><label for="a2">Address line 2</label><input class="in pf" id="a2" type="text" value="MG Road"><div class="err-text" hidden></div></div><div class="field"><label for="ci" class="req">City</label><input class="in pf" id="ci" type="text" value="Pune"><div class="err-text" hidden></div></div><div class="field"><label for="stt" class="req">State</label><input class="in pf" id="stt" type="text" value="Maharashtra"><div class="err-text" hidden></div></div><div class="field"><label for="co" class="req">Country</label><select class="in pf" id="co"><option selected>India</option><option>Nepal</option><option>Sri Lanka</option><option>United Arab Emirates</option><option>United Kingdom</option><option>United States</option><option>Other</option></select></div><div class="field"><label for="zip" class="req">Zip / PIN code</label><input class="in pf" id="zip" type="text" value="411001"><div class="err-text" hidden></div></div></div><div class="section-title">Contact</div><div class="form-grid"><div class="field"><label for="em" class="req">Email</label><input class="in pf" id="em" type="email" value="anita.sharma@pms.local"><div class="err-text" hidden></div></div><div class="field"><label for="mob" class="req">Mobile number</label><input class="in pf" id="mob" type="text" value="9876543210"><div class="err-text" hidden></div><div class="hint">10 digits, no country code.</div></div></div>
   <div class="form-actions" id="actions">
+    <button type="button" class="btn danger" id="wdr">Withdraw request</button>
     <button type="button" class="btn" id="draft">Save draft</button>
     <button type="submit" class="btn primary" id="submit">Submit for approval</button>
   </div>
-  <div class="form-actions" id="editBar" style="display:none"><button type="button" class="btn primary" id="edit">Edit profile</button></div>
+  <div class="form-actions" id="wdBar" style="display:none"><button type="button" class="btn" id="wdSub">Withdraw</button></div>
+  <div class="form-actions" id="editBar" style="display:none"><button type="button" class="btn primary" id="edit">Request a change</button></div>
 </form>
 
-    <div class="footer">PMS POC · v0.1</div>
+    <div class="footer">PMS POC · v1.1</div>
   </main>
 </div>
 
@@ -54,23 +56,41 @@
 const $ = id => document.getElementById(id);
 const B = {
   Draft: ['info', 'Complete your profile and submit it for approval. You can start entering attendance and leave once it is approved.'],
-  Submitted: ['info', 'Submitted on 15 Nov 2026, 10:20 — waiting for Rahul Mehta to approve. You can edit it again after the decision.'],
-  Approved: ['ok', 'Approved by Rahul Mehta on 02 Nov 2026. If you edit your profile, it goes back to your manager for approval.'],
-  Rejected: ['error', 'Rejected by Rahul Mehta on 14 Nov 2026: "Mobile number looks incomplete, please correct it." Fix and submit again.']
+  Submitted: ['info', 'Submitted on 15 Nov 2026, 10:20 — waiting for Rahul Mehta to approve. You can withdraw it to make changes until a decision is taken.'],
+  Approved: ['ok', 'Approved by Rahul Mehta on 02 Nov 2026. To change your details, request a change; your approved profile stays in use until the change is approved.'],
+  Rejected: ['error', 'Rejected by Rahul Mehta on 14 Nov 2026: "Mobile number looks incomplete, please correct it." Fix and submit again.'],
+  'CR Draft': ['warn', 'Profile change request (draft). Change the fields you need; changed fields are marked. Your approved profile stays in use until the change is approved.'],
+  'CR Submitted': ['info', 'Change request submitted on 18 Nov 2026, 11:05 — waiting for Rahul Mehta. Your approved profile stays in use meanwhile. You can withdraw the request until a decision is taken.'],
+  'CR Rejected': ['error', 'Change request rejected by Rahul Mehta on 19 Nov 2026: "Please give the full address including the flat number." Correct and submit again, or withdraw the request.']
 };
+const ORIG = {}; document.querySelectorAll('.pf').forEach(f => ORIG[f.id] = f.value);
+function mark() { document.querySelectorAll('.pf').forEach(f => { const ch = state.startsWith('CR') && f.value !== ORIG[f.id];
+  f.style.background = ch ? 'var(--warning-tint)' : ''; const l = document.querySelector('label[for=' + f.id + ']');
+  if (l) { const b = l.querySelector('.badge'); if (ch && !b) l.insertAdjacentHTML('beforeend', ' <span class="badge b-warn">Changed</span>'); if (!ch && b) b.remove(); } }); }
+document.querySelectorAll('.pf').forEach(f => f.addEventListener('input', mark));
 let state;
-function setState(s, editing) {
+function setState(s) {
   state = s; $('stat').value = s;
-  const ro = s === 'Submitted' || (s === 'Approved' && !editing);
+  const cr = s.startsWith('CR'), ro = s === 'Submitted' || s === 'Approved' || s === 'CR Submitted';
+  if (s === 'Approved') document.querySelectorAll('.pf').forEach(f => f.value = ORIG[f.id]);
+  if (s === 'CR Submitted' || s === 'CR Rejected') $('a1').value = 'Flat 7, Green Park';
   document.querySelectorAll('.pf').forEach(f => { f.readOnly = ro; f.disabled = ro && f.tagName === 'SELECT'; });
   $('banner').className = 'alert ' + B[s][0]; $('banner').textContent = B[s][1];
-  $('stBadge').innerHTML = '<span class="badge b-' + s.toLowerCase() + '">' + s + (editing ? ' · editing' : '') + '</span>';
-  $('actions').style.display = ro ? 'none' : ''; $('editBar').style.display = s === 'Approved' && !editing ? '' : 'none';
-  $('draft').style.display = s === 'Approved' ? 'none' : '';
+  const badge = cr ? '<span class="badge b-approved">Approved</span> <span class="badge b-' + (s === 'CR Draft' ? 'draft">Change request: Draft' : s === 'CR Submitted' ? 'submitted">Change request: Submitted' : 'rejected">Change request: Rejected') + '</span>'
+                   : '<span class="badge b-' + s.toLowerCase() + '">' + s + '</span>';
+  $('stBadge').innerHTML = badge;
+  $('actions').style.display = ro ? 'none' : ''; $('editBar').style.display = s === 'Approved' ? '' : 'none';
+  $('wdBar').style.display = s === 'Submitted' || s === 'CR Submitted' ? '' : 'none';
+  $('wdSub').textContent = s === 'CR Submitted' ? 'Withdraw request' : 'Withdraw';
+  $('wdr').style.display = cr ? '' : 'none';
+  $('submit').textContent = cr ? 'Submit change request' : 'Submit for approval';
   if (s === 'Rejected') { $('mob').value = '98765432'; } else if ($('mob').value === '98765432') $('mob').value = '9876543210';
+  mark();
 }
 $('stat').addEventListener('change', e => setState(e.target.value));
-$('edit').onclick = () => { setState('Approved', true); $('banner').className = 'alert warn'; $('banner').textContent = 'Editing an approved profile. When you submit, it goes back to Rahul Mehta for approval.'; };
+$('edit').onclick = () => setState('CR Draft');
+$('wdSub').onclick = () => { if (state === 'CR Submitted') { setState('Approved'); toast('Change request withdrawn.'); } else { setState('Draft'); toast('Profile withdrawn. You can edit it again.'); } };
+$('wdr').onclick = () => { setState('Approved'); toast('Change request withdrawn.'); };
 $('draft').onclick = () => toast('Draft saved.');
 function err(id, msg) { const f = $(id), t = f.parentElement.querySelector('.err-text'); f.classList.toggle('invalid', !!msg); if (t) { t.hidden = !msg; t.textContent = msg || ''; } return !!msg; }
 $('form').addEventListener('submit', e => {
@@ -80,6 +100,10 @@ $('form').addEventListener('submit', e => {
   bad = err('em', /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test($('em').value) ? '' : 'Enter a valid email address.') || bad;
   bad = err('mob', /^\d{10}$/.test($('mob').value) ? '' : 'Enter a 10-digit mobile number.') || bad;
   if (bad) { toast('Please correct the highlighted fields.'); return; }
+  if (state.startsWith('CR')) {
+    if (![...document.querySelectorAll('.pf')].some(f => f.value !== ORIG[f.id])) { toast('No changes to submit.'); return; }
+    setState('CR Submitted'); toast('Change request submitted to Rahul Mehta for approval.'); window.scrollTo(0, 0); return;
+  }
   setState('Submitted'); toast('Profile submitted to Rahul Mehta for approval.'); window.scrollTo(0, 0);
 });
 setState('Approved');

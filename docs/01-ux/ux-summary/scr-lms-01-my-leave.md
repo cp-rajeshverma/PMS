@@ -7,8 +7,8 @@
 | Roles | Employee, Manager (own leave; Manager also sees a "Team" tab) |
 | User journeys | UJ-LMS-01, UJ-LMS-02, UJ-LMS-03 |
 | Mockup | `docs/01-ux/mockups/html/scr-lms-01-my-leave.html` |
-| Version / status | 0.1 / Draft – in review |
-| Last updated | 2026-11-16 |
+| Version / status | 1.1 / Approved (D-105; v1.0 D-34) |
+| Last updated | 2026-11-21 |
 
 ## 1. Purpose
 
@@ -33,7 +33,7 @@ Tiles: approved days this year by type (Casual, Sick, Earned) and pending reques
 | --- | --- | --- | --- | --- | --- |
 | Tiles | Numbers | – | Approved only, current calendar year | Leave aggregates | None |
 | Dates, Type, Days | Text | – | Days = To − From + 1 | Leave.fromDate, toDate, leaveType | None |
-| Requested | Date | – | – | Leave.date (request date, L1) | None |
+| Requested | Date | – | – | Leave.requestDate: date of the first submission, unchanged on resubmission (L1, D-84) | None |
 | Status, Manager remarks | Badge, text | – | – | Leave.status, remarks | None |
 
 ## 5. Actions

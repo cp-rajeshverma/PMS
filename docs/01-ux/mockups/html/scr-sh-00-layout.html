@@ -7,7 +7,7 @@
 <link rel="stylesheet" href="assets/pms-mockup.css">
 </head>
 <body>
-<div class="mock-bar" role="region" aria-label="Mockup controls"><strong>Mockup controls</strong>View as: <label><input type="radio" name="role" value="employee" checked> Employee</label><label><input type="radio" name="role" value="manager"> Manager</label><label><input type="radio" name="role" value="admin"> Admin</label><span class="mock-id">SCR-SH-00 · Shell layout · v0.1</span></div>
+<div class="mock-bar" role="region" aria-label="Mockup controls"><strong>Mockup controls</strong>View as: <label><input type="radio" name="role" value="employee" checked> Employee</label><label><input type="radio" name="role" value="manager"> Manager</label><label><input type="radio" name="role" value="admin"> Admin</label> Content: <select id="cv" aria-label="Content example"><option value="page">Page content</option><option value="err">System error (with reference)</option><option value="noacc">No access</option></select><span class="mock-id">SCR-SH-00 · Shell layout · v1.1</span></div>
 <div class="app">
   <header class="header">
     <div class="brand"><div class="brand-mark" aria-hidden="true">P</div>PMS <small>Payroll Management System</small></div>
@@ -28,17 +28,24 @@
     <div class="crumbs">Home</div>
     <div class="page-head"><h1>Page title</h1></div>
 
-<div class="card" style="border:2px dashed var(--border-strong);box-shadow:none;height:420px;display:grid;place-items:center;text-align:center;color:var(--text-3)">
+<div class="card" id="area" style="border:2px dashed var(--border-strong);box-shadow:none;height:420px;display:grid;place-items:center;text-align:center;color:var(--text-3)">
   <div><b style="display:block;color:var(--text-2);font-size:15px;margin-bottom:4px">Page content area</b>Each module screen renders here inside the shell.<br>Width 1366 px desktop; sidebar 232 px; content padding 32 px.</div>
 </div>
 
-    <div class="footer">PMS POC · v0.1</div>
+    <div class="footer">PMS POC · v1.1</div>
   </main>
 </div>
 
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 <script src="assets/pms-mockup.js"></script>
 <script>
+
+const V = {
+  page: '<div><b style="display:block;color:var(--text-2);font-size:15px;margin-bottom:4px">Page content area</b>Each module screen renders here inside the shell.<br>Width 1366 px desktop; sidebar 232 px; content padding 32 px.</div>',
+  err: '<div class="alert error" style="text-align:left;max-width:520px">Attendance could not be saved. Please try again.<br><span class="small">Reference: 7F3K-2Q9M-81XA</span> <button class="btn sm" style="margin-left:8px">Retry</button></div>',
+  noacc: '<div><b style="display:block;color:var(--text-2);font-size:15px;margin-bottom:8px">You don\'t have access to this page.</b><a class="btn" href="scr-sh-03-dashboard.html">Go to Home</a></div>'
+};
+document.getElementById('cv').addEventListener('change', e => document.getElementById('area').innerHTML = V[e.target.value]);
 
 applyRole('employee');
 </script>

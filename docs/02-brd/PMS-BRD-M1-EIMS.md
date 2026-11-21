@@ -15,6 +15,7 @@ Date: November 2026
 | 1.0 | 0.1 | 18-Nov-2026 | Rajesh Verma | First draft from UX v1.0 (D-34), PMS-BRD v1.0 rev 0.3 and decisions D-01 to D-72 |
 | 1.0 | 0.2 | 20-Nov-2026 | Rajesh Verma | BRD set consistency check (D-103): references to PMS-BRD rev 0.14 and D-01 to D-103; BR-CMN-19 in §8; FR-EIMS-005 and FR-EIMS-018 linked to FR-UM-006 and FR-UM-007 (D-97); INT-08 outcome; OI-12 in §14; OI-11 and OI-12 in §16 |
 | 1.0 | 0.3 | 20-Nov-2026 | Rajesh Verma | Business open items decided (D-104): §3.2 and §13 onboarding one by one (bulk import Phase 2); §6.2, FR-EIMS-018 pending items on deactivation; §6.3, FR-EIMS-017 waiting items move to the new manager; FR-EIMS-014, VR-EIMS-05 one top-level employee; NOT-EIMS-06 temporary password by company email; OI-EIMS-01, OI-EIMS-02 closed; §14, §16, §17 |
+| 1.0 | 0.4 | 21-Nov-2026 | Rajesh Verma | UX set v1.1 approved (D-105): OI-07, OI-11 shown as closed in §16 |
 
 ### 1.2 Review and approval
 
@@ -455,7 +456,7 @@ System-wide NFRs (anchor §8) apply; module-specific additions:
 
 ## 16. Open items
 
-Cross-module open items OI-02 (pending items of a deactivated employee; closed, D-104), OI-04 (pending items on a manager change; closed, D-104), OI-07 (UX updates for the change request), OI-11 (UX summaries SCR-EIMS-01 and SCR-EIMS-02 to name the identity provider) and OI-12 (whether more than one top-level employee is allowed; closed, D-104) are in the anchor §12.
+Cross-module open items OI-02 (pending items of a deactivated employee; closed, D-104), OI-04 (pending items on a manager change; closed, D-104), OI-07 (UX updates for the change request) and OI-11 (UX summaries SCR-EIMS-01 and SCR-EIMS-02 to name the identity provider) – both closed (D-105) –, and OI-12 (whether more than one top-level employee is allowed; closed, D-104) are in the anchor §12.
 
 | Id | Question | Owner | Due | Status / decision |
 | --- | --- | --- | --- | --- |

@@ -4,11 +4,11 @@
 | --- | --- |
 | Screen Id | SCR-SMS-02 |
 | Module | SMS (reopen action calls AMS) |
-| Roles | Manager |
+| Roles | Manager (direct reports; never their own records, BR-CMN-08); Admin (top-level employee only, read limited to those records, D-58) |
 | User journeys | UJ-SMS-01, UJ-SMS-03, UJ-AMS-04 |
 | Mockup | `docs/01-ux/mockups/html/scr-sms-02-team-review.html` |
-| Version / status | 0.1 / Draft – in review |
-| Last updated | 2026-11-16 |
+| Version / status | 1.1 / Approved (D-105; v1.0 D-34) |
+| Last updated | 2026-11-21 |
 
 ## 1. Purpose
 
@@ -16,13 +16,14 @@ Lets a manager approve the team's generated wages and resolve disputes, with tea
 
 ## 2. Description
 
-Under Salary, a "Team" tab with **Needs action** (Generated + Disputed, disputes first) and **All records** sub-tabs; filters for team member, date range and "Show voided". Generated rows: Approve (row or selected). Disputed rows: the employee's remark, **Keep as is** (wage was correct; explanation required) and **Reopen attendance** (wage was wrong), each with a dialog explaining the effect. There is no Reject for salary (D-07 / O2). A "Team totals in period" table shows approved hours, earned amount and open items per employee.
+Under Salary, a "Team" tab with **Needs action** (every Generated and Disputed record regardless of the date range, disputes first) and **All records** sub-tabs; filters for team member, date range and "Show voided". All records and team totals default to the current month to today and include reports who became inactive, marked "Inactive" (D-90). The manager's own salary records are never listed (BR-CMN-08). Generated rows: Approve (row or selected). Disputed rows: the employee's latest dispute remark and, after an earlier Keep as is, the approver's explanation as a separate note (a record may be disputed again after Keep as is, D-90); **Keep as is** (wage was correct; explanation required) and **Reopen attendance** (wage was wrong), each with a dialog explaining the effect. There is no Reject for salary (D-07 / O2). A "Team totals in period" table shows approved hours, earned amount and open items per employee.
 
 ## 3. Navigation
 
 | From (entry point) | To (exit point) | Condition |
 | --- | --- | --- |
 | Salary → Team tab, SCR-SH-04 "Open" | This screen | Manager |
+| SCR-SH-04 "Open" | This screen (top-level employee only) | Admin |
 | "My salary" tab | SCR-SMS-01 | – |
 
 ## 4. Fields
@@ -30,7 +31,8 @@ Under Salary, a "Team" tab with **Needs action** (Generated + Disputed, disputes
 | Field | Type / control | Required | Validation | Data source | Editable by |
 | --- | --- | --- | --- | --- | --- |
 | Employee, Date, Hours, Rate, Amount, Status | Text, badges | – | – | Salary + Employee | None |
-| Notes | Text | – | – | Salary.remarks (dispute remark / void reason) | None |
+| Notes | Text | – | – | Dispute Remark (employee, latest), Resolution Explanation (Keep as is, latest) and void reason (Remarks), each as its own note | None |
+| Keep as is explanation (dialog) | Text area | Y | Not blank, max 500 | Salary.resolutionExplanation | Manager, Admin |
 | Team totals | Table | – | Accepted + Manager Approved only | Salary aggregates | None |
 | Remarks (reopen dialog) | Text area | Y | Not blank, max 500 | Attendance.remarks | Manager |
 
@@ -49,7 +51,9 @@ Under Salary, a "Team" tab with **Needs action** (Generated + Disputed, disputes
 | S4, S5 / D-05 | Generated on attendance approval; manager approves |
 | D-07 / O1, O2 | Disputes resolved by reopening attendance; no salary reject |
 | D-25 | Voided records hidden by default, excluded from totals |
-| BR-C8 | Manager's own salary is approved by their manager, not here |
+| BR-CMN-08 | Manager's own salary is approved by their manager and never listed here |
+| D-90 | Separate dispute remark and explanation; dispute again after Keep as is; All records default current month incl. inactive reports; Needs action not filtered by date |
+| D-58, D-63 | Admin decides only the top-level employee's records |
 
 ## 7. Screen states
 

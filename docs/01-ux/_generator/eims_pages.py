@@ -182,7 +182,7 @@ def e02():
 
 
 # ---------------------------------------------------------------- SCR-EIMS-03
-E03_HEAD = r"""<div><h1>My Profile</h1><p class="lead">Your personal details. Your manager approves every change.</p></div><div id="stBadge"></div>"""
+E03_HEAD = r"""<div><h1>My Profile</h1><p class="lead">Your personal details. Your manager approves your profile and every change request.</p></div><div id="stBadge"></div>"""
 
 def _f(fid, label, req=True, typ="text", val="", hint="", ph=""):
     r = ' class="req"' if req else ''
@@ -218,10 +218,12 @@ E03_BODY = (r"""
  + _f("em", "Email", typ="email", val="anita.sharma@pms.local") + _f("mob", "Mobile number", val="9876543210", hint="10 digits, no country code.") +
  r"""</div>
   <div class="form-actions" id="actions">
+    <button type="button" class="btn danger" id="wdr">Withdraw request</button>
     <button type="button" class="btn" id="draft">Save draft</button>
     <button type="submit" class="btn primary" id="submit">Submit for approval</button>
   </div>
-  <div class="form-actions" id="editBar" style="display:none"><button type="button" class="btn primary" id="edit">Edit profile</button></div>
+  <div class="form-actions" id="wdBar" style="display:none"><button type="button" class="btn" id="wdSub">Withdraw</button></div>
+  <div class="form-actions" id="editBar" style="display:none"><button type="button" class="btn primary" id="edit">Request a change</button></div>
 </form>
 """)
 
@@ -229,23 +231,41 @@ E03_SCRIPT = r"""
 const $ = id => document.getElementById(id);
 const B = {
   Draft: ['info', 'Complete your profile and submit it for approval. You can start entering attendance and leave once it is approved.'],
-  Submitted: ['info', 'Submitted on 15 Nov 2026, 10:20 — waiting for Rahul Mehta to approve. You can edit it again after the decision.'],
-  Approved: ['ok', 'Approved by Rahul Mehta on 02 Nov 2026. If you edit your profile, it goes back to your manager for approval.'],
-  Rejected: ['error', 'Rejected by Rahul Mehta on 14 Nov 2026: "Mobile number looks incomplete, please correct it." Fix and submit again.']
+  Submitted: ['info', 'Submitted on 15 Nov 2026, 10:20 — waiting for Rahul Mehta to approve. You can withdraw it to make changes until a decision is taken.'],
+  Approved: ['ok', 'Approved by Rahul Mehta on 02 Nov 2026. To change your details, request a change; your approved profile stays in use until the change is approved.'],
+  Rejected: ['error', 'Rejected by Rahul Mehta on 14 Nov 2026: "Mobile number looks incomplete, please correct it." Fix and submit again.'],
+  'CR Draft': ['warn', 'Profile change request (draft). Change the fields you need; changed fields are marked. Your approved profile stays in use until the change is approved.'],
+  'CR Submitted': ['info', 'Change request submitted on 18 Nov 2026, 11:05 — waiting for Rahul Mehta. Your approved profile stays in use meanwhile. You can withdraw the request until a decision is taken.'],
+  'CR Rejected': ['error', 'Change request rejected by Rahul Mehta on 19 Nov 2026: "Please give the full address including the flat number." Correct and submit again, or withdraw the request.']
 };
+const ORIG = {}; document.querySelectorAll('.pf').forEach(f => ORIG[f.id] = f.value);
+function mark() { document.querySelectorAll('.pf').forEach(f => { const ch = state.startsWith('CR') && f.value !== ORIG[f.id];
+  f.style.background = ch ? 'var(--warning-tint)' : ''; const l = document.querySelector('label[for=' + f.id + ']');
+  if (l) { const b = l.querySelector('.badge'); if (ch && !b) l.insertAdjacentHTML('beforeend', ' <span class="badge b-warn">Changed</span>'); if (!ch && b) b.remove(); } }); }
+document.querySelectorAll('.pf').forEach(f => f.addEventListener('input', mark));
 let state;
-function setState(s, editing) {
+function setState(s) {
   state = s; $('stat').value = s;
-  const ro = s === 'Submitted' || (s === 'Approved' && !editing);
+  const cr = s.startsWith('CR'), ro = s === 'Submitted' || s === 'Approved' || s === 'CR Submitted';
+  if (s === 'Approved') document.querySelectorAll('.pf').forEach(f => f.value = ORIG[f.id]);
+  if (s === 'CR Submitted' || s === 'CR Rejected') $('a1').value = 'Flat 7, Green Park';
   document.querySelectorAll('.pf').forEach(f => { f.readOnly = ro; f.disabled = ro && f.tagName === 'SELECT'; });
   $('banner').className = 'alert ' + B[s][0]; $('banner').textContent = B[s][1];
-  $('stBadge').innerHTML = '<span class="badge b-' + s.toLowerCase() + '">' + s + (editing ? ' · editing' : '') + '</span>';
-  $('actions').style.display = ro ? 'none' : ''; $('editBar').style.display = s === 'Approved' && !editing ? '' : 'none';
-  $('draft').style.display = s === 'Approved' ? 'none' : '';
+  const badge = cr ? '<span class="badge b-approved">Approved</span> <span class="badge b-' + (s === 'CR Draft' ? 'draft">Change request: Draft' : s === 'CR Submitted' ? 'submitted">Change request: Submitted' : 'rejected">Change request: Rejected') + '</span>'
+                   : '<span class="badge b-' + s.toLowerCase() + '">' + s + '</span>';
+  $('stBadge').innerHTML = badge;
+  $('actions').style.display = ro ? 'none' : ''; $('editBar').style.display = s === 'Approved' ? '' : 'none';
+  $('wdBar').style.display = s === 'Submitted' || s === 'CR Submitted' ? '' : 'none';
+  $('wdSub').textContent = s === 'CR Submitted' ? 'Withdraw request' : 'Withdraw';
+  $('wdr').style.display = cr ? '' : 'none';
+  $('submit').textContent = cr ? 'Submit change request' : 'Submit for approval';
   if (s === 'Rejected') { $('mob').value = '98765432'; } else if ($('mob').value === '98765432') $('mob').value = '9876543210';
+  mark();
 }
 $('stat').addEventListener('change', e => setState(e.target.value));
-$('edit').onclick = () => { setState('Approved', true); $('banner').className = 'alert warn'; $('banner').textContent = 'Editing an approved profile. When you submit, it goes back to Rahul Mehta for approval.'; };
+$('edit').onclick = () => setState('CR Draft');
+$('wdSub').onclick = () => { if (state === 'CR Submitted') { setState('Approved'); toast('Change request withdrawn.'); } else { setState('Draft'); toast('Profile withdrawn. You can edit it again.'); } };
+$('wdr').onclick = () => { setState('Approved'); toast('Change request withdrawn.'); };
 $('draft').onclick = () => toast('Draft saved.');
 function err(id, msg) { const f = $(id), t = f.parentElement.querySelector('.err-text'); f.classList.toggle('invalid', !!msg); if (t) { t.hidden = !msg; t.textContent = msg || ''; } return !!msg; }
 $('form').addEventListener('submit', e => {
@@ -255,12 +275,16 @@ $('form').addEventListener('submit', e => {
   bad = err('em', /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test($('em').value) ? '' : 'Enter a valid email address.') || bad;
   bad = err('mob', /^\d{10}$/.test($('mob').value) ? '' : 'Enter a 10-digit mobile number.') || bad;
   if (bad) { toast('Please correct the highlighted fields.'); return; }
+  if (state.startsWith('CR')) {
+    if (![...document.querySelectorAll('.pf')].some(f => f.value !== ORIG[f.id])) { toast('No changes to submit.'); return; }
+    setState('CR Submitted'); toast('Change request submitted to Rahul Mehta for approval.'); window.scrollTo(0, 0); return;
+  }
   setState('Submitted'); toast('Profile submitted to Rahul Mehta for approval.'); window.scrollTo(0, 0);
 });
 setState('Approved');
 """
 
-E03_CTRL = r""" Profile status: <select id="stat" aria-label="Profile status"><option>Draft</option><option>Submitted</option><option selected>Approved</option><option>Rejected</option></select>"""
+E03_CTRL = r""" Profile status: <select id="stat" aria-label="Profile status"><option>Draft</option><option>Submitted</option><option selected>Approved</option><option>Rejected</option><option>CR Draft</option><option>CR Submitted</option><option>CR Rejected</option></select>"""
 
 
 def e03():
@@ -302,16 +326,19 @@ const F = [
 ];
 function setMode(m) {
   $('mode').value = m;
-  const upd = m === 'update', view = m === 'view';
+  const upd = m === 'update' || m === 'withdrawn', view = m === 'view';
   $('thOld').style.display = upd ? '' : 'none';
-  $('thNew').textContent = view ? 'Value' : (upd ? 'Submitted (new)' : 'Submitted');
+  $('thOld').textContent = 'Approved profile';
+  $('thNew').textContent = view ? 'Value' : (upd ? 'Requested change' : 'Submitted');
   $('rows').innerHTML = F.map(([k, o, n]) => { const ch = upd && o !== n;
     return '<tr' + (ch ? ' style="background:var(--warning-tint)"' : '') + '><td class="muted">' + k + '</td>' + (upd ? '<td' + (ch ? ' style="text-decoration:line-through;color:var(--text-3)"' : '') + '>' + o + '</td>' : '') +
       '<td>' + n + (ch ? ' <span class="badge b-warn">Changed</span>' : '') + '</td></tr>'; }).join('');
+  const wd = m === 'withdrawn';
   $('banner').style.display = view ? 'none' : '';
-  $('banner').textContent = upd ? 'Profile update: 2 fields changed since the last approval (highlighted). Approve to make them current.' : 'New profile, first submission. Check the details before approving.';
-  $('acts').style.display = view ? 'none' : ''; $('back').style.display = view ? '' : 'none';
-  $('stBadge').innerHTML = '<span class="badge b-' + (view ? 'approved">Approved' : 'submitted">Submitted') + '</span>';
+  $('banner').className = 'alert ' + (wd ? 'warn' : 'info');
+  $('banner').textContent = wd ? 'Withdrawn by the employee on 18 Nov 2026, 14:30. No action is possible.' : upd ? 'Profile change request: 2 fields changed (highlighted). The profile stays Approved; approving applies the new values.' : 'New profile, first submission. Check the details before approving.';
+  $('acts').style.display = view || wd ? 'none' : ''; $('back').style.display = view ? '' : 'none';
+  $('stBadge').innerHTML = view ? '<span class="badge b-approved">Approved</span>' : wd ? '<span class="badge b-cancelled">Withdrawn</span>' : upd ? '<span class="badge b-approved">Approved</span> <span class="badge b-submitted">Change request: Submitted</span>' : '<span class="badge b-submitted">Submitted</span>';
 }
 $('mode').addEventListener('change', e => setMode(e.target.value));
 setMode(new URLSearchParams(location.search).get('mode') || 'update');
@@ -321,7 +348,7 @@ $('rjNo').onclick = () => $('rjModal').classList.remove('open');
 $('rjYes').onclick = () => { if (!$('rjText').value.trim()) { $('rjErr').hidden = false; return; } $('rjModal').classList.remove('open'); $('acts').style.display = 'none'; $('stBadge').innerHTML = '<span class="badge b-rejected">Rejected</span>'; toast('Profile rejected and returned to Meera Joshi.'); };
 """
 
-E04_CTRL = r""" Case: <select id="mode" aria-label="Case"><option value="new">New profile (first submission)</option><option value="update" selected>Update to approved profile</option><option value="view">Read-only view (from My Team)</option></select>"""
+E04_CTRL = r""" Case: <select id="mode" aria-label="Case"><option value="new">New profile (first submission)</option><option value="update" selected>Profile change request</option><option value="withdrawn">Change request withdrawn by the employee</option><option value="view">Read-only view (from My Team)</option></select>"""
 
 
 def e04():

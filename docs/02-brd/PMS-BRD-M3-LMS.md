@@ -15,6 +15,7 @@ Date: November 2026
 | 1.0 | 0.1 | 19-Nov-2026 | Rajesh Verma | First draft from UX v1.0 (D-34), PMS-BRD v1.0 rev 0.7 and decisions D-01 to D-84 |
 | 1.0 | 0.2 | 20-Nov-2026 | Rajesh Verma | BRD set consistency check (D-103): references to PMS-BRD rev 0.14 and D-01 to D-103; BR-CMN-11, 14, 19 in §8; OI-12 in §14 and §16 |
 | 1.0 | 0.3 | 20-Nov-2026 | Rajesh Verma | Business open items decided (D-104): OI-02, OI-04, OI-12 closed in §14 and §16 |
+| 1.0 | 0.4 | 21-Nov-2026 | Rajesh Verma | UX set v1.1 approved (D-105): §4.2 note; OI-01, OI-09 closed in §16 |
 
 ### 1.2 Review and approval
 
@@ -96,7 +97,7 @@ R = read, R/W = read and write, A = approve, — = no access.
 | SCR-LMS-03 | Team leave review (Pending / History) | — | R, A (direct reports) | R, A (top-level employee only) | Manager: direct reports; Admin: top-level employee |
 | SCR-SH-04 | Approvals inbox – leave items | — | A (direct reports) | A (top-level employee) | As SCR-LMS-03 |
 
-The Admin's access to SCR-LMS-03 for the top-level employee is not yet in the UX summary; the update is tracked as anchor OI-01.
+The Admin's access to SCR-LMS-03 for the top-level employee is in the UX summary v1.1 (D-105).
 
 ## 5. User journeys and screens
 
@@ -314,7 +315,7 @@ System-wide NFRs (anchor §8) apply; LMS has no module-specific additions.
 
 ## 16. Open items
 
-Cross-module open items that affect LMS are in the anchor §12: OI-01 (Admin opens SCR-LMS-03 for the top-level employee), OI-02 (pending items of a deactivated employee), OI-04 (pending items on a manager change) and OI-12 (exactly one top-level employee; "Also away" stays empty for that employee, BR-LMS-09) – all three closed (D-104) – and OI-09 (LMS UX updates). LMS has no module-only open items.
+Cross-module open items that affect LMS are in the anchor §12: OI-01 (Admin opens SCR-LMS-03 for the top-level employee; closed, D-105), OI-02 (pending items of a deactivated employee), OI-04 (pending items on a manager change) and OI-12 (exactly one top-level employee; "Also away" stays empty for that employee, BR-LMS-09) – all three closed (D-104) – and OI-09 (LMS UX updates; closed, D-105). LMS has no module-only open items.
 
 | Id | Question | Owner | Due | Status / decision |
 | --- | --- | --- | --- | --- |

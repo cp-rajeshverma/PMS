@@ -166,7 +166,7 @@ JS = r"""/* PMS mockup shared behaviour: role switcher, user menu, toast. Mockup
 const USERS = {
   employee: { name: 'Anita Sharma', initials: 'AS', meta: 'Employee · EMP0007', pending: 0 },
   manager:  { name: 'Rahul Mehta',  initials: 'RM', meta: 'Manager · EMP0002', pending: 9 },
-  admin:    { name: 'Priya Nair',   initials: 'PN', meta: 'Administrator · system account',   pending: 1 }
+  admin:    { name: 'PMS Administrator', initials: 'PA', meta: 'Administrator',   pending: 4 }
 };
 let ROLE = 'employee';
 function applyRole(role) {
@@ -212,7 +212,7 @@ def mock_bar(screen_id, title, roles=("employee", "manager", "admin"), default="
         for r in roles)
     view = f"View as: {radios}" if roles else ""
     return (f'<div class="mock-bar" role="region" aria-label="Mockup controls"><strong>Mockup controls</strong>'
-            f'{view}{extra}<span class="mock-id">{screen_id} · {title} · v0.1</span></div>')
+            f'{view}{extra}<span class="mock-id">{screen_id} · {title} · v1.1</span></div>')
 
 
 def shell(screen_id, title, active, crumbs, head, body, script="", roles=("employee", "manager", "admin"),
@@ -255,7 +255,7 @@ def shell(screen_id, title, active, crumbs, head, body, script="", roles=("emplo
     <div class="crumbs">{crumbs}</div>
     <div class="page-head">{head}</div>
 {body}
-    <div class="footer">PMS POC · v0.1</div>
+    <div class="footer">PMS POC · v1.1</div>
   </main>
 </div>
 {modal}

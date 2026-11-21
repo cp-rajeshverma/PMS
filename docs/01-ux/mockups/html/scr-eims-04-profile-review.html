@@ -7,7 +7,7 @@
 <link rel="stylesheet" href="assets/pms-mockup.css">
 </head>
 <body>
-<div class="mock-bar" role="region" aria-label="Mockup controls"><strong>Mockup controls</strong>View as: <label><input type="radio" name="role" value="manager" checked> Manager</label><label><input type="radio" name="role" value="admin"> Admin</label> Case: <select id="mode" aria-label="Case"><option value="new">New profile (first submission)</option><option value="update" selected>Update to approved profile</option><option value="view">Read-only view (from My Team)</option></select><span class="mock-id">SCR-EIMS-04 · Profile review · v0.1</span></div>
+<div class="mock-bar" role="region" aria-label="Mockup controls"><strong>Mockup controls</strong>View as: <label><input type="radio" name="role" value="manager" checked> Manager</label><label><input type="radio" name="role" value="admin"> Admin</label> Case: <select id="mode" aria-label="Case"><option value="new">New profile (first submission)</option><option value="update" selected>Profile change request</option><option value="withdrawn">Change request withdrawn by the employee</option><option value="view">Read-only view (from My Team)</option></select><span class="mock-id">SCR-EIMS-04 · Profile review · v1.1</span></div>
 <div class="app">
   <header class="header">
     <div class="brand"><div class="brand-mark" aria-hidden="true">P</div>PMS <small>Payroll Management System</small></div>
@@ -38,7 +38,7 @@
   <div class="form-actions" id="back" style="display:none"><a class="btn" href="scr-eims-01-directory.html">Back to My Team</a></div>
 </div>
 
-    <div class="footer">PMS POC · v0.1</div>
+    <div class="footer">PMS POC · v1.1</div>
   </main>
 </div>
 
@@ -62,16 +62,19 @@ const F = [
 ];
 function setMode(m) {
   $('mode').value = m;
-  const upd = m === 'update', view = m === 'view';
+  const upd = m === 'update' || m === 'withdrawn', view = m === 'view';
   $('thOld').style.display = upd ? '' : 'none';
-  $('thNew').textContent = view ? 'Value' : (upd ? 'Submitted (new)' : 'Submitted');
+  $('thOld').textContent = 'Approved profile';
+  $('thNew').textContent = view ? 'Value' : (upd ? 'Requested change' : 'Submitted');
   $('rows').innerHTML = F.map(([k, o, n]) => { const ch = upd && o !== n;
     return '<tr' + (ch ? ' style="background:var(--warning-tint)"' : '') + '><td class="muted">' + k + '</td>' + (upd ? '<td' + (ch ? ' style="text-decoration:line-through;color:var(--text-3)"' : '') + '>' + o + '</td>' : '') +
       '<td>' + n + (ch ? ' <span class="badge b-warn">Changed</span>' : '') + '</td></tr>'; }).join('');
+  const wd = m === 'withdrawn';
   $('banner').style.display = view ? 'none' : '';
-  $('banner').textContent = upd ? 'Profile update: 2 fields changed since the last approval (highlighted). Approve to make them current.' : 'New profile, first submission. Check the details before approving.';
-  $('acts').style.display = view ? 'none' : ''; $('back').style.display = view ? '' : 'none';
-  $('stBadge').innerHTML = '<span class="badge b-' + (view ? 'approved">Approved' : 'submitted">Submitted') + '</span>';
+  $('banner').className = 'alert ' + (wd ? 'warn' : 'info');
+  $('banner').textContent = wd ? 'Withdrawn by the employee on 18 Nov 2026, 14:30. No action is possible.' : upd ? 'Profile change request: 2 fields changed (highlighted). The profile stays Approved; approving applies the new values.' : 'New profile, first submission. Check the details before approving.';
+  $('acts').style.display = view || wd ? 'none' : ''; $('back').style.display = view ? '' : 'none';
+  $('stBadge').innerHTML = view ? '<span class="badge b-approved">Approved</span>' : wd ? '<span class="badge b-cancelled">Withdrawn</span>' : upd ? '<span class="badge b-approved">Approved</span> <span class="badge b-submitted">Change request: Submitted</span>' : '<span class="badge b-submitted">Submitted</span>';
 }
 $('mode').addEventListener('change', e => setMode(e.target.value));
 setMode(new URLSearchParams(location.search).get('mode') || 'update');

@@ -31,7 +31,7 @@ SH02_BODY = r"""
     </div>
     <button class="btn primary" style="width:100%;height:42px;justify-content:center" type="submit">Save password</button>
     <p class="small muted" style="text-align:center;margin:16px 0 0" id="backWrap"><a href="scr-sh-03-dashboard.html">Cancel and go back</a></p>
-    <p class="small muted" style="text-align:center;margin:16px 0 0">PMS POC · v0.1</p>
+    <p class="small muted" style="text-align:center;margin:16px 0 0">PMS POC · v1.1</p>
   </form>
 </div>
 """
@@ -92,20 +92,20 @@ SH03_BODY = r"""
     <div class="card tile"><div class="k">Hours this month</div><div class="v">41.5 h</div><div class="s">5 approved days</div></div>
     <div class="card tile"><div class="k">Earnings this month</div><div class="v">₹ 10,375</div><div class="s">Accepted + manager approved, excl. voided</div></div>
     <div class="card tile"><div class="k">Leave this month</div><div class="v">2 days</div><div class="s">1 request pending</div></div>
-    <div class="card tile"><div class="k">Profile</div><div class="v" style="font-size:18px;margin-top:8px"><span class="badge b-approved">Approved</span></div><div class="s">Last updated 02 Nov 2026</div></div>
+    <div class="card tile"><div class="k">Profile</div><div class="v" style="font-size:18px;margin-top:8px"><span class="badge b-approved">Approved</span></div><div class="s">Change request submitted 18 Nov · waiting for Rahul Mehta</div></div>
   </div>
   <div class="grid g2">
     <div class="card">
       <h2>Things to do <span class="badge b-warn" style="margin-left:6px">4</span></h2>
       <div class="list-row"><div><div class="t1"><span class="dot" style="background:var(--danger)"></span>Attendance for Thu 12 Nov was rejected</div><div class="t2">Manager remark: "Out time looks wrong, please check."</div></div><a class="btn sm" href="scr-ams-02-entry.html?case=fix">Fix</a></div>
-      <div class="list-row"><div><div class="t1"><span class="dot" style="background:var(--warning)"></span>Attendance not entered for Wed 04 Nov</div><div class="t2">Working day with no attendance or leave</div></div><a class="btn sm" href="scr-ams-02-entry.html?date=2026-11-04">Enter</a></div>
+      <div class="list-row"><div><div class="t1"><span class="dot" style="background:var(--warning)"></span>Attendance not entered for Wed 04 Nov</div><div class="t2">Working day up to yesterday with no attendance or leave</div></div><a class="btn sm" href="scr-ams-02-entry.html?date=2026-11-04">Enter</a></div>
       <div class="list-row"><div><div class="t1"><span class="dot" style="background:var(--primary)"></span>3 salary records waiting for your review</div><div class="t2">₹ 6,250 · 09–11 Nov</div></div><a class="btn sm" href="scr-sms-01-my-salary.html">Review</a></div>
       <div class="list-row"><div><div class="t1"><span class="dot" style="background:var(--primary)"></span>Leave request 23–24 Nov is waiting for approval</div><div class="t2">Casual leave · submitted 14 Nov</div></div><a class="btn sm" href="scr-lms-01-my-leave.html">View</a></div>
     </div>
     <div class="card">
       <div data-roles="manager">
         <h2>Waiting for your approval</h2>
-        <div class="list-row"><div class="t1">Profiles</div><div><span class="badge b-submitted">1</span></div></div>
+        <div class="list-row"><div class="t1">Profiles and change requests</div><div><span class="badge b-submitted">1</span></div></div>
         <div class="list-row"><div class="t1">Attendance</div><div><span class="badge b-submitted">3</span></div></div>
         <div class="list-row"><div class="t1">Leave</div><div><span class="badge b-submitted">2</span></div></div>
         <div class="list-row"><div class="t1">Salary (incl. 1 dispute)</div><div><span class="badge b-submitted">3</span></div></div>
@@ -127,8 +127,8 @@ SH03_BODY = r"""
   <div class="grid g4" style="margin-bottom:16px">
     <div class="card tile"><div class="k">Active employees</div><div class="v">19</div><div class="s">1 inactive</div></div>
     <div class="card tile"><div class="k">Profiles not yet approved</div><div class="v">3</div><div class="s">2 Draft · 1 Submitted</div></div>
-    <div class="card tile"><div class="k">Waiting for you</div><div class="v">1</div><div class="s">Top-level profile approval</div></div>
-    <div class="card tile"><div class="k">Last reconciliation</div><div class="v" style="font-size:18px;margin-top:8px"><span class="badge b-approved">OK</span></div><div class="s">Today 01:00 IST · 0 missing records</div></div>
+    <div class="card tile"><div class="k">Waiting for you</div><div class="v">4</div><div class="s">Top-level employee's items</div></div>
+    <div class="card tile"><div class="k">Last reconciliation</div><div class="v" style="font-size:18px;margin-top:8px"><span class="badge b-approved">Succeeded</span></div><div class="s">Today 01:00 IST · 0 created · 1 voided · 0 mismatches</div></div>
   </div>
   <div class="grid g2">
     <div class="card">
@@ -140,9 +140,9 @@ SH03_BODY = r"""
     </div>
     <div class="card">
       <h2>Waiting for your approval</h2>
-      <div class="list-row"><div><div class="t1">Profile update · Rahul Mehta (EMP0002)</div><div class="t2">Top-level employee · submitted 15 Nov</div></div><a class="btn sm" href="scr-sh-04-approvals.html">Review</a></div>
+      <div class="list-row"><div><div class="t1">Rahul Mehta (EMP0002) · top-level employee</div><div class="t2">1 profile change request · 1 attendance · 1 leave · 1 salary record</div></div><a class="btn sm" href="scr-sh-04-approvals.html">Review</a></div>
       <h2 style="margin-top:20px">System jobs</h2>
-      <div class="list-row"><div><div class="t1">Nightly salary reconciliation</div><div class="t2">Runs daily 01:00 IST · last run today, 4 s</div></div><span class="badge b-approved">Succeeded</span></div>
+      <div class="list-row"><div><div class="t1">Nightly salary reconciliation</div><div class="t2">Runs daily 01:00 IST · last run today, 4 s · 0 records created, 1 voided, 0 mismatches logged</div></div><span class="badge b-approved">Succeeded</span></div>
     </div>
   </div>
 </div>
@@ -158,7 +158,7 @@ def sh03():
 
 
 # ---------------------------------------------------------------- SCR-SH-04
-SH04_HEAD = r"""<div><h1>Approvals</h1><p class="lead">Everything waiting for your decision, across all modules.</p></div>"""
+SH04_HEAD = r"""<div><h1>Approvals</h1><p class="lead">Everything waiting for your decision, across all modules (Admin: the top-level employee's items only). Your own items never appear here.</p></div>"""
 
 SH04_BODY = r"""
 <div class="tabs" role="tablist" id="tabs">
@@ -233,6 +233,9 @@ const ITEMS = {
     { id: 2, type: 'Attendance', emp: 'Anita Sharma', eid: 'EMP0007', det: 'Fri 13 Nov · 09:00–17:30 · 8.5 h', sub: '13 Nov, 18:02', st: 'Submitted', open: 'scr-ams-03-team-review.html' },
     { id: 3, type: 'Attendance', emp: 'Vikram Singh', eid: 'EMP0008', det: 'Fri 13 Nov · 10:00–18:00 · 8.0 h', sub: '13 Nov, 18:15', st: 'Submitted', open: 'scr-ams-03-team-review.html' },
     { id: 4, type: 'Attendance', emp: 'Neha Gupta', eid: 'EMP0009', det: 'Mon 16 Nov · 08:30–13:00 · 4.5 h', sub: '16 Nov, 13:05', st: 'Submitted', open: 'scr-ams-03-team-review.html' },
+    { id: 11, type: 'Attendance', emp: 'Arjun Rao', eid: 'EMP0010', det: 'Fri 13 Nov · 07:00–20:00 · 13.0 h <span class="badge b-warn">Over 12 h</span>', sub: '13 Nov, 20:10', st: 'Submitted', open: 'scr-ams-03-team-review.html' },
+    { id: 12, type: 'Profile', emp: 'Anita Sharma', eid: 'EMP0007', det: 'Profile change request · address changed', sub: '18 Nov, 11:05', st: 'Submitted', open: 'scr-eims-04-profile-review.html' },
+    { id: 13, type: 'Salary', emp: 'Neha Gupta', eid: 'EMP0009', det: 'Thu 29 Oct · 8.0 h × ₹ 275 = ₹ 2,200', sub: 'Employee remark: "Still think 08:30 start is missing."<br><span class="muted">Your earlier explanation: "Attendance shows 09:00 start as you entered it."</span>', st: 'Disputed', open: 'scr-sms-02-team-review.html' },
     { id: 8, type: 'Leave', emp: 'Anita Sharma', eid: 'EMP0007', det: 'Casual · 23–24 Nov · 2 days', sub: '14 Nov, 17:05', st: 'Submitted', open: 'scr-lms-03-team-review.html' },
     { id: 5, type: 'Leave', emp: 'Arjun Rao', eid: 'EMP0010', det: 'Casual · 20–21 Nov · 2 days', sub: '14 Nov, 11:30', st: 'Submitted', open: 'scr-lms-03-team-review.html' },
     { id: 9, type: 'Salary', emp: 'Neha Gupta', eid: 'EMP0009', det: 'Wed 11 Nov · 8.5 h × ₹ 275 = ₹ 2,337.50', sub: 'Generated 12 Nov, 10:01', st: 'Generated', open: 'scr-sms-02-team-review.html' },
@@ -240,7 +243,10 @@ const ITEMS = {
     { id: 6, type: 'Salary', emp: 'Vikram Singh', eid: 'EMP0008', det: 'Tue 10 Nov · 9.0 h × ₹ 250 = ₹ 2,250', sub: 'Employee remark: "I left at 17:00, not 18:00."', st: 'Disputed', open: 'scr-sms-02-team-review.html' }
   ],
   admin: [
-    { id: 7, type: 'Profile', emp: 'Rahul Mehta', eid: 'EMP0002', det: 'Profile update · address changed', sub: '15 Nov, 16:40', st: 'Submitted', open: 'scr-eims-04-profile-review.html' }
+    { id: 7, type: 'Profile', emp: 'Rahul Mehta', eid: 'EMP0002', det: 'Profile change request · address changed', sub: '15 Nov, 16:40', st: 'Submitted', open: 'scr-eims-04-profile-review.html' },
+    { id: 14, type: 'Attendance', emp: 'Rahul Mehta', eid: 'EMP0002', det: 'Fri 13 Nov · 09:00–18:00 · 9.0 h', sub: '13 Nov, 18:30', st: 'Submitted', open: 'scr-ams-03-team-review.html' },
+    { id: 15, type: 'Leave', emp: 'Rahul Mehta', eid: 'EMP0002', det: 'Earned · 25–27 Nov · 3 days', sub: '15 Nov, 11:20', st: 'Submitted', open: 'scr-lms-03-team-review.html' },
+    { id: 16, type: 'Salary', emp: 'Rahul Mehta', eid: 'EMP0002', det: 'Thu 12 Nov · 8.5 h × ₹ 600 = ₹ 5,100', sub: 'Generated 13 Nov, 10:02', st: 'Generated', open: 'scr-sms-02-team-review.html' }
   ],
   employee: []
 };
@@ -302,14 +308,26 @@ def sh04():
 
 # ---------------------------------------------------------------- SCR-SH-00
 SH00_BODY = r"""
-<div class="card" style="border:2px dashed var(--border-strong);box-shadow:none;height:420px;display:grid;place-items:center;text-align:center;color:var(--text-3)">
+<div class="card" id="area" style="border:2px dashed var(--border-strong);box-shadow:none;height:420px;display:grid;place-items:center;text-align:center;color:var(--text-3)">
   <div><b style="display:block;color:var(--text-2);font-size:15px;margin-bottom:4px">Page content area</b>Each module screen renders here inside the shell.<br>Width 1366 px desktop; sidebar 232 px; content padding 32 px.</div>
 </div>
 """
 
 
+SH00_CTRL = r""" Content: <select id="cv" aria-label="Content example"><option value="page">Page content</option><option value="err">System error (with reference)</option><option value="noacc">No access</option></select>"""
+
+SH00_SCRIPT = r"""
+const V = {
+  page: '<div><b style="display:block;color:var(--text-2);font-size:15px;margin-bottom:4px">Page content area</b>Each module screen renders here inside the shell.<br>Width 1366 px desktop; sidebar 232 px; content padding 32 px.</div>',
+  err: '<div class="alert error" style="text-align:left;max-width:520px">Attendance could not be saved. Please try again.<br><span class="small">Reference: 7F3K-2Q9M-81XA</span> <button class="btn sm" style="margin-left:8px">Retry</button></div>',
+  noacc: '<div><b style="display:block;color:var(--text-2);font-size:15px;margin-bottom:8px">You don\'t have access to this page.</b><a class="btn" href="scr-sh-03-dashboard.html">Go to Home</a></div>'
+};
+document.getElementById('cv').addEventListener('change', e => document.getElementById('area').innerHTML = V[e.target.value]);
+"""
+
+
 def sh00():
-    return shell("SCR-SH-00", "Shell layout", "home", "Home", "<h1>Page title</h1>", SH00_BODY)
+    return shell("SCR-SH-00", "Shell layout", "home", "Home", "<h1>Page title</h1>", SH00_BODY, SH00_SCRIPT, extra_controls=SH00_CTRL)
 
 
 # ---------------------------------------------------------------- SCR-SH-01
@@ -336,7 +354,7 @@ SH01_BODY = r"""
     </div>
     <button class="btn primary" id="submit" type="submit" style="width:100%;height:42px;justify-content:center;margin-top:4px">Sign in</button>
     <p class="small" style="text-align:center;color:var(--text-2);margin:18px 0 0">Forgot your password? Contact your PMS administrator.</p>
-    <p class="small muted" style="text-align:center;margin:18px 0 0">PMS POC · v0.1</p>
+    <p class="small muted" style="text-align:center;margin:18px 0 0">PMS POC · v1.1</p>
   </form>
 </div>
 """
@@ -375,7 +393,7 @@ $('form').addEventListener('submit', e => {
 
 SH01_CTRL = r"""Scenario on Sign in: <select id="scenario" aria-label="Scenario">
 <option value="ok">Valid credentials → Dashboard</option><option value="first">First login (temporary password) → Set password</option>
-<option value="bad">Wrong Employee Id or password</option><option value="inactive">Account deactivated</option>
+<option value="bad">Wrong Employee Id or password (also: deactivated account with a wrong password)</option><option value="inactive">Deactivated account, correct password</option>
 <option value="locked">Too many attempts (locked 15 min)</option></select>"""
 
 

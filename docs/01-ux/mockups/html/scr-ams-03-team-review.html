@@ -7,7 +7,7 @@
 <link rel="stylesheet" href="assets/pms-mockup.css">
 </head>
 <body>
-<div class="mock-bar" role="region" aria-label="Mockup controls"><strong>Mockup controls</strong>View as: <label><input type="radio" name="role" value="manager" checked> Manager</label><span class="mock-id">SCR-AMS-03 · Team attendance review · v0.1</span></div>
+<div class="mock-bar" role="region" aria-label="Mockup controls"><strong>Mockup controls</strong>View as: <label><input type="radio" name="role" value="manager" checked> Manager</label><label><input type="radio" name="role" value="admin"> Admin</label><span class="mock-id">SCR-AMS-03 · Team attendance review · v1.1</span></div>
 <div class="app">
   <header class="header">
     <div class="brand"><div class="brand-mark" aria-hidden="true">P</div>PMS <small>Payroll Management System</small></div>
@@ -26,14 +26,15 @@
   <nav class="side" aria-label="Main menu"><div class="nav"><a href="scr-sh-03-dashboard.html" data-roles="employee manager admin">Home</a><a href="scr-sh-04-approvals.html" data-roles="manager admin">Approvals <span class="count" id="pending">0</span></a><div class="nav-label" data-roles="employee manager">My work</div><a href="scr-eims-03-my-profile.html" data-roles="employee manager">My Profile</a><a href="scr-ams-01-my-attendance.html" class="active" data-roles="employee manager">Attendance</a><a href="scr-lms-01-my-leave.html" data-roles="employee manager">Leave</a><a href="scr-sms-01-my-salary.html" data-roles="employee manager">Salary</a><div class="nav-label" data-roles="manager admin">People</div><a href="scr-eims-01-directory.html" id="empLink" data-roles="manager admin">Employees</a></div></nav>
   <main class="main">
     <div class="crumbs">My work / Attendance / Team</div>
-    <div class="page-head"><div><h1>Team attendance</h1><p class="lead">Approve your direct reports' daily attendance. Approval generates their salary record.</p></div></div>
+    <div class="page-head"><div><h1>Team attendance</h1><p class="lead">Approve your direct reports' daily attendance (Admin: the top-level employee's). Approval generates their salary record. History shows the current month by default and includes reports who became inactive.</p></div></div>
 
-<div class="tabs"><a href="scr-ams-01-my-attendance.html">My attendance</a><a href="#" class="on">Team</a></div>
+<div class="tabs" data-roles="manager"><a href="scr-ams-01-my-attendance.html">My attendance</a><a href="#" class="on">Team</a></div>
+<div class="alert info" data-roles="admin" style="margin-bottom:12px">You see only the top-level employee's attendance, for review and decision (D-58).</div>
 <div class="tabs" id="sub" style="border-bottom:0;margin-bottom:8px">
   <a href="#" class="on" data-t="pending">Pending<span class="count" id="cP"></span></a><a href="#" data-t="history">History</a>
 </div>
 <div class="toolbar">
-  <select class="in" id="fEmp" style="width:220px" aria-label="Employee"><option value="">All team members</option><option>Anita Sharma</option><option>Vikram Singh</option><option>Neha Gupta</option><option>Arjun Rao</option></select>
+  <select class="in" id="fEmp" style="width:220px" aria-label="Employee" data-roles="manager"><option value="">All team members</option><option>Anita Sharma</option><option>Vikram Singh</option><option>Neha Gupta</option><option>Arjun Rao</option><option>Karan Das (inactive)</option></select>
   <input class="in" type="date" id="fFrom" value="2026-11-01" style="width:170px" aria-label="From date"> <span class="muted">to</span>
   <input class="in" type="date" id="fTo" value="2026-11-16" style="width:170px" aria-label="To date">
 </div>
@@ -41,7 +42,7 @@
 <div class="tbl-wrap" id="wrap"><table class="t"><thead id="thead"></thead><tbody id="rows"></tbody></table></div>
 <div class="card empty" id="empty" style="display:none"><b>Nothing pending</b>All attendance in this range has been decided.</div>
 
-    <div class="footer">PMS POC · v0.1</div>
+    <div class="footer">PMS POC · v1.1</div>
   </main>
 </div>
 
@@ -63,6 +64,10 @@ const R = [
   { id: 1, emp: 'Anita Sharma', eid: 'EMP0007', d: '2026-11-13', f: '09:00', t: '17:30', st: 'Submitted', sub: '13 Nov, 18:02' },
   { id: 2, emp: 'Vikram Singh', eid: 'EMP0008', d: '2026-11-13', f: '10:00', t: '18:00', st: 'Submitted', sub: '13 Nov, 18:15' },
   { id: 3, emp: 'Neha Gupta', eid: 'EMP0009', d: '2026-11-16', f: '08:30', t: '13:00', st: 'Submitted', sub: '16 Nov, 13:05' },
+  { id: 9, emp: 'Arjun Rao', eid: 'EMP0010', d: '2026-11-13', f: '07:00', t: '20:00', st: 'Submitted', sub: '13 Nov, 20:10' },
+  { id: 10, emp: 'Karan Das (inactive)', eid: 'EMP0011', d: '2026-11-04', f: '09:00', t: '17:00', st: 'Approved', by: 'Rahul Mehta, 05 Nov', inactive: true },
+  { id: 11, emp: 'Rahul Mehta', eid: 'EMP0002', d: '2026-11-13', f: '09:00', t: '18:00', st: 'Submitted', sub: '13 Nov, 18:30', top: true },
+  { id: 12, emp: 'Rahul Mehta', eid: 'EMP0002', d: '2026-11-12', f: '09:00', t: '17:30', st: 'Approved', by: 'PMS Administrator, 13 Nov', top: true },
   { id: 4, emp: 'Vikram Singh', eid: 'EMP0008', d: '2026-11-10', f: '09:00', t: '18:00', st: 'Approved', by: 'Rahul Mehta, 11 Nov', disputed: true },
   { id: 5, emp: 'Anita Sharma', eid: 'EMP0007', d: '2026-11-12', f: '09:00', t: '19:30', st: 'Rejected', by: 'Rahul Mehta, 13 Nov', rm: 'Out time looks wrong, please check.' },
   { id: 6, emp: 'Anita Sharma', eid: 'EMP0007', d: '2026-11-11', f: '09:00', t: '17:00', st: 'Approved', by: 'Rahul Mehta, 13 Nov' },
@@ -74,13 +79,14 @@ const DOW = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 const nice = iso => { const d = new Date(iso + 'T00:00:00'); return DOW[d.getDay()] + ' ' + iso.slice(8) + ' Nov'; };
 function render() {
   const e = $('fEmp').value, fr = $('fFrom').value, to = $('fTo').value;
-  const rows = R.filter(r => (tab === 'pending' ? r.st === 'Submitted' : r.st !== 'Submitted') && (!e || r.emp === e) && r.d >= fr && r.d <= to)
+  const adm = ROLE === 'admin';
+  const rows = R.filter(r => !!r.top === adm && (tab === 'pending' ? r.st === 'Submitted' : r.st !== 'Submitted') && (adm || !e || r.emp === e) && r.d >= fr && r.d <= to)
                 .sort((a, b) => tab === 'pending' ? a.d.localeCompare(b.d) : b.d.localeCompare(a.d));
-  $('cP').textContent = R.filter(r => r.st === 'Submitted').length;
+  $('cP').textContent = R.filter(r => r.st === 'Submitted' && !!r.top === adm).length;
   const pend = tab === 'pending';
   $('thead').innerHTML = '<tr>' + (pend ? '<th style="width:36px"><input type="checkbox" id="all" aria-label="Select all"></th>' : '') + '<th>Employee</th><th>Date</th><th>From</th><th>To</th><th class="num">Hours</th><th>' + (pend ? 'Submitted' : 'Decision') + '</th><th>Status</th><th class="act">Actions</th></tr>';
   $('rows').innerHTML = rows.map(r => '<tr data-id="' + r.id + '">' + (pend ? '<td><input type="checkbox" class="sel" aria-label="Select ' + r.emp + ' ' + nice(r.d) + '"></td>' : '') +
-    '<td style="white-space:nowrap"><div style="font-weight:500">' + r.emp + '</div><div class="small muted">' + r.eid + '</div></td><td style="white-space:nowrap">' + nice(r.d) + '</td><td>' + r.f + '</td><td>' + r.t + '</td><td class="num">' + hrs(r.f, r.t).toFixed(1) + ' h</td>' +
+    '<td style="white-space:nowrap"><div style="font-weight:500">' + r.emp.replace(' (inactive)', '') + (r.inactive ? ' <span class="badge b-inactive">Inactive</span>' : '') + '</div><div class="small muted">' + r.eid + '</div></td><td style="white-space:nowrap">' + nice(r.d) + '</td><td>' + r.f + '</td><td>' + r.t + '</td><td class="num">' + hrs(r.f, r.t).toFixed(1) + ' h' + (hrs(r.f, r.t) > 12 ? ' <span class="badge b-warn">Over 12 h</span>' : '') + '</td>' +
     '<td class="small muted">' + (pend ? r.sub : r.by + (r.rm ? '<br>"' + r.rm + '"' : '')) + '</td><td><span class="badge b-' + r.st.toLowerCase() + '">' + r.st + '</span>' + (r.disputed ? ' <span class="badge b-disputed">Salary disputed</span>' : '') + '</td><td class="act">' +
     (pend ? '<button class="btn primary sm" data-a="ok">Approve</button><button class="btn danger sm" data-a="rj">Reject</button>' : r.disputed ? '<button class="btn primary sm" data-a="ro">Reopen</button>' : (r.st === 'Rejected' ? '<span class="muted small">With employee</span>' : '<span class="muted small">Locked</span>')) + '</td></tr>').join('');
   $('wrap').style.display = rows.length ? '' : 'none'; $('empty').style.display = rows.length ? 'none' : '';
@@ -88,7 +94,8 @@ function render() {
   sync();
 }
 function sync() { const n = document.querySelectorAll('.sel:checked').length; $('selCount').textContent = n + ' selected'; $('bulk').classList.toggle('show', n > 0); }
-function decide(ids, st, rm) { ids.forEach(id => { const r = R.find(x => x.id === id); r.st = st; r.by = 'Rahul Mehta, 16 Nov'; if (rm) r.rm = rm; }); render(); }
+function decide(ids, st, rm) { ids.forEach(id => { const r = R.find(x => x.id === id); r.st = st; r.by = (ROLE === 'admin' ? 'PMS Administrator' : 'Rahul Mehta') + ', 16 Nov'; if (rm) r.rm = rm; }); render(); }
+function onRole() { render(); }
 $('sub').addEventListener('click', e => { const a = e.target.closest('a'); if (!a) return; e.preventDefault(); tab = a.dataset.t; document.querySelectorAll('#sub a').forEach(x => x.classList.toggle('on', x === a)); render(); });
 ['fEmp', 'fFrom', 'fTo'].forEach(i => $(i).addEventListener('input', render));
 $('rows').addEventListener('change', e => { if (e.target.classList.contains('sel')) sync(); });

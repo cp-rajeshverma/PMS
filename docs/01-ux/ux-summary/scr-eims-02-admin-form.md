@@ -7,8 +7,8 @@
 | Roles | Admin |
 | User journeys | UJ-EIMS-01, UJ-EIMS-06, UJ-EIMS-07, UJ-SYS-04 |
 | Mockup | `docs/01-ux/mockups/html/scr-eims-02-admin-form.html` |
-| Version / status | 0.1 / Draft – in review |
-| Last updated | 2026-11-16 |
+| Version / status | 1.1 / Approved (D-105; v1.0 D-34) |
+| Last updated | 2026-11-21 |
 
 ## 1. Purpose
 
@@ -35,17 +35,17 @@ Lets Admin onboard a new employee with the minimum details needed to sign in, an
 | First / Middle / Last name | Text | First, Last | Max 50 characters | Employee name fields | Admin on create; employee after |
 | Email | Email | Y | Valid format; unique (EIMS-V2) | Employee.email | Admin on create; employee after |
 | Date of joining | Date | Y | Not after today (EIMS-V4) | Employee.dateOfJoining | Admin |
-| Role | Dropdown: Employee, Manager | Y | – | Keycloak realm role (not an Employee column) – see UXQ-12 | Admin |
-| Manager | Dropdown of active managers, or "None – top-level" | Y | Active; not self (EIMS-V5) | Employee.managerId | Admin |
+| Role | Dropdown: Employee, Manager | Y | – | role held in the identity provider (not an Employee column) – see UXQ-12 | Admin |
+| Manager | Dropdown of active managers, or "None – top-level" | Y | Active Manager; not self; no reporting loop (VR-EIMS-05); "None – top-level" only if no other active employee is top-level (D-104) | Employee.managerId | Admin |
 | Hourly wage rate (₹) | Decimal | Y | > 0, max 2 decimals (EIMS-V6) | Employee.hourlyWageRate | Admin |
 
 ## 5. Actions
 
 | Action | Who | Result | Status change | Message shown |
 | --- | --- | --- | --- | --- |
-| Create employee | Admin | Employee + Keycloak user created; Id and temporary password shown once | Profile = Draft; Active | "Employee created…" panel |
+| Create employee | Admin | Employee + user account in the identity provider created; Id and temporary password shown once | Profile = Draft; Active | "Employee created…" panel |
 | Save changes | Admin | Admin-owned fields updated | Profile status unchanged (Admin fields are not part of employee approval) | "Changes saved." |
-| Deactivate | Admin | Confirm dialog → sign-in disabled | Is Active = false | "<name> deactivated." |
+| Deactivate | Admin | Confirm dialog → sign-in disabled and all sessions ended (D-97); items waiting for a decision stay with the approver (D-104) | Is Active = false | "<name> deactivated." |
 | Cancel | Admin | Back to directory | – | – |
 
 ## 6. Business rules applied
@@ -56,7 +56,8 @@ Lets Admin onboard a new employee with the minimum details needed to sign in, an
 | C1, S1 / D-01, D-05 | Manager Id and hourly rate set by Admin |
 | SMS-R2 | Rate change applies only to salary records generated afterwards |
 | BR-C6 / EIMS-US6 | Deactivate is a soft delete; history kept |
-| O3 / D-07 | "None – top-level" means Admin approves this employee's records |
+| O3 / D-07, D-104 | "None – top-level" means Admin approves this employee's records; there is exactly one top-level employee |
+| D-104 | After a manager change, items already waiting move to the new manager |
 
 ## 7. Screen states
 
@@ -76,5 +77,5 @@ Required fields marked with * and `required`; errors linked to fields; the tempo
 
 | Id | Question | Owner | Status |
 | --- | --- | --- | --- |
-| UXQ-12 | Role (Employee / Manager) is chosen by Admin on this form and stored in Keycloak, not in the Employee table. OK? | Product owner | Accepted (D-29) |
+| UXQ-12 | Role (Employee / Manager) is chosen by Admin on this form and stored in the identity provider, not in the Employee table. OK? | Product owner | Accepted (D-29) |
 | UXQ-13 | If a manager is deactivated while they still have direct reports, block it until Admin reassigns the reports? | Product owner | Accepted (D-29) – block with message listing the reports |

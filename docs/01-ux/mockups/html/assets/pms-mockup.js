@@ -2,7 +2,7 @@
 const USERS = {
   employee: { name: 'Anita Sharma', initials: 'AS', meta: 'Employee · EMP0007', pending: 0 },
   manager:  { name: 'Rahul Mehta',  initials: 'RM', meta: 'Manager · EMP0002', pending: 9 },
-  admin:    { name: 'Priya Nair',   initials: 'PN', meta: 'Administrator · system account',   pending: 1 }
+  admin:    { name: 'PMS Administrator', initials: 'PA', meta: 'Administrator',   pending: 4 }
 };
 let ROLE = 'employee';
 function applyRole(role) {

@@ -7,7 +7,7 @@
 <link rel="stylesheet" href="assets/pms-mockup.css">
 </head>
 <body>
-<div class="mock-bar" role="region" aria-label="Mockup controls"><strong>Mockup controls</strong>View as: <label><input type="radio" name="role" value="employee" checked> Employee</label><label><input type="radio" name="role" value="manager"> Manager</label><label><input type="radio" name="role" value="admin"> Admin</label><span class="mock-id">SCR-SH-03 · Dashboard · v0.1</span></div>
+<div class="mock-bar" role="region" aria-label="Mockup controls"><strong>Mockup controls</strong>View as: <label><input type="radio" name="role" value="employee" checked> Employee</label><label><input type="radio" name="role" value="manager"> Manager</label><label><input type="radio" name="role" value="admin"> Admin</label><span class="mock-id">SCR-SH-03 · Dashboard · v1.1</span></div>
 <div class="app">
   <header class="header">
     <div class="brand"><div class="brand-mark" aria-hidden="true">P</div>PMS <small>Payroll Management System</small></div>
@@ -35,20 +35,20 @@
     <div class="card tile"><div class="k">Hours this month</div><div class="v">41.5 h</div><div class="s">5 approved days</div></div>
     <div class="card tile"><div class="k">Earnings this month</div><div class="v">₹ 10,375</div><div class="s">Accepted + manager approved, excl. voided</div></div>
     <div class="card tile"><div class="k">Leave this month</div><div class="v">2 days</div><div class="s">1 request pending</div></div>
-    <div class="card tile"><div class="k">Profile</div><div class="v" style="font-size:18px;margin-top:8px"><span class="badge b-approved">Approved</span></div><div class="s">Last updated 02 Nov 2026</div></div>
+    <div class="card tile"><div class="k">Profile</div><div class="v" style="font-size:18px;margin-top:8px"><span class="badge b-approved">Approved</span></div><div class="s">Change request submitted 18 Nov · waiting for Rahul Mehta</div></div>
   </div>
   <div class="grid g2">
     <div class="card">
       <h2>Things to do <span class="badge b-warn" style="margin-left:6px">4</span></h2>
       <div class="list-row"><div><div class="t1"><span class="dot" style="background:var(--danger)"></span>Attendance for Thu 12 Nov was rejected</div><div class="t2">Manager remark: "Out time looks wrong, please check."</div></div><a class="btn sm" href="scr-ams-02-entry.html?case=fix">Fix</a></div>
-      <div class="list-row"><div><div class="t1"><span class="dot" style="background:var(--warning)"></span>Attendance not entered for Wed 04 Nov</div><div class="t2">Working day with no attendance or leave</div></div><a class="btn sm" href="scr-ams-02-entry.html?date=2026-11-04">Enter</a></div>
+      <div class="list-row"><div><div class="t1"><span class="dot" style="background:var(--warning)"></span>Attendance not entered for Wed 04 Nov</div><div class="t2">Working day up to yesterday with no attendance or leave</div></div><a class="btn sm" href="scr-ams-02-entry.html?date=2026-11-04">Enter</a></div>
       <div class="list-row"><div><div class="t1"><span class="dot" style="background:var(--primary)"></span>3 salary records waiting for your review</div><div class="t2">₹ 6,250 · 09–11 Nov</div></div><a class="btn sm" href="scr-sms-01-my-salary.html">Review</a></div>
       <div class="list-row"><div><div class="t1"><span class="dot" style="background:var(--primary)"></span>Leave request 23–24 Nov is waiting for approval</div><div class="t2">Casual leave · submitted 14 Nov</div></div><a class="btn sm" href="scr-lms-01-my-leave.html">View</a></div>
     </div>
     <div class="card">
       <div data-roles="manager">
         <h2>Waiting for your approval</h2>
-        <div class="list-row"><div class="t1">Profiles</div><div><span class="badge b-submitted">1</span></div></div>
+        <div class="list-row"><div class="t1">Profiles and change requests</div><div><span class="badge b-submitted">1</span></div></div>
         <div class="list-row"><div class="t1">Attendance</div><div><span class="badge b-submitted">3</span></div></div>
         <div class="list-row"><div class="t1">Leave</div><div><span class="badge b-submitted">2</span></div></div>
         <div class="list-row"><div class="t1">Salary (incl. 1 dispute)</div><div><span class="badge b-submitted">3</span></div></div>
@@ -70,8 +70,8 @@
   <div class="grid g4" style="margin-bottom:16px">
     <div class="card tile"><div class="k">Active employees</div><div class="v">19</div><div class="s">1 inactive</div></div>
     <div class="card tile"><div class="k">Profiles not yet approved</div><div class="v">3</div><div class="s">2 Draft · 1 Submitted</div></div>
-    <div class="card tile"><div class="k">Waiting for you</div><div class="v">1</div><div class="s">Top-level profile approval</div></div>
-    <div class="card tile"><div class="k">Last reconciliation</div><div class="v" style="font-size:18px;margin-top:8px"><span class="badge b-approved">OK</span></div><div class="s">Today 01:00 IST · 0 missing records</div></div>
+    <div class="card tile"><div class="k">Waiting for you</div><div class="v">4</div><div class="s">Top-level employee's items</div></div>
+    <div class="card tile"><div class="k">Last reconciliation</div><div class="v" style="font-size:18px;margin-top:8px"><span class="badge b-approved">Succeeded</span></div><div class="s">Today 01:00 IST · 0 created · 1 voided · 0 mismatches</div></div>
   </div>
   <div class="grid g2">
     <div class="card">
@@ -83,14 +83,14 @@
     </div>
     <div class="card">
       <h2>Waiting for your approval</h2>
-      <div class="list-row"><div><div class="t1">Profile update · Rahul Mehta (EMP0002)</div><div class="t2">Top-level employee · submitted 15 Nov</div></div><a class="btn sm" href="scr-sh-04-approvals.html">Review</a></div>
+      <div class="list-row"><div><div class="t1">Rahul Mehta (EMP0002) · top-level employee</div><div class="t2">1 profile change request · 1 attendance · 1 leave · 1 salary record</div></div><a class="btn sm" href="scr-sh-04-approvals.html">Review</a></div>
       <h2 style="margin-top:20px">System jobs</h2>
-      <div class="list-row"><div><div class="t1">Nightly salary reconciliation</div><div class="t2">Runs daily 01:00 IST · last run today, 4 s</div></div><span class="badge b-approved">Succeeded</span></div>
+      <div class="list-row"><div><div class="t1">Nightly salary reconciliation</div><div class="t2">Runs daily 01:00 IST · last run today, 4 s · 0 records created, 1 voided, 0 mismatches logged</div></div><span class="badge b-approved">Succeeded</span></div>
     </div>
   </div>
 </div>
 
-    <div class="footer">PMS POC · v0.1</div>
+    <div class="footer">PMS POC · v1.1</div>
   </main>
 </div>
 

@@ -3,12 +3,12 @@
 | Field | Value |
 | --- | --- |
 | Screen Id | SCR-SH-02 |
-| Module | Shell (Keycloak "Update password" page, same theme as SCR-SH-01) |
+| Module | Shell ("Update password" page of the identity provider, same style as SCR-SH-01) |
 | Roles | All |
 | User journeys | UJ-SH-02; change password from the user menu |
 | Mockup | `docs/01-ux/mockups/html/scr-sh-02-set-password.html` |
-| Version / status | 0.1 / Draft – in review |
-| Last updated | 2026-11-16 |
+| Version / status | 1.1 / Approved (D-105; v1.0 D-34) |
+| Last updated | 2026-11-21 |
 
 ## 1. Purpose
 
@@ -30,15 +30,15 @@ A centred card in the login style. Two modes: **First login** (new + confirm pas
 
 | Field | Type / control | Required | Validation | Data source | Editable by |
 | --- | --- | --- | --- | --- | --- |
-| Current password | Password | Y (change mode) | Must match | Keycloak credential | User |
-| New password | Password | Y | Password policy (UXQ-10) | Keycloak credential | User |
+| Current password | Password | Y (change mode) | Must match | Credential in the identity provider | User |
+| New password | Password | Y | Password policy (UXQ-10); differs from the current or temporary password (D-97) | Credential in the identity provider | User |
 | Confirm new password | Password | Y | Equals New password | – | User |
 
 ## 5. Actions
 
 | Action | Who | Result | Status change | Message shown |
 | --- | --- | --- | --- | --- |
-| Save password | All | Password updated; temporary flag cleared; opens Dashboard | – | "Password saved." |
+| Save password | All | Password updated; temporary flag cleared; opens Dashboard; in change mode the user's other open sessions end, this one continues (D-100) | – | "Password saved." |
 | Cancel (change mode) | All | Back to Dashboard | – | – |
 
 ## 6. Business rules applied
@@ -47,7 +47,7 @@ A centred card in the login style. Two modes: **First login** (new + confirm pas
 | --- | --- |
 | E1 / D-02 | Admin issues a temporary password at onboarding |
 | D-07 / O6 | Admin reset issues a new temporary password |
-| UXQ-10 / D-28 | Policy: at least 8 characters, upper and lower case, a number, a special character, not the Employee Id |
+| UXQ-10 / D-28, D-97, D-99 | Policy: at least 8 characters, upper and lower case, a number, a special character, not containing the Employee Id, different from the current or temporary password; no history or expiry in the POC |
 
 ## 7. Screen states
 

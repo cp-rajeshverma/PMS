@@ -7,8 +7,8 @@
 | Roles | Admin (all employees, full actions), Manager ("My Team": direct reports, read-only) |
 | User journeys | UJ-EIMS-01, 06, 07, 08, 09 |
 | Mockup | `docs/01-ux/mockups/html/scr-eims-01-directory.html` |
-| Version / status | 0.1 / Draft – in review |
-| Last updated | 2026-11-16 |
+| Version / status | 1.1 / Approved (D-105; v1.0 D-34) |
+| Last updated | 2026-11-21 |
 
 ## 1. Purpose
 
@@ -32,7 +32,7 @@ Search box (name, Employee Id, email), profile-status filter and a "Show inactiv
 | Field | Type / control | Required | Validation | Data source | Editable by |
 | --- | --- | --- | --- | --- | --- |
 | Employee Id | Text | – | – | Employee.employeeId | None |
-| Name + role chip | Text | – | – | Employee name; Keycloak role | None |
+| Name + role chip | Text | – | – | Employee name; role (identity provider) | None |
 | Email | Text | – | – | Employee.email | None |
 | Manager | Text | – | Admin only | Employee.managerId → name | None |
 | Joined | Date | – | – | Employee.dateOfJoining | None |
@@ -45,7 +45,7 @@ Search box (name, Employee Id, email), profile-status filter and a "Show inactiv
 | Action | Who | Result | Status change | Message shown |
 | --- | --- | --- | --- | --- |
 | Search / filter | Admin, Manager | List narrows | – | Count updates |
-| Reset password | Admin | Confirm dialog → temporary password shown once with Copy | Keycloak: temporary password, must change at next sign-in | "Temporary password issued…" |
+| Reset password | Admin | Confirm dialog → temporary password shown once with Copy | Identity provider: temporary password, must change at next sign-in; earlier passwords stop working, any lock is cleared and all the user's sessions end (D-97) | "Temporary password issued…" |
 | Edit | Admin | Opens SCR-EIMS-02 | – | – |
 | View | Manager | Opens read-only profile | – | – |
 

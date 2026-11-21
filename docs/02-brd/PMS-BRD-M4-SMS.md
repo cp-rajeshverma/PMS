@@ -15,6 +15,7 @@ Date: November 2026
 | 1.0 | 0.1 | 19-Nov-2026 | Rajesh Verma | First draft from UX v1.0 (D-34), PMS-BRD v1.0 rev 0.9 and decisions D-01 to D-90 |
 | 1.0 | 0.2 | 20-Nov-2026 | Rajesh Verma | BRD set consistency check (D-103): references to PMS-BRD rev 0.14, PMS-BRD-M2-AMS rev 0.2 and D-01 to D-103; BR-CMN-11, 14, 19 in §8; Voided status meaning (D-90) |
 | 1.0 | 0.3 | 20-Nov-2026 | Rajesh Verma | Business open items decided (D-104): OI-02 and OI-04 shown as closed in §14 and §16 (no requirement change) |
+| 1.0 | 0.4 | 21-Nov-2026 | Rajesh Verma | UX set v1.1 approved (D-105): §4.2 note; OI-01, OI-06, OI-10 closed in §14 and §16 |
 
 ### 1.2 Review and approval
 
@@ -105,7 +106,7 @@ R = read, R/W = read and write, A = approve, — = no access.
 | SCR-SH-04 | Approvals inbox – salary items | — | A (direct reports) | A (top-level employee) | As SCR-SMS-02 |
 | SCR-SH-03 | Dashboard – salary tile and to-do items | R (own) | R (own; approval counts) | R (last reconciliation run) | Own; Admin: system tile only |
 
-A manager never sees their own salary records in SCR-SMS-02 or the approvals inbox (BR-CMN-08). The Admin's access to SCR-SMS-02 for the top-level employee is not yet in the UX summary (anchor OI-01); other SMS UX updates are tracked as anchor OI-10.
+A manager never sees their own salary records in SCR-SMS-02 or the approvals inbox (BR-CMN-08). The Admin's access to SCR-SMS-02 for the top-level employee and the other SMS UX updates are in the UX set v1.1 (OI-01, OI-10 closed, D-105).
 
 ## 5. User journeys and screens
 
@@ -345,7 +346,7 @@ System-wide NFRs (anchor §8) apply; SMS has no module-specific additions. Gener
 | Constraint | C-SMS-03 | EIMS keeps only the current hourly wage rate; records generated late or after a reopen use the rate at the time of generation (D-90). |
 | Dependency | DEP-SMS-01 | AMS provides attendance approval and reopen hand-overs and all approved attendance for the reconciliation (INT-01, INT-02, JOB-CMN-01; anchor DEP-02 message broker, DEP-03 build order). |
 | Dependency | DEP-SMS-02 | EIMS provides the hourly wage rate, employee details and approver (INT-03 to INT-05). |
-| Dependency | DEP-SMS-03 | Open items OI-02 and OI-04 (anchor §12) were decided before approval (D-104, anchor DEP-06); OI-01, OI-06 and OI-10 are closed before HLD Part02. |
+| Dependency | DEP-SMS-03 | Open items OI-02 and OI-04 (anchor §12) were decided before approval (D-104, anchor DEP-06); OI-01, OI-06 and OI-10 were closed with the UX set v1.1 (D-105). |
 
 ## 15. Traceability matrix
 
@@ -361,7 +362,7 @@ System-wide NFRs (anchor §8) apply; SMS has no module-specific additions. Gener
 
 ## 16. Open items
 
-Cross-module open items that affect SMS are in the anchor §12: OI-01 (Admin opens SCR-SMS-02 for the top-level employee), OI-02 (pending items of a deactivated employee, incl. salary records waiting for approval or acceptance), OI-04 (pending salary approvals and disputes on a manager change; OI-02 and OI-04 closed, D-104), OI-06 (UX Journey Index reconciliation time "TBD", set to 01:00 IST) and OI-10 (SMS UX updates). SMS has no module-only open items.
+Cross-module open items that affect SMS are in the anchor §12: OI-01 (Admin opens SCR-SMS-02 for the top-level employee; closed, D-105), OI-02 (pending items of a deactivated employee, incl. salary records waiting for approval or acceptance), OI-04 (pending salary approvals and disputes on a manager change; OI-02 and OI-04 closed, D-104), OI-06 (UX Journey Index reconciliation time "TBD", set to 01:00 IST) and OI-10 (SMS UX updates) – both closed (D-105). SMS has no module-only open items.
 
 | Id | Question | Owner | Due | Status / decision |
 | --- | --- | --- | --- | --- |

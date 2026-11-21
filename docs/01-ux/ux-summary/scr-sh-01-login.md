@@ -3,12 +3,12 @@
 | Field | Value |
 | --- | --- |
 | Screen Id | SCR-SH-01 |
-| Module | Shell (built as a Keycloak login theme, D-16) |
+| Module | Shell (sign-in page of the identity provider, in the PMS style) |
 | Roles | All |
 | User journeys | UJ-SH-01, UJ-SH-02, UJ-SH-05 |
 | Mockup | `docs/01-ux/mockups/html/scr-sh-01-login.html` |
-| Version / status | 0.1 / Draft – in review |
-| Last updated | 2026-11-15 |
+| Version / status | 1.1 / Approved (D-105; v1.0 D-34) |
+| Last updated | 2026-11-21 |
 
 ## 1. Purpose
 
@@ -30,8 +30,8 @@ A centred card with the PMS brand, Employee Id and Password fields, a Show/Hide 
 
 | Field | Type / control | Required | Validation | Data source (entity.attribute) | Editable by |
 | --- | --- | --- | --- | --- | --- |
-| Employee Id | Text | Y | Not empty; case-insensitive (EMP0007 = emp0007) | Keycloak username = Employee.employeeId | User |
-| Password | Password, Show/Hide toggle | Y | Not empty | Keycloak credential | User |
+| Employee Id | Text | Y | Not empty; case-insensitive (EMP0007 = emp0007) | User name in the identity provider = Employee.employeeId; the PMS Administrator uses its fixed user name (D-97) | User |
+| Password | Password, Show/Hide toggle | Y | Not empty | Credential in the identity provider | User |
 
 ## 5. Actions
 
@@ -40,7 +40,7 @@ A centred card with the PMS brand, Employee Id and Password fields, a Show/Hide 
 | Sign in – valid | All | Opens Dashboard | – | – |
 | Sign in – temporary password | All | Opens Set password | – | – |
 | Sign in – wrong credentials | All | Stays; password cleared | – | "Employee Id or password is incorrect. Please try again." |
-| Sign in – inactive account | All | Stays | – | "Your account is inactive. Contact your PMS administrator." |
+| Sign in – inactive account, correct password | All | Stays | – | "Your account is inactive. Contact your PMS administrator." (with a wrong password the generic message above is shown, D-97) |
 | Sign in – locked | All | Stays | – | "Too many failed attempts. Your account is locked for 15 minutes." |
 | Show / Hide | All | Reveals or masks password | – | – |
 
@@ -51,7 +51,7 @@ A centred card with the PMS brand, Employee Id and Password fields, a Show/Hide 
 | C3 / D-01 | Login with Employee Id + password; roles Employee, Manager, Admin |
 | BR-C6 / EIMS-US6 | Deactivated employees cannot sign in |
 | D-07 / O6 | No self-service reset; Admin resets passwords |
-| Security | The message never reveals whether the Employee Id exists |
+| Security, D-97 | The message never reveals whether the Employee Id exists; the inactive message only after the correct password; unknown Employee Ids are never locked |
 
 ## 7. Screen states
 
@@ -71,4 +71,4 @@ Labels bound to inputs; alerts use `role="alert"`; correct `autocomplete` (usern
 
 | Id | Question | Owner | Status |
 | --- | --- | --- | --- |
-| UXQ-09 | Lock the account after failed attempts? | Product owner | Accepted (D-26) –: lock 15 minutes after 5 failed attempts (Keycloak brute-force detection) |
+| UXQ-09 | Lock the account after failed attempts? | Product owner | Accepted (D-26) –: lock 15 minutes after 5 failed attempts (enforced by the identity provider); an Admin password reset also unlocks (D-97) |
