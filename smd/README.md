@@ -25,6 +25,7 @@ Overview (pipeline strip, KPIs, Done / Doing / Next, changes, timeline) · Stage
 | `web/` | Generated output: `PMS_SMD_Dashboard.html` (one dashboard, D-96) and `.smd-anchor.png` (checkout detection). Its Overview ends with two internal sections – token utilization per stage › outcome (`memory/usage/token-log.csv`) and whole-session token readings (`memory/usage/session-readings.csv`), rule PR-04 |
 | `snapshots/` | Data snapshot per refresh (history and trend) |
 | `CHANGELOG.md` | One entry per refresh |
+| `presentation/` | Overview decks as dated PDF snapshots: `customer-facing/` (rule PR-03) and `internal/` (Infogain only – remove before sharing the `smd/` folder with the customer) |
 
 ## How the dashboard is built
 
