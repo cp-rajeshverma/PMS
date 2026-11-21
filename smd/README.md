@@ -26,6 +26,10 @@ Overview (pipeline strip, KPIs, Done / Doing / Next, changes, timeline) · Stage
 | `snapshots/` | Data snapshot per refresh (history and trend) |
 | `CHANGELOG.md` | One entry per refresh |
 
+## How the dashboard is built
+
+`PMS_SMD_Dashboard.html` = `smd-template.html` (layout, styles and the code for every screen, with empty data placeholders) + `smd-data.json` (all content) + the internal token logs, combined by `node smd/build.mjs`. Change the look in the template, the content in the data; never edit the generated file. Opened on its own, the template shows no data – that is expected.
+
 ## Refresh
 
 Run `smd/prompt/smd-update-prompt.md` with an agent that has access to the repository. To rebuild from existing data only: `node smd/build.mjs` (Node 18+, no dependencies).
