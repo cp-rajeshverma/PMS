@@ -1,5 +1,5 @@
 # SMD configuration – approved 2026-11-19 (customer-facing, default stage names, planned dates TBD)
-app: { code: PMS, name: Payroll Management System, modules: [EIMS, AMS, LMS, SMS, SUP], target_go_live: null }
+app: { code: PMS, name: Payroll Management System, modules: [EIMS, AMS, LMS, SMS, SUP], target_go_live: 2027-01-29 }
 owner: Rajesh Verma (Enterprise Architect / Product owner)
 remote_base_url: https://github.com/cp-rajeshverma/PMS/blob/main/
 audience: customer-facing      # rule PR-03 / D-60: dashboard never names AI tools or agents
@@ -12,7 +12,7 @@ neutral_patterns: ["token"]       # texts matching these (e.g. D-89, token-loggi
 neutral_generic: "Internal delivery-tooling decision / housekeeping"   # used when text still names tools or agents
 display_names: { driven_by: { Manual: Manual, BMAD: Agile } }
 planned_dates: TBD             # to be decided based on progress
-target_go_live: TBD
+target_go_live: 2027-01-29          # D-108
 
 token_usage:                   # internal sections of the single dashboard (PR-04, D-96); removed manually before sharing with the customer
   log: memory/usage/token-log.csv
