@@ -13,13 +13,14 @@ Date: November 2026
 | --- | --- | --- | --- | --- |
 | 1.0 | 0.1 | 22-Nov-2026 | Rajesh Verma | First draft of §1–§4, based on the approved BRD set v1.0 (D-107), UX v1.1 (D-105) and decisions D-01 to D-108; Part01 design answers of 22 Nov 2026 (D-109) |
 | 1.0 | 0.2 | 22-Nov-2026 | Rajesh Verma | Draft of §5–§8 (functional, system, deployment, integration architecture) |
+| 1.0 | 0.3 | 22-Nov-2026 | Rajesh Verma | Draft of §9–§10 (authentication and authorization; logging and observability) |
 
 ### 1.2 Review and approval
 
 | Role | Name | Date | Decision |
 | --- | --- | --- | --- |
-| Architect | Rajesh Verma (Enterprise Architect) | 22-Nov-2026 | §1–§4 approved (D-109); §5–§8 approved (D-110); full document pending |
-| Product owner | Rajesh Verma | 22-Nov-2026 | §1–§4 approved (D-109); §5–§8 approved (D-110); full document pending |
+| Architect | Rajesh Verma (Enterprise Architect) | 22-Nov-2026 | §1–§4 approved (D-109); §5–§8 approved (D-110); §9–§10 approved (D-111); full document pending |
+| Product owner | Rajesh Verma | 22-Nov-2026 | §1–§4 approved (D-109); §5–§8 approved (D-110); §9–§10 approved (D-111); full document pending |
 
 ## 2. Introduction
 
@@ -37,7 +38,7 @@ The design is technology-neutral wherever the replatforming goal requires it (D-
 | --- | --- | --- |
 | 1 | PMS-BRD (anchor), PMS-BRD-M1-EIMS, PMS-BRD-M2-AMS, PMS-BRD-M3-LMS, PMS-BRD-M4-SMS, PMS-BRD-M5-SUP | v1.0 – approved baseline (D-107) |
 | 2 | UX Journey Index and 17 UX Summaries (with HTML mockups) | v1.1 (D-105) |
-| 3 | Decision log / ADRs | D-01 to D-110; ADR-001 to ADR-003 |
+| 3 | Decision log / ADRs | D-01 to D-111; ADR-001 to ADR-003 |
 
 **Design documents**
 
@@ -84,8 +85,8 @@ Implementation starts only when every mandatory artifact below is approved. The 
 | 2 | System architecture | Part01 §6 | Yes | Architect, IT operations / infrastructure, Security / IT owner | Approved (section review) | 22 Nov 2026 |
 | 3 | Deployment architecture | Part01 §7 | Yes | Architect, IT operations / infrastructure, DevOps | Approved (section review) | 22 Nov 2026 |
 | 4 | Integration architecture | Part01 §8 | Yes | Architect, module dev leads | Approved (section review) | 22 Nov 2026 |
-| 5 | Authentication & authorization | Part01 §9 | Yes | Security / IT owner, Architect | Not started | |
-| 6 | Logging & observability | Part01 §10 | Yes | IT operations, Architect | Not started | |
+| 5 | Authentication & authorization | Part01 §9 | Yes | Security / IT owner, Architect | Approved (section review) | 22 Nov 2026 |
+| 6 | Logging & observability | Part01 §10 | Yes | IT operations, Architect | Approved (section review) | 22 Nov 2026 |
 | 7 | Principles & patterns compliance | Part01a | Yes | Architect | Not started (after Part01, D-108) | |
 | 8 | Functional HLDs per module | Part02 anchor, M1-EIMS to M4-SMS, M5-SUP | Yes | BA, HR Manager, Finance Manager, dev leads | Not started | |
 | 9 | Data model | Part03 anchor, M1-EIMS to M4-SMS, M5-SUP | Yes | Architect, DBA | Not started | |
@@ -104,6 +105,7 @@ Implementation starts only when every mandatory artifact below is approved. The 
 | 21 Nov 2026 | BRD set sign-off and Stage 3 plan | Product owner; BA, HR Manager, Finance Manager, Security / IT owner (BRD review) | BRD set v1.0 approved; HLD order and dates | D-106, D-107, D-108 |
 | 22 Nov 2026 | Part01 architecture questions | Product owner, Enterprise Architect | Hosting on-premises first, AWS as the later cloud target (Azure dropped); container orchestration platform; identity provider issues tokens and holds passwords; network zones; per-tier redundancy; data tier; environments; no data migration; no MFA in the POC | D-109; ADR-002, ADR-003 |
 | 22 Nov 2026 | Part01 §5–§8 and platform answers | Product owner, Enterprise Architect | POC on Docker Desktop Kubernetes (or a Kubernetes-in-Docker cluster for non-production), production simulated on AWS; environments as namespaces; observability stack; gateway holds tokens; reconciliation in SMS; no cache server; CI/CD, provisioning and secrets | D-110 |
+| 22 Nov 2026 | Part01 §9–§10 | Product owner, Enterprise Architect | Token lifetimes and session limits as deployment settings; relayed user token plus service token; realm, clients and claims; alerts by email to IT operations; role change reaches APIs within the access-token lifetime | D-111 |
 
 ## 4. Architecture principles & patterns
 
@@ -653,11 +655,255 @@ Proposed defaults; final values go into the API and integration standard (docs/0
 
 ## 9. Authentication & authorization
 
-To be drafted (review 3: §9–§10).
+Architecture-level design of identity, access and API security. User-facing functions (sign-in, set and change password, log out, onboarding, role administration) are designed in PMS-HLD-Part02-M5-SUP-Functional. Business policy is in PMS-BRD-M5-SUP §5 and §6. All durations below (token lifetimes, session limits, lockout) are deployment settings per environment, changed by release or deployment, not by the Admin (D-97, D-111).
+
+### 9.1 Users, user categories and roles
+
+| User category | Description | Authentication path | MFA |
+| --- | --- | --- | --- |
+| Employee (including managers) | About 100 users; user name = Employee Id (FR-UM-001) | Browser → edge → identity provider sign-in page (OIDC) → gateway session | No (POC, FR-AUTH-001, D-109) |
+| PMS Administrator | One account set up at installation, fixed user name not in the Employee Id format (FR-UM-004) | Same as employees | No (POC) |
+| Service identities | EIMS, AMS, LMS, SMS acting as the system (event processing, nightly job, account administration) | Client credentials at the identity provider | Not applicable |
+| IT operations | Not PMS users; read logs and dashboards, reset the Admin password (FR-UM-005), run backups and restores | Platform and observability accounts outside PMS; identity-provider administration console reachable only from inside the cluster, never through the edge | Per IT operations policy |
+
+| Role id | Role name | Role type (business / system / external) | Data scope |
+| --- | --- | --- | --- |
+| ROLE-EMP | Employee (realm role EMPLOYEE) | Business | Own records |
+| ROLE-MGR | Manager (realm role MANAGER) | Business | Own records + direct reports by the current Manager Id (no skip-level, D-63) |
+| ROLE-ADM | PMS Administrator (realm role ADMIN) | Business | All EIMS employee master data; the top-level employee's records for review and decision only (D-58) |
+| SYS-EIMS | EIMS service client | System | Employee records it creates; user accounts through the admin API (user management only) |
+| SYS-SMS | SMS service client | System | All salary records; approved attendance through the AMS API |
+| SYS-REC | Reconciliation job (runs as the SMS service client) | System | All approved attendance and salary records |
+| SYS-AMS, SYS-LMS | AMS and LMS service clients | System | Read-only checks between services (INT-06, INT-09) |
+
+### 9.2 Identity provider / authorization server
+
+| Item | Decision |
+| --- | --- |
+| Product / service | Keycloak (D-16), self-hosted in each environment; realm configuration kept as code in `platform/keycloak` and applied by the pipeline |
+| Realm / tenant design | One realm `pms` per environment; brute-force detection: temporary lock 15 minutes after 5 consecutive failures, no permanent lock (D-26, FR-AUTH-005); password policy length 8, upper case, lower case, digit, special character, not containing the user name, different from the current password (password history 1) (D-28, D-97, D-99); temporary password = credential marked temporary with the update-password required action (FR-AUTH-006); login theme styled to SCR-SH-01 and SCR-SH-02 with the BRD messages (FR-AUTH-002 to 008); registration, social login and "forgot password" disabled (FR-UM-002, FR-AUTH-007); events (login, login error, logout, update password, admin user events) enabled and forwarded to the log store (FR-AUTH-030) |
+| User store (IdP-managed / federated / application) | IdP-managed; passwords stored and hashed only by the identity provider with its built-in algorithm (Argon2 in current releases; fixed in the security standard) – PMS holds no passwords (ADR-003) |
+| Clients (per frontend, per service) | `pms-gateway`: confidential, Authorization Code + PKCE, redirect only to the PMS host; `eims-svc`, `ams-svc`, `lms-svc`, `sms-svc`: confidential, client credentials only, with the realm roles their calls need; `eims-admin`: client credentials limited to user management (create, update role, reset credential, disable, end sessions) for INT-08; audience mappers add `eims`, `ams`, `lms`, `sms` to user tokens |
+| Environments (one realm per environment / shared) | One identity provider instance and realm per environment (Dev, QA, Prod namespaces; AWS production simulation); its database in the environment's PostgreSQL server (D-109) |
+
+### 9.3 Authentication flows
+
+| Flow | Used by | Protocol / grant (e.g. OIDC Authorization Code + PKCE, Client Credentials) | Notes |
+| --- | --- | --- | --- |
+| Interactive user sign-in | All users via the gateway | OIDC Authorization Code + PKCE; gateway is the confidential client | Browser receives only an HttpOnly session cookie; tokens stay in the gateway (D-110) |
+| Set password (first sign-in, after reset) | All users | Required action at the identity provider during sign-in | No PMS page reachable before it is done (FR-AUTH-006, FR-AUTH-010) |
+| Change own password | All users | Application-initiated update-password action at the identity provider with re-authentication | Ends the user's other sessions, current session continues (D-100); screen behaviour in Part02-SUP |
+| Token refresh | Gateway | Refresh token grant, refresh token rotated on every use | Fails when the identity-provider session has ended → user returns to sign-in (FR-CMN-016) |
+| Sign-out / single logout | All users; Admin actions | RP-initiated logout (user); identity-provider back-channel logout to the gateway (deactivation, password reset, own password change) | The gateway instance that receives a back-channel logout relays it to its peer instances; refresh failure ends any session missed within the access-token lifetime (§9.5) |
+| Service-to-service | Services, nightly job, EIMS admin calls | Client credentials (system calls); relayed user access token (calls on behalf of a user) | §9.9 |
+
+```mermaid
+sequenceDiagram
+  participant B as Browser
+  participant F as Frontend (shell)
+  participant G as API gateway
+  participant I as Identity provider
+  participant S as Module service
+  B->>F: Open PMS
+  F->>G: GET /api/... (no session)
+  G-->>B: Redirect to identity provider (code + PKCE)
+  B->>I: Sign-in page: Employee Id + password
+  I-->>B: Redirect to gateway with code (or Set password first)
+  B->>G: Callback with code
+  G->>I: Exchange code (client secret + PKCE verifier)
+  I-->>G: Access, refresh and ID token
+  G-->>B: HttpOnly session cookie, dashboard
+  B->>F: Use PMS
+  F->>G: API call with cookie (+ CSRF token)
+  G->>S: Request with bearer access token + flow reference
+  S->>S: Validate token, role and data scope
+  S-->>G: Response
+  G-->>F: Response
+```
+
+**Text version of the diagram**
+
+| Step | From → to | Action |
+| --- | --- | --- |
+| 1–3 | Browser → shell → gateway | No session: gateway starts Authorization Code + PKCE and redirects to the identity provider |
+| 4–5 | Browser ↔ identity provider | User signs in; temporary password leads to Set password first; lock and messages per FR-AUTH-003 to 005 |
+| 6–9 | Browser → gateway ↔ identity provider | Gateway exchanges the code, keeps the tokens, gives the browser an HttpOnly session cookie |
+| 10–15 | Shell → gateway → service | Each API call carries the cookie and CSRF token; gateway relays the access token and flow reference; the service validates token, role and data scope |
+
+### 9.4 MFA approach
+
+No second sign-in factor in the POC (FR-AUTH-001, BRD M5-SUP §3.2, D-109). The identity provider supports one-time-password factors, so MFA – for example for the PMS Administrator first – can be enabled later by configuration without redesign; recorded as Future (§20).
+
+### 9.5 Token design
+
+| Item | Decision |
+| --- | --- |
+| Token type and format (JWT) | Signed JWT access token; ID token used only by the gateway; refresh token opaque to PMS |
+| Signing algorithm and key rotation | RS256 (asymmetric); public keys published by the identity provider and cached by the gateway and services; keys rotated by the identity provider with the previous key kept active for validation until existing tokens expire; rotation interval in the security standard |
+| Access token lifetime | 5 minutes (setting) |
+| Refresh token lifetime and rotation | Bound to the identity-provider session: ends after 30 minutes idle (D-26) or 10 hours absolute (settings); rotated on every use, reuse refused |
+| Claims (sub, roles, scopes, data-scope attributes, tenant) | `sub`, `preferred_username` (Employee Id or Admin user name), one realm role (EMPLOYEE, MANAGER or ADMIN), `aud`, `azp`, `sid`, `exp`, `iat`. No reporting-line claims: the Manager Id stays in EIMS and is checked through INT-04, so a manager change applies at once (FR-UM-014). No tenant (single company, A-01) |
+| Audience per service | User tokens carry `eims`, `ams`, `lms`, `sms`; service tokens carry only the called services' audiences; each service accepts only tokens with its own audience |
+| Revocation / forced logout | Session ended at the identity provider (deactivation, reset, own password change) + back-channel logout to the gateway; any request still holding an access token is limited to its 5-minute lifetime |
+| Token storage in the browser | None. The browser holds only the gateway session cookie: HttpOnly, Secure, SameSite=Lax, path /; state-changing calls also carry a CSRF token |
+
+### 9.6 Session management
+
+| Item | Decision |
+| --- | --- |
+| Session idle timeout | 30 minutes (D-26), enforced by the identity-provider session and the gateway session (same setting); expiry message per FR-CMN-016; no warning (Future) |
+| Absolute session timeout | 10 hours (setting) – one working day |
+| Concurrent sessions | Allowed; each session times out on its own (FR-AUTH-021) |
+| Account lockout policy | 5 consecutive failures → locked 15 minutes; Admin password reset clears the lock and count; successful sign-in resets the count; unknown Employee Ids never locked and get the generic message (D-26, D-97, FR-AUTH-005) |
+
+### 9.7 Authorization model
+
+| Layer | Mechanism | Enforced at |
+| --- | --- | --- |
+| Coarse-grained (role → API / route) | RBAC: routes per module and per role group (for example Admin-only EIMS administration routes, Manager / Admin approval routes) | Gateway |
+| Fine-grained (role → feature / action) | Permission per API operation from the role claim; no self-approval (BR-CMN-08) | Service |
+| Data scope (own / reportees / all) | Own: record owner = token `preferred_username`. Reportees: current Manager Id from EIMS (INT-04). Admin: all EIMS employee data; other modules only the top-level employee's records (D-58). Applied in the query, so out-of-scope data is never read | Service / query |
+| UI (menu, button visibility) | Role claim from the gateway session drives the menu (FR-UM-012); a refused request opens the neutral "You don't have access to this page." page (FR-UM-015) | Frontend (never the only check) |
+
+A refused request returns the same neutral response whether or not the record exists, and is written to the activity log with user, reason and flow reference (FR-UM-015, FR-ADM-117). A role change reaches every API check within the access-token lifetime (at most 5 minutes) and the menu at the next sign-in (FR-UM-011).
+
+### 9.8 API-level security
+
+| Control | Decision |
+| --- | --- |
+| Token validation (signature, issuer, audience, expiry) | At the gateway and again in every service: signature against the identity provider's keys, issuer, own audience, expiry and not-before, with at most 30 s clock skew |
+| Scopes per API | Audience per service plus role checks (§9.7); no fine-grained OAuth scopes in the POC |
+| Rate limiting / throttling | Gateway: per user and per route (limits in the security standard); edge: per client address on the sign-in path, in addition to the identity provider's lockout |
+| CORS policy | Single origin: static web, `/api` (gateway) and `/auth` (identity provider) are served from one host name, so cross-origin requests are refused |
+| Input validation and payload limits | Request bodies validated against the OpenAPI contract and the BRD validation rules in the service; payload limit 1 MB at the edge and gateway |
+| Security headers | At the edge: HSTS, Content-Security-Policy (self only), X-Content-Type-Options nosniff, frame-ancestors none, Referrer-Policy same-origin; no caching of API responses |
+| Public (unauthenticated) endpoints | Static frontend assets, identity-provider sign-in pages and OIDC endpoints only; health and metrics endpoints are reachable inside the cluster only, never through the edge |
+
+### 9.9 Service-to-service authentication
+
+- **On behalf of a user** (for example AMS asking EIMS for the approver, INT-04; the shell calling a module): the user's access token is relayed, so the called service applies its own role and data-scope checks.
+- **As the system** (event processing in SMS, the nightly job, EIMS → identity provider admin API, INT-09 and INT-06 checks without a user context): the calling service uses its own client-credentials token, holding only the roles its calls need.
+- **Identity and flow propagation:** every HTTP call carries the flow reference and trace context headers (§10.5); every event carries the flow reference and the acting user (Employee Id, Admin or System) in its envelope, so audit entries record who triggered a system change (FR-ADM-102).
+- Network policies allow only the service pairs in §6.3; mutual TLS is not used in the POC.
+
+### 9.10 Secrets and key management
+
+Secrets – database credentials, identity-provider client secrets, broker credentials, backup credentials – are kept as platform secrets, created by the deployment pipeline from protected environment secrets, one set per environment and service, readable only by the service that uses them; on AWS they come from the cloud secret store with key-managed encryption (D-110). Token-signing keys are held and rotated by the identity provider. No secrets in code, container images, Helm values files or logs; repositories are scanned for secrets in the pipeline. In the POC, credentials are rotated per release and immediately on suspicion; rotation schedule in the security standard.
+
+### 9.11 Stakeholder alignment
+
+| Item | Stakeholder | Date | Outcome |
+| --- | --- | --- | --- |
+| §9 Authentication & authorization | Product owner, Security / IT owner (role) | 22 Nov 2026 | Approved (D-111) |
 
 ## 10. Unified & centralized logging and observability
 
-To be drafted (review 3: §9–§10).
+### 10.1 Logging architecture
+
+```mermaid
+flowchart LR
+  subgraph SRC["Sources (per environment)"]
+    ED["Edge (access log)"]; GW["Gateway"]; SV["EIMS · AMS · LMS · SMS"]; ID["Identity provider (security events)"]; MB["Broker"]; DB[("Databases")]
+  end
+  SRC -- "structured JSON logs, metrics, traces (OTLP)" --> COL["Telemetry collector<br/>(masking, enrichment)"]
+  COL --> LS[("Log store")] & MS[("Metric store")] & TS[("Trace store")]
+  LS & MS & TS --> DSH["Dashboards"]
+  MS & LS --> AL["Alert rules"] --> EM["Email to IT operations"]
+  SV -- "audit entries (same transaction)" --> AU[("Audit table in each module database")]
+```
+
+**Text version of the diagram**
+
+| Element | Role |
+| --- | --- |
+| Sources | Every node writes structured JSON logs to standard output and emits metrics and traces |
+| Telemetry collector | One per cluster; receives all signals, applies masking as a second line of defence, adds environment labels, buffers on outage |
+| Log, metric and trace stores | Central stores with environment labels; retention per §10.8 |
+| Dashboards and alert rules | For IT operations; alerts emailed to the IT operations / product owner mailbox (D-111) |
+| Audit tables | Business audit trail in each module's own database, written in the same transaction as the change (BR-CMN-19); not sent to the log store |
+
+### 10.2 Log types
+
+| Log type | Purpose | Produced by | Store | Retention |
+| --- | --- | --- | --- | --- |
+| Application log (activity log) | Entry, each completed step and exit with result and duration of every service operation (FR-ADM-111) | Gateway, EIMS, AMS, LMS, SMS | Log store | 90 days in Prod (D-101); 14 days Dev / QA |
+| Access log (gateway, web) | Every HTTP request: method, route, status, duration, user, flow reference (no query values, tokens or cookies) | Edge, gateway | Log store | 90 days Prod; 14 days Dev / QA |
+| Business event log | Publish and consume of INT-01 / INT-02 events, job start / steps / end with counts (FR-ADM-112) | AMS outbox relay, SMS consumer, SMS job | Log store (outbox rows kept in the AMS database) | 90 days Prod |
+| Security log | Sign-in, failure, lock, logout, password set / change / reset, account create, role change, deactivation (FR-AUTH-030); refused requests (FR-ADM-117) | Identity provider; gateway and services | Log store (identity-provider events also in its own database) | 90 days Prod |
+| Audit trail (business) | Field-level old / new values of every business record and user-account change (FR-ADM-101 to 105) | Each module service | Audit table in the module database | As long as the record (FR-ADM-103) |
+| Infrastructure / platform log | Container platform, ingress, database, broker logs | Platform components | Log store | 14 days |
+
+### 10.3 Standard log record
+
+| Field | Description | Mandatory |
+| --- | --- | --- |
+| timestamp (UTC, ISO-8601) | Event time in UTC; dashboards display IST (BR-CMN-18) | Y |
+| level | ERROR, WARN, INFO, DEBUG (DEBUG never in Prod) | Y |
+| service / node | Module or component name and instance | Y |
+| environment | dev, qa, prod, aws-sim | Y |
+| correlation_id | The flow reference (§10.5) | Y |
+| trace_id / span_id | Trace context of the request or message | Y |
+| user_id (no personal data) | Employee Id, the Admin user name, or "System" | N |
+| event_type | entry, step, exit, event-published, event-consumed, job-start, job-step, job-end, refused, error | Y |
+| message | Short text without personal or confidential values | Y |
+| business keys (e.g. entity id) | Record type and id, status before / after, counts | N |
+| error code / stack (errors only) | Error code from the common error catalogue (Part02 anchor); stack trace only in the log, never to the user | N |
+| module, operation, process | Module (EIMS…), API operation id, use case or job id (UJ-…, JOB-CMN-01) (FR-ADM-111) | Y |
+| result, duration_ms | On exit entries | Y (exit) |
+
+### 10.4 Logging per node
+
+| Node / component | Events logged | Level policy | Shipping method |
+| --- | --- | --- | --- |
+| Edge | Access log, WAF blocks | INFO; WAF blocks WARN | Standard output → collector |
+| API gateway | Access log, session start / end, refused routes, back-channel logout, downstream errors | INFO in Prod | Standard output and OTLP → collector |
+| EIMS, AMS, LMS, SMS | Activity log (entry, steps, exit), refused requests, events, job runs, errors | INFO in Prod; DEBUG allowed in Dev only | Standard output and OTLP → collector |
+| Identity provider | Security events, admin events, errors | INFO | Event listener / standard output → collector |
+| Broker | Connections, dead-letter moves, queue depth metrics | WARN; metrics always | Standard output and metrics endpoint |
+| Database | Errors, slow statements over 1 s, connections | WARN | Standard output and metrics exporter |
+| Backup job | Start, end, size, result | INFO | Standard output → collector |
+
+### 10.5 Correlation and tracing
+
+- **Flow reference.** Created by the gateway for each user request that has none (one user action = one request, including bulk approvals), and by SMS for each job run. Format: 12 characters in three groups of four, upper-case letters and digits without look-alikes (for example `7K2M-QX9D-4TBR`), easy to read out to support.
+- **HTTP:** carried in the `X-Flow-Ref` header on every call (gateway → service → service), together with W3C Trace Context (`traceparent`) for distributed tracing.
+- **Events:** carried in the event envelope (flow reference, trace context, acting user) and continued by the consumer, so AMS approval and SMS generation read in one sequence (FR-ADM-113).
+- **Jobs:** the reconciliation run's flow reference is on every step entry and every audit entry it writes.
+- **Errors:** every system error response carries the flow reference; the shell shows "Reference: <flow reference>" (FR-ADM-114).
+- **Tracing standard:** OpenTelemetry instrumentation in every service and the gateway, sampling 100 % in the POC (low volume).
+
+### 10.6 KPIs derived from logs
+
+| KPI | Type (business / system) | Source events | Dashboard |
+| --- | --- | --- | --- |
+| Salary generation delay (≤ 1 minute, NFR-01) | System | INT-01 published time vs salary record created | Integration |
+| Reconciliation result: created, voided, mismatches (KPI-04) | Business | JOB-CMN-01 job-end entry | Operations, Admin dashboard tile |
+| Records approved without approver or audit fields (KPI-03) | Business | Audit entries and approval events | Business quality |
+| API response p95 and error rate (NFR-01) | System | Gateway access log and traces | Service health |
+| Page-load p95 (NFR-01) | System | Frontend timing collected by the end-to-end and load tests (§14) | Performance |
+| Sign-in failures and lockouts (NFR-03) | System (security) | Identity-provider events | Security |
+| Refused requests by role and route (NFR-SUP-02) | System (security) | Refused entries | Security |
+| Approvals and submissions per module per day | Business | Activity log exit entries | Business activity |
+
+### 10.7 Metrics, dashboards and alerts
+
+| Signal | Threshold / SLO | Alert channel | Owner |
+| --- | --- | --- | --- |
+| Service, gateway or identity provider unavailable | Health check failing for 2 minutes | Email to IT operations (D-111) | IT operations |
+| API latency | p95 > 500 ms for 10 minutes (NFR-01) | Email | IT operations |
+| Error rate | > 2 % of requests (5xx) for 5 minutes | Email | IT operations |
+| Dead-letter queue | Any message | Email | IT operations |
+| Outbox backlog | Unsent events older than 1 minute | Email | IT operations |
+| Reconciliation | Not finished by 01:30 IST, failed, or mismatches > 0 | Email | IT operations; product owner |
+| Database | Storage > 80 %; backup failed or missing for 24 h | Email | IT operations |
+| Sign-in security | Lockouts or refused requests above normal (threshold set after first month) | Email | Security / IT owner |
+| Availability (Prod, AWS simulation) | 99 % 08:00–20:00 IST Mon–Sat (NFR-02) | Monthly report | Product owner |
+
+### 10.8 Privacy and retention
+
+- **Masking (FR-ADM-115, NFR-SUP-04):** services log by an allow-list of fields – ids, statuses, counts, outcomes; request and response bodies are never logged. Sensitive attributes (D-71), hourly wage rates, salary amounts and free-text remarks never appear in logs; passwords, temporary passwords, tokens, cookies and session secrets never appear anywhere. The collector applies masking rules as a second line of defence. Log review for unmasked values is part of security testing.
+- **Retention:** Prod 90 days for application, access, business event and security logs (D-101); Dev and QA 14 days; platform logs 14 days; audit trail kept with the record in the module database.
+- **Access:** dashboards and log search for IT operations only; developers see Dev and QA logs. Test data is synthetic in every environment (R-04), so no real personal data exists outside Prod.
 
 ## 11. Technology stack
 
