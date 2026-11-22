@@ -14,13 +14,14 @@ Date: November 2026
 | 1.0 | 0.1 | 22-Nov-2026 | Rajesh Verma | First draft of §1–§4, based on the approved BRD set v1.0 (D-107), UX v1.1 (D-105) and decisions D-01 to D-108; Part01 design answers of 22 Nov 2026 (D-109) |
 | 1.0 | 0.2 | 22-Nov-2026 | Rajesh Verma | Draft of §5–§8 (functional, system, deployment, integration architecture) |
 | 1.0 | 0.3 | 22-Nov-2026 | Rajesh Verma | Draft of §9–§10 (authentication and authorization; logging and observability) |
+| 1.0 | 0.4 | 22-Nov-2026 | Rajesh Verma | Draft of §11–§15 (technology stack, data architecture summary, data migration, performance test strategy, environment strategy); edge product replaced (Envoy Gateway + Coraza WAF); role change ends sessions (D-111) |
 
 ### 1.2 Review and approval
 
 | Role | Name | Date | Decision |
 | --- | --- | --- | --- |
-| Architect | Rajesh Verma (Enterprise Architect) | 22-Nov-2026 | §1–§4 approved (D-109); §5–§8 approved (D-110); §9–§10 approved (D-111); full document pending |
-| Product owner | Rajesh Verma | 22-Nov-2026 | §1–§4 approved (D-109); §5–§8 approved (D-110); §9–§10 approved (D-111); full document pending |
+| Architect | Rajesh Verma (Enterprise Architect) | 22-Nov-2026 | §1–§4 approved (D-109); §5–§8 approved (D-110); §9–§10 approved (D-111); §11–§15 approved (D-112); full document pending |
+| Product owner | Rajesh Verma | 22-Nov-2026 | §1–§4 approved (D-109); §5–§8 approved (D-110); §9–§10 approved (D-111); §11–§15 approved (D-112); full document pending |
 
 ## 2. Introduction
 
@@ -38,7 +39,7 @@ The design is technology-neutral wherever the replatforming goal requires it (D-
 | --- | --- | --- |
 | 1 | PMS-BRD (anchor), PMS-BRD-M1-EIMS, PMS-BRD-M2-AMS, PMS-BRD-M3-LMS, PMS-BRD-M4-SMS, PMS-BRD-M5-SUP | v1.0 – approved baseline (D-107) |
 | 2 | UX Journey Index and 17 UX Summaries (with HTML mockups) | v1.1 (D-105) |
-| 3 | Decision log / ADRs | D-01 to D-111; ADR-001 to ADR-003 |
+| 3 | Decision log / ADRs | D-01 to D-112; ADR-001 to ADR-003 |
 
 **Design documents**
 
@@ -91,7 +92,7 @@ Implementation starts only when every mandatory artifact below is approved. The 
 | 8 | Functional HLDs per module | Part02 anchor, M1-EIMS to M4-SMS, M5-SUP | Yes | BA, HR Manager, Finance Manager, dev leads | Not started | |
 | 9 | Data model | Part03 anchor, M1-EIMS to M4-SMS, M5-SUP | Yes | Architect, DBA | Not started | |
 | 10 | API and event contracts | `contracts/openapi`, `contracts/events` | Yes | Dev leads | Not started (from Part02) | |
-| 11 | Performance test strategy & plan | Part01 §14 | Before PT | QA, IT operations | Not started | |
+| 11 | Performance test strategy & plan | Part01 §14 | Before PT | QA, IT operations | Approved (section review) | 22 Nov 2026 |
 | 12 | Standards & guardrails | `docs/04-standards/` (12 areas, D-61) | Yes | Architect, dev leads | Not started (after the HLD documents, D-108) | |
 
 ### 3.2 Stakeholder alignment log
@@ -106,6 +107,7 @@ Implementation starts only when every mandatory artifact below is approved. The 
 | 22 Nov 2026 | Part01 architecture questions | Product owner, Enterprise Architect | Hosting on-premises first, AWS as the later cloud target (Azure dropped); container orchestration platform; identity provider issues tokens and holds passwords; network zones; per-tier redundancy; data tier; environments; no data migration; no MFA in the POC | D-109; ADR-002, ADR-003 |
 | 22 Nov 2026 | Part01 §5–§8 and platform answers | Product owner, Enterprise Architect | POC on Docker Desktop Kubernetes (or a Kubernetes-in-Docker cluster for non-production), production simulated on AWS; environments as namespaces; observability stack; gateway holds tokens; reconciliation in SMS; no cache server; CI/CD, provisioning and secrets | D-110 |
 | 22 Nov 2026 | Part01 §9–§10 | Product owner, Enterprise Architect | Token lifetimes and session limits as deployment settings; relayed user token plus service token; realm, clients and claims; alerts by email to IT operations; role change reaches APIs within the access-token lifetime | D-111 |
+| 22 Nov 2026 | Part01 §11–§15 | Product owner, Enterprise Architect | Latest versions with LTS runtimes; Envoy Gateway + Coraza WAF replaces the retired ingress-nginx; Flyway, backup retention and restore tests; seed data; performance test strategy; trunk-based CI/CD with quality gates; role change ends sessions (D-111) | D-112 |
 
 ## 4. Architecture principles & patterns
 
@@ -365,7 +367,7 @@ The POC runs on-premises on Kubernetes in Docker (D-109, D-110, ADR-002): Docker
 ```mermaid
 flowchart LR
   subgraph LOCAL["On-premises POC – Docker Desktop Kubernetes"]
-    I1["ingress-nginx + ModSecurity (OWASP CRS)"] --> N1["nginx (shell-ui)"] & G1["Spring Cloud Gateway"] & K1["Keycloak"]
+    I1["Envoy Gateway + Coraza WAF (OWASP CRS)"] --> N1["nginx (shell-ui)"] & G1["Spring Cloud Gateway"] & K1["Keycloak"]
     G1 --> S1["Spring Boot services"] --> P1[("PostgreSQL")] & A1["ActiveMQ Artemis"]
   end
   subgraph AWS["AWS target – ap-south-1"]
@@ -376,7 +378,7 @@ flowchart LR
 
 | Seq | Component | On-premises POC (local machine) | AWS service (target) | Purpose | HA and scalability assurance |
 | --- | --- | --- | --- | --- | --- |
-| 1 | Edge | ingress-nginx with ModSecurity (OWASP Core Rule Set); local certificate; host name pms.local | Application Load Balancer + AWS WAF; Route 53; ACM certificate | HTTPS entry and WAF | AWS: managed, scales automatically |
+| 1 | Edge | Envoy Gateway (Kubernetes Gateway API) with the Coraza WAF and the OWASP Core Rule Set; local certificate; host name pms.local (replaces ingress-nginx, retired by the Kubernetes project in March 2026 – D-112) | Application Load Balancer + AWS WAF; Route 53; ACM certificate | HTTPS entry and WAF | AWS: managed, scales automatically |
 | 2 | Container platform | Docker Desktop Kubernetes (single node), or a multi-node Kubernetes-in-Docker cluster for non-production; namespaces pms-dev, pms-qa, pms-prod | Amazon EKS (managed node group) | Runs all PMS containers | Replicas per Deployment; AWS node group can grow |
 | 3 | API gateway | Spring Cloud Gateway | Same on EKS | Session, token relay, routing | 2 replicas in Prod; session affinity at the edge |
 | 4 | Identity provider | Keycloak | Same on EKS, database on RDS | OIDC, accounts, lockout, sessions | 2 replicas in Prod (clustered cache) |
@@ -479,8 +481,8 @@ On the local machine the redundancy is demonstrated (failover between replicas);
 flowchart TB
   subgraph HOST["Node: product owner's workstation (Windows) – Docker Desktop"]
     subgraph K8S["Execution environment: single-node Kubernetes"]
-      subgraph NSI["namespace ingress"]
-        ING["ingress-nginx + ModSecurity"]
+      subgraph NSI["namespace edge"]
+        ING["Envoy Gateway + Coraza WAF"]
       end
       subgraph NSP["namespace pms-prod (same layout in pms-qa, pms-dev)"]
         WEB["nginx: shell-ui ×2"]; GW["gateway ×2"]; KC["Keycloak ×2"]
@@ -510,7 +512,7 @@ flowchart TB
 | Node | Type (VM / container / PaaS / SaaS) | Execution environment (runtime, version) | Deployed artifacts | Zone / subnet | Scaling |
 | --- | --- | --- | --- | --- | --- |
 | Workstation (on-premises POC) | Physical machine, Windows | Docker Desktop with single-node Kubernetes, or a multi-node Kubernetes-in-Docker cluster for non-production (versions in §11) | All PMS containers, observability stack, self-hosted runner | – | Fixed; capacity per OI-P01-03 |
-| Edge | Container | ingress-nginx with ModSecurity | Ingress rules per environment host name | Edge | 1 |
+| Edge | Container | Envoy Gateway (Gateway API) with Coraza WAF and OWASP Core Rule Set | Gateway and HTTPRoute resources per environment host name | Edge | 1 |
 | Static web | Container | nginx | Shell-ui build (module packages built in, ADR-001) | Application | Prod 2, Dev / QA 1 |
 | API gateway | Container | Java runtime, Spring Cloud Gateway | `platform/gateway` image | Application | Prod 2, Dev / QA 1 |
 | Identity provider | Container | Keycloak | Realm configuration from `platform/keycloak` | Application | Prod 2, Dev / QA 1 |
@@ -694,7 +696,7 @@ Architecture-level design of identity, access and API security. User-facing func
 | Set password (first sign-in, after reset) | All users | Required action at the identity provider during sign-in | No PMS page reachable before it is done (FR-AUTH-006, FR-AUTH-010) |
 | Change own password | All users | Application-initiated update-password action at the identity provider with re-authentication | Ends the user's other sessions, current session continues (D-100); screen behaviour in Part02-SUP |
 | Token refresh | Gateway | Refresh token grant, refresh token rotated on every use | Fails when the identity-provider session has ended → user returns to sign-in (FR-CMN-016) |
-| Sign-out / single logout | All users; Admin actions | RP-initiated logout (user); identity-provider back-channel logout to the gateway (deactivation, password reset, own password change) | The gateway instance that receives a back-channel logout relays it to its peer instances; refresh failure ends any session missed within the access-token lifetime (§9.5) |
+| Sign-out / single logout | All users; Admin actions | RP-initiated logout (user); identity-provider back-channel logout to the gateway (deactivation, password reset, role change, own password change) | The gateway instance that receives a back-channel logout relays it to its peer instances; refresh failure ends any session missed within the access-token lifetime (§9.5) |
 | Service-to-service | Services, nightly job, EIMS admin calls | Client credentials (system calls); relayed user access token (calls on behalf of a user) | §9.9 |
 
 ```mermaid
@@ -744,7 +746,7 @@ No second sign-in factor in the POC (FR-AUTH-001, BRD M5-SUP §3.2, D-109). The 
 | Refresh token lifetime and rotation | Bound to the identity-provider session: ends after 30 minutes idle (D-26) or 10 hours absolute (settings); rotated on every use, reuse refused |
 | Claims (sub, roles, scopes, data-scope attributes, tenant) | `sub`, `preferred_username` (Employee Id or Admin user name), one realm role (EMPLOYEE, MANAGER or ADMIN), `aud`, `azp`, `sid`, `exp`, `iat`. No reporting-line claims: the Manager Id stays in EIMS and is checked through INT-04, so a manager change applies at once (FR-UM-014). No tenant (single company, A-01) |
 | Audience per service | User tokens carry `eims`, `ams`, `lms`, `sms`; service tokens carry only the called services' audiences; each service accepts only tokens with its own audience |
-| Revocation / forced logout | Session ended at the identity provider (deactivation, reset, own password change) + back-channel logout to the gateway; any request still holding an access token is limited to its 5-minute lifetime |
+| Revocation / forced logout | Session ended at the identity provider (deactivation, reset, role change, own password change) + back-channel logout to the gateway; any request still holding an access token is limited to its 5-minute lifetime |
 | Token storage in the browser | None. The browser holds only the gateway session cookie: HttpOnly, Secure, SameSite=Lax, path /; state-changing calls also carry a CSRF token |
 
 ### 9.6 Session management
@@ -765,7 +767,7 @@ No second sign-in factor in the POC (FR-AUTH-001, BRD M5-SUP §3.2, D-109). The 
 | Data scope (own / reportees / all) | Own: record owner = token `preferred_username`. Reportees: current Manager Id from EIMS (INT-04). Admin: all EIMS employee data; other modules only the top-level employee's records (D-58). Applied in the query, so out-of-scope data is never read | Service / query |
 | UI (menu, button visibility) | Role claim from the gateway session drives the menu (FR-UM-012); a refused request opens the neutral "You don't have access to this page." page (FR-UM-015) | Frontend (never the only check) |
 
-A refused request returns the same neutral response whether or not the record exists, and is written to the activity log with user, reason and flow reference (FR-UM-015, FR-ADM-117). A role change reaches every API check within the access-token lifetime (at most 5 minutes) and the menu at the next sign-in (FR-UM-011).
+A refused request returns the same neutral response whether or not the record exists, and is written to the activity log with user, reason and flow reference (FR-UM-015, FR-ADM-117). A role change ends all the user's sessions at once (EIMS through the identity-provider admin API), so the new role applies to every request and to the menu from the next sign-in (FR-UM-011, D-97 (4), D-111).
 
 ### 9.8 API-level security
 
@@ -907,23 +909,207 @@ flowchart LR
 
 ## 11. Technology stack
 
-To be drafted (review 4: §11–§15).
+Version policy (D-112): the latest generally available release of every framework and tool as of 22 Nov 2026, with long-term-support lines for runtimes (Java, Node.js). Versions are pinned at build start (exact patch in the build files and Helm charts) and patched monthly; minor upgrades follow the DevOps standard. The design stays technology-neutral so the backend can move to Node.js or Python FastAPI later (D-12).
+
+### 11.1 Development
+
+| Layer | Component | Technology | Version | Remark |
+| --- | --- | --- | --- | --- |
+| Frontend | UI library | React | 19.3 | D-11 |
+| Frontend | Language | TypeScript | 7.0 | D-11 |
+| Frontend | Build tool | Vite | 8 | Builds the shell with the module packages (ADR-001) |
+| Frontend | Build runtime | Node.js | 26 LTS | Build and test only; no Node.js server in the POC |
+| Frontend | Routing | React Router | 8 | Shell routes and module route contracts (ADR-001 follow-up) |
+| Frontend | Unit tests | Vitest | Latest | Component and unit tests |
+| Backend | Runtime | Java (Eclipse Temurin) | 25 LTS | Java 27 not used: support ends March 2027 |
+| Backend | Framework | Spring Boot | 4.2 | D-12 |
+| Backend | Cloud components | Spring Cloud | 2026.0 | Gateway (5.1), circuit breaker |
+| Gateway | API gateway | Spring Cloud Gateway (reactive) | 5.1 (Spring Cloud 2026.0) | OAuth2 client and token relay; D-16 |
+| Backend | Security | Spring Security | 7.x (with Spring Boot 4.2) | OAuth2 resource server in services; OAuth2 client at the gateway |
+| Backend | Messaging client | Spring JMS with the Artemis client | With Spring Boot 4.2 | Core protocol, port 61616 |
+| Backend | Resilience | Resilience4j (Spring Cloud CircuitBreaker) | With Spring Cloud 2026.0 | §8.5 defaults |
+| Backend | Schema migration | Flyway | Latest | Versioned scripts per service, applied at start-up (D-112) |
+| Backend | Job lock | ShedLock | Latest | JOB-CMN-01 runs once across SMS replicas |
+| Backend | Contracts | OpenAPI 3.1 with OpenAPI Generator | Latest | Contract-first: server interfaces and frontend clients generated from `contracts/openapi` (D-16) |
+| Backend | Build | Maven | Latest | One build per service (D-18) |
+| Backend | Observability | Micrometer and OpenTelemetry (Spring Boot 4.2 support) | With Spring Boot 4.2 | Logs, metrics, traces over OTLP (§10) |
+| Test | Unit | JUnit and Mockito | JUnit 6, Mockito 5 | JUnit 6 is the successor of JUnit 5 named in D-16 |
+| Test | Integration | Testcontainers | 2.x | PostgreSQL, Artemis and identity provider in tests (D-16) |
+| Test | End-to-end | Playwright | Latest | D-11 |
+| Test | Performance | Grafana k6 | 2.x | D-11; §14 |
+| Platform | Identity provider | Keycloak | 26.8 | D-16; §9.2 |
+| Platform | Message broker | Apache Artemis (formerly ActiveMQ Artemis) | 2.57 or later | D-21; now its own Apache project with the same product |
+| Platform | Database | PostgreSQL | 19 | D-11; availability on Amazon RDS confirmed before the AWS simulation |
+| Platform | Static web | nginx (unprivileged image) | Latest stable | Serves the shell build |
+| AI / ML | – | Not applicable | – | §11.3 |
+
+### 11.2 Deployment and operations
+
+| Layer | Technology | Remark |
+| --- | --- | --- |
+| Containers | Docker, Docker Desktop (latest) | D-11; OCI images, one per component |
+| Container platform (local) | Docker Desktop Kubernetes; kind or k3d for a multi-node non-production cluster | D-110 |
+| Container platform (AWS) | Amazon EKS (latest supported Kubernetes version) | ADR-002 |
+| Edge | Envoy Gateway (Kubernetes Gateway API) with Coraza WAF and OWASP Core Rule Set 4 | D-112, replaces the retired ingress-nginx; on AWS behind ALB + AWS WAF |
+| Packaging and deployment | Helm | 4.3; one chart per component, values per environment (D-110) |
+| Infrastructure as code (AWS) | Terraform | 1.17; state in S3 with locking |
+| CI/CD | GitHub Actions; self-hosted runner on the workstation for local deployment | D-11, D-110 |
+| Image registry | GitHub Container Registry (Amazon ECR optional on AWS) | D-110 |
+| Secrets | Kubernetes Secrets; AWS Secrets Manager with External Secrets Operator | D-110 |
+| Observability | OpenTelemetry Collector, Prometheus 3, Loki 3, Tempo 2, Grafana 13 | D-110, D-111 |
+| Security scanning | CodeQL (code), Dependabot (dependencies), Trivy (images), GitHub secret scanning | Quality gates in §15 |
+| Backup | PostgreSQL client tools in a CronJob; RDS automated backups on AWS | §12 |
+
+### 11.3 AI / ML (if applicable)
+
+| Component | Technology | Remark |
+| --- | --- | --- |
+| – | Not applicable | PMS has no AI or machine-learning component |
 
 ## 12. Data architecture (summary)
 
-To be drafted (review 4: §11–§15).
+Full design in PMS-HLD-Part03-Datamodel (anchor and module documents). Each service owns its database; no other service reads or writes it, and there are no foreign keys across databases (C-02, D-10). Records are never physically deleted (BR-CMN-06); every business record carries the audit fields (BR-CMN-02, BR-CMN-07) and a version for change detection (FR-CMN-014). Schema changes are versioned migration scripts per service (D-112). No cache server (D-110); services may keep short-lived in-memory copies of read-mostly data from other services. Backups: daily logical backup per database, 7 daily and 4 weekly copies kept on a separate drive locally; RDS automated backups kept 7 days on AWS; restore tested before go-live and monthly (D-112).
+
+| Service | Database / schema | Main entities | Cached data | RPO / RTO |
+| --- | --- | --- | --- | --- |
+| EIMS | eims | Employee; profile change request (D-70); audit entries | None | 24 h / 8 h (NFR-02) |
+| AMS | ams | Attendance; outbox (events INT-01, INT-02); audit entries | Employee and approver details from EIMS, short-lived in memory | 24 h / 8 h |
+| LMS | lms | Leave request; audit entries | As AMS | 24 h / 8 h |
+| SMS | sms | Salary record; reconciliation run log (job log, D-93); processed-event record (idempotency); job lock; audit entries | As AMS | 24 h / 8 h; nightly reconciliation repairs hand-overs after a restore (JOB-CMN-01) |
+| Identity provider | identity | User accounts, credentials (hashed), roles, sessions, security events | Own session cache | 24 h / 8 h |
 
 ## 13. Data migration strategy
 
-To be drafted (review 4: §11–§15).
+Not applicable – greenfield (D-109). No legacy payroll data is migrated.
+
+**Seed-data approach (D-112):**
+
+| Environment | Seed data | How |
+| --- | --- | --- |
+| Local developer run, Dev, QA | About 20 synthetic employees (D-08, A-04): one top-level employee, managers and employees, with sample attendance, leave and salary records; the PMS Administrator account | A separate seed job run only in Dev and QA, through the service APIs and the identity-provider admin API; never part of the schema migrations |
+| QA – performance test | About 200 synthetic employees with one year of data (§14.5) | Performance-test data job; QA database snapshot restored before each run |
+| Prod (local) and AWS production simulation | Only the PMS Administrator account at installation (FR-UM-004); employees onboarded one by one (D-104) | Installation step of the deployment |
+
+Test data is always synthetic; no real personal data is used outside Production (R-04).
 
 ## 14. Performance test strategy and plan
 
-To be drafted (review 4: §11–§15).
+### 14.1 Performance targets (SLAs)
+
+| Tier / transaction type | p95 response | Throughput | Error rate |
+| --- | --- | --- | --- |
+| Page load (shell screens) | ≤ 2 s (NFR-01) | At 25 concurrent users; verified at 50 (NFR-07) | < 1 % |
+| Service API (through the gateway) | ≤ 500 ms (NFR-01) | About 1,500 user iterations per hour at 50 users (§14.3) | < 1 % |
+| Salary record after attendance approval (INT-01) | ≤ 1 minute end to end (NFR-01) | All approvals of the peak hour | 0 lost (KPI-04) |
+| Nightly reconciliation (JOB-CMN-01) | < 5 minutes per run (NFR-01) | One year of data for 200 employees | 0 failures |
+
+### 14.2 Use cases for load testing
+
+| Use case id | Business use case | Journey / API | Why included (volume / criticality) |
+| --- | --- | --- | --- |
+| PT-01 | Sign in and open the dashboard | UJ-SH-01, UJ-SH-03; INT-07 (four module calls) | Every session; composes all modules |
+| PT-02 | Enter and submit attendance | UJ-AMS-01 | Highest volume (about 26,400 a year), evening peak |
+| PT-03 | Approve attendance in bulk from the approvals inbox | UJ-SH-04, UJ-AMS-03; INT-01 | Morning peak; triggers salary generation |
+| PT-04 | Request leave | UJ-LMS-01; INT-06 | Cross-service date check |
+| PT-05 | Approve salary records and accept them (several at once) | UJ-SMS-01, UJ-SMS-02 | Month-end peak |
+| PT-06 | Team history: attendance and salary "All records" for a month | FR-AMS-020, FR-SMS-020 | Heaviest read queries |
+| PT-07 | Nightly reconciliation | JOB-CMN-01 | Batch duration target |
+| PT-08 | Employee directory and profile view | UJ-EIMS-09 | Admin and manager reads |
+
+### 14.3 Load distribution (business mix)
+
+Planning assumptions from the volumetrics (BRD §8.1), confirmed after the first test run.
+
+| Use case id | Share of load % | Peak concurrent users | Transactions per hour | Think time |
+| --- | --- | --- | --- | --- |
+| PT-01 | 20 | 25 (1×) / 50 (2×) | 300 at 2× | 5–15 s (random) |
+| PT-02 | 30 | As above | 450 at 2× | 5–15 s |
+| PT-03 | 15 | As above | 225 at 2× (about 10 items each) | 5–15 s |
+| PT-04 | 5 | As above | 75 at 2× | 5–15 s |
+| PT-05 | 15 | As above | 225 at 2× | 5–15 s |
+| PT-06 | 10 | As above | 150 at 2× | 5–15 s |
+| PT-08 | 5 | As above | 75 at 2× | 5–15 s |
+| PT-07 | Separate run | – | 1 run | – |
+
+### 14.4 Test types and scenarios
+
+| Test type | Objective | Load profile | Duration |
+| --- | --- | --- | --- |
+| Load | Meet NFR-01 at normal peak and at 2× (NFR-07) | 25 users, then 50 users, ramp 5 minutes | 30 minutes at each level |
+| Stress | Find the breaking point and how PMS degrades | Ramp from 50 to 150 users until p95 or error target is breached | Until breach (max 45 minutes) |
+| Soak / endurance | Detect memory or connection leaks, outbox backlog | 25 users steady | 2 hours |
+| Spike | Recover from a sudden peak (month-end approvals) | 5 → 50 users in 1 minute, hold 10 minutes, back to 5 | 20 minutes |
+
+### 14.5 Test data strategy
+
+About 200 synthetic employees (2× year 1) with 20 managers and one top-level employee, one year of attendance (about 52,800 records), leave (about 2,400 requests) and salary records, generated by the performance-test data job in QA. The QA databases are restored from a snapshot before every run, so each run starts from the same data. Owner: QA. No real personal data (R-04).
+
+### 14.6 Environment and tools
+
+QA namespace scaled to Prod replicas for the test window (D-109); the load-test tool (§11) runs as a container in its own namespace on the same cluster and writes results to the metric store, shown next to the service dashboards (§10). Because load generator and system share one workstation, local results are indicative; the final NFR-01 and NFR-07 verification runs in the AWS production simulation (D-110). Monitoring during tests: service, gateway, database and broker dashboards, outbox backlog and dead-letter queue.
+
+### 14.7 Entry and exit criteria
+
+| Criteria | Entry | Exit |
+| --- | --- | --- |
+| Functional | Functional and end-to-end tests pass in QA for the release | – |
+| Environment | QA at Prod sizing; monitoring and dashboards working | – |
+| Data | Performance-test data loaded; snapshot taken | – |
+| Scripts | Load-test scripts reviewed and smoke-tested | – |
+| Targets | – | §14.1 targets met at 1× and 2× (load test) |
+| Stability | – | No memory growth or backlog in the soak test; recovery within 5 minutes after the spike |
+| Reporting | – | Results report approved by the product owner; open issues recorded as defects or technical debt |
+
+### 14.8 Schedule and responsibilities
+
+| Activity | Owner | Planned date |
+| --- | --- | --- |
+| Load-test scripts and test-data job | QA | During development, per the test plan |
+| Baseline load test (local, QA) | QA | Test stage, per the test plan |
+| Tuning and re-run | Dev leads, QA | Test stage |
+| Final verification in the AWS production simulation | QA, IT operations | Before go-live (29 Jan 2027, D-108) |
+| Results report and approval | QA; product owner | Before the go-live gate |
+
+### 14.9 Analysis and tuning
+
+Each run is compared with the targets in §14.1 and with the previous run. Bottlenecks are traced with the dashboards and traces (§10): slow queries, connection-pool limits, gateway or service CPU and memory, broker backlog. Fixes are made in the owning service, and the affected tests are re-run. The report lists targets, measured p95 and error rate per use case, resource use, findings and actions.
 
 ## 15. Environment strategy
 
-To be drafted (review 4: §11–§15).
+```mermaid
+flowchart LR
+  DEV["Developer workstation<br/>local containers"] -- pull request --> GH["Repository + CI/CD<br/>build, test, scan"]
+  GH -- image --> REG["Container registry"]
+  GH -- "merge to main" --> D["Dev namespace"]
+  GH -- "release tag" --> Q["QA namespace<br/>(end-to-end, performance)"]
+  GH -- "product-owner approval" --> P["Prod namespace (local)"]
+  GH -- "approval + infrastructure code" --> A["AWS production simulation"]
+  REG --> D & Q & P & A
+```
+
+**Text version of the diagram:** see the tables below.
+
+| Environment | Purpose | Owner | Availability | Hosting |
+| --- | --- | --- | --- | --- |
+| Local developer run | Coding and quick checks | Developers | On demand | Local container composition on the workstation |
+| Dev | Integration of merged changes | Dev leads | On demand (may be scaled to zero) | Namespace pms-dev, local cluster |
+| QA | System, end-to-end, security and performance tests; UAT | QA | During test windows | Namespace pms-qa, local cluster |
+| Prod (local) | POC production and demonstration | Product owner, IT operations | Business hours when the workstation runs | Namespace pms-prod, local cluster |
+| AWS production simulation | Production verification: availability, performance at scale, AWS readiness | Product owner, IT operations | Built on demand, torn down after | AWS target platform (§6.2), created from infrastructure code |
+
+**Security posture per environment:** every environment holds synthetic data only (R-04); each has its own identity-provider realm, database credentials and secrets; Prod and the AWS simulation allow no debug logging, no direct database access for developers and deployment only through the approved pipeline; Dev and QA allow debug logging. Health and metrics endpoints are never exposed through the edge (§9.8).
+
+**CI/CD:** the CI/CD service (§11) with one path-filtered pipeline per service and per platform component (D-18). Trunk-based development: short-lived branches and pull requests to `main`, with review. Stages and quality gates (D-112): build → unit and component tests (coverage ≥ 80 %) → contract tests against `contracts/` → code, dependency, container-image and secret scans (no high or critical findings) → image push → deploy to Dev on merge → release tag deploys to QA → end-to-end UI tests and a load-test smoke run in QA → product-owner approval deploys to Prod (and, when run, to the AWS simulation).
+
+**Testing and deployment flow:**
+
+| Environment | Test phase | Owning team |
+| --- | --- | --- |
+| Pull request | Unit, component, contract tests; scans | Developers |
+| Dev | Integration and smoke tests | Dev leads |
+| QA | System, end-to-end, security, performance, UAT | QA; HR Manager and Finance Manager for UAT |
+| Prod (local) | Post-deployment smoke test | IT operations |
+| AWS production simulation | Availability and final performance verification | QA, IT operations |
 
 ## 16. Security & NFR
 
