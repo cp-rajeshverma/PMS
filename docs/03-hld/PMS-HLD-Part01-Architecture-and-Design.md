@@ -12,13 +12,14 @@ Date: November 2026
 | Version | Revision | Date | Author | Change remark |
 | --- | --- | --- | --- | --- |
 | 1.0 | 0.1 | 22-Nov-2026 | Rajesh Verma | First draft of §1–§4, based on the approved BRD set v1.0 (D-107), UX v1.1 (D-105) and decisions D-01 to D-108; Part01 design answers of 22 Nov 2026 (D-109) |
+| 1.0 | 0.2 | 22-Nov-2026 | Rajesh Verma | Draft of §5–§8 (functional, system, deployment, integration architecture) |
 
 ### 1.2 Review and approval
 
 | Role | Name | Date | Decision |
 | --- | --- | --- | --- |
-| Architect | Rajesh Verma (Enterprise Architect) | 22-Nov-2026 | §1–§4 approved (D-109); full document pending |
-| Product owner | Rajesh Verma | 22-Nov-2026 | §1–§4 approved (D-109); full document pending |
+| Architect | Rajesh Verma (Enterprise Architect) | 22-Nov-2026 | §1–§4 approved (D-109); §5–§8 approved (D-110); full document pending |
+| Product owner | Rajesh Verma | 22-Nov-2026 | §1–§4 approved (D-109); §5–§8 approved (D-110); full document pending |
 
 ## 2. Introduction
 
@@ -36,7 +37,7 @@ The design is technology-neutral wherever the replatforming goal requires it (D-
 | --- | --- | --- |
 | 1 | PMS-BRD (anchor), PMS-BRD-M1-EIMS, PMS-BRD-M2-AMS, PMS-BRD-M3-LMS, PMS-BRD-M4-SMS, PMS-BRD-M5-SUP | v1.0 – approved baseline (D-107) |
 | 2 | UX Journey Index and 17 UX Summaries (with HTML mockups) | v1.1 (D-105) |
-| 3 | Decision log / ADRs | D-01 to D-109; ADR-001 to ADR-003 |
+| 3 | Decision log / ADRs | D-01 to D-110; ADR-001 to ADR-003 |
 
 **Design documents**
 
@@ -79,10 +80,10 @@ Implementation starts only when every mandatory artifact below is approved. The 
 
 | # | Artifact | Document / section | Mandatory before build | Stakeholders to align | Status | Approved on |
 | --- | --- | --- | --- | --- | --- | --- |
-| 1 | Functional architecture | Part01 §5 | Yes | Product owner, BA | Not started | |
-| 2 | System architecture | Part01 §6 | Yes | Architect, IT operations / infrastructure, Security / IT owner | Not started | |
-| 3 | Deployment architecture | Part01 §7 | Yes | Architect, IT operations / infrastructure, DevOps | Not started | |
-| 4 | Integration architecture | Part01 §8 | Yes | Architect, module dev leads | Not started | |
+| 1 | Functional architecture | Part01 §5 | Yes | Product owner, BA | Approved (section review) | 22 Nov 2026 |
+| 2 | System architecture | Part01 §6 | Yes | Architect, IT operations / infrastructure, Security / IT owner | Approved (section review) | 22 Nov 2026 |
+| 3 | Deployment architecture | Part01 §7 | Yes | Architect, IT operations / infrastructure, DevOps | Approved (section review) | 22 Nov 2026 |
+| 4 | Integration architecture | Part01 §8 | Yes | Architect, module dev leads | Approved (section review) | 22 Nov 2026 |
 | 5 | Authentication & authorization | Part01 §9 | Yes | Security / IT owner, Architect | Not started | |
 | 6 | Logging & observability | Part01 §10 | Yes | IT operations, Architect | Not started | |
 | 7 | Principles & patterns compliance | Part01a | Yes | Architect | Not started (after Part01, D-108) | |
@@ -102,6 +103,7 @@ Implementation starts only when every mandatory artifact below is approved. The 
 | 20 Nov 2026 | SUP rules, audit and activity log | Product owner | Session, account and security-event rules; own password change ends other sessions; audit log and activity log with flow reference, masking, 90-day retention | D-97, D-100, D-101 |
 | 21 Nov 2026 | BRD set sign-off and Stage 3 plan | Product owner; BA, HR Manager, Finance Manager, Security / IT owner (BRD review) | BRD set v1.0 approved; HLD order and dates | D-106, D-107, D-108 |
 | 22 Nov 2026 | Part01 architecture questions | Product owner, Enterprise Architect | Hosting on-premises first, AWS as the later cloud target (Azure dropped); container orchestration platform; identity provider issues tokens and holds passwords; network zones; per-tier redundancy; data tier; environments; no data migration; no MFA in the POC | D-109; ADR-002, ADR-003 |
+| 22 Nov 2026 | Part01 §5–§8 and platform answers | Product owner, Enterprise Architect | POC on Docker Desktop Kubernetes (or a Kubernetes-in-Docker cluster for non-production), production simulated on AWS; environments as namespaces; observability stack; gateway holds tokens; reconciliation in SMS; no cache server; CI/CD, provisioning and secrets | D-110 |
 
 ## 4. Architecture principles & patterns
 
@@ -155,7 +157,7 @@ Counts are filled when Part01a is assessed (open item OI-P01-01). Key items are 
 | Availability (AP-WA-02) | 99 % in Production during business hours; two instances of every stateless tier; daily backup with RPO 24 h and RTO 8 h; single site for the POC – per-tier detail in §6.4 | NFR-02, D-59, D-109 |
 | Decentralized (AP-WA-03) | Each module owns its data and its service; no shared database; modules interact only through APIs and events; the gateway and identity provider are shared platform components with no business logic | D-10, C-02, D-18 |
 | Independent & autonomous (AP-WA-04) | Separate builds, path-filtered pipelines and independent deployment per service; contracts-only sharing. Exception: module screens are built into the shell for the POC, so a UI change redeploys the shell (ADR-001) | D-18, D-23, NFR-08 |
-| Auto provisioning (AP-WA-05) | Environments and deployments created from code and pipelines; the provisioning approach for the on-premises platform is settled in §7 and §15 (open item OI-P01-02) | D-11, D-109 |
+| Auto provisioning (AP-WA-05) | Every PMS deployment is defined in Helm charts and applied by the pipeline; AWS resources are created from Terraform code; the local cluster comes from Docker Desktop (or a Kubernetes-in-Docker cluster definition) | D-11, D-109, D-110 |
 | Scalability (AP-WA-06) | Stateless services scale out per service on the container platform; sized for 100 employees, scale out per module to 10×, load-tested to 2× | NFR-07, D-59 |
 | Security (AP-WA-07) | Identity provider, token validation at gateway and service, role and data-scope checks, private back-end network zones, encryption in transit, secrets outside code; detail in §9 and §16 | NFR-03, NFR-SUP-01 to 03 |
 | Continuous delivery (AP-WA-08) | One pipeline per service with quality gates; promotion Dev → QA → Prod | D-11, D-18; §15 |
@@ -174,19 +176,480 @@ Pattern selection follows from the approved decisions; Part01a records applicabi
 
 ## 5. Functional architecture
 
-To be drafted (review 2: §5–§8).
+### 5.1 Functional building blocks
+
+```mermaid
+flowchart LR
+  subgraph PMS["PMS application boundary"]
+    SH["Shell<br/>layout, menu, dashboard,<br/>approvals inbox"]
+    subgraph BM["Business modules"]
+      EIMS["EIMS<br/>Employee information"]
+      AMS["AMS<br/>Attendance"]
+      LMS["LMS<br/>Leave"]
+      SMS["SMS<br/>Salary"]
+    end
+    subgraph SUP["Supporting modules"]
+      UM["UM<br/>User & access mgmt"]
+      AUTH["AUTH<br/>Authentication & session"]
+      LOG["Audit log &<br/>activity log"]
+    end
+  end
+  IDP(["Identity provider"])
+  OPS(["Log & monitoring platform<br/>(IT operations)"])
+  SH --- EIMS & AMS & LMS & SMS
+  EIMS --> UM
+  UM --- IDP
+  AUTH --- IDP
+  AMS -- events --> SMS
+  AMS <--> LMS
+  SMS --> AMS
+  AMS & LMS --> EIMS
+  LOG --> OPS
+```
+
+**Text version of the diagram**
+
+| Building block | Type (business module / supporting module / peripheral system) | Key capabilities | Integrates with |
+| --- | --- | --- | --- |
+| Shell | Supporting (common UI) | Sign-in pages, role-based layout and menu, dashboard per role, approvals inbox across modules (BRD §5.3, FR-CMN-001 to 016) | EIMS, AMS, LMS, SMS (INT-07); AUTH |
+| EIMS | Business module | Onboarding, profile and profile change request with approval, Admin-owned fields, deactivation, password reset, directory (PMS-BRD-M1-EIMS) | Shell; AMS, LMS, SMS (INT-03, INT-04, INT-05, INT-09); UM → identity provider (INT-08) |
+| AMS | Business module | Daily attendance entry, submit, approve / reject, reopen after a salary dispute (PMS-BRD-M2-AMS) | Shell; EIMS (INT-03, INT-04, INT-09); LMS (INT-06); SMS (INT-01, INT-02, INT-10, JOB-CMN-01) |
+| LMS | Business module | Full-day leave request, cancel, approve / reject (PMS-BRD-M3-LMS) | Shell; EIMS (INT-03, INT-04, INT-09); AMS (INT-06) |
+| SMS | Business module | Salary record generation and voiding, approval, accept / dispute, keep as is, earnings, nightly reconciliation (PMS-BRD-M4-SMS) | Shell; AMS (INT-01, INT-02, INT-10, JOB-CMN-01); EIMS (INT-03, INT-04, INT-05) |
+| UM | Supporting module | User accounts, roles, data scope rules (FR-UM-001 to 015) | EIMS Admin screens; identity provider (INT-08); every module for role and scope checks |
+| AUTH | Supporting module | Sign-in, set / change password, lockout, idle timeout, log out, security events (FR-AUTH-001 to 030) | Shell; identity provider |
+| Audit log & activity log | Supporting module | Field-level audit of every data change; activity log with one flow reference per user action or job run (FR-ADM-101 to 117) | Every module and job; log and monitoring platform |
+| Identity provider | Peripheral system (platform) | Accounts, password store and policy, lockout, sessions, token issuing, security events (DEP-01) | UM, AUTH, API gateway |
+| Log and monitoring platform | Peripheral system (platform) | Central activity log, metrics, traces, dashboards and alerts for IT operations (NFR-09) | Every component |
+
+### 5.2 End-to-end functional process
+
+```mermaid
+flowchart TD
+  subgraph L1["EIMS"]
+    E1["1 Onboard employee (Admin)"] --> E3["3 Complete & submit profile"] --> E4{"4 Review profile"}
+  end
+  subgraph L2["SUP / identity provider"]
+    U1["Create account, temporary password"] --> A2["2 First sign-in, set password"]
+  end
+  subgraph L3["LMS"]
+    L5["5 Request leave"] --> L6{"6 Review leave"}
+  end
+  subgraph L4["AMS"]
+    M7["7 Enter & submit attendance"] --> M8{"8 Review attendance"}
+  end
+  subgraph L5S["SMS"]
+    S9["9 Generate salary record (system)"] --> S10["10 Approve (manager)"] --> S11{"11 Accept / dispute"}
+    S11 -- Disputed --> S12{"12 Resolve dispute"}
+    S12 -- Keep as is --> S11
+    S11 -- Accepted --> S13["13 Earnings"]
+    J1["Nightly reconciliation 01:00 IST"]
+  end
+  E1 --> U1
+  A2 --> E3
+  E4 -- Rejected --> E3
+  E4 -- Approved --> L5 & M7
+  L6 -- Rejected --> L5
+  M8 -- Rejected --> M7
+  M8 -- "Approved: event INT-01" --> S9
+  S12 -- "Reopen: event INT-02, record voided" --> M7
+  J1 -. repairs .-> S9
+```
+
+**Text version of the diagram** (steps as BRD §5.1; system hand-overs added)
+
+| Step | Functional component / peripheral system | Activity | Output / next step |
+| --- | --- | --- | --- |
+| 1 | EIMS (Admin) → UM → identity provider | Onboard employee; account created with Employee Id and temporary password (INT-08) | Employee Draft; account enabled → 2 |
+| 2 | AUTH, identity provider | First sign-in; own password set | → 3 |
+| 3–4 | EIMS | Profile completed, submitted, reviewed (manager; Admin for the top-level employee) | Rejected → 3; Approved → 5 and 7 |
+| 5–6 | LMS (with AMS date check INT-06, EIMS approver INT-04) | Leave requested and reviewed | Rejected → 5; Approved: dates blocked for attendance |
+| 7–8 | AMS (with LMS date check INT-06, EIMS approver INT-04) | Attendance entered, submitted, reviewed | Rejected → 7; Approved → event INT-01 to SMS |
+| 9 | SMS (system) | Salary record generated from hours and current rate (INT-05), within 1 minute (NFR-01) | Generated → 10 |
+| 10 | SMS (manager; Admin for top-level) | Salary record approved | Manager Approved → 11 |
+| 11 | SMS (employee) | Accept or dispute (one or several) | Accepted → 13; Disputed → 12 |
+| 12 | SMS, AMS (manager; Admin for top-level) | Keep as is, or reopen attendance (event INT-02 voids the salary record) | → 11, or → 7 |
+| 13 | SMS | Earnings for a period, voided records excluded | End |
+| Nightly | SMS job (JOB-CMN-01) with AMS query | Create missed records, void stale ones, log mismatches | Result on Admin dashboard (FR-SMS-045) |
+| Throughout | Shell | Dashboard and approvals inbox compose items from each module (INT-07) | Next action for each user |
+
+### 5.3 Domain / sub-domain based micro-application identification
+
+Each tower is one micro-application: a frontend package built into the shell (ADR-001), one backend service and one database. UM and AUTH have no tower of their own: they are provided by the identity provider, with screens in the shell and EIMS (PMS-BRD-M5-SUP §3.1).
+
+```mermaid
+flowchart TB
+  subgraph D1["Employee domain"]
+    T1["EIMS<br/>FE: employee screens<br/>API: /eims<br/>DB: eims"]
+  end
+  subgraph D2["Time & absence domain"]
+    T2["AMS<br/>FE: attendance screens<br/>API: /ams<br/>DB: ams"]
+    T3["LMS<br/>FE: leave screens<br/>API: /lms<br/>DB: lms"]
+  end
+  subgraph D3["Pay domain"]
+    T4["SMS<br/>FE: salary screens<br/>API: /sms<br/>DB: sms"]
+  end
+  subgraph D4["Platform (supporting)"]
+    T5["Shell<br/>FE: shell app<br/>API: via gateway<br/>DB: none"]
+    T6["Identity provider<br/>FE: hosted sign-in<br/>API: OIDC / admin<br/>DB: identity"]
+  end
+```
+
+**Text version of the diagram**
+
+| Domain / sub-domain | Tower | Frontend | Backend API | Backend DB |
+| --- | --- | --- | --- | --- |
+| Employee | EIMS | Employee screens package (`services/eims/frontend`) | EIMS service, context /eims | eims database |
+| Time & absence | AMS | Attendance screens package (`services/ams/frontend`) | AMS service, context /ams | ams database |
+| Time & absence | LMS | Leave screens package (`services/lms/frontend`) | LMS service, context /lms | lms database |
+| Pay | SMS | Salary screens package (`services/sms/frontend`) | SMS service, context /sms (incl. JOB-CMN-01) | sms database |
+| Platform | Shell | Shell application (`platform/shell-ui`) composing the module packages | API gateway (`platform/gateway`) | None |
+| Platform | Identity provider | Sign-in and set-password pages per BRD | OIDC endpoints; admin API used by EIMS | Identity provider database |
+
+**List of microservices**
+
+| Seq | Domain / sub-domain name | Domain context | Purpose |
+| --- | --- | --- | --- |
+| 1 | Employee – EIMS | /eims/ | Employee master data, profile and change request approval, Admin-owned fields, account hand-over to the identity provider |
+| 2 | Time & absence – AMS | /ams/ | Daily attendance and its approval; publishes attendance approved / reopened events |
+| 3 | Time & absence – LMS | /lms/ | Full-day leave and its approval |
+| 4 | Pay – SMS | /sms/ | Salary records from approved attendance; approval, acceptance, disputes; nightly reconciliation |
+
+### 5.4 Stakeholder alignment
+
+| Stakeholder | Date | Outcome |
+| --- | --- | --- |
+| Product owner | 22 Nov 2026 | Approved (D-110) |
 
 ## 6. System architecture
 
-To be drafted (review 2: §5–§8).
+### 6.1 Logical system architecture (technology-neutral)
+
+```mermaid
+flowchart TB
+  B["Browser (desktop)"] --> EDGE["Edge: TLS + WAF / reverse proxy"]
+  EDGE --> WEB["Static web hosting<br/>(shell + module packages)"]
+  EDGE --> GW["API gateway<br/>(session, token relay, routing)"]
+  EDGE --> IDP["Identity provider<br/>(sign-in pages, OIDC)"]
+  GW <--> IDP
+  GW --> SVC["Application services<br/>EIMS · AMS · LMS · SMS"]
+  SVC <--> MB["Message broker"]
+  SVC --> DB[("Database server<br/>one database per service")]
+  IDP --> DB
+  SVC -. admin API .-> IDP
+  SVC & GW & IDP & MB -. logs / metrics / traces .-> OBS["Log & monitoring stack"]
+  DB -. daily .-> BK["Backup & recovery"]
+  CI["CI/CD pipeline"] -. deploys .-> SVC
+```
+
+| Seq | Component | Purpose | Technology | Instances / sizing |
+| --- | --- | --- | --- | --- |
+| 1 | Load balancer / edge | Single HTTPS entry, TLS termination, WAF rule set, routing to web, gateway and identity provider | Ingress controller with WAF (§6.2) | Local: 1; AWS: managed, multi-node |
+| 2 | API gateway | Holds the user session and tokens (server side), relays the access token, validates and routes to services, rate limiting | Reactive gateway (§6.2) | Prod 2, Dev / QA 1 |
+| 3 | Identity provider | Accounts, passwords, roles, lockout, sessions, token issuing, security events (DEP-01) | OIDC identity provider (§9.2) | Prod 2, Dev / QA 1 |
+| 4 | Web server / static hosting | Serves the built shell application | Static web server container | Prod 2, Dev / QA 1 |
+| 5 | Application services | EIMS, AMS, LMS, SMS business logic and APIs; audit log in own database | Containerised services, stateless | Prod 2 each, Dev / QA 1 each; scale out to 10× (NFR-07) |
+| 6 | Message broker / queue | AMS → SMS events (INT-01, INT-02), dead-letter queue | Persistent broker (§6.2) | 1 node with persistent storage |
+| 7 | Cache server | None in the POC; services may keep short-lived in-memory copies of read-mostly data; shared cache Future | – | – |
+| 8 | Database server | One database per service plus the identity provider's | Relational database | 1 server per environment |
+| 9 | Scheduler / batch | Nightly reconciliation inside SMS; a database lock lets one instance run it (JOB-CMN-01) | In-service scheduler + lock | Runs in one SMS instance |
+| 10 | Log and monitoring stack | Activity log, metrics, traces, dashboards, alerts (NFR-09) | Open telemetry collector + log, metric and trace stores + dashboards | 1 per cluster, environments separated by label |
+| 11 | Backup and recovery | Daily database backup, RPO 24 h, RTO 8 h (NFR-02) | Scheduled backup job | Daily; kept on separate storage |
+
+### 6.2 Platform mapping – on-premises POC (local machine) and AWS target
+
+The POC runs on-premises on Kubernetes in Docker (D-109, D-110, ADR-002): Docker Desktop Kubernetes on the product owner's workstation (Windows), or at times a multi-node Kubernetes-in-Docker cluster (kind or k3d, chosen when first used) for the non-production environments. AWS (ap-south-1, Mumbai) is the cloud target and is used to simulate production; when no AWS simulation runs, the pms-prod namespace on the local cluster serves as Prod. The same container images and Helm charts deploy to every platform.
+
+```mermaid
+flowchart LR
+  subgraph LOCAL["On-premises POC – Docker Desktop Kubernetes"]
+    I1["ingress-nginx + ModSecurity (OWASP CRS)"] --> N1["nginx (shell-ui)"] & G1["Spring Cloud Gateway"] & K1["Keycloak"]
+    G1 --> S1["Spring Boot services"] --> P1[("PostgreSQL")] & A1["ActiveMQ Artemis"]
+  end
+  subgraph AWS["AWS target – ap-south-1"]
+    I2["ALB + AWS WAF"] --> E2["Amazon EKS: nginx, gateway, Keycloak, services, Artemis"]
+    E2 --> R2[("Amazon RDS for PostgreSQL")]
+  end
+```
+
+| Seq | Component | On-premises POC (local machine) | AWS service (target) | Purpose | HA and scalability assurance |
+| --- | --- | --- | --- | --- | --- |
+| 1 | Edge | ingress-nginx with ModSecurity (OWASP Core Rule Set); local certificate; host name pms.local | Application Load Balancer + AWS WAF; Route 53; ACM certificate | HTTPS entry and WAF | AWS: managed, scales automatically |
+| 2 | Container platform | Docker Desktop Kubernetes (single node), or a multi-node Kubernetes-in-Docker cluster for non-production; namespaces pms-dev, pms-qa, pms-prod | Amazon EKS (managed node group) | Runs all PMS containers | Replicas per Deployment; AWS node group can grow |
+| 3 | API gateway | Spring Cloud Gateway | Same on EKS | Session, token relay, routing | 2 replicas in Prod; session affinity at the edge |
+| 4 | Identity provider | Keycloak | Same on EKS, database on RDS | OIDC, accounts, lockout, sessions | 2 replicas in Prod (clustered cache) |
+| 5 | Static web | nginx serving the shell build | Same on EKS | Frontend | 2 replicas in Prod |
+| 6 | Application services | Spring Boot containers (D-12: later Node.js, Python FastAPI) | Same on EKS | EIMS, AMS, LMS, SMS | 2 replicas in Prod; horizontal scale-out |
+| 7 | Message broker | ActiveMQ Artemis, StatefulSet with persistent volume | Same on EKS with an EBS volume (Amazon MQ offers ActiveMQ Classic only) | Events | Single node, persistent; outbox and reconciliation cover loss |
+| 8 | Database | PostgreSQL, one server per environment (StatefulSet, persistent volume) | Amazon RDS for PostgreSQL, single-AZ | Databases per service and Keycloak | Daily backup; AWS automated backups and point-in-time restore |
+| 9 | Scheduler | Inside SMS with ShedLock | Same | JOB-CMN-01 | One run per night across replicas |
+| 10 | Observability | OpenTelemetry Collector, Loki, Prometheus, Tempo, Grafana (namespace observability) | Same on EKS, or CloudWatch + Amazon Managed Grafana | Logs, metrics, traces, alerts | Single instance; 90-day log retention in Prod |
+| 11 | Backup | Kubernetes CronJob with pg_dump, daily, to a folder on a separate drive | RDS automated backups and snapshots | RPO 24 h, RTO 8 h | Restore tested per §15 |
+| 12 | Image registry | GitHub Container Registry | GHCR or Amazon ECR | Container images | Managed |
+| 13 | CI/CD | GitHub Actions; self-hosted runner on the local machine deploys with Helm | GitHub Actions to EKS | Build, test, deploy | Path-filtered pipeline per service (D-18) |
+| 14 | Secrets | Kubernetes Secrets, created by the pipeline from GitHub environment secrets | AWS Secrets Manager via External Secrets Operator; KMS envelope encryption | Credentials | Per service, least privilege |
+
+### 6.3 Network topology (on-premises POC and AWS target)
+
+**On-premises POC (one machine).** Zones are realised in the cluster: the edge (DMZ) is the ingress controller, the only component reachable from outside the cluster, over HTTPS on the machine (or the LAN, if opened). Per environment, the application zone holds the gateway, static web, identity provider and services, and the data zone the database and broker; network policies allow only the flows below and deny all others. There are no subnets or address ranges to manage locally – the platform assigns them.
+
+**AWS target.** One VPC in ap-south-1, single availability zone for the POC (D-109). Address ranges below are illustrative and are fixed when the AWS environment is built.
+
+```mermaid
+flowchart LR
+  U["User browser"] -- HTTPS 443 --> DMZ
+  subgraph Z1["Edge / DMZ"]
+    DMZ["Edge + WAF"]
+  end
+  subgraph Z2["Application zone (per environment)"]
+    W["Static web"]; G["API gateway"]; K["Identity provider"]; S["Services"]
+  end
+  subgraph Z3["Data zone (per environment)"]
+    D[("Database")]; M["Broker"]
+  end
+  subgraph Z4["Operations zone"]
+    O["Log & monitoring"]
+  end
+  DMZ --> W & G & K
+  G --> S
+  G --> K
+  S --> K
+  S --> D & M
+  K --> D
+  Z2 & Z3 -.-> O
+```
+
+**Network zones / subnets**
+
+| Zone / subnet | Address range (CIDR) | Purpose | Components placed | Exposure (public / private) |
+| --- | --- | --- | --- | --- |
+| Edge / DMZ | Local: cluster-assigned; AWS: public subnet 10.20.0.0/24 (illustrative) | Only entry point; TLS, WAF | Edge (ingress / load balancer + WAF) | Public (local: machine or LAN only) |
+| Application zone | Local: namespace per environment; AWS: private subnet 10.20.10.0/24 (illustrative) | Stateless tiers | Static web, API gateway, identity provider, EIMS, AMS, LMS, SMS | Private |
+| Data zone | Local: same namespace, pods labelled data; AWS: data subnet 10.20.20.0/24 (illustrative) | State | Database, broker | Private |
+| Operations zone | Local: namespace observability; AWS: private subnet (with application zone) | Logs, metrics, traces | Log and monitoring stack | Private (dashboards for IT operations only) |
+
+**Allowed traffic flows**
+
+| Source zone | Destination zone | Protocol / port | Purpose | Control (NSG / firewall rule / private endpoint) |
+| --- | --- | --- | --- | --- |
+| Internet / user | Edge | HTTPS 443 | All user traffic | Local: ingress only exposed service; AWS: security group on the load balancer |
+| Edge | Application: static web, gateway, identity provider | HTTP 8080 (inside the cluster) | Frontend, API, sign-in pages | Network policy / security group: from edge only |
+| Application: gateway | Application: services, identity provider | HTTP 8080 | API routing, token exchange and refresh | Network policy: gateway → services, gateway → identity provider |
+| Application: services | Application: identity provider | HTTP 8080 | Token keys; admin API (EIMS only, INT-08) | Network policy |
+| Application: services | Application: services | HTTP 8080 | Synchronous APIs INT-03 to INT-06, INT-09, INT-10, JOB-CMN-01 query | Network policy per allowed pair |
+| Application: services, identity provider | Data: database | Database protocol 5432 | Own database only (separate credentials per database) | Network policy; AWS: security group on RDS |
+| Application: AMS, SMS | Data: broker | Broker protocol 61616 | Events INT-01, INT-02 | Network policy: AMS and SMS only |
+| All zones | Operations | OTLP 4317 / 4318 | Logs, metrics, traces | Network policy: to the collector only |
+| CI/CD runner (local machine) | Cluster API | HTTPS 6443 | Deployment | Local only; AWS: cluster API restricted to the pipeline role |
+
+**External connectivity**
+
+| Connection | Type (internet / VPN / private link / peering) | Purpose | Security |
+| --- | --- | --- | --- |
+| User access | Local machine / LAN (POC); internet via the load balancer (AWS) | Use of PMS | HTTPS only, WAF |
+| Source repository, pipeline and image registry service | Internet, outbound only | Code, builds, images; runner polls GitHub (no inbound) | Tokens with least privilege |
+| No business external systems | – | No email, SMS gateway, SSO or devices in the POC (C-05) | – |
+
+### 6.4 Per-tier redundancy
+
+| Tier | Zone count | Redundancy model | Failover behaviour |
+| --- | --- | --- | --- |
+| Edge | 1 (local); AWS load balancer spans zones by design | Local: single ingress; AWS: managed | Local: restart by the platform; AWS: automatic |
+| Static web, API gateway, identity provider, services | 1 | Prod: 2 replicas each; Dev / QA: 1 | The platform restarts failed instances and routes to the healthy one; a gateway failover keeps the user signed in through the identity-provider session |
+| Scheduler (JOB-CMN-01) | 1 | Runs in one SMS replica under a database lock | If that replica fails, the next scheduled run (or a manual run) repairs; missed hand-overs are repaired by the next run (KPI-04) |
+| Message broker | 1 | Single node, persistent storage | Restart with messages kept; outbox re-sends anything not acknowledged |
+| Database | 1 | Single server per environment, persistent storage, daily backup | Restore from backup within RTO 8 h, RPO 24 h (NFR-02); AWS: point-in-time restore |
+| Log and monitoring | 1 | Single instance | Loss of observability does not stop PMS; logs buffered by the collector |
+
+On the local machine the redundancy is demonstrated (failover between replicas); the 99 % business-hours availability target is verified only in the AWS production simulation (D-109, D-110; recorded in §19).
+
+### 6.5 Stakeholder alignment
+
+| Stakeholder | Date | Outcome |
+| --- | --- | --- |
+| Product owner | 22 Nov 2026 | Approved (D-110) |
 
 ## 7. Deployment architecture
 
-To be drafted (review 2: §5–§8).
+### 7.1 Deployment diagram
+
+```mermaid
+flowchart TB
+  subgraph HOST["Node: product owner's workstation (Windows) – Docker Desktop"]
+    subgraph K8S["Execution environment: single-node Kubernetes"]
+      subgraph NSI["namespace ingress"]
+        ING["ingress-nginx + ModSecurity"]
+      end
+      subgraph NSP["namespace pms-prod (same layout in pms-qa, pms-dev)"]
+        WEB["nginx: shell-ui ×2"]; GW["gateway ×2"]; KC["Keycloak ×2"]
+        EI["eims ×2"]; AM["ams ×2"]; LM["lms ×2"]; SM["sms ×2"]
+        PG[("PostgreSQL: eims, ams, lms, sms, keycloak")]; MQ["Artemis"]
+        BJ["backup CronJob"]
+      end
+      subgraph NSO["namespace observability"]
+        OT["OTel Collector"]; LK["Loki"]; PR["Prometheus"]; TP["Tempo"]; GF["Grafana"]
+      end
+    end
+    RUN["GitHub Actions self-hosted runner"]
+    BAK[("Backup folder on separate drive")]
+  end
+  ING --> WEB & GW & KC
+  GW --> EI & AM & LM & SM
+  EI & AM & LM & SM & KC --> PG
+  AM & SM --> MQ
+  BJ --> BAK
+  RUN -- helm --> K8S
+```
+
+**Text version of the diagram:** see §7.2 and §7.3.
+
+### 7.2 Nodes and execution environments
+
+| Node | Type (VM / container / PaaS / SaaS) | Execution environment (runtime, version) | Deployed artifacts | Zone / subnet | Scaling |
+| --- | --- | --- | --- | --- | --- |
+| Workstation (on-premises POC) | Physical machine, Windows | Docker Desktop with single-node Kubernetes, or a multi-node Kubernetes-in-Docker cluster for non-production (versions in §11) | All PMS containers, observability stack, self-hosted runner | – | Fixed; capacity per OI-P01-03 |
+| Edge | Container | ingress-nginx with ModSecurity | Ingress rules per environment host name | Edge | 1 |
+| Static web | Container | nginx | Shell-ui build (module packages built in, ADR-001) | Application | Prod 2, Dev / QA 1 |
+| API gateway | Container | Java runtime, Spring Cloud Gateway | `platform/gateway` image | Application | Prod 2, Dev / QA 1 |
+| Identity provider | Container | Keycloak | Realm configuration from `platform/keycloak` | Application | Prod 2, Dev / QA 1 |
+| EIMS, AMS, LMS, SMS | Container | Java runtime, Spring Boot (D-12) | `services/<module>/backend` images | Application | Prod 2, Dev / QA 1; horizontal |
+| Database | Container (StatefulSet) | PostgreSQL | Databases eims, ams, lms, sms, keycloak; schema migrations run by each service | Data | 1 per environment |
+| Broker | Container (StatefulSet) | ActiveMQ Artemis | Addresses and queues from `infra/activemq` | Data | 1 per environment |
+| Observability | Containers | OpenTelemetry Collector, Loki, Prometheus, Tempo, Grafana | Dashboards and alert rules | Operations | 1 |
+| Backup job | Container (CronJob) | PostgreSQL client tools | Daily dump per database | Data | Daily |
+| CI/CD runner | Process on the workstation | GitHub Actions self-hosted runner, Helm | Helm charts in `infra/` | – | 1 |
+| AWS target | PaaS + containers | Amazon EKS, RDS for PostgreSQL, ALB + WAF | Same images and Helm charts; Terraform for AWS resources | VPC per §6.3 | Node group and replicas |
+
+### 7.3 Middleware and communication paths
+
+| From node | To node | Middleware / protocol | Port | Security (TLS, auth) |
+| --- | --- | --- | --- | --- |
+| Browser | Edge | HTTPS | 443 | TLS (local certificate; ACM on AWS); WAF |
+| Edge | Static web, gateway, Keycloak | HTTP | 8080 | Cluster-internal; network policy |
+| Gateway | Keycloak | OIDC over HTTP (token, refresh, logout) | 8080 | Confidential client (client secret) |
+| Gateway | Services | REST over HTTP with bearer access token | 8080 | Token validated again in each service |
+| Service | Service | REST over HTTP | 8080 | Service token (client credentials) or relayed user token – §9.9 |
+| EIMS | Keycloak admin API | REST over HTTP | 8080 | Service account with only the user-management roles needed |
+| AMS, SMS | Artemis | JMS over the Artemis core protocol | 61616 | User and password per service; address permissions |
+| Services, Keycloak | PostgreSQL | PostgreSQL wire protocol | 5432 | Own database user per service; TLS on AWS (RDS) |
+| All | OpenTelemetry Collector | OTLP | 4317 / 4318 | Cluster-internal |
+| Runner | Kubernetes API | HTTPS | 6443 | Local kubeconfig; namespace-scoped deploy account |
+
+Inside the local cluster, traffic behind the edge is not encrypted; network policies restrict it. On AWS, database connections use TLS; in-cluster encryption is decided in the security standard (point carried to §16).
+
+### 7.4 Deployment per environment
+
+| Environment | Nodes and sizing | Differences from production |
+| --- | --- | --- |
+| Local developer run | Docker Compose on the workstation (`infra/docker`) | Single instances; no ingress or WAF; seed data |
+| Dev (namespace pms-dev) | 1 replica per tier; own PostgreSQL, Artemis, Keycloak realm | Synthetic seed data (about 20 employees); may be scaled to zero when not in use |
+| QA (namespace pms-qa) | 1 replica per tier; scaled to Prod replicas for the performance-test window | Synthetic seed data; test runs |
+| Prod (namespace pms-prod, local) | 2 replicas per stateless tier; daily backup | Admin account only at install; 90-day activity log retention; used when no AWS production simulation runs |
+| AWS production simulation (target) | EKS node group, RDS single-AZ, ALB + WAF, created with Terraform | Built on demand to simulate production and torn down after; availability target verified there |
+
+### 7.5 Stakeholder alignment
+
+| Stakeholder | Date | Outcome |
+| --- | --- | --- |
+| Product owner | 22 Nov 2026 | Approved (D-110) |
 
 ## 8. Integration architecture
 
-To be drafted (review 2: §5–§8).
+### 8.1 Functional integration diagram
+
+```mermaid
+flowchart LR
+  SH["Shell"] -- "INT-07 tiles, to-dos, inbox" --> EIMS & AMS & LMS & SMS
+  EIMS -- "INT-03 employee, INT-04 approver" --> AMS & LMS & SMS
+  EIMS -- "INT-05 rate" --> SMS
+  AMS & LMS -- "INT-09 records before joining date" --> EIMS
+  AMS <-- "INT-06 date check" --> LMS
+  AMS -- "INT-01 approved, INT-02 reopened (events)" --> SMS
+  SMS -- "JOB-CMN-01 nightly query" --> AMS
+  SMS -- "INT-10 salary status" --> AMS
+  EIMS <-- "INT-08 accounts" --> IDP(["Identity provider"])
+```
+
+The text version is the integration catalogue in §8.2.
+
+### 8.2 Integration catalogue
+
+| Seq | Source | Target | Data object | Style (sync / async / batch) | Integration pattern (Part01a id) | Protocol | Message format | Authentication | Connection mechanism | Error handling |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| 1 | AMS | SMS | Attendance approved (INT-01) | Async | Transactional outbox (AP-MS-10), event message (AP-EIP-17), idempotent receiver (AP-EIP-55) | Broker topic, durable subscription | JSON event in a common envelope (event id, type, version, flow reference, time) | Broker credentials per service | Outbox relay in AMS publishes; SMS durable subscriber | Redelivery with backoff, then dead-letter queue; duplicates ignored by event id and attendance id; reconciliation repairs |
+| 2 | AMS | SMS | Attendance reopened (INT-02) | Async | As 1 | As 1 | As 1 | As 1 | As 1 | As 1; void is idempotent |
+| 3 | SMS | AMS | Approved attendance for a date range (JOB-CMN-01) | Batch (nightly) | Reconciliation for eventual consistency (AP-INT-12), scheduler agent supervisor (AP-CP-37) | REST | JSON, paged | Service token | SMS job calls AMS API | Job retries the run; result and counts logged and shown on the Admin dashboard |
+| 4 | AMS, LMS, SMS, shell | EIMS | Employee details (INT-03) | Sync | Remote procedure invocation (AP-EIP-03) | REST | JSON | User token relayed or service token (§9.9) | Via service-to-service call | Timeout, retry for reads, circuit breaker (§8.5); caller shows an error with the flow reference |
+| 5 | AMS, LMS, SMS, shell | EIMS | Approver resolution (INT-04) | Sync | As 4 | REST | JSON | As 4 | As 4 | As 4 |
+| 6 | SMS | EIMS | Current hourly wage rate (INT-05) | Sync | As 4 | REST | JSON | Service token | Called while generating a salary record | Event processing retried; not acknowledged until the rate is read |
+| 7 | AMS ↔ LMS | LMS ↔ AMS | Date check (INT-06) | Sync | As 4 | REST | JSON | As 4 | Called on save and submit | Save refused with a retry message if the check cannot be made (never skipped) |
+| 8 | Shell | EIMS, AMS, LMS, SMS | Dashboard tiles, to-dos, inbox items (INT-07) | Sync | API composition in the client (AP-MS-15) | REST via gateway | JSON | User session at the gateway | One call per module card | Each card fails on its own with Retry (FR-CMN-008) |
+| 9 | EIMS | Identity provider | User account create, role, reset, disable, end sessions (INT-08) | Sync | Remote procedure invocation (AP-EIP-03) | Identity provider admin REST API | JSON | Service account (client credentials) | EIMS calls the admin API | Failure refuses the Admin action with a reference; consistency between employee record and account designed in Part02-SUP |
+| 10 | EIMS | AMS, LMS | Records before a new joining date (INT-09) | Sync | As 4 | REST | JSON | Service token | EIMS calls both before saving | Change refused if either check cannot be made |
+| 11 | AMS, shell | SMS | Salary status for attendance (INT-10) | Sync | As 4 | REST | JSON | As 4 | Called in history and inbox views; caller fixed in Part02 | Status shown as unknown with Retry; Reopen not offered until known |
+| 12 | Browser | Gateway → services | All user actions | Sync | API gateway (AP-MS-05), gateway routing (AP-CP-21) | HTTPS / REST | JSON (OpenAPI 3 contracts) | Session cookie → access token at gateway | Gateway routes by context /eims, /ams, /lms, /sms | Standard error body with the flow reference (Part02 anchor) |
+| 13 | Gateway | Identity provider | Sign-in, refresh, logout | Sync | Federated identity (AP-CP-17) | OIDC | – | Confidential client | Redirect and back-channel | Sign-in error page per FR-AUTH-008 |
+| 14 | All components | Log and monitoring | Activity log, metrics, traces | Async | Log aggregation (AP-MS-20), wire tap (AP-EIP-59) | OTLP | Structured JSON logs, metrics, spans | Cluster-internal | Collector | Collector buffers; PMS keeps running |
+
+### 8.3 Technical integration diagram
+
+```mermaid
+flowchart LR
+  BR["Browser"] --> ED["Edge"] --> GW["API gateway"]
+  GW --> EI["EIMS"] & AM["AMS"] & LM["LMS"] & SM["SMS"]
+  subgraph AMSB["AMS"]
+    AM --> ADB[("ams DB<br/>+ outbox table")]
+    RL["Outbox relay"] --> ADB
+  end
+  RL -- publish --> T["Topic: attendance events"]
+  T -- durable subscription --> SQ["SMS subscription queue"] --> SM
+  SQ -. after max redeliveries .-> DLQ["Dead-letter queue"]
+  SM --> SDB[("sms DB<br/>+ job lock")]
+  JOB["Reconciliation 01:00 IST<br/>(one SMS instance)"] -- REST paged --> AM
+  JOB --> SDB
+  EI -- admin API --> KC["Identity provider"]
+  AM <--> LM
+  AM & LM & SM --> EI
+```
+
+**Text version of the diagram**
+
+| Element | Role |
+| --- | --- |
+| Outbox table (ams database) | Event row written in the same transaction as the attendance status change |
+| Outbox relay (inside AMS) | Reads unsent rows and publishes them to the attendance events topic; marks them sent after the broker confirms |
+| Attendance events topic | Publish-subscribe channel (AP-CP-31); SMS is the only subscriber in the POC |
+| SMS subscription queue | Durable subscription (AP-EIP-54); SMS processes each event once (idempotent) |
+| Dead-letter queue | Events that still fail after the maximum redeliveries; alert to IT operations; reconciliation repairs the outcome |
+| Reconciliation job | Runs in one SMS instance under a database lock; reads approved attendance from AMS; creates, voids, logs mismatches |
+| Synchronous APIs | INT-03 to INT-06, INT-09, INT-10 between services; INT-08 to the identity provider |
+
+### 8.4 Protocol and pattern selection guide
+
+| Need | Chosen protocol / pattern | Reason |
+| --- | --- | --- |
+| Query from UI | REST GET through the gateway, one call per module card | Contract-first (D-16); independent loading (FR-CMN-008) |
+| Command from UI | REST POST / PUT / PATCH through the gateway, with a version check on the record | Detect changes by others (FR-CMN-014, NFR-06) |
+| State change to other services | Event through the broker with transactional outbox | Decoupled, reliable hand-over within 1 minute (INT-01, INT-02, NFR-01, R-01) |
+| Reference data from another service | Synchronous REST query to the owning service | Database per service, no shared tables (C-02) |
+| Bulk / periodic data | Scheduled job with paged REST query | Nightly reconciliation (JOB-CMN-01) |
+| Long-running process | None in the POC; the dispute cycle is a sequence of user actions with events | – |
+
+### 8.5 Integration resilience defaults
+
+Proposed defaults; final values go into the API and integration standard (docs/04-standards/).
+
+| Integration type | Timeout | Retry policy | Circuit breaker | Idempotency | Dead-letter handling |
+| --- | --- | --- | --- | --- | --- |
+| Internal REST APIs | Connect 1 s, response 2 s (p95 target 500 ms, NFR-01) | Reads only: up to 2 retries with exponential backoff; commands are not retried automatically | Per downstream service: opens after 50 % failures in a 20-call window, half-open after 30 s | Commands carry the record version; repeated submits are refused by status rules | Not applicable; error shown with the flow reference |
+| Async events | Consumer processing 30 s | Broker redelivery up to 5 times with backoff (1 s doubling); outbox relay retries until confirmed | Not applicable | Event id and business key (attendance id) checked before processing; one non-voided salary record per attendance (NFR-06) | Dead-letter queue after 5 attempts; alert; nightly reconciliation repairs the outcome |
+| External APIs (identity provider admin) | Connect 1 s, response 5 s | Reads only, up to 2 retries | As internal REST | Account operations keyed by Employee Id | Not applicable; Admin action refused with the flow reference |
+
+### 8.6 Stakeholder alignment
+
+| Stakeholder | Date | Outcome |
+| --- | --- | --- |
+| Product owner | 22 Nov 2026 | Approved (D-110) |
 
 ## 9. Authentication & authorization
 
@@ -239,4 +702,5 @@ To be drafted (review 5: §16–§20).
 | Id | Open item | Owner | Due |
 | --- | --- | --- | --- |
 | OI-P01-01 | Part01a assessment: counts per group in §4.1 and confirmation of the catalogue ids in §4.2 to §4.4 | Enterprise Architect | Part01a |
-| OI-P01-02 | Provisioning approach (infrastructure and environments as code) for the on-premises platform | Enterprise Architect, IT operations | Part01 §7 and §15 |
+| OI-P01-02 | Provisioning approach (infrastructure and environments as code) – closed by D-110: Helm charts for PMS, Terraform for AWS | Enterprise Architect | Closed 22 Nov 2026 |
+| OI-P01-03 | Capacity of the local workstation (CPU, memory, disk) for three namespaces, the observability stack and the local container platform; recommended at least 32 GB memory | Product owner | Before the Dev environment is built |
