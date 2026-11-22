@@ -14,14 +14,15 @@ Date: November 2026
 | 1.0 | 0.1 | 22-Nov-2026 | Rajesh Verma | First draft of §1–§4, based on the approved BRD set v1.0 (D-107), UX v1.1 (D-105) and decisions D-01 to D-108; Part01 design answers of 22 Nov 2026 (D-109) |
 | 1.0 | 0.2 | 22-Nov-2026 | Rajesh Verma | Draft of §5–§8 (functional, system, deployment, integration architecture) |
 | 1.0 | 0.3 | 22-Nov-2026 | Rajesh Verma | Draft of §9–§10 (authentication and authorization; logging and observability) |
-| 1.0 | 0.4 | 22-Nov-2026 | Rajesh Verma | Draft of §11–§15 (technology stack, data architecture summary, data migration, performance test strategy, environment strategy); edge product replaced (Envoy Gateway + Coraza WAF); role change ends sessions (D-111) |
+| 1.0 | 0.4 | 22-Nov-2026 | Rajesh Verma | Draft of §11–§15 (technology stack, data architecture summary, data migration, performance test strategy, environment strategy); edge product replaced (§6.2, §11); role change ends sessions (D-111) |
+| 1.0 | 0.5 | 22-Nov-2026 | Rajesh Verma | Draft of §16–§20 (security and NFR, volumetrics, architecture decisions, risks and technical debt, appendix); all sections drafted |
 
 ### 1.2 Review and approval
 
 | Role | Name | Date | Decision |
 | --- | --- | --- | --- |
-| Architect | Rajesh Verma (Enterprise Architect) | 22-Nov-2026 | §1–§4 approved (D-109); §5–§8 approved (D-110); §9–§10 approved (D-111); §11–§15 approved (D-112); full document pending |
-| Product owner | Rajesh Verma | 22-Nov-2026 | §1–§4 approved (D-109); §5–§8 approved (D-110); §9–§10 approved (D-111); §11–§15 approved (D-112); full document pending |
+| Architect | Rajesh Verma (Enterprise Architect) | 22-Nov-2026 | §1–§4 approved (D-109); §5–§8 approved (D-110); §9–§10 approved (D-111); §11–§15 approved (D-112); §16–§20 approved (D-113); all sections reviewed – final approval with the HLD set at the Stage 3 gate |
+| Product owner | Rajesh Verma | 22-Nov-2026 | §1–§4 approved (D-109); §5–§8 approved (D-110); §9–§10 approved (D-111); §11–§15 approved (D-112); §16–§20 approved (D-113); all sections reviewed – final approval with the HLD set at the Stage 3 gate |
 
 ## 2. Introduction
 
@@ -39,7 +40,7 @@ The design is technology-neutral wherever the replatforming goal requires it (D-
 | --- | --- | --- |
 | 1 | PMS-BRD (anchor), PMS-BRD-M1-EIMS, PMS-BRD-M2-AMS, PMS-BRD-M3-LMS, PMS-BRD-M4-SMS, PMS-BRD-M5-SUP | v1.0 – approved baseline (D-107) |
 | 2 | UX Journey Index and 17 UX Summaries (with HTML mockups) | v1.1 (D-105) |
-| 3 | Decision log / ADRs | D-01 to D-112; ADR-001 to ADR-003 |
+| 3 | Decision log / ADRs | D-01 to D-113; ADR-001 to ADR-006 |
 
 **Design documents**
 
@@ -105,9 +106,10 @@ Implementation starts only when every mandatory artifact below is approved. The 
 | 20 Nov 2026 | SUP rules, audit and activity log | Product owner | Session, account and security-event rules; own password change ends other sessions; audit log and activity log with flow reference, masking, 90-day retention | D-97, D-100, D-101 |
 | 21 Nov 2026 | BRD set sign-off and Stage 3 plan | Product owner; BA, HR Manager, Finance Manager, Security / IT owner (BRD review) | BRD set v1.0 approved; HLD order and dates | D-106, D-107, D-108 |
 | 22 Nov 2026 | Part01 architecture questions | Product owner, Enterprise Architect | Hosting on-premises first, AWS as the later cloud target (Azure dropped); container orchestration platform; identity provider issues tokens and holds passwords; network zones; per-tier redundancy; data tier; environments; no data migration; no MFA in the POC | D-109; ADR-002, ADR-003 |
-| 22 Nov 2026 | Part01 §5–§8 and platform answers | Product owner, Enterprise Architect | POC on Docker Desktop Kubernetes (or a Kubernetes-in-Docker cluster for non-production), production simulated on AWS; environments as namespaces; observability stack; gateway holds tokens; reconciliation in SMS; no cache server; CI/CD, provisioning and secrets | D-110 |
+| 22 Nov 2026 | Part01 §5–§8 and platform answers | Product owner, Enterprise Architect | POC on a local container platform (or a multi-node local cluster for non-production), production simulated on AWS; environments as namespaces; observability stack; gateway holds tokens; reconciliation in SMS; no cache server; CI/CD, provisioning and secrets | D-110 |
 | 22 Nov 2026 | Part01 §9–§10 | Product owner, Enterprise Architect | Token lifetimes and session limits as deployment settings; relayed user token plus service token; realm, clients and claims; alerts by email to IT operations; role change reaches APIs within the access-token lifetime | D-111 |
-| 22 Nov 2026 | Part01 §11–§15 | Product owner, Enterprise Architect | Latest versions with LTS runtimes; Envoy Gateway + Coraza WAF replaces the retired ingress-nginx; Flyway, backup retention and restore tests; seed data; performance test strategy; trunk-based CI/CD with quality gates; role change ends sessions (D-111) | D-112 |
+| 22 Nov 2026 | Part01 §11–§15 | Product owner, Enterprise Architect | Latest versions with LTS runtimes; a Gateway API edge with WAF replaces the retired edge product; schema migrations, backup retention and restore tests; seed data; performance test strategy; trunk-based CI/CD with quality gates; role change ends sessions (D-111) | D-112 |
+| 22 Nov 2026 | Part01 §16–§20; document complete | Product owner, Enterprise Architect | Security and NFR realization, volumetrics, ADR-004 to ADR-006, risks and technical debt, open items; final approval at the Stage 3 gate | D-113 |
 
 ## 4. Architecture principles & patterns
 
@@ -161,7 +163,7 @@ Counts are filled when Part01a is assessed (open item OI-P01-01). Key items are 
 | Availability (AP-WA-02) | 99 % in Production during business hours; two instances of every stateless tier; daily backup with RPO 24 h and RTO 8 h; single site for the POC – per-tier detail in §6.4 | NFR-02, D-59, D-109 |
 | Decentralized (AP-WA-03) | Each module owns its data and its service; no shared database; modules interact only through APIs and events; the gateway and identity provider are shared platform components with no business logic | D-10, C-02, D-18 |
 | Independent & autonomous (AP-WA-04) | Separate builds, path-filtered pipelines and independent deployment per service; contracts-only sharing. Exception: module screens are built into the shell for the POC, so a UI change redeploys the shell (ADR-001) | D-18, D-23, NFR-08 |
-| Auto provisioning (AP-WA-05) | Every PMS deployment is defined in Helm charts and applied by the pipeline; AWS resources are created from Terraform code; the local cluster comes from Docker Desktop (or a Kubernetes-in-Docker cluster definition) | D-11, D-109, D-110 |
+| Auto provisioning (AP-WA-05) | Every PMS deployment is defined in deployment charts and applied by the pipeline; AWS resources are created from infrastructure code; the local cluster comes from the local container platform or a cluster definition file (§11) | D-11, D-109, D-110 |
 | Scalability (AP-WA-06) | Stateless services scale out per service on the container platform; sized for 100 employees, scale out per module to 10×, load-tested to 2× | NFR-07, D-59 |
 | Security (AP-WA-07) | Identity provider, token validation at gateway and service, role and data-scope checks, private back-end network zones, encryption in transit, secrets outside code; detail in §9 and §16 | NFR-03, NFR-SUP-01 to 03 |
 | Continuous delivery (AP-WA-08) | One pipeline per service with quality gates; promotion Dev → QA → Prod | D-11, D-18; §15 |
@@ -451,7 +453,7 @@ flowchart LR
 | Connection | Type (internet / VPN / private link / peering) | Purpose | Security |
 | --- | --- | --- | --- |
 | User access | Local machine / LAN (POC); internet via the load balancer (AWS) | Use of PMS | HTTPS only, WAF |
-| Source repository, pipeline and image registry service | Internet, outbound only | Code, builds, images; runner polls GitHub (no inbound) | Tokens with least privilege |
+| Source repository, pipeline and image registry service | Internet, outbound only | Code, builds, images; runner polls the pipeline service (no inbound) | Tokens with least privilege |
 | No business external systems | – | No email, SMS gateway, SSO or devices in the POC (C-05) | – |
 
 ### 6.4 Per-tier redundancy
@@ -1113,19 +1115,112 @@ flowchart LR
 
 ## 16. Security & NFR
 
-To be drafted (review 5: §16–§20).
+### 16.1 Security guidelines
+
+Detailed rules go into the security standard (docs/04-standards/, D-61, D-108).
+
+| Seq | Security type | Description | Realization |
+| --- | --- | --- | --- |
+| 1 | Infrastructure-level security | Only the edge is reachable; zones separated; least-privilege platform access | Edge with WAF as the single entry; network policies allowing only the §6.3 flows; namespace-scoped deployment account; identity-provider console and health / metrics endpoints never exposed (§6.3, §9.8); AWS: security groups, private subnets |
+| 2 | Application-level security | Every request authenticated and checked for role and data scope | Gateway session with relayed access token; token validated at gateway and service; role, permission and data scope in the service and query; neutral refusal page; no self-approval (§9.7, FR-UM-013, FR-UM-015, BR-CMN-08) |
+| 3 | Data at rest | Passwords only in the identity provider, hashed; sensitive data protected like the record | No passwords in PMS (ADR-003); database files on the workstation drive, which must be encrypted by the operating system (to be confirmed, OI-P01-06); AWS: managed database and volume encryption with cloud key management; backups on a separate drive, encrypted likewise (OI-P01-06); audit values protected like the record (FR-ADM-104) |
+| 4 | Data in transit | Encrypted between browser and edge; protected inside the platform | TLS 1.2+ (TLS 1.3 preferred) at the edge with HSTS; inside the local cluster, traffic behind the edge is not encrypted and is limited by network policies (POC limitation, §19); AWS: TLS to RDS |
+| 5 | Secure environment access | Only approved people and pipelines change environments | Deployment only through the pipeline (§15); Prod and AWS simulation: no developer database access, no debug logging; observability access for IT operations only (§10.8) |
+| 6 | Safe coding and deployment | Secure development life cycle | Contract validation of every request; parameterised queries only; dependency, code, image and secret scans with no high or critical findings as a gate (§15); signed, immutable image tags; non-root, read-only containers; monthly patching (D-112) |
+| 7 | Secrets and key management | No secrets in code, images, values files or logs | Platform secrets per service and environment from protected pipeline secrets; cloud secret store and key management on AWS; signing keys rotated by the identity provider (§9.10) |
+
+### 16.2 OWASP Top 10 control mapping
+
+| OWASP category | Control |
+| --- | --- |
+| A01 Broken Access Control | Role and data scope enforced in the service and in the query; deny by default at gateway routes; neutral response that hides record existence; direct-link tests per role and screen (NFR-SUP-02); CSRF token with SameSite cookie |
+| A02 Cryptographic Failures | TLS at the edge with HSTS; passwords hashed only by the identity provider; tokens signed RS256 with rotation; no sensitive values in logs (FR-ADM-115); encrypted disks and backups |
+| A03 Injection | Requests validated against OpenAPI contracts and BRD validation rules; parameterised queries / ORM only; output encoding by the UI library; WAF rule set at the edge |
+| A04 Insecure Design | BDUF with this HLD and threat review per module in Part02 (security & privacy subsection per function, D-38); business rules enforced server side (status transitions, version check FR-CMN-014) |
+| A05 Security Misconfiguration | Configuration as code (deployment values, realm as code); security headers at the edge; no default credentials; registration and unused identity-provider features disabled (§9.2); health endpoints internal only |
+| A06 Vulnerable and Outdated Components | Latest supported versions with monthly patching (D-112); dependency and image scanning as gates; retired components replaced (edge product, D-112) |
+| A07 Identification and Authentication Failures | Identity provider with password policy, lockout, idle and absolute timeout, generic sign-in messages, sessions ended on reset, deactivation, role change and own password change (§9, D-97, D-100, D-111) |
+| A08 Software and Data Integrity Failures | Pipeline-only deployment from the repository; images built once and promoted; outbox and idempotent consumer for events; audit log that cannot be changed (FR-ADM-103) |
+| A09 Security Logging and Monitoring Failures | Security events from the identity provider, refused requests and activity log centralised with the flow reference; alerts by email (§10, D-111) |
+| A10 Server-Side Request Forgery | Services call only fixed, configured internal addresses; no user-supplied URLs are fetched; egress from the cluster limited to the image registry and the CI/CD service |
+
+### 16.3 Non-functional requirements realization
+
+| Seq | NFR id (BRD) | NFR | Realization | Verification |
+| --- | --- | --- | --- | --- |
+| 1 | NFR-01 | Performance | Stateless services, one database per service, asynchronous AMS → SMS hand-over, per-card dashboard loading, indexes per Part03 | Performance tests §14 (local indicative, AWS final) |
+| 2 | NFR-02 | Availability, backup, RPO / RTO | 2 replicas per stateless tier in Prod; daily backup with tested restore; failure isolation per module (§6.4, §12) | Restore test before go-live and monthly; availability measured in the AWS production simulation |
+| 3 | NFR-03 | Security | Identity provider policy and lockout, generic messages, role and data scope on every request (§9) | Security testing; 0 access-control defects |
+| 4 | NFR-04 | Usability and accessibility | Shell layout for 1366 px, WCAG 2.1 AA from the mockups; latest Chrome and Edge | Automated accessibility checks in end-to-end tests; manual review |
+| 5 | NFR-05 | Auditability | Audit fields on every record; audit log per change; reconciliation run log | Audit completeness checks in system tests (KPI-03) |
+| 6 | NFR-06 | Data integrity | Soft delete, unique attendance per day, idempotent salary generation, rate copied at generation, version check against overwrites | Integration tests; reconciliation result 0 mismatches (KPI-04) |
+| 7 | NFR-07 | Scalability | Horizontal scale-out per service on the container platform | Load test at 2× (50 users) |
+| 8 | NFR-08 | Maintainability / configurability | Independent services and pipelines; technology-neutral design and contracts; settings per environment (D-97) | Architecture review against Part01a and standards |
+| 9 | NFR-09 | Logging and observability | Activity log with flow reference across calls, events and jobs; masking; 90-day retention (§10) | Log review in testing: 100 % flows traceable, 0 unmasked values |
+| 10 | NFR-EIMS-01 | Sensitive data shown only within scope, never in logs or test data | Data-scope queries; log allow-list; synthetic data | Log and test-data review |
+| 11 | NFR-EIMS-02 | Temporary password shown once | Returned once by the EIMS create / reset response, never stored by PMS | Security testing |
+| 12 | NFR-SUP-01 to 05 | Passwords never readable; role × screen checks; no Employee Id disclosure; no unmasked log values; audit and flow traceability | §9, §10, ADR-003 | Security testing and log review |
 
 ## 17. Volumetrics
 
-To be drafted (review 5: §16–§20).
+**Current volume:** none (greenfield). Year 1: about 100 employees (10 managers) and 1 PMS Administrator; 25 peak concurrent users (BRD §8.1). Growth 0 % per year; the design plans 20 % headroom and is load-tested to 2× (NFR-07).
+
+| Volume type | YoY % | Year 1 | Year 2 | Year 3 | Year 4 | Year 5 |
+| --- | --- | --- | --- | --- | --- | --- |
+| Users (accounts) | 0 % (20 % headroom) | 101 | 101 | 101 | 101 | 101 |
+| Peak concurrent users | 0 % | 25 | 25 | 25 | 25 | 25 |
+| Transactions – attendance entries | 0 % | 26,400 | 26,400 | 26,400 | 26,400 | 26,400 |
+| Transactions – salary records | 0 % | 26,400 | 26,400 | 26,400 | 26,400 | 26,400 |
+| Transactions – leave requests | 0 % | 1,200 | 1,200 | 1,200 | 1,200 | 1,200 |
+| Transactions – profile approvals | 0 % | 150 | 150 | 150 | 150 | 150 |
+| Audit entries (estimate) | 0 % | About 490,000 | About 490,000 | About 490,000 | About 490,000 | About 490,000 |
+
+Audit entries are an HLD estimate (BRD M5-SUP volumetrics "sized in the HLD"): about 8 entries per attendance, 10 per salary record, 8 per leave request and 30 per profile approval (creation values and status changes). Activity log: about 20,000 entries a day at year-1 usage, about 0.5 KB each – about 10 MB a day, about 1 GB for the 90-day Production retention.
+
+| Entity | Rows per year | Avg row size | Year-5 size |
+| --- | --- | --- | --- |
+| Employee (EIMS) | About 100 (onboarding) | About 1 KB | < 1 MB |
+| Profile change request (EIMS) | About 50 | About 1 KB | < 1 MB |
+| Attendance (AMS) | About 26,400 | About 0.3 KB | About 40 MB |
+| Outbox event (AMS) | About 26,400 plus reopens | About 0.5 KB | About 65 MB (cleanup of sent events decided in Part03) |
+| Leave request (LMS) | About 1,200 | About 0.3 KB | About 2 MB |
+| Salary record (SMS) | About 26,400 plus voided | About 0.4 KB | About 55 MB |
+| Reconciliation run log (SMS) | 365 | About 0.5 KB | < 1 MB |
+| Audit entries (all modules) | About 490,000 | About 0.3 KB | About 0.75 GB |
+| Identity provider (accounts, sessions, events) | About 101 accounts; events about 50,000 | About 1 KB | Events kept 90 days: < 100 MB |
+
+Year-5 sizes exclude indexes (about ×2); total database storage stays below 3 GB in year 5, with 20 % headroom.
 
 ## 18. Architecture decisions
 
-To be drafted (review 5: §16–§20).
+Architecture decisions are registered in PMS-HLD-Part01a-Principles-Patterns-Decisions §5 (ADR register); each ADR is a separate file in `docs/decisions/adr/` using the format in Part01a §6. List here only the ADRs that shape this document's chapters:
+
+| ADR | Title | Affects Part01 chapter(s) |
+| --- | --- | --- |
+| ADR-001 | Frontend composition – build-time packages for the POC (D-23) | §2.2.2, §4.3, §5.3, §7, §15 |
+| ADR-002 | Hosting and runtime platform – on-premises Kubernetes for the POC, AWS as the cloud target (D-109, D-110) | §2.2.2, §6, §7, §11, §15 |
+| ADR-003 | Identity provider issues tokens and holds passwords (D-109) | §9, §16 |
+| ADR-004 | API gateway holds the user tokens – browser gets only a session cookie (D-110, D-111) | §6.1, §9.3, §9.5, §9.8, §19 |
+| ADR-005 | Edge on the Kubernetes Gateway API with a WAF rule set (D-112) | §6.2, §7, §11, §16 |
+| ADR-006 | AMS → SMS hand-over by transactional outbox, idempotent consumer and nightly reconciliation (D-16) | §5.2, §8, §12 |
+
+Part01a §5 registers all six (D-113).
 
 ## 19. Risks and technical debt
 
-To be drafted (review 5: §16–§20).
+BRD risks with an architecture response: R-01 and R-03 (outbox, idempotent consumer, nightly reconciliation – §8, ADR-006), R-04 (role and data scope in the service and query – §9.7), R-06 (BDUF gate, Part01a compliance, standards – §3).
+
+| Id | Item | Impact | Mitigation / plan |
+| --- | --- | --- | --- |
+| AR-01 | The on-premises POC runs on one workstation: availability depends on the machine being on; capacity is shared by three environments (OI-P01-03) | POC availability below NFR-02; slow environments | Scale Dev / QA to zero when unused; availability verified in the AWS production simulation (D-110) |
+| AR-02 | No shared session store: gateway instances use session affinity; a back-channel logout is relayed between instances | A request in flight can fail on gateway failover; a missed logout lasts at most the access-token lifetime (5 minutes) | Technical debt: shared in-memory session store and cache in a future phase (D-110) |
+| AR-03 | Database and broker run as single nodes | Restart or restore needed on failure (RTO 8 h) | Persistent storage, daily backup, outbox and reconciliation; HA (replica, multi-AZ) Future |
+| AR-04 | Inside the local cluster, traffic behind the edge is not encrypted, and platform secrets have limited encryption at rest on the local container platform | Lower protection on the workstation than on AWS | Synthetic data only; network policies; workstation and backup drive encryption (OI-P01-06); AWS uses TLS and cloud key management; mutual TLS / service mesh Future |
+| AR-05 | Brand-new major versions of the backend framework and the database (§11) may have early defects; the database version may not yet be offered by the AWS managed database service | Rework or a version step back | Monthly patching; fall back to the previous minor if blocked; RDS availability checked before the AWS simulation (OI-P01-04) |
+| AR-06 | The WAF is loaded into the edge proxy as a dynamic module (§11); loading by image volume needs Kubernetes 1.35 or later | WAF may not load on an older local Kubernetes version | Check the local Kubernetes version; otherwise load the module with an init container or a custom image (OI-P01-05) |
+| AR-07 | Local performance results are indicative only (load generator and system share one machine) | Wrong capacity conclusions | Final verification in the AWS production simulation (§14.6) |
+| AR-08 | Module screens are built into the shell (ADR-001) | Any module UI change redeploys the shell | Module contract (routes, menu, components) kept clean; runtime micro-frontends after the POC |
+| AR-09 | Backend built first in Java, to be replatformed to Node.js and Python FastAPI (D-12) | Framework-specific behaviour leaking into contracts and data | Contract-first APIs and events, technology-neutral HLD, standards review of contracts |
 
 ## 20. Appendix
 
@@ -1134,5 +1229,38 @@ To be drafted (review 5: §16–§20).
 | Id | Open item | Owner | Due |
 | --- | --- | --- | --- |
 | OI-P01-01 | Part01a assessment: counts per group in §4.1 and confirmation of the catalogue ids in §4.2 to §4.4 | Enterprise Architect | Part01a |
-| OI-P01-02 | Provisioning approach (infrastructure and environments as code) – closed by D-110: Helm charts for PMS, Terraform for AWS | Enterprise Architect | Closed 22 Nov 2026 |
+| OI-P01-02 | Provisioning approach (infrastructure and environments as code) – closed by D-110: deployment charts for PMS, infrastructure code for AWS (§11) | Enterprise Architect | Closed 22 Nov 2026 |
 | OI-P01-03 | Capacity of the local workstation (CPU, memory, disk) for three namespaces, the observability stack and the local container platform; recommended at least 32 GB memory | Product owner | Before the Dev environment is built |
+| OI-P01-04 | Database version of §11 available on the AWS managed database service; otherwise the previous major version on AWS (D-112) | Enterprise Architect | Before the AWS production simulation |
+| OI-P01-05 | Local Kubernetes version supports loading the WAF module (1.35 or later), or an alternative loading method is chosen | Enterprise Architect | Before the Dev environment is built |
+| OI-P01-06 | Operating-system encryption of the workstation drive and the backup drive confirmed (data at rest, §16.1) | Product owner | Before the Dev environment is built |
+
+### 20.2 Glossary
+
+| Term | Meaning |
+| --- | --- |
+| BDUF | Big Design Up Front – the design is approved before implementation starts |
+| CSRF | Cross-site request forgery; prevented with a token and a SameSite cookie |
+| Dead-letter queue | Queue holding messages that could not be processed after the allowed retries |
+| Flow reference | Short reference of one user action or job run, carried through all modules and shown in error messages (FR-ADM-113, FR-ADM-114) |
+| Gateway API | The Kubernetes standard for routing external traffic into the cluster, successor of Ingress |
+| JWT | JSON Web Token – the signed access token format |
+| LTS | Long-term support release |
+| Namespace | Isolated section of the container platform; one per environment in the POC |
+| OIDC / PKCE | OpenID Connect sign-in protocol / Proof Key for Code Exchange, protecting the authorization code |
+| Outbox | Table in which an event is stored in the same transaction as the business change and published afterwards |
+| RPO / RTO | Recovery point objective (maximum data loss) / recovery time objective (maximum time to restore) |
+| WAF | Web application firewall |
+
+### 20.3 Future scope
+
+| Area | Item | Ref |
+| --- | --- | --- |
+| Security | Multi-factor sign-in, starting with the PMS Administrator | §9.4, D-109 |
+| Security | Mutual TLS / service mesh between services | §9.9, AR-04 |
+| Platform | Shared in-memory data store for gateway sessions and caching | D-110, AR-02 |
+| Availability | Database replica and multi-AZ deployment on AWS; clustered broker | AR-03 |
+| Frontend | Runtime micro-frontends instead of build-time packages | ADR-001 |
+| Backend | Replatforming of the backend to other technologies | D-12 |
+| Observability | Audit and activity log viewer (ADM, Phase 2); cloud-native monitoring services on AWS | D-101, D-110 |
+| Supporting functions | Notifications (NM) and document management (DM), Phase 2 | D-57 |
