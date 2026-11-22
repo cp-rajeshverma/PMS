@@ -1,13 +1,13 @@
 # Prompt – <PRJ> <SET> set: consistency check and open-items note
 
 > Template guidance (delete this block in the prompt file)
-> - Produces a set-level gate prompt `docs/00-prompt/set-90-consistency-and-open-items-prompt.md`, with `set` replaced by the document set it checks (for example `brd`, `hld-part02`, `hld-part03`), e.g. `brd-90-consistency-and-open-items-prompt.md`. Use it once all documents of a set are drafted and before the stage gate's stakeholder review. Replace `<SET>` and every `<…>` placeholder; delete lines that do not apply.
+> - Produces a set-level gate prompt `docs/00-prompt/<nn-set>/set-90-consistency-and-open-items-prompt.md`, with `set` replaced by the document set it checks (for example `brd`, `hld-part02`, `hld-part03`), e.g. `brd-90-consistency-and-open-items-prompt.md`. Use it once all documents of a set are drafted and before the stage gate's stakeholder review. Replace `<SET>` and every `<…>` placeholder; delete lines that do not apply. Write it into the set's prompt sub-folder `<nn-set>` (`01-ux`, `02-brd`, `03-hld`).
 > - Part A checks the set for consistency (ids and counts, cross-references, coverage, decisions, terms and status lists, versions, customer-facing rules) and writes a report; Part B prepares a decision note on the open business items for the business owner. The prompt never closes an open item – the business owner decides.
 > - Review documents go to `docs/<stage folder>/reviews/` (customer-facing, PR-03). Name the set's anchor document, the next free decision id, open-item id and anchor revision.
 > - Write the prompt before the session starts and index it in `docs/00-prompt/README.md`; after the session fill Used and Outcome and set Status to "Done – reuse only to re-check the <SET> set".
 > - Prompts are internal working files: the customer-facing rule applies to the documents the prompt produces, not to the prompt (D-83).
 > - Keep it self-contained: a new session must be able to run it with only the repository folder connected. Name decisions, rules and open items by id.
-> - Pair it with `execute-prompt-file-set-90-consistency-and-open-items-prompt-template.md`. Example of a filled prompt: `docs/00-prompt/brd-90-consistency-and-open-items-prompt.md`.
+> - Pair it with `execute-prompt-file-set-90-consistency-and-open-items-prompt-template.md`. Example of a filled prompt: `docs/00-prompt/02-brd/brd-90-consistency-and-open-items-prompt.md`.
 
 | Field | Value |
 | --- | --- |

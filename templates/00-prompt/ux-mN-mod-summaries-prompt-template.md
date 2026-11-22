@@ -1,7 +1,7 @@
 # Prompt – UX summaries and mockups – SCR-MOD-01 to SCR-MOD-NN
 
 > Template guidance (delete this block in the prompt file)
-> - Produces the session prompt `docs/00-prompt/ux-mN-mod-summaries-prompt.md` for a module's UX summaries and clickable mockups. Replace `mN` / `MOD` / `mod` with the module number and code (for example `m4`, `SMS`, `sms`) and fill every `<…>` placeholder; delete optional lines that do not apply.
+> - Produces the session prompt `docs/00-prompt/01-ux/ux-mN-mod-summaries-prompt.md` for a module's UX summaries and clickable mockups. Replace `mN` / `MOD` / `mod` with the module number and code (for example `m4`, `SMS`, `sms`) and fill every `<…>` placeholder; delete optional lines that do not apply.
 > - Write the prompt before the session starts and index it in `docs/00-prompt/README.md`; after the session fill Used and Outcome and set Status to "Done – reuse only to revise <scope>".
 > - Prompts are internal working files: the customer-facing rule applies to the document the prompt produces, not to the prompt (D-83).
 > - Keep it self-contained: a new session must be able to run it with only the repository folder connected. Name decisions, rules and open items by id.
