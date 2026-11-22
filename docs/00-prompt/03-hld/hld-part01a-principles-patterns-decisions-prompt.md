@@ -18,7 +18,7 @@ docs/03-hld/PMS-HLD-Part01a-Principles-Patterns-Decisions.md – the second of t
 (order D-108: Part01 → Part01a → Part02 anchor → Part03 anchor → per module Part02 then Part03).
 Scope: the full catalogue of 330 items in 18 groups (A GOV 11, B XF 13, C WA 15, D SD 19, E TF 12,
 F FE 10, G MS 34, H CP 44, I EIP 64, J INT 13, K DATA 17, L SEC 20, M OBS 12, N PERF 10, O RES 10,
-P DEV 11, Q QA 10, R 5), the group summary (§3), the ADR register (§5) and the ADR format (§6).
+P DEV 11, Q QA 10, R DG 5), the group summary (§3), the ADR register (§5) and the ADR format (§6).
 Part02 and Part03 are not drafted yet: rows realised there get "Part02 / Part03 (planned)" as Ref.
 
 1. Load context first (read, don't summarise back to me):
@@ -34,8 +34,8 @@ Part02 and Part03 are not drafted yet: rows realised there get "Part02 / Part03 
      to carry into Part01a)
    - docs/decisions/decision-log.md (newest first; use the next free D-id after the newest entry)
      and docs/decisions/adr/ (ADR-001 to ADR-006)
-   - docs/03-hld/PMS-HLD-Part01-Architecture-and-Design.md v1.0 rev 0.7 (all sections approved,
-     D-109 to D-115) – the main source: §4 already cites catalogue ids (XF, WA, MS, CP, EIP, INT),
+   - docs/03-hld/PMS-HLD-Part01-Architecture-and-Design.md v1.0 rev 0.8 (all sections approved,
+     D-109 to D-116) – the main source: §4 already cites catalogue ids (XF, WA, MS, CP, EIP, INT),
      §5–§17 hold the design each row's Realization and Ref point to, §18 lists ADR-001 to ADR-006,
      §19 risks AR-01 to AR-09, §20 open items (OI-P01-01 closes with this document)
    - the approved BRD set v1.0 (D-107) in docs/02-brd/: PMS-BRD.md §8 (NFR-01 to NFR-09), §9
@@ -44,7 +44,7 @@ Part02 and Part03 are not drafted yet: rows realised there get "Part02 / Part03 
 
 2. Inputs for the Part01a:
    - Architecture decisions: D-10, D-11, D-12, D-16, D-18, D-21, D-23, D-26, D-28, D-29, D-57,
-     D-58, D-59, D-61, D-97, D-100, D-101, D-108 to D-115
+     D-58, D-59, D-60, D-61, D-97, D-100, D-101, D-108 to D-116
    - ADR files: ADR-001 frontend composition (D-23); ADR-002 hosting and runtime platform (D-109,
      D-110); ADR-003 identity provider issues tokens and holds passwords (D-109); ADR-004 API
      gateway holds the user tokens (D-110, D-111); ADR-005 edge on the Kubernetes Gateway API with
@@ -68,12 +68,12 @@ Part02 and Part03 are not drafted yet: rows realised there get "Part02 / Part03 
      ADR or D-id. New ADRs only for new significant decisions, after my "yes".
    - Product names appear only where Part01 allows them (realization text may name a product only
      when Part01 §6.2, §7, §9.2 or §11 already names it; otherwise use neutral terms).
-   - Before drafting, read the inputs and ask me the Part01a gaps first. Known gaps to include:
-     (a) group R "AI-assisted delivery" (5 rows) conflicts with PR-03 in a customer-facing
-     document – how to treat it (for example: rename to a neutral delivery-governance title,
-     move to an internal annex, or mark N/A), and the matching row in Part01 §4.1;
-     (b) the reading of "Cloud first" (AP-XF-05) as "cloud-ready" for the on-premises POC;
-     (c) items Part01 leaves open (for example caching, service mesh, multi-AZ, MFA) –
+   - Before drafting, read the inputs and ask me the Part01a gaps first. Group R is already decided
+     (D-116): title "R. Delivery governance & knowledge management (DG)", ids AP-DG-01 to
+     AP-DG-05, tool-neutral wording as in D-116 – the template's group R title and row texts are
+     not used in the document. Known gaps to include:
+     (a) the reading of "Cloud first" (AP-XF-05) as "cloud-ready" for the on-premises POC;
+     (b) items Part01 leaves open (for example caching, service mesh, multi-AZ, MFA) –
      Deferred with the Future reference in Part01 §20.3.
    - Draft in this order, one review at a time: §1–§3, then §4 groups A–F, then groups G–L,
      then groups M–R, then §5–§6 (and the Part01 §4.1 counts).

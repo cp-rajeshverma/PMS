@@ -18,6 +18,7 @@ Date: November 2026
 | 1.0 | 0.5 | 22-Nov-2026 | Rajesh Verma | Draft of §16–§20 (security and NFR, volumetrics, architecture decisions, risks and technical debt, appendix); all sections drafted |
 | 1.0 | 0.6 | 22-Nov-2026 | Rajesh Verma | Open items: OI-P01-03, 05, 06 closed; OI-P01-04 rule added (D-114) |
 | 1.0 | 0.7 | 22-Nov-2026 | Rajesh Verma | PostgreSQL 18 in every environment (§11, AR-05); OI-P01-04 closed (D-115) |
+| 1.0 | 0.8 | 22-Nov-2026 | Rajesh Verma | §4.1 catalogue group R renamed "Delivery governance & knowledge management (DG)" (D-116) |
 
 ### 1.2 Review and approval
 
@@ -42,7 +43,7 @@ The design is technology-neutral wherever the replatforming goal requires it (D-
 | --- | --- | --- |
 | 1 | PMS-BRD (anchor), PMS-BRD-M1-EIMS, PMS-BRD-M2-AMS, PMS-BRD-M3-LMS, PMS-BRD-M4-SMS, PMS-BRD-M5-SUP | v1.0 – approved baseline (D-107) |
 | 2 | UX Journey Index and 17 UX Summaries (with HTML mockups) | v1.1 (D-105) |
-| 3 | Decision log / ADRs | D-01 to D-115; ADR-001 to ADR-006 |
+| 3 | Decision log / ADRs | D-01 to D-116; ADR-001 to ADR-006 |
 
 **Design documents**
 
@@ -140,7 +141,7 @@ Counts are filled when Part01a is assessed (open item OI-P01-01). Key items are 
 | O. Resilience & availability (RES) | Part01a | Part01a | Part01a | Part01a | Outbox and nightly reconciliation; per-card dashboard loading (FR-CMN-008) |
 | P. DevOps & continuous delivery (DEV) | Part01a | Part01a | Part01a | Part01a | Path-filtered pipelines per service (D-18) |
 | Q. Testing & quality (QA) | Part01a | Part01a | Part01a | Part01a | Unit, component and container-based integration tests; end-to-end UI tests; load tests (D-11, D-16) |
-| R. AI-assisted delivery (AI) | Part01a | Part01a | Part01a | Part01a | Assessed in Part01a |
+| R. Delivery governance & knowledge management (DG) | Part01a | Part01a | Part01a | Part01a | Every artifact reviewed and approved by an accountable person; traceable inputs and decisions (OBJ-05, KPI-05); approved documents only as delivery inputs (D-116) |
 
 ### 4.2 X-First principles
 

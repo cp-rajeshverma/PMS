@@ -5,7 +5,7 @@
 | Document | docs/03-hld/PMS-HLD-Part01-Architecture-and-Design.md |
 | Template | templates/03-hld/hld-part01-architecture-and-design-template.md |
 | Used | 22 Nov 2026 (session started 21 Nov) |
-| Outcome | PMS-HLD-Part01-Architecture-and-Design v1.0 rev 0.5 – all 20 sections reviewed and approved section by section (D-109 to D-113); now rev 0.7 (open items, D-114; PostgreSQL 18, D-115); final approval with the HLD set at the Stage 3 gate. ADR-002 to ADR-006 written; ADR-001 to ADR-006 carried into Part01a §5. Open item OI-P01-01 (Part01a) |
+| Outcome | PMS-HLD-Part01-Architecture-and-Design v1.0 rev 0.5 – all 20 sections reviewed and approved section by section (D-109 to D-113); now rev 0.8 (open items, D-114; PostgreSQL 18, D-115; group R renamed, D-116); final approval with the HLD set at the Stage 3 gate. ADR-002 to ADR-006 written; ADR-001 to ADR-006 carried into Part01a §5. Open item OI-P01-01 (Part01a) |
 | Status | Used – document drafted and reviewed |
 
 ## Prompt
