@@ -16,6 +16,7 @@ Date: November 2026
 | 1.0 | 0.3 | 22-Nov-2026 | Rajesh Verma | Draft of §9–§10 (authentication and authorization; logging and observability) |
 | 1.0 | 0.4 | 22-Nov-2026 | Rajesh Verma | Draft of §11–§15 (technology stack, data architecture summary, data migration, performance test strategy, environment strategy); edge product replaced (§6.2, §11); role change ends sessions (D-111) |
 | 1.0 | 0.5 | 22-Nov-2026 | Rajesh Verma | Draft of §16–§20 (security and NFR, volumetrics, architecture decisions, risks and technical debt, appendix); all sections drafted |
+| 1.0 | 0.6 | 22-Nov-2026 | Rajesh Verma | Open items: OI-P01-03, 05, 06 closed; OI-P01-04 rule added (D-114) |
 
 ### 1.2 Review and approval
 
@@ -40,7 +41,7 @@ The design is technology-neutral wherever the replatforming goal requires it (D-
 | --- | --- | --- |
 | 1 | PMS-BRD (anchor), PMS-BRD-M1-EIMS, PMS-BRD-M2-AMS, PMS-BRD-M3-LMS, PMS-BRD-M4-SMS, PMS-BRD-M5-SUP | v1.0 – approved baseline (D-107) |
 | 2 | UX Journey Index and 17 UX Summaries (with HTML mockups) | v1.1 (D-105) |
-| 3 | Decision log / ADRs | D-01 to D-113; ADR-001 to ADR-006 |
+| 3 | Decision log / ADRs | D-01 to D-114; ADR-001 to ADR-006 |
 
 **Design documents**
 
@@ -513,7 +514,7 @@ flowchart TB
 
 | Node | Type (VM / container / PaaS / SaaS) | Execution environment (runtime, version) | Deployed artifacts | Zone / subnet | Scaling |
 | --- | --- | --- | --- | --- | --- |
-| Workstation (on-premises POC) | Physical machine, Windows | Docker Desktop with single-node Kubernetes, or a multi-node Kubernetes-in-Docker cluster for non-production (versions in §11) | All PMS containers, observability stack, self-hosted runner | – | Fixed; capacity per OI-P01-03 |
+| Workstation (on-premises POC) | Physical machine, Windows | Docker Desktop with single-node Kubernetes, or a multi-node Kubernetes-in-Docker cluster for non-production (versions in §11) | All PMS containers, observability stack, self-hosted runner | – | Fixed; at least 32 GB memory (OI-P01-03 closed) |
 | Edge | Container | Envoy Gateway (Gateway API) with Coraza WAF and OWASP Core Rule Set | Gateway and HTTPRoute resources per environment host name | Edge | 1 |
 | Static web | Container | nginx | Shell-ui build (module packages built in, ADR-001) | Application | Prod 2, Dev / QA 1 |
 | API gateway | Container | Java runtime, Spring Cloud Gateway | `platform/gateway` image | Application | Prod 2, Dev / QA 1 |
@@ -1123,7 +1124,7 @@ Detailed rules go into the security standard (docs/04-standards/, D-61, D-108).
 | --- | --- | --- | --- |
 | 1 | Infrastructure-level security | Only the edge is reachable; zones separated; least-privilege platform access | Edge with WAF as the single entry; network policies allowing only the §6.3 flows; namespace-scoped deployment account; identity-provider console and health / metrics endpoints never exposed (§6.3, §9.8); AWS: security groups, private subnets |
 | 2 | Application-level security | Every request authenticated and checked for role and data scope | Gateway session with relayed access token; token validated at gateway and service; role, permission and data scope in the service and query; neutral refusal page; no self-approval (§9.7, FR-UM-013, FR-UM-015, BR-CMN-08) |
-| 3 | Data at rest | Passwords only in the identity provider, hashed; sensitive data protected like the record | No passwords in PMS (ADR-003); database files on the workstation drive, which must be encrypted by the operating system (to be confirmed, OI-P01-06); AWS: managed database and volume encryption with cloud key management; backups on a separate drive, encrypted likewise (OI-P01-06); audit values protected like the record (FR-ADM-104) |
+| 3 | Data at rest | Passwords only in the identity provider, hashed; sensitive data protected like the record | No passwords in PMS (ADR-003); database files on the workstation drive, encrypted by the operating system (confirmed, OI-P01-06 closed); AWS: managed database and volume encryption with cloud key management; backups on a separate drive, encrypted likewise; audit values protected like the record (FR-ADM-104) |
 | 4 | Data in transit | Encrypted between browser and edge; protected inside the platform | TLS 1.2+ (TLS 1.3 preferred) at the edge with HSTS; inside the local cluster, traffic behind the edge is not encrypted and is limited by network policies (POC limitation, §19); AWS: TLS to RDS |
 | 5 | Secure environment access | Only approved people and pipelines change environments | Deployment only through the pipeline (§15); Prod and AWS simulation: no developer database access, no debug logging; observability access for IT operations only (§10.8) |
 | 6 | Safe coding and deployment | Secure development life cycle | Contract validation of every request; parameterised queries only; dependency, code, image and secret scans with no high or critical findings as a gate (§15); signed, immutable image tags; non-root, read-only containers; monthly patching (D-112) |
@@ -1215,7 +1216,7 @@ BRD risks with an architecture response: R-01 and R-03 (outbox, idempotent consu
 | AR-01 | The on-premises POC runs on one workstation: availability depends on the machine being on; capacity is shared by three environments (OI-P01-03) | POC availability below NFR-02; slow environments | Scale Dev / QA to zero when unused; availability verified in the AWS production simulation (D-110) |
 | AR-02 | No shared session store: gateway instances use session affinity; a back-channel logout is relayed between instances | A request in flight can fail on gateway failover; a missed logout lasts at most the access-token lifetime (5 minutes) | Technical debt: shared in-memory session store and cache in a future phase (D-110) |
 | AR-03 | Database and broker run as single nodes | Restart or restore needed on failure (RTO 8 h) | Persistent storage, daily backup, outbox and reconciliation; HA (replica, multi-AZ) Future |
-| AR-04 | Inside the local cluster, traffic behind the edge is not encrypted, and platform secrets have limited encryption at rest on the local container platform | Lower protection on the workstation than on AWS | Synthetic data only; network policies; workstation and backup drive encryption (OI-P01-06); AWS uses TLS and cloud key management; mutual TLS / service mesh Future |
+| AR-04 | Inside the local cluster, traffic behind the edge is not encrypted, and platform secrets have limited encryption at rest on the local container platform | Lower protection on the workstation than on AWS | Synthetic data only; network policies; encrypted workstation and backup drives; AWS uses TLS and cloud key management; mutual TLS / service mesh Future |
 | AR-05 | Brand-new major versions of the backend framework and the database (§11) may have early defects; the database version may not yet be offered by the AWS managed database service | Rework or a version step back | Monthly patching; fall back to the previous minor if blocked; RDS availability checked before the AWS simulation (OI-P01-04) |
 | AR-06 | The WAF is loaded into the edge proxy as a dynamic module (§11); loading by image volume needs Kubernetes 1.35 or later | WAF may not load on an older local Kubernetes version | Check the local Kubernetes version; otherwise load the module with an init container or a custom image (OI-P01-05) |
 | AR-07 | Local performance results are indicative only (load generator and system share one machine) | Wrong capacity conclusions | Final verification in the AWS production simulation (§14.6) |
@@ -1230,10 +1231,10 @@ BRD risks with an architecture response: R-01 and R-03 (outbox, idempotent consu
 | --- | --- | --- | --- |
 | OI-P01-01 | Part01a assessment: counts per group in §4.1 and confirmation of the catalogue ids in §4.2 to §4.4 | Enterprise Architect | Part01a |
 | OI-P01-02 | Provisioning approach (infrastructure and environments as code) – closed by D-110: deployment charts for PMS, infrastructure code for AWS (§11) | Enterprise Architect | Closed 22 Nov 2026 |
-| OI-P01-03 | Capacity of the local workstation (CPU, memory, disk) for three namespaces, the observability stack and the local container platform; recommended at least 32 GB memory | Product owner | Before the Dev environment is built |
-| OI-P01-04 | Database version of §11 available on the AWS managed database service; otherwise the previous major version on AWS (D-112) | Enterprise Architect | Before the AWS production simulation |
-| OI-P01-05 | Local Kubernetes version supports loading the WAF module (1.35 or later), or an alternative loading method is chosen | Enterprise Architect | Before the Dev environment is built |
-| OI-P01-06 | Operating-system encryption of the workstation drive and the backup drive confirmed (data at rest, §16.1) | Product owner | Before the Dev environment is built |
+| OI-P01-03 | Capacity of the local workstation (CPU, memory, disk) for three namespaces, the observability stack and the local container platform; at least 32 GB memory – confirmed by the product owner | Product owner | Closed 22 Nov 2026 |
+| OI-P01-04 | Database version of §11 available on the AWS managed database service (on 22 Nov 2026 offered only in the provider's preview environment); otherwise the previous major version on AWS (D-112). Rule meanwhile: schema scripts use no feature new in that version, so they run on both versions (D-114) | Enterprise Architect | Before the AWS production simulation |
+| OI-P01-05 | Local Kubernetes version supports loading the WAF module (1.35 or later) – closed by D-114: the local container platform is kept at its latest release (Kubernetes 1.36 in current releases); the server version is verified as the first step of building the Dev environment; a multi-node local cluster definition also uses 1.35 or later | Enterprise Architect | Closed 22 Nov 2026 |
+| OI-P01-06 | Operating-system encryption of the workstation drive and the backup drive (data at rest, §16.1) – confirmed by the product owner | Product owner | Closed 22 Nov 2026 |
 
 ### 20.2 Glossary
 
