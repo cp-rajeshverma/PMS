@@ -8,7 +8,7 @@ neutral_terms:                 # applied to every text shown in the dashboard
   "Claude Docs": "working document"
   "Claude Project": "project workspace"
   "NPQMS": "external reference"
-neutral_patterns: ["token"]       # texts matching these (e.g. D-89, token-logging commits) are shown as neutral_generic
+neutral_patterns: ["token log", "token-log", "token logging", "token consumption", "token usage", "token utilization", "token reading", "token data", "token sections", "token step", "token figures"]   # usage-logging wording only (e.g. D-89, D-96, token-log commits) → neutral_generic; security terms (access tokens) stay visible (narrowed 2026-11-22)
 neutral_generic: "Internal delivery-tooling decision / housekeeping"   # used when text still names tools or agents
 display_names: { driven_by: { Manual: Manual, BMAD: Agile } }
 planned_dates: TBD             # to be decided based on progress
@@ -55,6 +55,7 @@ mapping:   # repo path glob -> stage / artifact type
   - { glob: "memory/sessions/*.md",                 feed: activity, link: false }   # summarised only, never linked (customer-facing)
   - { glob: "docs/02-brd/PMS-BRD.md#§10",           feed: risks }
   - { glob: "docs/02-brd/*.md#Open items",          feed: findings }
+  - { glob: "docs/03-hld/*.md#Open items",          feed: findings }   # HLD open items (OI-P01-…), added 2026-11-22
   - { glob: "_bmad-output/planning-artifacts/**",   stage: 4, type: BMAD-planning }
   - { glob: "_bmad-output/implementation-artifacts/**", stage: 5, type: Story }
   - { glob: "_bmad-output/test-artifacts/**",       stage: 6, type: Test }
@@ -76,6 +77,9 @@ exclude:   # never indexed or linked
   - "CLAUDE.md"           # agent instructions (customer-facing view)
   - "memory/**"           # agent memory and session notes (summarised only)
   - ".gitignore"
+  - "docs/00-prompt/**"   # internal session prompts (D-83, D-95)
+  - "templates/00-prompt/**"   # internal prompt templates (D-95)
+  - "Claude outputs/**"   # internal screenshots folder at the repository root
 
 id_patterns:   # used for coverage / traceability
   screen: "SCR-[A-Z]+-\\d{2}"

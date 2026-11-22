@@ -1,5 +1,12 @@
 # SMD changelog
 
+## 2026-11-22 23:30 IST – correction (configuration fixes; D-115)
+
+- Configuration: HLD open items now feed the findings list (`docs/03-hld/*.md#Open items`); the neutral pattern is limited to usage-logging wording, so security terms in the HLD and ADR titles are shown as written; internal prompt and screenshot folders excluded.
+- Findings: OI-P01-01 to OI-P01-06 added (1 open, Low; 5 closed). ADR-003 and ADR-004 titles shown as written.
+- D-115: PostgreSQL 18 in every environment, matching Amazon RDS; HLD Part01 rev 0.7. Health Green (unchanged).
+- Data: 121 decisions / ADRs, 22 open items / findings (1 open), 0 broken links.
+
 ## 2026-11-22 22:46 IST – refresh (Stage 3 started; HLD Part01 all sections approved)
 
 - Refreshed from commit `f45c9d4` (15 commits since `fd2e5eb`: `10e70d5` to `f45c9d4`); working tree holds staged, uncommitted renames of internal working files outside this view.
