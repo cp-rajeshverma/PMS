@@ -1,12 +1,12 @@
 {
  "meta": {
   "smd_version": "1.0",
-  "generated_at": "2026-11-21T14:52+05:30",
+  "generated_at": "2026-11-22T22:46+05:30",
   "generated_by": "SMD update run",
   "repo_root": "D:\\POC\\PMS",
-  "repo_commit": "fd2e5eb",
-  "working_tree_note": "Clean working tree at fd2e5eb.",
-  "previous_snapshot": "snapshots/2026-11-20_2319.json",
+  "repo_commit": "f45c9d4",
+  "working_tree_note": "Refreshed at f45c9d4. The working tree also holds staged, uncommitted renames of internal working files (docs/00-prompt, outside this view); no effect on the dashboard.",
+  "previous_snapshot": "snapshots/2026-11-21_1452.json",
   "repo_rel_prefix": "../../",
   "remote_base_url": "https://github.com/cp-rajeshverma/PMS/blob/main/",
   "audience": "customer-facing (rule PR-03 applied)",
@@ -52,6 +52,12 @@
     "decisions": 107,
     "commits": 102,
     "artifacts_done": 41
+   },
+   {
+    "date": "2026-11-22",
+    "decisions": 120,
+    "commits": 117,
+    "artifacts_done": 46
    }
   ]
  },
@@ -71,9 +77,9 @@
    "LMS": "Leave",
    "SMS": "Salary"
   },
-  "target_go_live": null,
+  "target_go_live": "2027-01-29",
   "health": "G",
-  "health_reason": "Stage 2 (Business Requirements) completed: BRD set signed off as approved baseline v1.0 (D-107) after the stakeholder review (D-106) and UX v1.1 (D-105). No open findings or open items. Stage 3 (Solution Design) is next; planned dates to be set based on progress."
+  "health_reason": "Stage 3 Solution Design in progress (10%): HLD Part01 Architecture and design drafted with all 20 sections approved section by section (D-109 to D-114); final approval with the HLD set at the Stage 3 gate. Stage 3 planned 23 Nov – 11 Dec 2026 (D-108), on track. No Critical or High findings open; two HLD open items are tracked in Part01 (OI-P01-01, OI-P01-04)."
  },
  "people": [
   {
@@ -548,20 +554,20 @@
      "name": "Solution Design (HLD)",
      "repo_step": "Step 4",
      "driven_by": "Manual",
-     "status": "Not Started",
+     "status": "In Progress",
      "owner": "Rajesh Verma",
-     "planned_start": null,
-     "planned_end": null,
-     "actual_start": null,
+     "planned_start": "2026-11-23",
+     "planned_end": "2026-12-11",
+     "actual_start": "2026-11-21",
      "actual_end": null,
-     "percent": 0,
-     "source": "config",
+     "percent": 10,
+     "source": "declared",
      "gate": {
       "criteria": [
        {
-        "text": "HLD Part01 / Part01a approved",
+        "text": "HLD Part01 / Part01a approved – Part01 all sections approved (D-109 to D-114), final approval at the gate; Part01a not started",
         "met": false,
-        "evidence": null
+        "evidence": "docs/03-hld/PMS-HLD-Part01-Architecture-and-Design.md"
        },
        {
         "text": "HLD Part02 (functional) set approved",
@@ -593,9 +599,9 @@
        "id": "S3.1",
        "name": "Part01 Architecture & design, Part01a Principles, patterns & decisions",
        "agent": null,
-       "status": "Not Started",
-       "date": null,
-       "artifact": null
+       "status": "In Progress",
+       "date": "2026-11-22",
+       "artifact": "PMS-HLD-Part01-Architecture-and-Design"
       },
       {
        "id": "S3.2",
@@ -632,9 +638,23 @@
      ],
      "milestones": [
       {
+       "id": "M3.0",
+       "name": "Stage 3 planned: 23 Nov – 11 Dec 2026, target go-live 29 Jan 2027 (D-108)",
+       "planned": null,
+       "actual": "2026-11-21",
+       "status": "Completed"
+      },
+      {
+       "id": "M3.0b",
+       "name": "HLD Part01 Architecture and design – all sections approved (D-109 to D-113)",
+       "planned": null,
+       "actual": "2026-11-22",
+       "status": "Completed"
+      },
+      {
        "id": "M3.1",
        "name": "HLD approved – ready for agile delivery",
-       "planned": null,
+       "planned": "2026-12-11",
        "actual": null,
        "status": "Not Started"
       }
@@ -2335,28 +2355,161 @@
    "started": "2026-11-20"
   },
   {
+   "code": "PMS-GOV-ADR002",
+   "name": "ADR-002 Hosting and runtime platform – on-premises Kubernetes for the POC, AWS as the cloud target",
+   "type": "ADR",
+   "stage": 3,
+   "step": "HLD Part01",
+   "version": "1.0",
+   "status": "Approved",
+   "started": "2026-11-22",
+   "completed": "2026-11-22",
+   "last_updated": "2026-11-22",
+   "path": "docs/decisions/adr/ADR-002-hosting-and-runtime-platform.md",
+   "source": "declared",
+   "reviewers": [
+    "Rajesh Verma"
+   ],
+   "depends_on": [
+    "PMS-HLD-Part01-Architecture-and-Design"
+   ],
+   "summary": "POC runs on-premises on Kubernetes; AWS (EKS, RDS for PostgreSQL, ap-south-1) is the cloud target; Azure no longer a target (amends D-11 for hosting). Decision log ref D-109.",
+   "files": [],
+   "module": "ALL",
+   "pipeline": "PMS-TX-01",
+   "author": "Rajesh Verma",
+   "planned": null
+  },
+  {
+   "code": "PMS-GOV-ADR003",
+   "name": "ADR-003 Identity provider issues the sign-in credentials and holds passwords",
+   "type": "ADR",
+   "stage": 3,
+   "step": "HLD Part01",
+   "version": "1.0",
+   "status": "Approved",
+   "started": "2026-11-22",
+   "completed": "2026-11-22",
+   "last_updated": "2026-11-22",
+   "path": "docs/decisions/adr/ADR-003-identity-provider-tokens-and-passwords.md",
+   "source": "declared",
+   "reviewers": [
+    "Rajesh Verma"
+   ],
+   "depends_on": [
+    "PMS-HLD-Part01-Architecture-and-Design"
+   ],
+   "summary": "The identity provider signs the JWT access credentials (OIDC) and stores and hashes passwords; PMS services hold no passwords. Decision log ref D-109.",
+   "files": [],
+   "module": "ALL",
+   "pipeline": "PMS-TX-01",
+   "author": "Rajesh Verma",
+   "planned": null
+  },
+  {
+   "code": "PMS-GOV-ADR004",
+   "name": "ADR-004 API gateway holds the user session credentials – browser gets only a session cookie",
+   "type": "ADR",
+   "stage": 3,
+   "step": "HLD Part01",
+   "version": "1.0",
+   "status": "Approved",
+   "started": "2026-11-22",
+   "completed": "2026-11-22",
+   "last_updated": "2026-11-22",
+   "path": "docs/decisions/adr/ADR-004-gateway-holds-user-tokens.md",
+   "source": "declared",
+   "reviewers": [
+    "Rajesh Verma"
+   ],
+   "depends_on": [
+    "PMS-HLD-Part01-Architecture-and-Design"
+   ],
+   "summary": "The gateway is the confidential OIDC client and keeps the credentials server side; the browser holds only an HttpOnly session cookie with CSRF protection. Decision log ref D-110, D-111.",
+   "files": [],
+   "module": "ALL",
+   "pipeline": "PMS-TX-01",
+   "author": "Rajesh Verma",
+   "planned": null
+  },
+  {
+   "code": "PMS-GOV-ADR005",
+   "name": "ADR-005 Edge on the Kubernetes Gateway API with a WAF rule set",
+   "type": "ADR",
+   "stage": 3,
+   "step": "HLD Part01",
+   "version": "1.0",
+   "status": "Approved",
+   "started": "2026-11-22",
+   "completed": "2026-11-22",
+   "last_updated": "2026-11-22",
+   "path": "docs/decisions/adr/ADR-005-edge-gateway-api-with-waf.md",
+   "source": "declared",
+   "reviewers": [
+    "Rajesh Verma"
+   ],
+   "depends_on": [
+    "PMS-HLD-Part01-Architecture-and-Design"
+   ],
+   "summary": "Envoy Gateway with the Coraza WAF and OWASP Core Rule Set replaces the retired ingress-nginx. Decision log ref D-112.",
+   "files": [],
+   "module": "ALL",
+   "pipeline": "PMS-TX-01",
+   "author": "Rajesh Verma",
+   "planned": null
+  },
+  {
+   "code": "PMS-GOV-ADR006",
+   "name": "ADR-006 AMS → SMS hand-over by transactional outbox, idempotent consumer and nightly reconciliation",
+   "type": "ADR",
+   "stage": 3,
+   "step": "HLD Part01",
+   "version": "1.0",
+   "status": "Approved",
+   "started": "2026-11-22",
+   "completed": "2026-11-22",
+   "last_updated": "2026-11-22",
+   "path": "docs/decisions/adr/ADR-006-ams-sms-outbox-and-reconciliation.md",
+   "source": "declared",
+   "reviewers": [
+    "Rajesh Verma"
+   ],
+   "depends_on": [
+    "PMS-HLD-Part01-Architecture-and-Design"
+   ],
+   "summary": "Events written with the attendance change, consumed once by SMS, dead-letter queue, nightly reconciliation repairs any gap. Decision log ref D-16, D-113.",
+   "files": [],
+   "module": "ALL",
+   "pipeline": "PMS-TX-01",
+   "author": "Rajesh Verma",
+   "planned": null
+  },
+  {
    "code": "PMS-HLD-Part01-Architecture-and-Design",
    "name": "HLD Part01 Architecture and design",
    "type": "HLD",
    "stage": 3,
    "step": "HLD Part01",
-   "version": "—",
-   "status": "Planned",
+   "version": "v1.0 rev 0.6",
+   "status": "In Review",
    "completed": null,
-   "last_updated": null,
-   "path": null,
-   "source": "config",
+   "last_updated": "2026-11-22",
+   "path": "docs/03-hld/PMS-HLD-Part01-Architecture-and-Design.md",
+   "source": "declared",
    "depends_on": [
-    "PMS-BRD"
+    "PMS-BRD",
+    "PMS-TPL-HLD-PART01-ARCHITECTURE-AND-DESIGN"
    ],
-   "summary": "To be written from the frozen HLD templates after the BRD set is approved.",
-   "reviewers": [],
+   "summary": "Overall architecture and design (20 sections): microservices with one database per module, API gateway, OIDC identity provider, AMS → SMS events with outbox and nightly reconciliation; on-premises Kubernetes POC (Docker Desktop) with AWS as the cloud target; system, network, deployment and integration architecture; authentication and authorization; logging and observability; technology stack; performance test and environment strategy; security, NFR realization, volumetrics, risks. All sections approved section by section (D-109 to D-113); open items updated (D-114); final approval with the HLD set at the Stage 3 gate.",
+   "reviewers": [
+    "Rajesh Verma"
+   ],
    "files": [],
    "module": "ALL",
    "pipeline": "PMS-TX-01",
    "author": "Rajesh Verma",
-   "planned": null,
-   "started": null
+   "planned": "2026-12-11",
+   "started": "2026-11-22"
   },
   {
    "code": "PMS-HLD-Part01a-Principles-Patterns-Decisions",
@@ -2698,6 +2851,20 @@
    "verdict": "Approved",
    "path": "docs/02-brd/reviews/PMS-BRD-Stakeholder-Review.md",
    "title": "BRD set stakeholder review and sign-off (D-106, D-107)"
+  },
+  {
+   "id": "RV-12",
+   "type": "peer",
+   "artifacts": [
+    "PMS-HLD-Part01-Architecture-and-Design"
+   ],
+   "reviewers": [
+    "Rajesh Verma"
+   ],
+   "date": "2026-11-22",
+   "verdict": "Approved",
+   "path": "docs/decisions/decision-log.md",
+   "title": "HLD Part01 section-by-section review (D-109 to D-114)"
   }
  ],
  "findings": [
@@ -2949,6 +3116,83 @@
   }
  ],
  "decisions": [
+  {
+   "id": "D-114",
+   "title": "HLD Part01 open items updated",
+   "date": "2026-11-22",
+   "author": "Rajesh Verma",
+   "area": "Architecture",
+   "stage": 3,
+   "summary": "Workstation capacity and drive encryption confirmed; local Kubernetes version rule (1.35 or later, verified when the Dev environment is built); PostgreSQL 19 on Amazon RDS still open – schema scripts must also run on PostgreSQL 18 until it is offered; Part01 rev 0.6.",
+   "path": "docs/decisions/decision-log.md",
+   "status": "Approved"
+  },
+  {
+   "id": "D-113",
+   "title": "HLD Part01 §16–§20 approved – all Part01 sections reviewed",
+   "date": "2026-11-22",
+   "author": "Rajesh Verma",
+   "area": "Architecture",
+   "stage": 3,
+   "summary": "Security guidelines, OWASP Top 10 mapping, NFR realization, volumetrics, architecture risks AR-01 to AR-09, glossary and future scope; ADR-004, ADR-005 and ADR-006 accepted; ADR-001 to ADR-006 carried into the Part01a register; final approval of Part01 with the HLD set at the Stage 3 gate.",
+   "path": "docs/decisions/decision-log.md",
+   "status": "Approved"
+  },
+  {
+   "id": "D-112",
+   "title": "HLD Part01 §11–§15 approved – technology stack, data, performance tests, environments",
+   "date": "2026-11-22",
+   "author": "Rajesh Verma",
+   "area": "Architecture",
+   "stage": 3,
+   "summary": "Latest generally available versions with long-term-support runtimes (Java 25, Node.js 26, Spring Boot 4.2, Keycloak 26.8, Apache Artemis, PostgreSQL 19, React 19.3, TypeScript 7); Envoy Gateway with Coraza WAF replaces the retired ingress-nginx; schema migrations per service; backups and restore tests; seed data; performance test strategy; trunk-based CI/CD with quality gates; JUnit 6.",
+   "path": "docs/decisions/decision-log.md",
+   "status": "Approved"
+  },
+  {
+   "id": "D-111",
+   "title": "HLD Part01 §9–§10 approved – authentication, authorization, logging and observability",
+   "date": "2026-11-22",
+   "author": "Rajesh Verma",
+   "area": "Architecture",
+   "stage": 3,
+   "summary": "Short-lived access credentials and session limits (30 minutes idle, 10 hours absolute) as deployment settings; user credentials relayed for user calls, service credentials for system calls; one identity-provider realm per environment with roles EMPLOYEE, MANAGER, ADMIN; a role change ends the user's sessions; log types and retention, flow reference format, alerts by email to IT operations.",
+   "path": "docs/decisions/decision-log.md",
+   "status": "Approved"
+  },
+  {
+   "id": "D-110",
+   "title": "HLD Part01 §5–§8 approved – functional, system, deployment and integration architecture",
+   "date": "2026-11-22",
+   "author": "Rajesh Verma",
+   "area": "Architecture",
+   "stage": 3,
+   "summary": "POC on Docker Desktop Kubernetes (or a multi-node local cluster for non-production), production simulated on AWS; Dev, QA and Prod as namespaces; network zones by namespaces and network policies; observability with OpenTelemetry, Loki, Prometheus, Tempo, Grafana; gateway holds the user session; reconciliation inside SMS; no cache server; CI/CD with GitHub Actions and Helm; Terraform for AWS; integration catalogue and resilience defaults.",
+   "path": "docs/decisions/decision-log.md",
+   "status": "Approved"
+  },
+  {
+   "id": "D-109",
+   "title": "HLD Part01 §1–§4 approved; hosting, identity and platform decisions",
+   "date": "2026-11-22",
+   "author": "Rajesh Verma",
+   "area": "Architecture",
+   "stage": 3,
+   "summary": "POC deployed on-premises first with AWS as the later cloud target (Azure dropped, amends D-11 for hosting); Kubernetes runtime; the identity provider signs the access credentials and stores passwords; network zones; redundancy; data tier; environments; no data migration; no multi-factor sign-in in the POC; ADR-002, ADR-003.",
+   "path": "docs/decisions/decision-log.md",
+   "status": "Approved"
+  },
+  {
+   "id": "D-108",
+   "title": "Stage 3 (Solution Design) plan",
+   "date": "2026-11-21",
+   "author": "Rajesh Verma",
+   "area": "Plan",
+   "stage": 3,
+   "summary": "Stage 3 planned 23 Nov – 11 Dec 2026; target go-live 29 Jan 2027; order of the 14 HLD documents (Part01, Part01a, Part02 anchor, Part03 anchor, then per module Part02 and Part03); the 12 standards written in Stage 3 after the HLD documents.",
+   "path": "docs/decisions/decision-log.md",
+   "status": "Approved"
+  },
   {
    "id": "D-107",
    "title": "Step 3 (BRD, Stage 2) approved – BRD set signed off as approved baseline v1.0",
@@ -4127,6 +4371,61 @@
    "status": "Approved"
   },
   {
+   "id": "ADR-002",
+   "title": "Hosting and runtime platform – on-premises Kubernetes for the POC, AWS as the cloud target",
+   "date": "2026-11-22",
+   "author": "Rajesh Verma",
+   "area": "Architecture",
+   "stage": 3,
+   "status": "Accepted",
+   "path": "docs/decisions/adr/ADR-002-hosting-and-runtime-platform.md",
+   "summary": "POC runs on-premises on Kubernetes; AWS (EKS, RDS for PostgreSQL, ap-south-1) is the cloud target; Azure no longer a target (amends D-11 for hosting). Decision log ref D-109."
+  },
+  {
+   "id": "ADR-003",
+   "title": "Identity provider issues the sign-in credentials and holds passwords",
+   "date": "2026-11-22",
+   "author": "Rajesh Verma",
+   "area": "Architecture",
+   "stage": 3,
+   "status": "Accepted",
+   "path": "docs/decisions/adr/ADR-003-identity-provider-tokens-and-passwords.md",
+   "summary": "The identity provider signs the JWT access credentials (OIDC) and stores and hashes passwords; PMS services hold no passwords. Decision log ref D-109."
+  },
+  {
+   "id": "ADR-004",
+   "title": "API gateway holds the user session credentials – browser gets only a session cookie",
+   "date": "2026-11-22",
+   "author": "Rajesh Verma",
+   "area": "Architecture",
+   "stage": 3,
+   "status": "Accepted",
+   "path": "docs/decisions/adr/ADR-004-gateway-holds-user-tokens.md",
+   "summary": "The gateway is the confidential OIDC client and keeps the credentials server side; the browser holds only an HttpOnly session cookie with CSRF protection. Decision log ref D-110, D-111."
+  },
+  {
+   "id": "ADR-005",
+   "title": "Edge on the Kubernetes Gateway API with a WAF rule set",
+   "date": "2026-11-22",
+   "author": "Rajesh Verma",
+   "area": "Architecture",
+   "stage": 3,
+   "status": "Accepted",
+   "path": "docs/decisions/adr/ADR-005-edge-gateway-api-with-waf.md",
+   "summary": "Envoy Gateway with the Coraza WAF and OWASP Core Rule Set replaces the retired ingress-nginx. Decision log ref D-112."
+  },
+  {
+   "id": "ADR-006",
+   "title": "AMS → SMS hand-over by transactional outbox, idempotent consumer and nightly reconciliation",
+   "date": "2026-11-22",
+   "author": "Rajesh Verma",
+   "area": "Architecture",
+   "stage": 3,
+   "status": "Accepted",
+   "path": "docs/decisions/adr/ADR-006-ams-sms-outbox-and-reconciliation.md",
+   "summary": "Events written with the attendance change, consumed once by SMS, dead-letter queue, nightly reconciliation repairs any gap. Decision log ref D-16, D-113."
+  },
+  {
    "id": "ADR-001",
    "title": "Frontend composition – build-time packages for the POC",
    "date": "2026-11-15",
@@ -4139,6 +4438,158 @@
   }
  ],
  "activity": [
+  {
+   "date": "2026-11-22",
+   "actor": "Rajesh Verma",
+   "kind": "human",
+   "type": "session",
+   "summary": "Working session handoff: HLD Part01 Architecture and design drafted and reviewed section by section (D-109 to D-113); open items updated (D-114); ADR-002 to ADR-006; next: HLD Part01a Principles, patterns and decisions.",
+   "ref": null
+  },
+  {
+   "date": "2026-11-22",
+   "actor": "Rajesh Verma",
+   "kind": "human",
+   "type": "status-change",
+   "summary": "HLD Part01 all sections approved; Stage 3 Solution Design at 10%.",
+   "ref": "#/stage/3"
+  },
+  {
+   "date": "2026-11-22",
+   "actor": "Rajesh Verma",
+   "kind": "human",
+   "type": "commit",
+   "summary": "Internal delivery-tooling decision / housekeeping",
+   "ref": "f45c9d4"
+  },
+  {
+   "date": "2026-11-22",
+   "actor": "Rajesh Verma",
+   "kind": "human",
+   "type": "commit",
+   "summary": "hld: Part01 open items (D-114) – OI-P01-03, 05, 06 closed; OI-P01-04 rule",
+   "ref": "9df429f"
+  },
+  {
+   "date": "2026-11-22",
+   "actor": "Rajesh Verma",
+   "kind": "human",
+   "type": "commit",
+   "summary": "hld: Part01 §16–§20 approved (D-113) – all sections reviewed; ADR-004 to ADR-006; prompt outcome and session handoff",
+   "ref": "7b6c197"
+  },
+  {
+   "date": "2026-11-22",
+   "actor": "Rajesh Verma",
+   "kind": "human",
+   "type": "commit",
+   "summary": "hld: Part01 §11–§15 approved (D-112) – technology stack, data, migration, performance tests, environments; edge replaced; role change ends sessions",
+   "ref": "f94f55b"
+  },
+  {
+   "date": "2026-11-22",
+   "actor": "Rajesh Verma",
+   "kind": "human",
+   "type": "commit",
+   "summary": "hld: Part01 §9–§10 approved (D-111) – authentication and authorization, logging and observability",
+   "ref": "2fe2b3d"
+  },
+  {
+   "date": "2026-11-22",
+   "actor": "Rajesh Verma",
+   "kind": "human",
+   "type": "commit",
+   "summary": "hld: Part01 §5–§8 approved (D-110) – functional, system, deployment and integration architecture",
+   "ref": "9e53b81"
+  },
+  {
+   "date": "2026-11-22",
+   "actor": "Rajesh Verma",
+   "kind": "human",
+   "type": "commit",
+   "summary": "Internal delivery-tooling decision / housekeeping",
+   "ref": "2352942"
+  },
+  {
+   "date": "2026-11-21",
+   "actor": "Rajesh Verma",
+   "kind": "human",
+   "type": "session",
+   "summary": "Working session: Stage 3 planned (D-108) – 23 Nov to 11 Dec 2026, target go-live 29 Jan 2027, order of the 14 HLD documents; dashboard overview decks published; HLD Part01 session prompt prepared.",
+   "ref": null
+  },
+  {
+   "date": "2026-11-21",
+   "actor": "Rajesh Verma",
+   "kind": "human",
+   "type": "status-change",
+   "summary": "Stage 3 Solution Design started with the stage plan (D-108).",
+   "ref": "#/stage/3"
+  },
+  {
+   "date": "2026-11-21",
+   "actor": "Rajesh Verma",
+   "kind": "human",
+   "type": "commit",
+   "summary": "hld: Stage 3 plan (D-108) and HLD Part01 prompt pair",
+   "ref": "8d55fc8"
+  },
+  {
+   "date": "2026-11-21",
+   "actor": "Rajesh Verma",
+   "kind": "human",
+   "type": "commit",
+   "summary": "smd: presentation deck added",
+   "ref": "a350171"
+  },
+  {
+   "date": "2026-11-21",
+   "actor": "Rajesh Verma",
+   "kind": "human",
+   "type": "commit",
+   "summary": "Internal delivery-tooling decision / housekeeping",
+   "ref": "85cd8fe"
+  },
+  {
+   "date": "2026-11-21",
+   "actor": "Rajesh Verma",
+   "kind": "human",
+   "type": "commit",
+   "summary": "docs(smd): overview decks as dated PDF snapshots (customer-facing, internal)",
+   "ref": "76a74ea"
+  },
+  {
+   "date": "2026-11-21",
+   "actor": "Rajesh Verma",
+   "kind": "human",
+   "type": "commit",
+   "summary": "chore(smd): Stage 2 milestones completed; internal-section marker no longer rendered as text",
+   "ref": "4f8ddba"
+  },
+  {
+   "date": "2026-11-21",
+   "actor": "Rajesh Verma",
+   "kind": "human",
+   "type": "commit",
+   "summary": "chore(smd): explain template vs generated dashboard (template comment, README build section)",
+   "ref": "d58166b"
+  },
+  {
+   "date": "2026-11-21",
+   "actor": "Rajesh Verma",
+   "kind": "human",
+   "type": "commit",
+   "summary": "chore(smd): execute prompt derives context from the repo, logs its own usage row, asks once for git cleanup; mapping for docs/02-brd/reviews",
+   "ref": "25abaf4"
+  },
+  {
+   "date": "2026-11-21",
+   "actor": "Rajesh Verma",
+   "kind": "human",
+   "type": "commit",
+   "summary": "chore(smd): refresh dashboard 2026-11-21",
+   "ref": "10e70d5"
+  },
   {
    "date": "2026-11-21",
    "actor": "Rajesh Verma",
@@ -5161,21 +5612,21 @@
  ],
  "next_actions": [
   {
-   "item": "Write the HLD session prompts from the frozen templates and plan Stage 3",
+   "item": "Write the Part01a session prompts and draft HLD Part01a (Principles, patterns and decisions; ADR register ADR-001 to ADR-006)",
    "owner": "Rajesh Verma",
    "when": "Next working session",
    "ref": "#/stage/3"
   },
   {
-   "item": "Draft HLD Part01 (Architecture and design) and Part01a (Principles, patterns and decisions)",
+   "item": "Draft HLD Part02 anchor and Part03 anchor, then Part02 and Part03 per module (D-108 order)",
    "owner": "Rajesh Verma",
-   "when": "Stage 3",
+   "when": "Stage 3, by 11 Dec 2026",
    "ref": "#/stage/3"
   },
   {
-   "item": "Set planned dates for Stage 3 onwards and the target go-live",
-   "owner": "Product owner",
-   "when": "Stage 3 start",
+   "item": "Confirm PostgreSQL 19 on Amazon RDS before the first AWS production simulation (HLD open item OI-P01-04)",
+   "owner": "Enterprise Architect",
+   "when": "Before the AWS simulation",
    "ref": "#/stage/3"
   },
   {
@@ -6117,9 +6568,9 @@
    "folder": "docs/decisions",
    "kind": "artifact",
    "ext": ".md",
-   "size": 35507,
+   "size": 45719,
    "created": "2026-11-15",
-   "last_updated": "2026-11-21",
+   "last_updated": "2026-11-22",
    "last_author": "cp-rajeshverma",
    "module": "ALL",
    "links": [
@@ -6307,96 +6758,174 @@
    "links": [
     "PMS-TPL-HLD-PART03-SUP-DATAMODEL"
    ]
+  },
+  {
+   "path": "docs/03-hld/PMS-HLD-Part01-Architecture-and-Design.md",
+   "folder": "docs/03-hld",
+   "kind": "artifact",
+   "ext": ".md",
+   "size": 114003,
+   "created": "2026-11-22",
+   "last_updated": "2026-11-22",
+   "last_author": "cp-rajeshverma",
+   "module": "ALL",
+   "links": [
+    "PMS-HLD-Part01-Architecture-and-Design"
+   ]
+  },
+  {
+   "path": "docs/decisions/adr/ADR-002-hosting-and-runtime-platform.md",
+   "folder": "docs/decisions/adr",
+   "kind": "artifact",
+   "ext": ".md",
+   "size": 2407,
+   "created": "2026-11-22",
+   "last_updated": "2026-11-22",
+   "last_author": "cp-rajeshverma",
+   "module": "ALL",
+   "links": [
+    "PMS-GOV-ADR002"
+   ]
+  },
+  {
+   "path": "docs/decisions/adr/ADR-003-identity-provider-tokens-and-passwords.md",
+   "folder": "docs/decisions/adr",
+   "kind": "artifact",
+   "ext": ".md",
+   "size": 1842,
+   "created": "2026-11-22",
+   "last_updated": "2026-11-22",
+   "last_author": "cp-rajeshverma",
+   "module": "ALL",
+   "links": [
+    "PMS-GOV-ADR003"
+   ]
+  },
+  {
+   "path": "docs/decisions/adr/ADR-004-gateway-holds-user-tokens.md",
+   "folder": "docs/decisions/adr",
+   "kind": "artifact",
+   "ext": ".md",
+   "size": 2154,
+   "created": "2026-11-22",
+   "last_updated": "2026-11-22",
+   "last_author": "cp-rajeshverma",
+   "module": "ALL",
+   "links": [
+    "PMS-GOV-ADR004"
+   ]
+  },
+  {
+   "path": "docs/decisions/adr/ADR-005-edge-gateway-api-with-waf.md",
+   "folder": "docs/decisions/adr",
+   "kind": "artifact",
+   "ext": ".md",
+   "size": 1688,
+   "created": "2026-11-22",
+   "last_updated": "2026-11-22",
+   "last_author": "cp-rajeshverma",
+   "module": "ALL",
+   "links": [
+    "PMS-GOV-ADR005"
+   ]
+  },
+  {
+   "path": "docs/decisions/adr/ADR-006-ams-sms-outbox-and-reconciliation.md",
+   "folder": "docs/decisions/adr",
+   "kind": "artifact",
+   "ext": ".md",
+   "size": 2289,
+   "created": "2026-11-22",
+   "last_updated": "2026-11-22",
+   "last_author": "cp-rajeshverma",
+   "module": "ALL",
+   "links": [
+    "PMS-GOV-ADR006"
+   ]
   }
  ],
  "changes_since_last": [
   {
    "entity": "stage",
-   "id": "S2",
-   "change": "Stage 2 Business Requirements completed",
-   "from": "In Progress · 85%",
-   "to": "Completed · 100%"
+   "id": "S3",
+   "change": "Stage 3 Solution Design started; HLD Part01 all sections approved",
+   "from": "Not Started · 0%",
+   "to": "In Progress · 10%"
   },
   {
-   "entity": "gate",
-   "id": "S2",
-   "change": "Gate decision (D-107), all 6 criteria met",
-   "from": "Pending",
-   "to": "Passed"
+   "entity": "stage",
+   "id": "S3",
+   "change": "Planned dates set (D-108)",
+   "from": "TBD",
+   "to": "23 Nov – 11 Dec 2026"
   },
   {
-   "entity": "pipeline",
-   "id": "PMS-TX-01",
-   "change": "Current stage moves to Solution Design (HLD)",
-   "from": "2",
-   "to": "3"
-  },
-  {
-   "entity": "artifact",
-   "id": "PMS-BRD and PMS-BRD-M1-EIMS to M5-SUP",
-   "change": "Signed off as approved baseline (D-107)",
-   "from": "In Review / Draft · rev 0.15 / 0.3",
-   "to": "Approved · v1.0"
+   "entity": "app",
+   "id": "PMS",
+   "change": "Target go-live set (D-108)",
+   "from": "TBD",
+   "to": "29 Jan 2027"
   },
   {
    "entity": "artifact",
-   "id": "PMS-UX-JOURNEYS and 17 screens",
-   "change": "UX set v1.1 approved (D-105)",
-   "from": "1.0",
-   "to": "1.1"
+   "id": "PMS-HLD-Part01-Architecture-and-Design",
+   "change": "Drafted and reviewed section by section (D-109 to D-114); final approval at the Stage 3 gate",
+   "from": "Planned",
+   "to": "In Review · v1.0 rev 0.6"
   },
   {
-   "entity": "review",
-   "id": "RV-10, RV-11",
-   "change": "New reviews: UX v1.1 approval; BRD stakeholder review and sign-off",
-   "from": null,
-   "to": "Approved"
-  },
-  {
-   "entity": "finding",
-   "id": "OI-01, OI-06 to OI-11, F-SMD-01",
-   "change": "Closed (D-105)",
-   "from": "Open",
-   "to": "Resolved"
-  },
-  {
-   "entity": "risk",
-   "id": "R-07",
-   "change": "Mitigated for the POC (D-106)",
-   "from": "Medium",
-   "to": "Low"
+   "entity": "artifact",
+   "id": "PMS-GOV-ADR002..006",
+   "change": "Five new architecture decision records",
+   "from": "—",
+   "to": "Approved (Accepted)"
   },
   {
    "entity": "decision",
-   "id": "D-105 to D-107",
-   "change": "3 new decisions",
-   "from": "104",
-   "to": "107"
+   "id": "D-108..D-114",
+   "change": "Seven new decisions (Stage 3 plan; HLD Part01 sections and open items)",
+   "from": "D-107",
+   "to": "D-114"
   },
   {
-   "entity": "repo_file",
-   "id": "65 files",
-   "change": "Dates, authors and sizes refreshed (UX v1.1, BRD revisions)",
-   "from": null,
-   "to": null
+   "entity": "milestone",
+   "id": "M3.0, M3.0b",
+   "change": "Stage 3 plan and HLD Part01 section approval",
+   "from": "—",
+   "to": "Completed"
+  },
+  {
+   "entity": "review",
+   "id": "RV-12",
+   "change": "HLD Part01 section-by-section review",
+   "from": "—",
+   "to": "Approved"
+  },
+  {
+   "entity": "health",
+   "id": "PMS",
+   "change": "Health unchanged",
+   "from": "G",
+   "to": "G"
   }
  ],
  "data_quality": {
-  "artifacts_declared": 40,
+  "artifacts_declared": 45,
   "artifacts_inferred": 0,
   "artifacts_git": 2,
   "artifacts_config": 7,
-  "neutralised_items": 32,
+  "neutralised_items": 35,
   "warnings": [
    "No artifact carries an smd: front-matter block yet; status comes from document control tables, the decision log and git.",
    "Screenshot (PNG) to screen mapping is inferred from file names (15 of 17 screens; SCR-EIMS-02 and SCR-SH-02 have no screenshot).",
-   "Planned dates and target go-live are not set yet (to be decided based on progress).",
    "Internal tooling folders, working memory and session notes are excluded from this customer-facing view; session activity is summarised only.",
-   "Three repository folders are not covered by this view and are not indexed: an internal working-files folder under docs/ (D-83, now 13 files), an internal screenshots folder at the repository root, and a new internal prompt-templates folder templates/00-prompt/ (D-95, 26 files; declared internal, to be excluded). Proposed mapping: add exclude lines \"docs/00-prompt/**\" and \"templates/00-prompt/**\" (and the screenshots folder) to smd-config.yaml.",
+   "Three repository folders are not covered by this view and are not indexed: an internal working-files folder under docs/ (D-83, now 17 files), an internal screenshots folder at the repository root, and a new internal prompt-templates folder templates/00-prompt/ (D-95, 28 files; declared internal, to be excluded). Proposed mapping: add exclude lines \"docs/00-prompt/**\" and \"templates/00-prompt/**\" (and the screenshots folder) to smd-config.yaml.",
    "FR numbering has gaps in every module BRD (e.g. 31 requirements used in FR-SMS-001..046; 45 in FR-UM-001..015, FR-AUTH-001..030, FR-ADM-101..117), by design; counts are taken from PMS-BRD §11.",
-   "Folder docs/02-brd/reviews/ (consistency report, open-items note, stakeholder review record) is still not covered by the mapping; the consistency report and stakeholder review record are linked as review evidence (RV-09, RV-11). Proposed mapping line: { glob: \"docs/02-brd/reviews/*.md\", stage: 2, type: Review }.",
    "BRD reviewer names are sample names for the POC (D-106); each review decision was confirmed by the product owner.",
-   "Correction 21 Nov: Stage 2 milestones completed (consistency check, UX v1.1, sign-off) were added after the 14:52 refresh."
+   "Planned dates are set for Stage 3 (23 Nov – 11 Dec 2026, D-108) and the target go-live (29 Jan 2027); later stages are still to be planned.",
+   "HLD open items (OI-P01-01 to OI-P01-06 in PMS-HLD-Part01 §20.1; 2 open) are not covered by the findings feed, which reads only the BRD open items. Proposed mapping line: { glob: \"docs/03-hld/*.md#Open items\", feed: findings }.",
+   "The neutral pattern for internal delivery-tooling texts also matches a security term used in the HLD and in two ADR file names (ADR-003, ADR-004); titles and summaries here are worded without it, but the two file paths still contain it. Proposed convention fix: narrow the pattern to the usage-logging wording only, as listed in the internal configuration.",
+   "HLD Part01 carries no smd: front-matter; status and version come from its document control table and the decision log."
   ]
  }
 }

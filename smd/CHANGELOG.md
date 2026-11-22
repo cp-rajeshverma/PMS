@@ -1,5 +1,14 @@
 # SMD changelog
 
+## 2026-11-22 22:46 IST – refresh (Stage 3 started; HLD Part01 all sections approved)
+
+- Refreshed from commit `f45c9d4` (15 commits since `fd2e5eb`: `10e70d5` to `f45c9d4`); working tree holds staged, uncommitted renames of internal working files outside this view.
+- **Stage 3 Solution Design Not Started → In Progress, 0% → 10%**: stage plan (D-108) – planned 23 Nov – 11 Dec 2026, target go-live 29 Jan 2027; PMS-HLD-Part01-Architecture-and-Design drafted, all 20 sections approved section by section (D-109 to D-113), open items updated (D-114), v1.0 rev 0.6, final approval at the Stage 3 gate.
+- Health **Green** (unchanged): no Critical or High findings open; Stage 3 on plan.
+- New: ADR-002 to ADR-006; review RV-12 (HLD Part01 section reviews); milestones M3.0 and M3.0b completed.
+- Data: 54 artifacts (46 approved), 120 decisions / ADRs (+12), 12 reviews (+RV-12), 16 BRD findings (0 open), 8 risks, 87 linked repository files (+6), 0 broken links.
+- Warnings: HLD open items not yet in the findings feed (mapping line proposed); neutral pattern too broad for security wording (narrowing proposed); internal prompt folders still to be excluded. Customer-facing filtering: 35 texts neutralised (+3).
+
 ## 2026-11-21 – correction (no new refresh)
 
 - Stage 2 milestones completed: consistency check and business open items (D-103, D-104), UX set v1.1 (D-105), BRD set signed off (D-107); the Overview "Done" list now shows them.
