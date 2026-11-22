@@ -17,6 +17,7 @@ Date: November 2026
 | 1.0 | 0.4 | 22-Nov-2026 | Rajesh Verma | Draft of §11–§15 (technology stack, data architecture summary, data migration, performance test strategy, environment strategy); edge product replaced (§6.2, §11); role change ends sessions (D-111) |
 | 1.0 | 0.5 | 22-Nov-2026 | Rajesh Verma | Draft of §16–§20 (security and NFR, volumetrics, architecture decisions, risks and technical debt, appendix); all sections drafted |
 | 1.0 | 0.6 | 22-Nov-2026 | Rajesh Verma | Open items: OI-P01-03, 05, 06 closed; OI-P01-04 rule added (D-114) |
+| 1.0 | 0.7 | 22-Nov-2026 | Rajesh Verma | PostgreSQL 18 in every environment (§11, AR-05); OI-P01-04 closed (D-115) |
 
 ### 1.2 Review and approval
 
@@ -41,7 +42,7 @@ The design is technology-neutral wherever the replatforming goal requires it (D-
 | --- | --- | --- |
 | 1 | PMS-BRD (anchor), PMS-BRD-M1-EIMS, PMS-BRD-M2-AMS, PMS-BRD-M3-LMS, PMS-BRD-M4-SMS, PMS-BRD-M5-SUP | v1.0 – approved baseline (D-107) |
 | 2 | UX Journey Index and 17 UX Summaries (with HTML mockups) | v1.1 (D-105) |
-| 3 | Decision log / ADRs | D-01 to D-114; ADR-001 to ADR-006 |
+| 3 | Decision log / ADRs | D-01 to D-115; ADR-001 to ADR-006 |
 
 **Design documents**
 
@@ -912,7 +913,7 @@ flowchart LR
 
 ## 11. Technology stack
 
-Version policy (D-112): the latest generally available release of every framework and tool as of 22 Nov 2026, with long-term-support lines for runtimes (Java, Node.js). Versions are pinned at build start (exact patch in the build files and Helm charts) and patched monthly; minor upgrades follow the DevOps standard. The design stays technology-neutral so the backend can move to Node.js or Python FastAPI later (D-12).
+Version policy (D-112): the latest generally available release of every framework and tool as of 22 Nov 2026, with long-term-support lines for runtimes (Java, Node.js); exception: the database uses the newest major version offered by the AWS managed database service, so every environment runs the same version (D-115). Versions are pinned at build start (exact patch in the build files and Helm charts) and patched monthly; minor upgrades follow the DevOps standard. The design stays technology-neutral so the backend can move to Node.js or Python FastAPI later (D-12).
 
 ### 11.1 Development
 
@@ -942,7 +943,7 @@ Version policy (D-112): the latest generally available release of every framewor
 | Test | Performance | Grafana k6 | 2.x | D-11; §14 |
 | Platform | Identity provider | Keycloak | 26.8 | D-16; §9.2 |
 | Platform | Message broker | Apache Artemis (formerly ActiveMQ Artemis) | 2.57 or later | D-21; now its own Apache project with the same product |
-| Platform | Database | PostgreSQL | 19 | D-11; availability on Amazon RDS confirmed before the AWS simulation |
+| Platform | Database | PostgreSQL | 18 | D-11; same version in every environment and on Amazon RDS (D-115); all environments move to 19 together once Amazon RDS offers it |
 | Platform | Static web | nginx (unprivileged image) | Latest stable | Serves the shell build |
 | AI / ML | – | Not applicable | – | §11.3 |
 
@@ -1217,7 +1218,7 @@ BRD risks with an architecture response: R-01 and R-03 (outbox, idempotent consu
 | AR-02 | No shared session store: gateway instances use session affinity; a back-channel logout is relayed between instances | A request in flight can fail on gateway failover; a missed logout lasts at most the access-token lifetime (5 minutes) | Technical debt: shared in-memory session store and cache in a future phase (D-110) |
 | AR-03 | Database and broker run as single nodes | Restart or restore needed on failure (RTO 8 h) | Persistent storage, daily backup, outbox and reconciliation; HA (replica, multi-AZ) Future |
 | AR-04 | Inside the local cluster, traffic behind the edge is not encrypted, and platform secrets have limited encryption at rest on the local container platform | Lower protection on the workstation than on AWS | Synthetic data only; network policies; encrypted workstation and backup drives; AWS uses TLS and cloud key management; mutual TLS / service mesh Future |
-| AR-05 | Brand-new major versions of the backend framework and the database (§11) may have early defects; the database version may not yet be offered by the AWS managed database service | Rework or a version step back | Monthly patching; fall back to the previous minor if blocked; RDS availability checked before the AWS simulation (OI-P01-04) |
+| AR-05 | Brand-new major versions of the backend framework (§11) may have early defects; the next database major version arrives on the AWS managed database service later than its community release | Rework or a version step back; a planned database upgrade during or after Stage 5 | Monthly patching; fall back to the previous minor if blocked; database kept on the version offered by the AWS managed service and upgraded in all environments together (D-115) |
 | AR-06 | The WAF is loaded into the edge proxy as a dynamic module (§11); loading by image volume needs Kubernetes 1.35 or later | WAF may not load on an older local Kubernetes version | Check the local Kubernetes version; otherwise load the module with an init container or a custom image (OI-P01-05) |
 | AR-07 | Local performance results are indicative only (load generator and system share one machine) | Wrong capacity conclusions | Final verification in the AWS production simulation (§14.6) |
 | AR-08 | Module screens are built into the shell (ADR-001) | Any module UI change redeploys the shell | Module contract (routes, menu, components) kept clean; runtime micro-frontends after the POC |
@@ -1232,7 +1233,7 @@ BRD risks with an architecture response: R-01 and R-03 (outbox, idempotent consu
 | OI-P01-01 | Part01a assessment: counts per group in §4.1 and confirmation of the catalogue ids in §4.2 to §4.4 | Enterprise Architect | Part01a |
 | OI-P01-02 | Provisioning approach (infrastructure and environments as code) – closed by D-110: deployment charts for PMS, infrastructure code for AWS (§11) | Enterprise Architect | Closed 22 Nov 2026 |
 | OI-P01-03 | Capacity of the local workstation (CPU, memory, disk) for three namespaces, the observability stack and the local container platform; at least 32 GB memory – confirmed by the product owner | Product owner | Closed 22 Nov 2026 |
-| OI-P01-04 | Database version of §11 available on the AWS managed database service (on 22 Nov 2026 offered only in the provider's preview environment); otherwise the previous major version on AWS (D-112). Rule meanwhile: schema scripts use no feature new in that version, so they run on both versions (D-114) | Enterprise Architect | Before the AWS production simulation |
+| OI-P01-04 | Database version available on the AWS managed database service – closed by D-115: version 18 is offered there, so every environment uses PostgreSQL 18; all move to 19 together once the managed service offers it | Enterprise Architect | Closed 22 Nov 2026 |
 | OI-P01-05 | Local Kubernetes version supports loading the WAF module (1.35 or later) – closed by D-114: the local container platform is kept at its latest release (Kubernetes 1.36 in current releases); the server version is verified as the first step of building the Dev environment; a multi-node local cluster definition also uses 1.35 or later | Enterprise Architect | Closed 22 Nov 2026 |
 | OI-P01-06 | Operating-system encryption of the workstation drive and the backup drive (data at rest, §16.1) – confirmed by the product owner | Product owner | Closed 22 Nov 2026 |
 
