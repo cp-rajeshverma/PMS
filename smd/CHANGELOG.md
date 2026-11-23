@@ -1,5 +1,14 @@
 # SMD changelog
 
+## 2026-11-23 20:28 IST – refresh (HLD Part03 Data model anchor all sections approved)
+
+- Refreshed from commit `7789d12` (10 commits since `7aff5c1`: `05ad64e` to `7789d12`, including the previous dashboard refresh); clean working tree.
+- **Stage 3 Solution Design In Progress, 20% → 25%**: PMS-HLD-Part03-Datamodel (anchor) drafted and reviewed section by section (D-126 to D-129), v1.0 rev 0.4 – data ownership per service, modelling conventions, common columns and common audit entry, 5 business entities and 9 system tables, master ER, cross-service consistency, classification, volumetrics with 90-day clean-up of sent events (new job JOB-AMS-01), schema management. HLD Part01a rev 0.7, Part02 anchor rev 0.5; ADR-006 follow-ups settled. Step S3.3 In Progress (module data-model documents not started); milestone M3.0e completed.
+- Health **Green** (unchanged): no Critical or High findings open; Stage 3 on plan.
+- Findings: OI-P03-01 to 03 added (Low, for the set consistency check and the module documents); OI-P02-01 data side settled (still open for the SUP module document). New review RV-15.
+- Data: 54 artifacts (46 approved, 4 in review), 135 decisions / ADRs (+4), 44 open items / findings (20 open), 15 reviews (+RV-15), 8 risks, 90 linked repository files (+1).
+- Warnings: HLD Part01 §12 and §17 to be aligned with the Part03 anchor (OI-P03-01); a duplicate placeholder entry for the HLD Part02 anchor merged; Stage 7 step S7.2 still names the former cloud target.
+
 ## 2026-11-23 19:03 IST – refresh (HLD Part02 Functional anchor all sections approved)
 
 - Refreshed from commit `7aff5c1` (8 commits since `9b0ead9`: `a208701` to `7aff5c1`); clean working tree.
