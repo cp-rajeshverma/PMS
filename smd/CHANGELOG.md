@@ -1,5 +1,14 @@
 # SMD changelog
 
+## 2026-11-23 23:53 IST – refresh (HLD Part02 EIMS module document all sections approved)
+
+- Refreshed from commit `b2cfdb4` (12 commits since `7789d12`: `4bfddd5` to `b2cfdb4`, including the previous dashboard refresh); clean working tree.
+- **Stage 3 Solution Design In Progress, 25% → 30%**: PMS-HLD-Part02-M1-EIMS-Functional, the first module document, drafted and reviewed in ten reviews (D-130 to D-139), v1.0 rev 0.10 – 20 system functions EIMS0010 to EIMS0200, 28 APIs, 28 error codes, STRIDE threat review at the trust boundaries each function crosses, identity-provider calls inside the employee transaction. HLD Part01a rev 0.8, Part02 anchor rev 0.6. Step S3.2 In Progress (AMS, LMS, SMS, SUP not started); milestone M3.0f completed.
+- Health **Green** (unchanged): no Critical or High findings open; Stage 3 on plan.
+- Findings: OI-P01a-08 closed; OI-P02M1-01 to 03 added (Low, for the standards, the set consistency check and the product owner); OI-P02-01 settled for the employee service. New review RV-16.
+- Data: 55 artifacts (46 approved, 5 in review), 145 decisions / ADRs (+10), 47 open items / findings (22 open), 16 reviews (+RV-16), 8 risks, 91 linked repository files (+1).
+- Warnings: EIMS BRD §9.1 role note to be aligned with the role copy (D-131) at the set consistency check; the planned Part02 module placeholder now covers AMS, LMS and SMS; Stage 7 step S7.2 still names the former cloud target.
+
 ## 2026-11-23 20:28 IST – refresh (HLD Part03 Data model anchor all sections approved)
 
 - Refreshed from commit `7789d12` (10 commits since `7aff5c1`: `05ad64e` to `7789d12`, including the previous dashboard refresh); clean working tree.

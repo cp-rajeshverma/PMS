@@ -1,12 +1,12 @@
 {
  "meta": {
   "smd_version": "1.0",
-  "generated_at": "2026-11-23T20:28+05:30",
+  "generated_at": "2026-11-23T23:53+05:30",
   "generated_by": "SMD update run",
   "repo_root": "D:\\POC\\PMS",
-  "repo_commit": "7789d12",
-  "working_tree_note": "Refreshed at 7789d12 (10 commits since 7aff5c1: 05ad64e to 7789d12, including the previous dashboard refresh); clean working tree apart from this run.",
-  "previous_snapshot": "snapshots/2026-11-23_1903.json",
+  "repo_commit": "b2cfdb4",
+  "working_tree_note": "Refreshed at b2cfdb4 (12 commits since 7789d12: 4bfddd5 to b2cfdb4, including the previous dashboard refresh); clean working tree apart from this run.",
+  "previous_snapshot": "snapshots/2026-11-23_2028.json",
   "repo_rel_prefix": "../../",
   "remote_base_url": "https://github.com/cp-rajeshverma/PMS/blob/main/",
   "audience": "customer-facing (rule PR-03 applied)",
@@ -61,8 +61,8 @@
    },
    {
     "date": "2026-11-23",
-    "decisions": 135,
-    "commits": 148,
+    "decisions": 145,
+    "commits": 160,
     "artifacts_done": 46
    }
   ]
@@ -85,7 +85,7 @@
   },
   "target_go_live": "2027-01-29",
   "health": "G",
-  "health_reason": "Stage 3 Solution Design in progress (25%): HLD Part01 (rev 0.9), Part01a (rev 0.7), the HLD Part02 Functional anchor (rev 0.5) and the HLD Part03 Data model anchor (v1.0 rev 0.4: data ownership per service, modelling conventions and common columns, 5 business entities and 9 system tables, master ER, cross-service consistency, classification, volumetrics and clean-up rules, schema management) reviewed section by section (D-109 to D-129); final approval with the HLD set at the Stage 3 gate. Stage 3 planned 23 Nov – 11 Dec 2026 (D-108), on track. No Critical or High findings open; 20 Low HLD open items open (15 from Part01a for the standards, OI-P02-01 and 02, OI-P03-01 to 03 for the module documents and the set consistency check), none overdue."
+  "health_reason": "Stage 3 Solution Design in progress (30%): HLD Part01 (rev 0.9), Part01a (rev 0.8), the HLD Part02 Functional anchor (rev 0.6), the HLD Part03 Data model anchor (rev 0.4) and the first module document, HLD Part02 EIMS functional design (v1.0 rev 0.10: 20 functions, 28 APIs, error catalogue, threat review per function), reviewed section by section (D-109 to D-139); final approval with the HLD set at the Stage 3 gate. Stage 3 planned 23 Nov – 11 Dec 2026 and on plan; no Critical or High findings open."
  },
  "people": [
   {
@@ -566,7 +566,7 @@
      "planned_end": "2026-12-11",
      "actual_start": "2026-11-21",
      "actual_end": null,
-     "percent": 25,
+     "percent": 30,
      "source": "declared",
      "gate": {
       "criteria": [
@@ -611,7 +611,7 @@
       },
       {
        "id": "S3.2",
-       "name": "Part02 Functional (anchor, modules, SUP) – anchor all sections reviewed (D-122 to D-125); module documents not started",
+       "name": "Part02 Functional (anchor, modules, SUP) – anchor all sections reviewed (D-122 to D-125); EIMS module document all sections reviewed (D-130 to D-139); AMS, LMS, SMS, SUP not started",
        "agent": null,
        "status": "In Progress",
        "date": "2026-11-23",
@@ -674,6 +674,13 @@
       {
        "id": "M3.0e",
        "name": "HLD Part03 Data model anchor – all sections approved (D-126 to D-129)",
+       "planned": null,
+       "actual": "2026-11-23",
+       "status": "Completed"
+      },
+      {
+       "id": "M3.0f",
+       "name": "HLD Part02 EIMS module functional design – all sections approved (D-130 to D-139)",
        "planned": null,
        "actual": "2026-11-23",
        "status": "Completed"
@@ -2544,7 +2551,7 @@
    "type": "HLD",
    "stage": 3,
    "step": "HLD Part01",
-   "version": "v1.0 rev 0.7",
+   "version": "v1.0 rev 0.8",
    "status": "In Review",
    "completed": null,
    "last_updated": "2026-11-23",
@@ -2571,7 +2578,7 @@
    "type": "HLD",
    "stage": 3,
    "step": "HLD Part02",
-   "version": "v1.0 rev 0.5",
+   "version": "v1.0 rev 0.6",
    "status": "In Review",
    "completed": null,
    "last_updated": "2026-11-23",
@@ -2595,8 +2602,40 @@
    "started": "2026-11-23"
   },
   {
+   "code": "PMS-HLD-Part02-M1-EIMS-Functional",
+   "name": "HLD Part02-M1 EIMS functional design",
+   "type": "HLD",
+   "stage": 3,
+   "step": "HLD Part02",
+   "version": "v1.0 rev 0.10",
+   "status": "In Review",
+   "completed": null,
+   "last_updated": "2026-11-23",
+   "path": "docs/03-hld/PMS-HLD-Part02-M1-EIMS-Functional.md",
+   "source": "declared",
+   "depends_on": [
+    "PMS-BRD",
+    "PMS-HLD-Part01-Architecture-and-Design",
+    "PMS-HLD-Part01a-Principles-Patterns-Decisions",
+    "PMS-HLD-Part02-Functional",
+    "PMS-HLD-Part03-Datamodel"
+   ],
+   "summary": "First module functional design: 20 system functions EIMS0010 to EIMS0200 (directory, onboarding with Employee Id and temporary password, Admin-owned fields, deactivation, password reset, my profile, profile change request, review and approval, APIs for other modules and the dashboard), 28 APIs and 28 error codes; STRIDE threat review at the trust boundaries each function crosses; identity-provider calls inside the employee transaction with recovery of a half-done onboarding; open items OI-P02M1-01 to 03. All sections reviewed (D-130 to D-139); final approval at the Stage 3 gate.",
+   "reviewers": [
+    "Rajesh Verma"
+   ],
+   "files": [
+    "docs/03-hld/PMS-HLD-Part02-M1-EIMS-Functional.md"
+   ],
+   "module": "EIMS",
+   "pipeline": "PMS-TX-01",
+   "author": "Rajesh Verma",
+   "planned": null,
+   "started": "2026-11-23"
+  },
+  {
    "code": "PMS-HLD-Part02-M1..M4-Functional",
-   "name": "HLD Part02 module functional (EIMS, AMS, LMS, SMS)",
+   "name": "HLD Part02 module functional (AMS, LMS, SMS)",
    "type": "HLD",
    "stage": 3,
    "step": "HLD Part02",
@@ -2609,7 +2648,7 @@
    "depends_on": [
     "PMS-BRD"
    ],
-   "summary": "To be written from the frozen HLD templates after the BRD set is approved.",
+   "summary": "To be written from the frozen HLD templates, following the pattern set by the EIMS module document (D-108 order: AMS, LMS, SMS).",
    "reviewers": [],
    "files": [],
    "module": "ALL",
@@ -2951,6 +2990,22 @@
    "verdict": "Approved",
    "path": "docs/decisions/decision-log.md",
    "title": "HLD Part03 Data model anchor section-by-section review (D-126 to D-129)"
+  },
+  {
+   "id": "RV-16",
+   "type": "peer",
+   "artifacts": [
+    "PMS-HLD-Part02-M1-EIMS-Functional",
+    "PMS-HLD-Part02-Functional",
+    "PMS-HLD-Part01a-Principles-Patterns-Decisions"
+   ],
+   "reviewers": [
+    "Rajesh Verma"
+   ],
+   "date": "2026-11-23",
+   "verdict": "Approved",
+   "path": "docs/decisions/decision-log.md",
+   "title": "HLD Part02 EIMS module functional design section-by-section review (D-130 to D-139)"
   }
  ],
  "findings": [
@@ -3338,10 +3393,10 @@
    "target": "PMS-HLD-Part01a-Principles-Patterns-Decisions",
    "category": "Open item",
    "severity": "Low",
-   "status": "Open",
+   "status": "Closed",
    "owner": "Enterprise Architect",
    "due": "docs/04-standards/security, before the module Part02 documents",
-   "summary": "Threat-modelling method for the security and privacy part of each function design.",
+   "summary": "Threat-modelling method for the security and privacy part of each function design. Closed (D-130): STRIDE at the trust boundaries each function crosses, defined in the HLD Part02 EIMS document; method text in the security standard.",
    "origin": "declared"
   },
   {
@@ -3471,7 +3526,7 @@
    "status": "Open",
    "owner": "Enterprise Architect",
    "due": "HLD Part02 SUP module document",
-   "summary": "Onboarding and account changes: order of the identity-provider call and the employee record update, and recovery when the second step fails. Data side settled in the HLD Part03 anchor (Employee Id counter in the same transaction, D-126).",
+   "summary": "Order of the identity-provider call and the employee commit, retry and recovery: settled for the employee service in the HLD Part02 EIMS document (D-132 to D-134); the identity-provider side remains for the SUP module document.",
    "origin": "declared"
   },
   {
@@ -3525,6 +3580,45 @@
    "id": "OI-P03-03",
    "due": "HLD Part02 AMS module document first",
    "summary": "Lifetime of the short in-memory copies of employee and approver details in the attendance, leave and salary services."
+  },
+  {
+   "id": "OI-P02M1-01",
+   "review": null,
+   "source": "PMS-HLD-Part02-M1-EIMS-Functional",
+   "target": "PMS-HLD-Part02-M1-EIMS-Functional",
+   "category": "Open item",
+   "severity": "Low",
+   "status": "Open",
+   "owner": "Enterprise Architect",
+   "due": "Database-and-data standard, with the HLD Part02 SUP document",
+   "summary": "Restore procedure for the employee database: user accounts may exist for Employee Ids issued after the backup point; compare accounts with restored employees before onboarding resumes.",
+   "origin": "declared"
+  },
+  {
+   "id": "OI-P02M1-02",
+   "review": null,
+   "source": "PMS-HLD-Part02-M1-EIMS-Functional",
+   "target": "PMS-HLD-Part02-M1-EIMS-Functional",
+   "category": "Open item",
+   "severity": "Low",
+   "status": "Open",
+   "owner": "Enterprise Architect",
+   "due": "HLD set consistency check",
+   "summary": "Inactive employees are read only in the admin form (D-133); confirm in the EIMS BRD.",
+   "origin": "declared"
+  },
+  {
+   "id": "OI-P02M1-03",
+   "review": null,
+   "source": "PMS-HLD-Part02-M1-EIMS-Functional",
+   "target": "PMS-HLD-Part02-M1-EIMS-Functional",
+   "category": "Open item",
+   "severity": "Low",
+   "status": "Open",
+   "owner": "Product owner",
+   "due": "HLD set consistency check",
+   "summary": "Items of an inactive report still waiting for a manager who is then deactivated have no active approver: block the deactivation or let the Admin decide them.",
+   "origin": "declared"
   }
  ],
  "coverage": [
@@ -3562,10 +3656,120 @@
    "missing_items": [],
    "orphans": [],
    "source": "declared",
-   "note": "All 175 functional requirement ids assigned to system functions in the HLD Part02 anchor §9; per-function design follows in the module documents (planned)."
+   "note": "All 175 functional requirement ids assigned to system functions in the HLD Part02 anchor §9; EIMS functions designed in the EIMS module document (D-130 to D-139); the other module documents follow."
   }
  ],
  "decisions": [
+  {
+   "id": "D-139",
+   "title": "HLD Part02 EIMS §4–§5 approved; all sections reviewed",
+   "date": "2026-11-23",
+   "author": "Rajesh Verma",
+   "area": "Architecture",
+   "stage": 3,
+   "summary": "NFR summary, API inventory API-EIMS-01 to 28, no events or jobs, error catalogue of 28 codes; future scope; open items OI-P02M1-01 to 03; items brought forward settled or re-routed; HLD Part02 anchor rev 0.6 updated for EIMS; final approval at the Stage 3 gate.",
+   "path": "docs/decisions/decision-log.md",
+   "status": "Approved"
+  },
+  {
+   "id": "D-138",
+   "title": "HLD Part02 EIMS0170 to EIMS0200 approved – APIs for other modules and the dashboard",
+   "date": "2026-11-23",
+   "author": "Rajesh Verma",
+   "area": "Architecture",
+   "stage": 3,
+   "summary": "Employee details, list, approver and approvees as normal resources with the caller's data scope or a service token; current hourly wage rate as an internal API for the salary service; EIMS dashboard card and approval items (latest 5 onboarded employees).",
+   "path": "docs/decisions/decision-log.md",
+   "status": "Approved"
+  },
+  {
+   "id": "D-137",
+   "title": "HLD Part02 EIMS0140 to EIMS0160 approved – review, approve, reject",
+   "date": "2026-11-23",
+   "author": "Rajesh Verma",
+   "area": "Architecture",
+   "stage": 3,
+   "summary": "Approver scope in the query and per item (current manager, or the Admin for the top-level employee only); bulk approve per kind with a result per item; reject with remarks; approving a change request keeps the previous values and re-checks email uniqueness.",
+   "path": "docs/decisions/decision-log.md",
+   "status": "Approved"
+  },
+  {
+   "id": "D-136",
+   "title": "HLD Part02 EIMS0110 to EIMS0130 approved – profile change request",
+   "date": "2026-11-23",
+   "author": "Rajesh Verma",
+   "area": "Architecture",
+   "stage": 3,
+   "summary": "One open request per employee addressed without an id; changed fields computed by the service; full set of requested values; draft, submit and withdraw as for the profile.",
+   "path": "docs/decisions/decision-log.md",
+   "status": "Approved"
+  },
+  {
+   "id": "D-135",
+   "title": "HLD Part02 EIMS0070 to EIMS0100 approved – my profile",
+   "date": "2026-11-23",
+   "author": "Rajesh Verma",
+   "area": "Architecture",
+   "stage": 3,
+   "summary": "Own-profile resources with the owner from the sign-in, never from the path; draft save checks only lengths, dates, countries and email uniqueness; submit carries the form; ISO country codes; approver name resolved at read time.",
+   "path": "docs/decisions/decision-log.md",
+   "status": "Approved"
+  },
+  {
+   "id": "D-134",
+   "title": "HLD Part02 EIMS0050 and EIMS0060 approved – deactivate, reset password",
+   "date": "2026-11-23",
+   "author": "Rajesh Verma",
+   "area": "Architecture",
+   "stage": 3,
+   "summary": "Identity-provider calls inside the employee transaction, commit after success; deactivation blocked with active reports; reset for active employees only, temporary password shown once; open item OI-P02M1-03.",
+   "path": "docs/decisions/decision-log.md",
+   "status": "Approved"
+  },
+  {
+   "id": "D-133",
+   "title": "HLD Part02 EIMS0040 approved – Admin-owned fields",
+   "date": "2026-11-23",
+   "author": "Rajesh Verma",
+   "area": "Architecture",
+   "stage": 3,
+   "summary": "One save of date of joining, role, manager and hourly wage rate; joining-date check against attendance and leave before the transaction; role change with the identity-provider call inside the transaction; reporting-line locks; inactive employees read only (OI-P02M1-02).",
+   "path": "docs/decisions/decision-log.md",
+   "status": "Approved"
+  },
+  {
+   "id": "D-132",
+   "title": "HLD Part02 EIMS0020 and EIMS0030 approved – onboarding, Employee Id and temporary password",
+   "date": "2026-11-23",
+   "author": "Rajesh Verma",
+   "area": "Architecture",
+   "stage": 3,
+   "summary": "Account creation inside the employee transaction with no gaps in the Employee Id; recovery of a half-done onboarding by taking over the account under the same Employee Id; 12-character temporary password shown once; manager options API; open item OI-P02M1-01.",
+   "path": "docs/decisions/decision-log.md",
+   "status": "Approved"
+  },
+  {
+   "id": "D-131",
+   "title": "HLD Part02 EIMS0010 approved – employee directory",
+   "date": "2026-11-23",
+   "author": "Rajesh Verma",
+   "area": "Architecture",
+   "stage": 3,
+   "summary": "One directory API for Admin and Manager with the data scope in the query and no wage rate for managers; copy of the role on the employee record with the identity provider as authority; search, filters, sort and paging.",
+   "path": "docs/decisions/decision-log.md",
+   "status": "Approved"
+  },
+  {
+   "id": "D-130",
+   "title": "HLD Part02 EIMS §1–§3.1 approved",
+   "date": "2026-11-23",
+   "author": "Rajesh Verma",
+   "area": "Architecture",
+   "stage": 3,
+   "summary": "Threat-review method for every function design: STRIDE at the trust boundaries it crosses (closes OI-P01a-08, HLD Part01a rev 0.8); order of identity-provider calls settled in the EIMS document; no in-memory copies in EIMS; EIMS publishes no events; 10 reviews planned.",
+   "path": "docs/decisions/decision-log.md",
+   "status": "Approved"
+  },
   {
    "id": "D-129",
    "title": "HLD Part03 anchor §9 approved; all sections reviewed",
@@ -5053,6 +5257,22 @@
   }
  ],
  "activity": [
+  {
+   "date": "2026-11-23",
+   "actor": "Rajesh Verma",
+   "kind": "human",
+   "type": "session",
+   "summary": "Working session handoff: HLD Part02 EIMS module functional design drafted and reviewed in ten reviews (D-130 to D-139); 20 functions, 28 APIs, error catalogue, threat review per function; OI-P01a-08 closed; identity-provider order settled for the employee service; next: HLD Part03 EIMS data model document.",
+   "ref": null
+  },
+  {
+   "date": "2026-11-23",
+   "actor": "Rajesh Verma",
+   "kind": "human",
+   "type": "status-change",
+   "summary": "Stage 3 Solution Design 25% → 30%: HLD Part02 EIMS module document all sections approved.",
+   "ref": "#/stage/3"
+  },
   {
    "date": "2026-11-23",
    "actor": "Rajesh Verma",
@@ -6563,13 +6783,13 @@
  ],
  "next_actions": [
   {
-   "item": "Draft the HLD Part02 EIMS module document (functional), after settling OI-P01a-08 (threat-modelling method)",
+   "item": "Draft the HLD Part03 EIMS data-model document (role copy, requested and previous values, uniqueness rules from the EIMS functional design)",
    "owner": "Rajesh Verma",
    "when": "Next working session",
    "ref": "#/stage/3"
   },
   {
-   "item": "Decide OI-P02-02 (simultaneous submissions across attendance and leave) before the HLD Part02 AMS module document; settle OI-P02-01 in the SUP module document",
+   "item": "Decide OI-P02-02 (simultaneous submissions across attendance and leave) before the HLD Part02 AMS module document; complete OI-P02-01 (identity-provider side) in the SUP module document",
    "owner": "Enterprise Architect",
    "when": "Stage 3, before the module documents",
    "ref": "#/stage/3"
@@ -6581,13 +6801,13 @@
    "ref": "#/stage/3"
   },
   {
-   "item": "Write the 12 standards in docs/04-standards/ after the HLD documents, closing open items OI-P01a-01 to 17 that remain (OI-P01a-08 threat-modelling method before the module Part02 documents)",
+   "item": "Write the 12 standards in docs/04-standards/ after the HLD documents, closing open items OI-P01a-01 to 17 that remain and OI-P02M1-01 (restore procedure)",
    "owner": "Enterprise Architect",
    "when": "Stage 3, by 11 Dec 2026",
    "ref": "#/stage/3"
   },
   {
-   "item": "Draft HLD Part02 and Part03 per module (EIMS, AMS, LMS, SMS, SUP, D-108 order)",
+   "item": "Draft HLD Part02 and Part03 per module (EIMS Part02 done; Part03 EIMS, then AMS, LMS, SMS, SUP, D-108 order)",
    "owner": "Rajesh Verma",
    "when": "Stage 3, by 11 Dec 2026",
    "ref": "#/stage/3"
@@ -7537,7 +7757,7 @@
    "folder": "docs/decisions",
    "kind": "artifact",
    "ext": ".md",
-   "size": 66206,
+   "size": 84236,
    "created": "2026-11-15",
    "last_updated": "2026-11-23",
    "last_author": "cp-rajeshverma",
@@ -7817,7 +8037,7 @@
    "folder": "docs/03-hld",
    "kind": "artifact",
    "ext": ".md",
-   "size": 81655,
+   "size": 82165,
    "created": "2026-11-23",
    "last_updated": "2026-11-23",
    "last_author": "cp-rajeshverma",
@@ -7831,7 +8051,7 @@
    "folder": "docs/03-hld",
    "kind": "artifact",
    "ext": ".md",
-   "size": 96763,
+   "size": 100855,
    "created": "2026-11-23",
    "last_updated": "2026-11-23",
    "last_author": "cp-rajeshverma",
@@ -7853,96 +8073,110 @@
    "links": [
     "PMS-HLD-Part03-Datamodel"
    ]
+  },
+  {
+   "path": "docs/03-hld/PMS-HLD-Part02-M1-EIMS-Functional.md",
+   "folder": "docs/03-hld",
+   "kind": "artifact",
+   "ext": ".md",
+   "size": 243492,
+   "created": "2026-11-23",
+   "last_updated": "2026-11-23",
+   "last_author": "cp-rajeshverma",
+   "module": "EIMS",
+   "links": [
+    "PMS-HLD-Part02-M1-EIMS-Functional"
+   ]
   }
  ],
  "changes_since_last": [
   {
    "entity": "stage",
    "id": "S3",
-   "change": "HLD Part03 Data model anchor all sections approved",
-   "from": "In Progress · 20%",
-   "to": "In Progress · 25%"
+   "change": "HLD Part02 EIMS module document all sections approved",
+   "from": "In Progress · 25%",
+   "to": "In Progress · 30%"
   },
   {
    "entity": "artifact",
-   "id": "PMS-HLD-Part03-Datamodel",
-   "change": "Drafted and reviewed section by section (D-126 to D-129); final approval at the Stage 3 gate",
+   "id": "PMS-HLD-Part02-M1-EIMS-Functional",
+   "change": "Drafted and reviewed section by section (D-130 to D-139); final approval at the Stage 3 gate",
    "from": "Planned",
-   "to": "In Review · v1.0 rev 0.4"
+   "to": "In Review · v1.0 rev 0.10"
   },
   {
    "entity": "artifact",
    "id": "PMS-HLD-Part02-Functional",
-   "change": "§7.3 outbox clean-up job JOB-AMS-01 and the processed-event clean-up step (D-128)",
-   "from": "v1.0 rev 0.4",
-   "to": "v1.0 rev 0.5"
+   "change": "EIMS document status, EIMS function status, error-code row, API-EIMS-01 to 28, OI-P02-01 status (D-139)",
+   "from": "v1.0 rev 0.5",
+   "to": "v1.0 rev 0.6"
   },
   {
    "entity": "artifact",
    "id": "PMS-HLD-Part01a-Principles-Patterns-Decisions",
-   "change": "References of the data patterns point to the Part03 anchor (D-128)",
-   "from": "v1.0 rev 0.6",
-   "to": "v1.0 rev 0.7"
-  },
-  {
-   "entity": "artifact",
-   "id": "PMS-GOV-ADR006",
-   "change": "Follow-up closed: 90-day clean-up of sent events (D-128)",
-   "from": "Follow-up open",
-   "to": "Follow-ups settled"
-  },
-  {
-   "entity": "decision",
-   "id": "D-126..D-129",
-   "change": "Four new decisions (Part03 anchor section reviews and design answers)",
-   "from": "D-125",
-   "to": "D-129"
-  },
-  {
-   "entity": "step",
-   "id": "S3.3",
-   "change": "Part03 anchor complete; module documents not started",
-   "from": "Not Started",
-   "to": "In Progress"
-  },
-  {
-   "entity": "milestone",
-   "id": "M3.0e",
-   "change": "HLD Part03 anchor all sections approved",
-   "from": "—",
-   "to": "Completed"
-  },
-  {
-   "entity": "review",
-   "id": "RV-15",
-   "change": "HLD Part03 anchor section-by-section review",
-   "from": "—",
-   "to": "Approved"
+   "change": "OI-P01a-08 threat-modelling method closed (D-130)",
+   "from": "v1.0 rev 0.7",
+   "to": "v1.0 rev 0.8"
   },
   {
    "entity": "finding",
-   "id": "OI-P03-01, OI-P03-02, OI-P03-03",
-   "change": "New HLD open items for the set consistency check and the module documents (D-129)",
-   "from": "—",
-   "to": "3 Open (Low)"
+   "id": "OI-P01a-08",
+   "change": "Closed – STRIDE at the trust boundaries each function crosses",
+   "from": "Open",
+   "to": "Closed"
+  },
+  {
+   "entity": "finding",
+   "id": "OI-P02M1-01",
+   "change": "New open item (Low)",
+   "from": null,
+   "to": "Open"
+  },
+  {
+   "entity": "finding",
+   "id": "OI-P02M1-02",
+   "change": "New open item (Low)",
+   "from": null,
+   "to": "Open"
+  },
+  {
+   "entity": "finding",
+   "id": "OI-P02M1-03",
+   "change": "New open item (Low)",
+   "from": null,
+   "to": "Open"
   },
   {
    "entity": "finding",
    "id": "OI-P02-01",
-   "change": "Data side settled (Employee Id counter, D-126); identity-provider order still open",
-   "from": "Open (Low)",
-   "to": "Open (Low)"
+   "change": "Settled for the employee service; identity-provider side remains for the SUP document",
+   "from": "Open",
+   "to": "Open"
   },
   {
-   "entity": "health",
-   "id": "PMS",
-   "change": "Health unchanged",
-   "from": "G",
-   "to": "G"
+   "entity": "review",
+   "id": "RV-16",
+   "change": "HLD Part02 EIMS section-by-section review",
+   "from": null,
+   "to": "Approved"
+  },
+  {
+   "entity": "milestone",
+   "id": "M3.0f",
+   "change": "HLD Part02 EIMS module document all sections approved",
+   "from": null,
+   "to": "Completed"
+  },
+  {
+   "entity": "decision",
+   "id": "D-130 to D-139",
+   "change": "10 decisions added",
+   "from": "135",
+   "to": "145"
   }
  ],
  "data_quality": {
-  "artifacts_declared": 48,
+  "artifacts_declared": 49,
   "artifacts_inferred": 0,
   "artifacts_git": 2,
   "artifacts_config": 4,
@@ -7954,13 +8188,14 @@
    "FR numbering has gaps in every module BRD (e.g. 31 requirements used in FR-SMS-001..046; 45 in FR-UM-001..015, FR-AUTH-001..030, FR-ADM-101..117), by design; counts are taken from PMS-BRD §11.",
    "BRD reviewer names are sample names for the POC (D-106); each review decision was confirmed by the product owner.",
    "Planned dates are set for Stage 3 (23 Nov – 11 Dec 2026, D-108) and the target go-live (29 Jan 2027); later stages are still to be planned.",
-   "HLD Part01, Part01a, the Part02 anchor and the Part03 anchor carry no smd: front-matter; status and version come from their document control tables and the decision log.",
+   "HLD Part01, Part01a, the Part02 and Part03 anchors and the Part02 EIMS module document carry no smd: front-matter; status and version come from their document control tables and the decision log.",
    "Internal working-file, prompt-template and screenshots folders are now excluded in the configuration (2026-11-22); HLD open items now feed the findings list; the neutral pattern is limited to usage-logging wording.",
    "Stage 7 step S7.2 still names the former cloud target in its title (\"Docker Compose / Azure\"); Azure is no longer a target (D-109) – renaming proposed.",
    "HLD Part01 §8.2 row 11 still says the salary-status caller (INT-10) is fixed in Part02; the Part02 anchor sets it to the attendance service (D-122) – Part01 to be aligned at the HLD set consistency check.",
-   "BRD → HLD Part02 coverage counts requirements assigned to functions in the anchor; per-function design status is 'Not started' until the module documents are written.",
+   "BRD → HLD Part02 coverage counts requirements assigned to functions in the anchor; per-function design status is 'Not started' until each module document is written (EIMS designed, D-130 to D-139).",
    "HLD Part01 §12 and §17 predate the Part03 anchor (open item OI-P03-01) – to be aligned at the HLD set consistency check.",
-   "A duplicate placeholder entry for the HLD Part02 anchor (planned, from the configuration) was merged into its declared entry in this refresh."
+   "The EIMS BRD (§9.1) says the role is held only with the user account; the EIMS functional design keeps a copy of it on the employee record with the identity provider as authority (D-131) – to be aligned at the HLD set consistency check.",
+   "The planned module placeholder 'HLD Part02 module functional' now covers AMS, LMS and SMS; EIMS has its own declared entry."
   ]
  }
 }
