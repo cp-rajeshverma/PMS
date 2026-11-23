@@ -12,11 +12,12 @@ Date: November 2026
 | 1.0 | 0.1 | 23-Nov-2026 | Rajesh Verma | First draft of §1–§3, based on PMS-HLD-Part01-Architecture-and-Design v1.0 rev 0.8 (D-109 to D-116), the approved BRD set v1.0 (D-107) and ADR-001 to ADR-006 |
 | 1.0 | 0.2 | 23-Nov-2026 | Rajesh Verma | Draft of §4 groups A–F (GOV, XF, WA, SD, TF, FE); open items OI-P01a-01 to 03 |
 | 1.0 | 0.3 | 23-Nov-2026 | Rajesh Verma | Draft of §4 groups G–L (MS, CP, EIP, INT, DATA, SEC); open items OI-P01a-04 to 11; §2 Partial rule clarified |
+| 1.0 | 0.4 | 23-Nov-2026 | Rajesh Verma | Draft of §4 groups M–R (OBS, PERF, RES, DEV, QA, DG); all 330 rows assessed; §3 totals; open items OI-P01a-12 to 17 |
 
 | Role | Name | Date | Decision |
 | --- | --- | --- | --- |
-| Architect | Rajesh Verma (Enterprise Architect) | 23-Nov-2026 | §1–§3 approved (D-117); §4 A–F approved (D-118); §4 G–L approved (D-119) |
-| Product owner | Rajesh Verma | 23-Nov-2026 | §1–§3 approved (D-117); §4 A–F approved (D-118); §4 G–L approved (D-119) |
+| Architect | Rajesh Verma (Enterprise Architect) | 23-Nov-2026 | §1–§3 approved (D-117); §4 A–F approved (D-118); §4 G–L approved (D-119); §4 M–R approved (D-120) |
+| Product owner | Rajesh Verma | 23-Nov-2026 | §1–§3 approved (D-117); §4 A–F approved (D-118); §4 G–L approved (D-119); §4 M–R approved (D-120) |
 
 ## 2. How to use this document
 
@@ -71,13 +72,13 @@ The catalogue sources describe patterns only; they do not set the PMS platform (
 | J. Integration principles | INT | 13 | 11 | 2 | 0 | 0 |
 | K. Data architecture | DATA | 17 | 14 | 2 | 0 | 1 |
 | L. Security architecture | SEC | 20 | 13 | 6 | 1 | 0 |
-| M. Logging & observability | OBS | 12 | | | | |
-| N. Performance & scalability | PERF | 10 | | | | |
-| O. Resilience & availability | RES | 10 | | | | |
-| P. DevOps & continuous delivery | DEV | 11 | | | | |
-| Q. Testing & quality | QA | 10 | | | | |
-| R. Delivery governance & knowledge management | DG | 5 | | | | |
-| **Total** | | **330** | | | | |
+| M. Logging & observability | OBS | 12 | 12 | 0 | 0 | 0 |
+| N. Performance & scalability | PERF | 10 | 8 | 1 | 0 | 1 |
+| O. Resilience & availability | RES | 10 | 7 | 3 | 0 | 0 |
+| P. DevOps & continuous delivery | DEV | 11 | 7 | 4 | 0 | 0 |
+| Q. Testing & quality | QA | 10 | 9 | 1 | 0 | 0 |
+| R. Delivery governance & knowledge management | DG | 5 | 5 | 0 | 0 | 0 |
+| **Total** | | **330** | **230** | **35** | **3** | **62** |
 
 Group R follows D-116: tool-neutral wording, ids AP-DG-01 to AP-DG-05, linked to OBJ-05, KPI-05 and OBJ-06 area 12.
 
@@ -419,7 +420,95 @@ Source: Enterprise Integration Patterns (Hohpe & Woolf), messaging patterns cata
 | AP-SEC-19 | Audit trail | Security-relevant actions logged, tamper-evident | Applied | Identity-provider security events and refused requests in the security log; audit entries cannot be changed or deleted | Part01 §10.2; FR-AUTH-030, FR-ADM-103 |
 | AP-SEC-20 | Personal data masking | No personal data in logs or non-production data | Applied | Log allow-list with masking in the collector; synthetic data in every non-production environment | Part01 §10.8; R-04, NFR-SUP-04 |
 
-Groups M–R: to be drafted.
+### M. Logging & observability (OBS)
+
+| Id | Principle | Description | Applicability | Realization | Ref |
+| --- | --- | --- | --- | --- | --- |
+| AP-OBS-01 | Unified & centralized logging | All nodes ship logs to one platform | Applied | Every component ships logs, metrics and traces to one collector and central stores | Part01 §10.1 |
+| AP-OBS-02 | Structured logs | JSON with a standard field set | Applied | Structured JSON with the standard log record | Part01 §10.3 |
+| AP-OBS-03 | Correlation & trace ids | Every log line carries correlation and trace ids | Applied | Flow reference and trace and span ids are mandatory fields | Part01 §10.3, §10.5 |
+| AP-OBS-04 | Standard log levels | Agreed meaning of ERROR / WARN / INFO / DEBUG | Applied | Four levels with a level policy per node; no DEBUG in Prod | Part01 §10.3, §10.4 |
+| AP-OBS-05 | Business event logging | Business events logged for business KPIs | Applied | Event publish and consume and job runs logged; business KPIs derived from logs | Part01 §10.2, §10.6 |
+| AP-OBS-06 | System metrics (RED / USE) | Rate, errors, duration; utilization, saturation, errors | Applied | Request rate, error rate and p95 latency; database storage, queue depth and outbox backlog | Part01 §10.6, §10.7 |
+| AP-OBS-07 | Distributed tracing | OpenTelemetry traces across gateway, services and broker | Applied | Trace context across gateway, services and events; 100 % sampling in the POC | Part01 §10.5 |
+| AP-OBS-08 | Health & readiness probes | Liveness and readiness endpoints per service | Applied | Probes per component, inside the cluster only | Part01 §9.8, §10.7 |
+| AP-OBS-09 | Dashboards | Business and system dashboards | Applied | Integration, operations, business quality, service health, performance, security and business activity dashboards | Part01 §10.6 |
+| AP-OBS-10 | SLO-based alerting | Alerts on SLO breaches, not raw noise | Applied | Alert thresholds derived from NFR-01 and NFR-02 with duration windows; email to IT operations | Part01 §10.7; D-111 |
+| AP-OBS-11 | Log retention | Retention per log type | Applied | Prod 90 days, Dev / QA and platform 14 days; audit with the record | Part01 §10.2, §10.8; D-101 |
+| AP-OBS-12 | Audit log separate from technical log | Business audit in the database; technical logs in the log platform | Applied | Audit tables in each module database; activity and security logs in the log store | Part01 §10.1, §10.2 |
+
+### N. Performance & scalability (PERF)
+
+| Id | Principle | Description | Applicability | Realization | Ref |
+| --- | --- | --- | --- | --- | --- |
+| AP-PERF-01 | Performance budgets | Response-time targets per screen / API | Applied | Page load p95 ≤ 2 s, API p95 ≤ 500 ms, salary record ≤ 1 minute, reconciliation < 5 minutes | Part01 §14.1; NFR-01 |
+| AP-PERF-02 | Horizontal scaling | Stateless instances added under load | Applied | Replicas added per service | Part01 §6.2; NFR-07 |
+| AP-PERF-03 | Caching | Reference data and expensive reads cached | Partial | Short-lived in-memory copies of read-mostly data; shared cache Future | Part01 §12, §20.3; D-110 |
+| AP-PERF-04 | Async processing for heavy work | Long tasks moved off the request path | Applied | Salary generation by event after approval; reconciliation as a nightly job | Part01 §8.2; ADR-006 |
+| AP-PERF-05 | Connection pooling | DB and HTTP connections pooled | Applied | As AP-INT-13 | Part01 §14.9; docs/04-standards/performance-and-scalability (planned) |
+| AP-PERF-06 | Efficient queries | Indexes, no N+1, projections | Applied | Indexes per entity; data scope applied in the query; heaviest reads load-tested | Part01 §9.7, §14.2 (PT-06), §16.3; Part03 (planned) |
+| AP-PERF-07 | Payload efficiency | Pagination, compression, minimal payloads | Applied | Server-side paging; 1 MB payload limit; details in the performance standard | Part01 §8.4, §9.8; docs/04-standards/performance-and-scalability (planned) |
+| AP-PERF-08 | Static content via CDN | Frontend assets served from edge | N/A | Internal users at one site; the static web server behind the edge serves the assets | A-01, A-03; Part01 §6.1 |
+| AP-PERF-09 | Capacity planning | Sizing from volumetrics, reviewed yearly | Applied | Sizing from the volumetrics with 20 % headroom, load-tested to 2× | Part01 §17; NFR-07 |
+| AP-PERF-10 | Performance testing | Load, stress, soak, spike before go-live | Applied | Load, stress, soak and spike tests; final verification in the AWS production simulation | Part01 §14 |
+
+### O. Resilience & availability (RES)
+
+| Id | Principle | Description | Applicability | Realization | Ref |
+| --- | --- | --- | --- | --- | --- |
+| AP-RES-01 | Timeouts everywhere | Every remote call bounded | Applied | Connect and response timeouts per integration type; consumer processing limit | Part01 §8.5 |
+| AP-RES-02 | Retry with backoff and jitter | Transient errors retried safely | Applied | Reads retried with exponential backoff; broker redelivery with backoff; jitter in the resilience standard | Part01 §8.5; docs/04-standards/resilience-and-availability (planned) |
+| AP-RES-03 | Circuit breaking | Failing dependencies isolated | Applied | Circuit breaker per downstream service | Part01 §8.5 |
+| AP-RES-04 | Bulkheads | Resource pools per dependency | Partial | Isolation per service, database and credentials; separate resource pools per dependency inside a service not yet defined | Part01 §4.3; OI-P01a-12 |
+| AP-RES-05 | Graceful degradation | Partial functionality when a dependency is down | Applied | Dashboard cards fail on their own with Retry; approval does not wait for SMS; salary status shown as unknown with Retry | Part01 §8.2; FR-CMN-008 |
+| AP-RES-06 | Redundancy across zones | No single point of failure | Partial | 2 replicas per stateless tier in one zone; single-node database and broker; multi-AZ, database replica and clustered broker Future | Part01 §6.4, §19 AR-03, §20.3; D-109 |
+| AP-RES-07 | RTO / RPO targets | Recovery objectives defined and tested | Applied | RPO 24 h, RTO 8 h; restore tested before go-live and monthly | Part01 §12; NFR-02; D-112 |
+| AP-RES-08 | Idempotent operations | Safe to retry writes | Applied | Event processing idempotent; commands carry the record version and repeated submits are refused by status rules | Part01 §8.5 |
+| AP-RES-09 | Self-healing | Failed instances replaced automatically | Applied | The platform restarts failed instances and routes to healthy ones | Part01 §6.4 |
+| AP-RES-10 | Failure injection | Planned tests of failure scenarios | Partial | Replica failover demonstrated locally; restore tests; spike test recovery; no planned failure-injection test set yet | Part01 §6.4, §14.4; OI-P01a-13 |
+
+### P. DevOps & continuous delivery (DEV)
+
+| Id | Principle | Description | Applicability | Realization | Ref |
+| --- | --- | --- | --- | --- | --- |
+| AP-DEV-01 | CI/CD pipeline per service | Build, test, scan, deploy automated | Applied | One path-filtered pipeline per service and platform component | Part01 §15; D-18 |
+| AP-DEV-02 | Branching strategy | Agreed model (e.g. trunk-based) with protected main | Applied | Trunk-based with short-lived branches and reviewed pull requests to main | Part01 §15; D-112 |
+| AP-DEV-03 | Infrastructure as code | All environments from code | Applied | Deployment charts per component; infrastructure code for AWS | Part01 §11.2; D-110 |
+| AP-DEV-04 | Build once, deploy many | Same immutable artifact promoted across environments | Applied | Images built once with immutable tags and promoted Dev → QA → Prod | Part01 §15, §16.1, §16.2 A08 |
+| AP-DEV-05 | Containerization | Services packaged as container images | Applied | One container image per component | Part01 §7.2; D-11 |
+| AP-DEV-06 | Automated quality gates | Coverage, static analysis, security scan block merges | Applied | Coverage ≥ 80 %, contract tests, code, dependency, image and secret scans with no high or critical findings | Part01 §15; D-112 |
+| AP-DEV-07 | Deployment strategy | Rolling / blue-green with rollback | Partial | Pipeline deploys per environment with 2 replicas in Prod; rollout and rollback approach not yet defined | Part01 §6.4, §15; OI-P01a-14 |
+| AP-DEV-08 | Feature toggles | Incomplete features hidden in production | Partial | Incomplete work kept out of Prod by release tags and product-owner approval; feature toggles not yet decided | Part01 §15; OI-P01a-15 |
+| AP-DEV-09 | Semantic versioning | Versions for services, APIs and events | Partial | Release tags drive QA and Prod deployment; version scheme not yet defined | Part01 §15; OI-P01a-11 |
+| AP-DEV-10 | Automated database migrations | Migrations run in the pipeline, reversible plan | Partial | Versioned migrations applied automatically on deployment; backup before release and reversal plan not yet defined | Part01 §11.1, §12; OI-P01a-16 |
+| AP-DEV-11 | No secrets in repository | Secret scanning in pipeline | Applied | Secret scanning as a pipeline gate; secrets only in protected pipeline secrets | Part01 §9.10, §15 |
+
+### Q. Testing & quality (QA)
+
+| Id | Principle | Description | Applicability | Realization | Ref |
+| --- | --- | --- | --- | --- | --- |
+| AP-QA-01 | Test pyramid | Many unit, fewer integration, few end-to-end tests | Applied | Unit, component, contract, integration, end-to-end and load tests at their pipeline stages | Part01 §15 |
+| AP-QA-02 | Coverage targets | Unit test and code-quality thresholds enforced | Applied | Coverage ≥ 80 % and no high or critical findings as gates | Part01 §15; D-112 |
+| AP-QA-03 | Contract testing | API and event contracts verified on both sides | Applied | Providers and consumers verified against `contracts/` in the pipeline | Part01 §15; D-117 |
+| AP-QA-04 | Integration tests with real dependencies | Containers for DB and broker in tests | Applied | Containerised database, broker and identity provider in tests | Part01 §11.1; D-16 |
+| AP-QA-05 | End-to-end tests | Critical journeys automated | Applied | End-to-end UI tests in QA, with accessibility checks | Part01 §15, §16.3 |
+| AP-QA-06 | Performance tests | Per PT strategy | Applied | PT-01 to PT-08 per the strategy | Part01 §14 |
+| AP-QA-07 | Security tests | Per security testing plan | Applied | Security testing in QA: direct-link tests per role and screen, sign-in behaviour, log review | Part01 §15, §16.3; NFR-SUP-02; docs/04-standards/testing-and-quality (planned) |
+| AP-QA-08 | Test data management | Synthetic data; no production personal data | Applied | Synthetic seed and performance-test data; snapshot restore before each run | Part01 §13, §14.5; R-04 |
+| AP-QA-09 | Shift-left quality | Reviews, static checks and tests early | Applied | Design approved before build; pull-request review, scans and tests on every change | Part01 §3.1, §15 |
+| AP-QA-10 | Definition of done | Agreed checklist per story | Partial | Pipeline gates and acceptance criteria per requirement exist; the definition-of-done checklist is not yet written | Part01 §15; OI-P01a-17 |
+
+### R. Delivery governance & knowledge management (DG)
+
+Group R follows D-116: tool-neutral wording; linked to OBJ-05, KPI-05 and OBJ-06 area 12.
+
+| Id | Principle | Description | Applicability | Realization | Ref |
+| --- | --- | --- | --- | --- | --- |
+| AP-DG-01 | Human review | Every artifact is reviewed and approved by an accountable person | Applied | Every document reviewed section by section and approved by the accountable owner; each approval recorded in the decision log | §1; decision log; D-60, D-116 |
+| AP-DG-02 | Traceable output | Artifacts state their inputs and the decisions they implement | Applied | Every document lists its reference documents and cites requirement and decision ids | Part01 §2.1; KPI-05; D-116 |
+| AP-DG-03 | Layered project knowledge | Organisation, project, user and session knowledge kept separate | Applied | Organisation standards, project rules and documents, personal settings and session notes kept in separate layers of the repository | D-116 |
+| AP-DG-04 | Guardrail rules | Project rules restrict which delivery tools may be used | Applied | Standing project rules, each traced to a decision, restrict the delivery tools and reference sources used | D-17, D-54, D-60, D-116 |
+| AP-DG-05 | Curated knowledge base | Only approved project documents are used as delivery inputs | Applied | Only the repository documents and approved decisions are used as inputs; superseded reference material excluded | D-54, D-116 |
 
 ## 5. Architecture decision register (ADRs)
 
@@ -444,3 +533,9 @@ To be drafted.
 | OI-P01a-09 | Software bill of materials: whether and how it is produced per image | AP-SEC-17 | Enterprise Architect | docs/04-standards/devops-and-cicd |
 | OI-P01a-10 | Dynamic application security testing: whether and where it runs (e.g. QA) | AP-SEC-18 | Enterprise Architect | docs/04-standards/testing-and-quality |
 | OI-P01a-11 | Version scheme for services, APIs and events, and compatibility rules | AP-MS-33, AP-INT-10, AP-DEV-09 | Enterprise Architect | docs/04-standards/api-and-integration |
+| OI-P01a-12 | Bulkheads inside a service: separate connection and thread pools per downstream dependency | AP-RES-04 | Enterprise Architect | docs/04-standards/resilience-and-availability |
+| OI-P01a-13 | Planned failure-injection tests (instance, broker, database and dependency failure) and where they run | AP-RES-10 | Enterprise Architect | docs/04-standards/testing-and-quality |
+| OI-P01a-14 | Deployment rollout and rollback approach (e.g. rolling update with rollback to the previous release) | AP-DEV-07 | Enterprise Architect | docs/04-standards/devops-and-cicd |
+| OI-P01a-15 | Whether feature toggles are used, and how | AP-DEV-08 | Enterprise Architect | docs/04-standards/devops-and-cicd |
+| OI-P01a-16 | Database migration reversal plan (backward-compatible changes, backup before release, roll-forward or restore) | AP-DEV-10 | Enterprise Architect | docs/04-standards/database-and-data |
+| OI-P01a-17 | Definition-of-done checklist per story | AP-QA-10 | Enterprise Architect | docs/04-standards/documentation-and-governance |
