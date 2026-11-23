@@ -14,12 +14,13 @@ Date: November 2026
 | --- | --- | --- | --- | --- |
 | 1.0 | 0.1 | 23-Nov-2026 | Rajesh Verma | First draft of §1–§3, based on the approved BRD set v1.0 (D-107), PMS-HLD-Part01 v1.0 rev 0.9, PMS-HLD-Part01a v1.0 rev 0.6 and PMS-HLD-Part02-Functional v1.0 rev 0.4; Part03 anchor design answers of 23 Nov 2026 (D-126) |
 | 1.0 | 0.2 | 23-Nov-2026 | Rajesh Verma | Draft of §4 (master ER of the 5 business entities with text-version table; system tables and what they relate to) and §5 (cross-service data and consistency, 12 data objects) (D-127) |
+| 1.0 | 0.3 | 23-Nov-2026 | Rajesh Verma | Draft of §6 (classification and privacy roll-up), §7 (volumetrics, retention, clean-up rules JOB-AMS-01 and JOB-CMN-01 step) and §8 (schema management, seed data, backups) (D-128) |
 
 ### 1.2 Review and approval
 
 | Role | Name | Date | Decision |
 | --- | --- | --- | --- |
-| Architect | Rajesh Verma (Enterprise Architect) | 23-Nov-2026 | §1–§3 approved (D-126); §4–§5 approved (D-127) |
+| Architect | Rajesh Verma (Enterprise Architect) | 23-Nov-2026 | §1–§3 approved (D-126); §4–§5 approved (D-127); §6–§8 approved (D-128) |
 | Data / DB lead | | | |
 | Dev lead | | | |
 | Security lead | | | |
@@ -244,15 +245,59 @@ Service-wise ER diagrams with full entity definitions are in each module data mo
 
 ## 6. Data classification & privacy summary
 
-Drafted in a later review.
+Roll-up of the classification tables in the module documents; until they are written, the classification comes from the module BRDs §9 (D-71, D-75, D-80, D-87, D-93). Classes: **Sensitive – personal** (D-71 personal attributes), **Sensitive – pay** (hourly wage rate, wage amounts), **Internal** (all other business and system data; shown only within the role's data scope). Rules for every class: shown and returned only within the role's data scope (BRD anchor §4.3, D-58, D-63; UM0060), refused with the neutral response otherwise (Part02 §6.3); never written to the activity log – services log by an allow-list of ids, statuses and counts (Part01 §10.8, FR-ADM-115); test data synthetic in every environment (R-04). No field-level encryption in the POC: data at rest is protected by encrypted database storage – the operating-system-encrypted workstation drive locally, the managed database and volume encryption on AWS – and encrypted backup drives (Part01 §16, OI-P01-06 closed).
+
+| Entity.column | Classification | Masking (UI / API / logs) | Encryption (at rest / field-level) | Access rule (role, data scope) | Retention |
+| --- | --- | --- | --- | --- | --- |
+| EMPLOYEE – father's and mother's name, date, place and country of birth, address lines, city, state, country, zip / PIN code, email, mobile number | Sensitive – personal (D-71) | UI and API: not masked, returned only within the data scope; logs: never | Storage encryption; no field-level | Employee own (R/W); manager for direct reports (R, review); Admin all employee master data (BRD anchor §4.3) | Kept with the record, never deleted (BR-CMN-06) |
+| EMPLOYEE – hourly wage rate | Sensitive – pay (D-71) | As above | As above | Admin (R/W); further visibility per screen in PMS-HLD-Part03-M1-EIMS (planned) | As above |
+| EMPLOYEE – Employee Id, names, date of joining, manager, status, workflow and audit columns | Internal | Logs: Employee Id only (an id, allowed) | Storage encryption | Data scope (BRD anchor §4.3) | As above |
+| PROFILE_CHANGE_REQUEST – requested and previous values | As the EMPLOYEE field each value belongs to | As that field | As that field | Employee own; manager for direct reports; Admin for the top-level employee | As above |
+| ATTENDANCE, LEAVE_REQUEST – all columns | Internal – not sensitive (D-80, D-87) | Logs: ids and statuses only | Storage encryption | Owner; manager for direct reports; Admin only the top-level employee's records (D-58); System read for salary (AMS → SMS) | As above |
+| SALARY_RECORD – day wage rate, day wage amount | Sensitive – pay (D-93) | UI and API: within the data scope only; logs: never | Storage encryption; no field-level | Owner; manager for direct reports; Admin only the top-level employee's records (D-58); System R/W (generate, void, reconcile) | As above |
+| SALARY_RECORD – other columns (dispute remark, explanation, remarks and dates) | Internal; free-text remarks never logged (Part01 §10.8) | As above | Storage encryption | As above | As above |
+| AUDIT_ENTRY – old value, new value | As the field audited (sensitive values kept in full, FR-ADM-104); passwords never recorded | No user screen in the POC; history extract by IT operations on request of the HR or Finance Manager only (FR-ADM-105); logs: never | Storage encryption | Service application user insert and select only (§2.5); IT operations for the extract | Kept as long as the record (FR-ADM-103) |
+| OUTBOX_EVENT – envelope and payload | Internal – attendance data only, no sensitive values (Part02 §6.2) | Payload never logged; event ids and types only | Storage encryption | AMS only; published to SMS | Sent rows 90 days (§7) |
+| PROCESSED_EVENT, ATTENDANCE_APPLIED_VERSION, RECONCILIATION_RUN, RECONCILIATION_MISMATCH, EMPLOYEE_ID_COUNTER, JOB_LOCK | Internal – ids, versions, counts | – | Storage encryption | Owning service only; run result on the Admin dashboard (SMS0120) | §7 |
+| User account, credentials, sessions, security events | Held by the identity provider (ADR-003) | Passwords never stored or shown in readable form | Hashed by the identity provider | Identity provider; IT operations for security events | Security events 90 days (Part01 §10.8) |
 
 ## 7. Volumetrics, retention & archival
 
-Drafted in a later review.
+Roll-up of the module documents; until they are written, figures from BRD anchor §8.1 and Part01 §17 (about 100 employees, 0 % growth, 20 % headroom planned, load-tested to 2×, NFR-07). Initial volume: none – greenfield (Part01 §13); about 100 employees are onboarded one by one at go-live (D-104).
+
+| Entity | Initial volume | Growth (per month) | 3-year volume | Retention | Archival / purge approach |
+| --- | --- | --- | --- | --- | --- |
+| EMPLOYEE | About 100 at go-live | About 0 (replacements only) | About 100 plus inactive leavers | Never deleted (BR-CMN-06) | None |
+| PROFILE_CHANGE_REQUEST | 0 | About 4 | About 150 | Never deleted | None |
+| ATTENDANCE | 0 | About 2,200 | About 79,200 | Never deleted | None |
+| LEAVE_REQUEST | 0 | About 100 | About 3,600 | Never deleted | None |
+| SALARY_RECORD | 0 | About 2,200 plus regenerated after reopens | About 79,200 plus voided | Never deleted; voided, never changed (AP-DATA-16) | None |
+| AUDIT_ENTRY (four databases) | 0 | About 41,000 | About 1.5 million (about 0.45 GB) | As long as the record (FR-ADM-103) | None; no archival needed – all databases stay below 3 GB in year 5 (Part01 §17) |
+| OUTBOX_EVENT | 0 | About 2,200 plus reopens | About 6,600 at any time (90 days) | Sent rows deleted 90 days after they were sent; unsent rows never deleted | Daily clean-up job JOB-AMS-01 (below) |
+| PROCESSED_EVENT | 0 | About 2,200 plus reopens | About 6,600 at any time (90 days) | 90 days after processing | Clean-up step of JOB-CMN-01 (below) |
+| ATTENDANCE_APPLIED_VERSION | 0 | About 2,200 (one per approved attendance) | About 79,200 | Kept – needed for the ordering rule as long as the attendance can be reopened | None |
+| RECONCILIATION_RUN | 0 | About 30 | About 1,100 | Kept like business records | None |
+| RECONCILIATION_MISMATCH | 0 | Expected near 0 (only after failures) | Small | Kept like business records | None |
+| EMPLOYEE_ID_COUNTER, JOB_LOCK | 1 row each (per job) | 0 | 1 row each | Kept | None |
+
+**Clean-up rules (ADR-006 follow-up, D-126 (2)):**
+
+| Job | Module | Schedule | Rule | Function |
+| --- | --- | --- | --- | --- |
+| JOB-AMS-01 Outbox clean-up | AMS (one instance under the AMS job lock) | Daily 02:00 IST | Delete OUTBOX_EVENT rows sent more than 90 days ago, in batches; never an unsent row; count logged in the activity log with the run's flow reference | AMS0090 (outbox relay, clean-up step) |
+| JOB-CMN-01 step "processed-event clean-up" | SMS (inside the nightly run, under the SMS job lock) | Daily 01:00 IST, after reconciliation | Delete PROCESSED_EVENT rows processed more than 90 days ago; the version record stays, so a replayed old event is still ignored by the ordering rule (Part02 §6.2) | SMS0100 |
+
+90 days matches the Production log retention (Part01 §10.8), so an event can be traced from its activity-log entries to its outbox row while both exist. The activity log itself is not in the service databases (90 days in Production, Part01 §10.8).
 
 ## 8. Schema management & reference data
 
-Drafted in a later review.
+| Topic | Approach |
+| --- | --- |
+| Schema migration tool and naming | One set of versioned migration scripts per service, kept with the service's code and applied by the schema migration tool of Part01 §11 when the service starts after a pipeline deployment, using the schema-owner user (D-112, AP-DATA-03). Scripts are named `V<nnn>__<short_description>` and never changed once applied; each service migrates only its own database (C-02). Detail in docs/04-standards/database-and-data (planned) |
+| Versioning and backward-compatible changes (expand / contract) | Every change is backward compatible with the running version (2 replicas in Prod roll one by one): first expand – add tables, nullable columns or new check values; deploy code that uses them; backfill; then contract – remove or tighten in a later release. Renames are an add plus a later remove. Status check constraints change only by release (D-97). Backup before each Prod release; the reversal plan (roll forward or restore) stays with OI-P01a-16, docs/04-standards/database-and-data (planned) |
+| Seed / reference data (lookups, roles, configuration) | No lookup tables (statuses are check constraints, §2.3). The migrations create the control rows: EMPLOYEE_ID_COUNTER at 0 and the JOB_LOCK rows. Roles and the PMS Administrator account are set up in the identity provider at installation (FR-UM-004, UM0020), not in the service databases. Sample data is never part of the migrations (Part01 §13) |
+| Test data and masking for non-production | Synthetic data only, in every environment (R-04): about 20 sample employees with attendance, leave and salary records in Dev and QA, created by the seed job through the service APIs and the identity-provider admin API; about 200 employees with one year of data for performance tests, restored from a QA snapshot before each run (Part01 §13, §14.5). Production data is never copied to another environment, so no masking of copies is needed |
+| Backup, restore and point-in-time recovery | Daily logical backup per database, 7 daily and 4 weekly copies on a separate encrypted drive locally; automated backups kept 7 days with point-in-time restore on AWS; restore tested before go-live and monthly (Part01 §12, D-112); RPO 24 h, RTO 8 h (NFR-02). Databases are restored one by one, so they may come back at different points: unsent outbox rows are published again, SMS ignores events already applied (§5), and the next JOB-CMN-01 run repairs the AMS → SMS hand-over (Part01 §12). A restored EMPLOYEE_ID_COUNTER never falls below the highest Employee Id restored with it, as both are in eims |
 
 ## 9. Appendix
 

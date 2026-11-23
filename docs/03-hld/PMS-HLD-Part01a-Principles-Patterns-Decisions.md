@@ -15,6 +15,7 @@ Date: November 2026
 | 1.0 | 0.4 | 23-Nov-2026 | Rajesh Verma | Draft of §4 groups M–R (OBS, PERF, RES, DEV, QA, DG); all 330 rows assessed; §3 totals; open items OI-P01a-12 to 17 |
 | 1.0 | 0.5 | 23-Nov-2026 | Rajesh Verma | Draft of §5 (ADR register ADR-001 to ADR-006) and §6 (ADR record format); D-113 added to the Ref of AP-MS-29 and AP-CP-40; Part01 §4.1 counts recorded (Part01 rev 0.9) |
 | 1.0 | 0.6 | 23-Nov-2026 | Rajesh Verma | §7: OI-P01a-03 (shared design system) and OI-P01a-06 (event ordering) closed by the PMS-HLD-Part02 anchor (D-122) |
+| 1.0 | 0.7 | 23-Nov-2026 | Rajesh Verma | §4: Ref of AP-XF-06, AP-SD-15, AP-CP-25, AP-EIP-61, AP-DATA-07, 10, 11, 13 to 16 and AP-PERF-06 point to the PMS-HLD-Part03 anchor or the Part03 module documents; outbox and processed-event clean-up after 90 days (D-128) |
 
 | Role | Name | Date | Decision |
 | --- | --- | --- | --- |
@@ -111,7 +112,7 @@ Group R follows D-116: tool-neutral wording, ids AP-DG-01 to AP-DG-05, linked to
 | AP-XF-03 | Security first | Security controls designed in at every layer from the start | Applied | Identity provider, token checks at gateway and service, role and data scope on every request, zones, masking | Part01 §4.2, §9, §16 |
 | AP-XF-04 | Performance first | Performance budgets and load profile defined at design time | Applied | NFR-01 targets, load profile and performance test plan fixed in the HLD | Part01 §4.2, §14, §17 |
 | AP-XF-05 | Cloud first | Managed cloud services preferred over self-managed infrastructure | Partial | Read as cloud-ready for the on-premises POC: containers, configuration outside the images, every component mapped to an AWS service; managed services used only in the AWS target | Part01 §4.2, §6.2; ADR-002; D-117 |
-| AP-XF-06 | Data first | Data ownership, model and quality defined before services | Applied | Data ownership fixed per module; one database per service; entities modelled before code | Part01 §4.2, §12; D-10, C-02; Part03 (planned) |
+| AP-XF-06 | Data first | Data ownership, model and quality defined before services | Applied | Data ownership fixed per module; one database per service; entities modelled before code | Part01 §4.2, §12; D-10, C-02; Part03 anchor §2.2 |
 | AP-XF-07 | Observability first | Logs, metrics, traces and health checks designed in, not added later | Applied | Activity log with flow reference, audit log, metrics, traces, health checks and alerts designed in the HLD | Part01 §4.2, §10; NFR-09 |
 | AP-XF-08 | Automation first | Build, test, deploy, provisioning and checks are automated | Applied | Pipeline per service with automated tests and scans; deployment charts; infrastructure code for AWS | Part01 §4.2, §15; D-110, D-112 |
 | AP-XF-09 | Test first | Tests and acceptance criteria written before or with code | Applied | Acceptance criteria for every BRD requirement before design; tests written with the code and enforced by the coverage gate | BRD module §7; Part01 §15; docs/04-standards/testing-and-quality (planned) |
@@ -158,7 +159,7 @@ Group R follows D-116: tool-neutral wording, ids AP-DG-01 to AP-DG-05, linked to
 | AP-SD-12 | Composition over inheritance | Build behaviour by composing objects | Applied | Coding standard rule | docs/04-standards/coding-and-code-review (planned) |
 | AP-SD-13 | Fail fast | Detect and report invalid state at the earliest point | Applied | Requests validated against the contract and BRD validation rules at entry; stale updates refused by the version check | Part01 §8.4, §9.8 |
 | AP-SD-14 | Convention over configuration | Sensible defaults; configure only exceptions | Applied | Framework defaults; only environment-specific values are deployment settings | Part01 §11; D-97 |
-| AP-SD-15 | Immutability by default | Prefer immutable objects and append-only records | Applied | Audit log append-only; records never physically deleted; salary records voided, not changed | Part01 §12; BR-CMN-06, FR-ADM-103; Part03 (planned) |
+| AP-SD-15 | Immutability by default | Prefer immutable objects and append-only records | Applied | Audit log append-only; records never physically deleted; salary records voided, not changed | Part01 §12; BR-CMN-06, FR-ADM-103; Part03 anchor §2.3, §2.5 |
 | AP-SD-16 | Hexagonal / clean architecture | Domain core isolated from frameworks via ports and adapters | Partial | Technology-neutral design and contract-generated interfaces support replatforming; the internal service structure is not yet set | Part01 §19 AR-09; D-12; OI-P01a-02 |
 | AP-SD-17 | Domain-driven design | Bounded contexts, ubiquitous language, aggregates | Applied | Domains and towers per bounded context; BRD terms and statuses as the common language; one business entity per module | Part01 §5.3; C-01, D-10 |
 | AP-SD-18 | Stateless services | No session state held in service instances | Partial | Business services hold no session state; the API gateway holds user sessions in memory with session affinity; shared session store Future | Part01 §6.4, §19 AR-02, §20.3; ADR-004 |
@@ -265,7 +266,7 @@ Source: Azure Architecture Center cloud design patterns catalogue.
 | AP-CP-22 | Geode | Back ends deployed across geographically distributed nodes | N/A | Single site and single region (ap-south-1 on AWS) | D-109; Part01 §6.3 |
 | AP-CP-23 | Health Endpoint Monitoring | Functional checks exposed through endpoints | Applied | Health endpoints checked by the platform and the alert rules | Part01 §4.4, §10.7 |
 | AP-CP-24 | Idempotent Consumer | Duplicate delivery has the same effect as single delivery | Applied | As AP-MS-16 | Part01 §8.5; ADR-006 |
-| AP-CP-25 | Index Table | Indexes over frequently queried fields | Applied | Database indexes for the heaviest queries | Part01 §16.3; Part03 (planned) |
+| AP-CP-25 | Index Table | Indexes over frequently queried fields | Applied | Database indexes for the heaviest queries | Part01 §16.3; Part03 module documents (planned) |
 | AP-CP-26 | Leader Election | One instance coordinates collaborating instances | Applied | A database lock lets one SMS instance run each reconciliation | Part01 §6.1, §6.4; ADR-006 |
 | AP-CP-27 | Materialized View | Prepopulated views for query needs | N/A | Volumes are small; queries read the service's own tables | Part01 §17 |
 | AP-CP-28 | Messaging Bridge | Intermediary between incompatible messaging systems | N/A | One broker | Part01 §6.1 |
@@ -352,7 +353,7 @@ Source: Enterprise Integration Patterns (Hohpe & Woolf), messaging patterns cata
 | AP-EIP-58 | System management | Detour | N/A | No message routing to detour | Part01 §8.3 |
 | AP-EIP-59 | System management | Wire Tap | Applied | Publish and consume written to the activity log with the flow reference | Part01 §8.2 (row 14), §10.2 |
 | AP-EIP-60 | System management | Message History | Applied | Flow reference and acting user carried in the envelope and logged at each step | Part01 §9.9, §10.5 |
-| AP-EIP-61 | System management | Message Store | Applied | Published events kept in the AMS outbox table; clean-up rule in Part03 | Part01 §8.3, §17; Part03 (planned) |
+| AP-EIP-61 | System management | Message Store | Applied | Published events kept in the AMS outbox table; sent rows deleted after 90 days by JOB-AMS-01 | Part01 §8.3, §17; Part03 anchor §7; D-126, D-128 |
 | AP-EIP-62 | System management | Smart Proxy | N/A | No messaging request-reply | AP-EIP-18 |
 | AP-EIP-63 | System management | Test Message | N/A | Health checks and alerts monitor the flow | Part01 §10.7 |
 | AP-EIP-64 | System management | Channel Purger | N/A | Test environments are restored from snapshots | Part01 §14.5 |
@@ -385,16 +386,16 @@ Source: Enterprise Integration Patterns (Hohpe & Woolf), messaging patterns cata
 | AP-DATA-04 | Soft delete | Records flagged inactive, never physically deleted | Applied | Records never physically deleted | Part01 §12; BR-CMN-06 |
 | AP-DATA-05 | Standard audit columns | created/updated by and at on every table | Applied | Audit fields on every business record | Part01 §12; BR-CMN-02, BR-CMN-07 |
 | AP-DATA-06 | Optimistic locking | Version column prevents lost updates | Applied | Version on every record; stale updates refused | Part01 §8.4, §12; FR-CMN-014 |
-| AP-DATA-07 | Referential integrity policy | Within a service: DB foreign keys; across services: application checks | Applied | Foreign keys inside a database only; cross-service checks by API (e.g. INT-09) | Part01 §8.2, §12; Part03 (planned) |
+| AP-DATA-07 | Referential integrity policy | Within a service: DB foreign keys; across services: application checks | Applied | Foreign keys inside a database only; cross-service checks by API (e.g. INT-09) | Part01 §8.2, §12; Part03 anchor §2.2, §2.3 |
 | AP-DATA-08 | Read / write separation | Reporting reads separated from transactional writes where needed | N/A | Small volumes; no reporting workload in the POC | Part01 §17 |
 | AP-DATA-09 | Caching strategy | What is cached, TTL, invalidation | Partial | Short-lived in-memory copies of employee and approver details only; shared cache Future | Part01 §12, §20.3; D-110 |
-| AP-DATA-10 | Data classification | Personal and sensitive data identified and tagged | Applied | Sensitive attributes classified in the BRD; masked in logs | Part01 §10.8; D-71, D-93; Part03 (planned) |
-| AP-DATA-11 | Retention & archival | Retention period and archival per entity | Applied | Business records and audit kept with the record; logs 90 days in Prod; outbox clean-up in Part03; no archival needed at these volumes | Part01 §10.8, §17; FR-ADM-103; Part03 (planned) |
+| AP-DATA-10 | Data classification | Personal and sensitive data identified and tagged | Applied | Sensitive attributes classified in the BRD; masked in logs | Part01 §10.8; D-71, D-93; Part03 anchor §6 |
+| AP-DATA-11 | Retention & archival | Retention period and archival per entity | Applied | Business records and audit kept with the record; logs 90 days in Prod; sent outbox rows and processed event ids kept 90 days; no archival needed at these volumes | Part01 §10.8, §17; FR-ADM-103; Part03 anchor §7; D-128 |
 | AP-DATA-12 | Backup & restore | RPO / RTO defined and tested | Applied | Daily backup, RPO 24 h, RTO 8 h; restore tested before go-live and monthly | Part01 §6.4, §12; NFR-02 |
-| AP-DATA-13 | UTC storage of timestamps | Stored in UTC, displayed in user time zone | Applied | Timestamps stored in UTC and shown in IST; business dates stored as dates | Part01 §10.3; BR-CMN-18, A-01; D-117; Part03 (planned) |
-| AP-DATA-14 | Naming conventions | Consistent table, column and key naming | Applied | Conventions in the data model anchor and the database standard | Part03 (planned); docs/04-standards/database-and-data (planned) |
-| AP-DATA-15 | Business keys vs surrogate keys | Immutable business id alongside technical primary key | Applied | Business ids (e.g. Employee Id) kept alongside technical keys; key design per entity in Part03 | FR-UM-001; Part03 (planned) |
-| AP-DATA-16 | Immutable approved records | Approved / financial records changed only by new versions | Partial | Salary records are voided and regenerated, never changed; profile changes go through change requests; approved attendance can be reopened by business rule | D-70, D-78, D-90; Part03 (planned) |
+| AP-DATA-13 | UTC storage of timestamps | Stored in UTC, displayed in user time zone | Applied | Timestamps stored in UTC and shown in IST; business dates stored as dates | Part01 §10.3; BR-CMN-18, A-01; D-117; Part03 anchor §2.3 |
+| AP-DATA-14 | Naming conventions | Consistent table, column and key naming | Applied | Conventions in the data model anchor and the database standard | Part03 anchor §2.3; docs/04-standards/database-and-data (planned) |
+| AP-DATA-15 | Business keys vs surrogate keys | Immutable business id alongside technical primary key | Applied | Business ids (e.g. Employee Id) kept alongside technical keys; key design per entity in Part03 | FR-UM-001; Part03 anchor §2.3 |
+| AP-DATA-16 | Immutable approved records | Approved / financial records changed only by new versions | Partial | Salary records are voided and regenerated, never changed; profile changes go through change requests; approved attendance can be reopened by business rule | D-70, D-78, D-90; Part03 anchor §2.3, §7 |
 | AP-DATA-17 | Pagination for lists | All list queries paginated server-side | Applied | List APIs and the reconciliation query paged server-side | Part01 §8.2 (row 3), §8.4; Part02 (planned) |
 
 ### L. Security architecture (SEC)
@@ -448,7 +449,7 @@ Source: Enterprise Integration Patterns (Hohpe & Woolf), messaging patterns cata
 | AP-PERF-03 | Caching | Reference data and expensive reads cached | Partial | Short-lived in-memory copies of read-mostly data; shared cache Future | Part01 §12, §20.3; D-110 |
 | AP-PERF-04 | Async processing for heavy work | Long tasks moved off the request path | Applied | Salary generation by event after approval; reconciliation as a nightly job | Part01 §8.2; ADR-006 |
 | AP-PERF-05 | Connection pooling | DB and HTTP connections pooled | Applied | As AP-INT-13 | Part01 §14.9; docs/04-standards/performance-and-scalability (planned) |
-| AP-PERF-06 | Efficient queries | Indexes, no N+1, projections | Applied | Indexes per entity; data scope applied in the query; heaviest reads load-tested | Part01 §9.7, §14.2 (PT-06), §16.3; Part03 (planned) |
+| AP-PERF-06 | Efficient queries | Indexes, no N+1, projections | Applied | Indexes per entity; data scope applied in the query; heaviest reads load-tested | Part01 §9.7, §14.2 (PT-06), §16.3; Part03 module documents (planned) |
 | AP-PERF-07 | Payload efficiency | Pagination, compression, minimal payloads | Applied | Server-side paging; 1 MB payload limit; details in the performance standard | Part01 §8.4, §9.8; docs/04-standards/performance-and-scalability (planned) |
 | AP-PERF-08 | Static content via CDN | Frontend assets served from edge | N/A | Internal users at one site; the static web server behind the edge serves the assets | A-01, A-03; Part01 §6.1 |
 | AP-PERF-09 | Capacity planning | Sizing from volumetrics, reviewed yearly | Applied | Sizing from the volumetrics with 20 % headroom, load-tested to 2× | Part01 §17; NFR-07 |

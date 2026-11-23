@@ -16,6 +16,7 @@ Date: November 2026
 | 1.0 | 0.2 | 23-Nov-2026 | Rajesh Verma | Draft of §4 (function index, 77 functions) and §5 (cross-module flows XF-01 to XF-09); open items OI-P02-01 and 02 (D-123) |
 | 1.0 | 0.3 | 23-Nov-2026 | Rajesh Verma | Draft of §6 (API, event, error, audit and activity log, notification and frontend conventions; event ordering rule; shared design system) |
 | 1.0 | 0.4 | 23-Nov-2026 | Rajesh Verma | Draft of §7–§10 (roll-up inventories, cross-module NFR summary, requirement coverage of 175 FR ids, open items OI-P02-01 and 02, items brought forward); all sections drafted |
+| 1.0 | 0.5 | 23-Nov-2026 | Rajesh Verma | §7.3: JOB-AMS-01 outbox clean-up added and the processed-event clean-up step of JOB-CMN-01, from the PMS-HLD-Part03 anchor (D-128) |
 
 ### 1.2 Review and approval
 
@@ -771,9 +772,10 @@ API ids `API-<MOD>-nn` and endpoints are assigned in the module documents (§6.1
 
 | Job | Module | Schedule | Purpose | Function |
 | --- | --- | --- | --- | --- |
-| JOB-CMN-01 Nightly salary reconciliation | SMS (one instance under a database lock) | Daily 01:00 IST | Create missing salary records, void stale ones, log other mismatches and the run result (XF-04) | SMS0100 |
+| JOB-CMN-01 Nightly salary reconciliation | SMS (one instance under a database lock) | Daily 01:00 IST | Create missing salary records, void stale ones, log other mismatches and the run result (XF-04); last step deletes processed event ids older than 90 days (PMS-HLD-Part03 anchor §7) | SMS0100 |
+| JOB-AMS-01 Outbox clean-up | AMS (one instance under the AMS job lock) | Daily 02:00 IST | Delete outbox rows sent more than 90 days ago, never an unsent row (ADR-006 follow-up, PMS-HLD-Part03 anchor §7) | AMS0090 (clean-up step) |
 
-The outbox relay (AMS0090) runs continuously, not on a schedule; any outbox clean-up job is defined in PMS-HLD-Part03 (planned, ADR-006 follow-up). Platform jobs (backups) are in Part01 §12 and §15.
+The outbox relay (AMS0090) runs continuously, not on a schedule; its clean-up of sent rows is JOB-AMS-01 (PMS-HLD-Part03 anchor §7, D-128). Platform jobs (backups) are in Part01 §12 and §15.
 
 ### 7.4 Notification inventory
 
