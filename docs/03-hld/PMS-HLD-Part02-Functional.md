@@ -15,13 +15,14 @@ Date: November 2026
 | 1.0 | 0.1 | 23-Nov-2026 | Rajesh Verma | First draft of §1–§3, based on the approved BRD set v1.0 (D-107), UX v1.1 (D-105), PMS-HLD-Part01 v1.0 rev 0.9 and PMS-HLD-Part01a v1.0 rev 0.5; Part02 anchor design answers of 23 Nov 2026 (D-122) |
 | 1.0 | 0.2 | 23-Nov-2026 | Rajesh Verma | Draft of §4 (function index, 77 functions) and §5 (cross-module flows XF-01 to XF-09); open items OI-P02-01 and 02 (D-123) |
 | 1.0 | 0.3 | 23-Nov-2026 | Rajesh Verma | Draft of §6 (API, event, error, audit and activity log, notification and frontend conventions; event ordering rule; shared design system) |
+| 1.0 | 0.4 | 23-Nov-2026 | Rajesh Verma | Draft of §7–§10 (roll-up inventories, cross-module NFR summary, requirement coverage of 175 FR ids, open items OI-P02-01 and 02, items brought forward); all sections drafted |
 
 ### 1.2 Review and approval
 
 | Role | Name | Date | Decision |
 | --- | --- | --- | --- |
-| Architect | Rajesh Verma (Enterprise Architect) | 23-Nov-2026 | §1–§3 approved (D-122); §4–§5 approved (D-123); §6 approved (D-124) |
-| Product owner | Rajesh Verma | 23-Nov-2026 | §1–§3 approved (D-122); §4–§5 approved (D-123); §6 approved (D-124) |
+| Architect | Rajesh Verma (Enterprise Architect) | 23-Nov-2026 | §1–§3 approved (D-122); §4–§5 approved (D-123); §6 approved (D-124); §7–§10 approved (D-125); all sections reviewed – final approval with the HLD set at the Stage 3 gate |
+| Product owner | Rajesh Verma | 23-Nov-2026 | §1–§3 approved (D-122); §4–§5 approved (D-123); §6 approved (D-124); §7–§10 approved (D-125); all sections reviewed – final approval with the HLD set at the Stage 3 gate |
 | Business analyst | | | |
 | Dev lead | | | |
 
@@ -732,3 +733,304 @@ Rules:
 | Screen states | Empty, loading, validation error, system error, no access as in each UX summary §7; a dashboard card fails on its own (FR-CMN-008) |
 | Formats on screen | Dates and times in IST, amounts with ₹ and 2 decimals, hours with 2 decimals, labels and messages exactly as in the BRD and UX summaries; English only |
 | Accessibility and browsers | WCAG 2.1 AA, contrast at least 4.5:1, keyboard operable, landmarks as SCR-SH-00 §8; latest Chrome and Edge on desktop (NFR-04) |
+
+## 7. Roll-up inventories
+
+Roll-ups of the module documents, keyed by id. Rows that depend on a module document not yet written show "Module document (planned)" and are completed as each module document is written (D-48).
+
+### 7.1 API inventory
+
+API ids `API-<MOD>-nn` and endpoints are assigned in the module documents (§6.1). The cross-module APIs are known now and are listed below; every other API (screen actions of §4) is added from its module document.
+
+| API id | API name | Module | Method & endpoint | Roles | Idempotent | Function |
+| --- | --- | --- | --- | --- | --- | --- |
+| API-EIMS-nn (planned) | Employee details (INT-03) | EIMS | GET /api/eims/v1/… – Module document (planned) | User token relayed (scope applied) or service token | Yes (read) | EIMS0170 |
+| API-EIMS-nn (planned) | Approver resolution (INT-04) | EIMS | GET /api/eims/v1/… – Module document (planned) | User token relayed or service token | Yes (read) | EIMS0180 |
+| API-EIMS-nn (planned) | Current hourly wage rate (INT-05) | EIMS | GET /api/eims/v1/internal/… – Module document (planned) | Service token (SMS) | Yes (read) | EIMS0190 |
+| API-EIMS-nn (planned) | EIMS dashboard card and inbox items (INT-07) | EIMS | GET /api/eims/v1/… – Module document (planned) | Employee, Manager, Admin | Yes (read) | EIMS0200 |
+| API-AMS-nn (planned) | Approved attendance for reconciliation (JOB-CMN-01) | AMS | GET /api/ams/v1/internal/…, paged – Module document (planned) | Service token (SMS job) | Yes (read) | AMS0100 |
+| API-AMS-nn (planned) | Attendance on leave dates (INT-06) | AMS | GET /api/ams/v1/internal/… – Module document (planned) | Service token (LMS) | Yes (read) | AMS0110 |
+| API-AMS-nn (planned) | Attendance before a date of joining (INT-09) | AMS | GET /api/ams/v1/internal/… – Module document (planned) | Service token (EIMS) | Yes (read) | AMS0120 |
+| API-AMS-nn (planned) | AMS dashboard card and inbox items (INT-07) | AMS | GET /api/ams/v1/… – Module document (planned) | Employee, Manager, Admin | Yes (read) | AMS0130 |
+| API-AMS-nn (planned) | Reopen attendance (INT-02 trigger) | AMS | POST /api/ams/v1/attendance-entries/{id}/reopen – Module document (planned) | Manager, Admin (top-level employee) | No (version check) | AMS0080 |
+| API-LMS-nn (planned) | Leave on an attendance date (INT-06) | LMS | GET /api/lms/v1/internal/… – Module document (planned) | Service token (AMS) | Yes (read) | LMS0070 |
+| API-LMS-nn (planned) | Leave before a date of joining (INT-09) | LMS | GET /api/lms/v1/internal/… – Module document (planned) | Service token (EIMS) | Yes (read) | LMS0080 |
+| API-LMS-nn (planned) | LMS dashboard card and inbox items (INT-07) | LMS | GET /api/lms/v1/… – Module document (planned) | Employee, Manager, Admin | Yes (read) | LMS0090 |
+| API-SMS-nn (planned) | Salary status for approved attendance (INT-10) | SMS | GET /api/sms/v1/… – Module document (planned) | User token relayed (AMS) | Yes (read) | SMS0110 |
+| API-SMS-nn (planned) | SMS dashboard card, inbox items and last reconciliation (INT-07) | SMS | GET /api/sms/v1/… – Module document (planned) | Employee, Manager, Admin | Yes (read) | SMS0120 |
+| – | Identity provider admin API (INT-08) | SUP (UM) | Identity provider admin interface – PMS-HLD-Part02-M5-SUP (planned) | Service account (EIMS) | Keyed by Employee Id | UM0010 to UM0050 |
+
+### 7.2 Event inventory
+
+| Event | Producer module | Consumer module(s) | Queue / topic | Flow (§5) | Function |
+| --- | --- | --- | --- | --- | --- |
+| ams.attendance.approved (INT-01), v1 | AMS (AMS0060 via outbox, AMS0090) | SMS | Attendance events topic; SMS durable subscription; dead-letter queue | XF-02 | SMS0080 |
+| ams.attendance.reopened (INT-02), v1 | AMS (AMS0080 via outbox, AMS0090) | SMS | As above | XF-03 | SMS0090 |
+
+### 7.3 Scheduled job inventory
+
+| Job | Module | Schedule | Purpose | Function |
+| --- | --- | --- | --- | --- |
+| JOB-CMN-01 Nightly salary reconciliation | SMS (one instance under a database lock) | Daily 01:00 IST | Create missing salary records, void stale ones, log other mismatches and the run result (XF-04) | SMS0100 |
+
+The outbox relay (AMS0090) runs continuously, not on a schedule; any outbox clean-up job is defined in PMS-HLD-Part03 (planned, ADR-006 follow-up). Platform jobs (backups) are in Part01 §12 and §15.
+
+### 7.4 Notification inventory
+
+| NOT id | Notification | Triggering module / function | Recipients | Channel |
+| --- | --- | --- | --- | --- |
+| – | None in the POC (C-05; NM Phase 2, D-57). Reminders are dashboard to-do items and approvals-inbox items (BRD §5.3, XF-05); the temporary password is passed on by the Admin outside PMS (D-104) | – | – | – |
+
+## 8. NFR summary (cross-module)
+
+Realization of the system-wide NFRs at Part01 level is in Part01 §16.3; this table shows how the functional design carries them. Module NFRs (e.g. NFR-EIMS-01, 02; NFR-SUP-01 to 05) are designed in the module documents.
+
+| NFR id | Category | Requirement | Design approach | Applies to (modules / flows) |
+| --- | --- | --- | --- | --- |
+| NFR-01 | Performance | Page p95 ≤ 2 s, service p95 ≤ 500 ms at 25 users; salary record within 1 minute; reconciliation < 5 minutes | One call per dashboard card in parallel (XF-05); paged lists (§6.1); asynchronous hand-over with outbox (XF-02); reconciliation paged, one transaction per record (XF-04); timeouts per Part01 §8.5 | All; XF-02, XF-04, XF-05 |
+| NFR-02 | Availability | 99 % in business hours; one module down does not stop the others | Per-card failure with Retry (XF-05, FR-CMN-008); events wait in the outbox or subscription while SMS is down (XF-02, XF-03); a failed check refuses only that action (XF-06, XF-07) | All; XF-02 to XF-07 |
+| NFR-03 | Security | Role and data scope on every request; generic sign-in messages; no readable passwords | Role and scope in every service query (UM0060); neutral 404 / 403 refused response (§6.3); system-only APIs under `/internal` (§6.1); session changes end all sessions (XF-09); CSRF token (§6.1) | All; XF-01, XF-09 |
+| NFR-04 | Usability and accessibility | Consistent layout, desktop 1366 px, WCAG 2.1 AA | Shell layout and shared design system (§6.5); text plus colour badges; messages from BRD / UX | Shell and all module packages |
+| NFR-05 | Auditability | Who created, changed and approved every record; reconciliation runs logged | Audit entries per field in the same transaction (§6.4, ADM0010); event actor recorded (§6.2); run record (XF-04) | All; XF-02 to XF-04 |
+| NFR-06 | Data integrity | One non-voided salary record per approved attendance; no overwrite; rate copied | Version in every command (§6.1); idempotent consumer with event id and version ordering (§6.2); nightly reconciliation (XF-04); rate read at generation (XF-02) | AMS, SMS; XF-02 to XF-04 |
+| NFR-07 | Scalability | Each module scales on its own | Stateless services, competing consumers on the SMS subscription (§6.2), job lock so only one reconciliation runs (XF-04) | All |
+| NFR-08 | Maintainability | Independent modules; technology-neutral | Contract per module and version (§6.1, §6.2); module packages registered in the shell (§6.5); no product names in the design | All |
+| NFR-09 | Logging and observability | Activity log with one flow reference per action or job across modules | X-Flow-Ref and traceparent on every call, flowRef in every event and error (§6.1 to §6.3); named steps per function (§6.4) | All; every flow |
+
+## 9. Requirement coverage
+
+Every functional requirement of the approved BRD set (175 FR ids) is assigned to at least one function in §4; user stories are covered through their requirements. Cross-module rules, integrations, the job and the system-wide NFRs are covered by flows and conventions. Status "Indexed" means assigned to a function whose module document is not yet written; it becomes "Designed" when the module document section is approved.
+
+| BRD requirement | Function id(s) / flow | Module document section | Status |
+| --- | --- | --- | --- |
+| FR-CMN-001 | SH0020 | This anchor §5.5, §6.5 | Draft (this anchor) |
+| FR-CMN-002 | SH0020, EIMS0200, AMS0130, LMS0090, SMS0120 | This anchor §5.5, §6.5; module documents (planned) | Draft (this anchor); module parts Indexed |
+| FR-CMN-003 | SH0020, EIMS0200, AMS0130, LMS0090, SMS0120 | This anchor §5.5, §6.5; module documents (planned) | Draft (this anchor); module parts Indexed |
+| FR-CMN-004 | SH0020, AMS0130 | This anchor §5.5, §6.5; module documents (planned) | Draft (this anchor); module parts Indexed |
+| FR-CMN-005 | SH0020, EIMS0200 | This anchor §5.5, §6.5; module documents (planned) | Draft (this anchor); module parts Indexed |
+| FR-CMN-006 | SH0020, EIMS0200, AMS0130, LMS0090, SMS0120 | This anchor §5.5, §6.5; module documents (planned) | Draft (this anchor); module parts Indexed |
+| FR-CMN-007 | SH0020, EIMS0200, SMS0120 | This anchor §5.5, §6.5; module documents (planned) | Draft (this anchor); module parts Indexed |
+| FR-CMN-008 | SH0020 | This anchor §5.5, §6.5 | Draft (this anchor) |
+| FR-CMN-010 | SH0030, EIMS0200, AMS0130, LMS0090, SMS0120 | This anchor §5.5, §6.5; module documents (planned) | Draft (this anchor); module parts Indexed |
+| FR-CMN-011 | SH0040 | This anchor §5.5, §6.5 | Draft (this anchor) |
+| FR-CMN-012 | SH0040 | This anchor §5.5, §6.5 | Draft (this anchor) |
+| FR-CMN-013 | SH0030 | This anchor §5.5, §6.5 | Draft (this anchor) |
+| FR-CMN-014 | SH0040 | This anchor §5.5, §6.5 | Draft (this anchor) |
+| FR-CMN-015 | SH0010 | This anchor §5.5, §6.5 | Draft (this anchor) |
+| FR-CMN-016 | AUTH0040 | PMS-HLD-Part02-M5-SUP (planned) | Indexed |
+| FR-EIMS-001 | EIMS0010 | PMS-HLD-Part02-M1-EIMS (planned) | Indexed |
+| FR-EIMS-002 | EIMS0010 | PMS-HLD-Part02-M1-EIMS (planned) | Indexed |
+| FR-EIMS-003 | EIMS0010 | PMS-HLD-Part02-M1-EIMS (planned) | Indexed |
+| FR-EIMS-004 | EIMS0010 | PMS-HLD-Part02-M1-EIMS (planned) | Indexed |
+| FR-EIMS-005 | EIMS0060 | PMS-HLD-Part02-M1-EIMS (planned) | Indexed |
+| FR-EIMS-006 | EIMS0010 | PMS-HLD-Part02-M1-EIMS (planned) | Indexed |
+| FR-EIMS-010 | EIMS0020 | PMS-HLD-Part02-M1-EIMS (planned) | Indexed |
+| FR-EIMS-011 | EIMS0020 | PMS-HLD-Part02-M1-EIMS (planned) | Indexed |
+| FR-EIMS-012 | EIMS0040 | PMS-HLD-Part02-M1-EIMS (planned) | Indexed |
+| FR-EIMS-013 | EIMS0040 | PMS-HLD-Part02-M1-EIMS (planned) | Indexed |
+| FR-EIMS-014 | EIMS0020, EIMS0040 | PMS-HLD-Part02-M1-EIMS (planned) | Indexed |
+| FR-EIMS-015 | EIMS0040 | PMS-HLD-Part02-M1-EIMS (planned) | Indexed |
+| FR-EIMS-016 | EIMS0040 | PMS-HLD-Part02-M1-EIMS (planned) | Indexed |
+| FR-EIMS-017 | EIMS0040 | PMS-HLD-Part02-M1-EIMS (planned) | Indexed |
+| FR-EIMS-018 | EIMS0050 | PMS-HLD-Part02-M1-EIMS (planned) | Indexed |
+| FR-EIMS-020 | EIMS0070 | PMS-HLD-Part02-M1-EIMS (planned) | Indexed |
+| FR-EIMS-021 | EIMS0080 | PMS-HLD-Part02-M1-EIMS (planned) | Indexed |
+| FR-EIMS-022 | EIMS0090 | PMS-HLD-Part02-M1-EIMS (planned) | Indexed |
+| FR-EIMS-023 | EIMS0100 | PMS-HLD-Part02-M1-EIMS (planned) | Indexed |
+| FR-EIMS-024 | EIMS0090 | PMS-HLD-Part02-M1-EIMS (planned) | Indexed |
+| FR-EIMS-025 | EIMS0110 | PMS-HLD-Part02-M1-EIMS (planned) | Indexed |
+| FR-EIMS-026 | EIMS0110, EIMS0120 | PMS-HLD-Part02-M1-EIMS (planned) | Indexed |
+| FR-EIMS-027 | EIMS0120, EIMS0130 | PMS-HLD-Part02-M1-EIMS (planned) | Indexed |
+| FR-EIMS-028 | EIMS0150 | PMS-HLD-Part02-M1-EIMS (planned) | Indexed |
+| FR-EIMS-030 | EIMS0140 | PMS-HLD-Part02-M1-EIMS (planned) | Indexed |
+| FR-EIMS-031 | EIMS0140 | PMS-HLD-Part02-M1-EIMS (planned) | Indexed |
+| FR-EIMS-032 | EIMS0140 | PMS-HLD-Part02-M1-EIMS (planned) | Indexed |
+| FR-EIMS-033 | EIMS0150, EIMS0160 | PMS-HLD-Part02-M1-EIMS (planned) | Indexed |
+| FR-EIMS-034 | EIMS0140 | PMS-HLD-Part02-M1-EIMS (planned) | Indexed |
+| FR-EIMS-035 | EIMS0140 | PMS-HLD-Part02-M1-EIMS (planned) | Indexed |
+| FR-EIMS-040 | EIMS0030 | PMS-HLD-Part02-M1-EIMS (planned) | Indexed |
+| FR-EIMS-041 | EIMS0030 | PMS-HLD-Part02-M1-EIMS (planned) | Indexed |
+| FR-AMS-001 | AMS0010 | PMS-HLD-Part02-M2-AMS (planned) | Indexed |
+| FR-AMS-002 | AMS0010 | PMS-HLD-Part02-M2-AMS (planned) | Indexed |
+| FR-AMS-003 | AMS0010 | PMS-HLD-Part02-M2-AMS (planned) | Indexed |
+| FR-AMS-004 | AMS0010 | PMS-HLD-Part02-M2-AMS (planned) | Indexed |
+| FR-AMS-005 | AMS0010 | PMS-HLD-Part02-M2-AMS (planned) | Indexed |
+| FR-AMS-006 | AMS0010 | PMS-HLD-Part02-M2-AMS (planned) | Indexed |
+| FR-AMS-007 | AMS0010 | PMS-HLD-Part02-M2-AMS (planned) | Indexed |
+| FR-AMS-008 | AMS0010 | PMS-HLD-Part02-M2-AMS (planned) | Indexed |
+| FR-AMS-010 | AMS0020 | PMS-HLD-Part02-M2-AMS (planned) | Indexed |
+| FR-AMS-011 | AMS0020 | PMS-HLD-Part02-M2-AMS (planned) | Indexed |
+| FR-AMS-012 | AMS0030 | PMS-HLD-Part02-M2-AMS (planned) | Indexed |
+| FR-AMS-013 | AMS0030 | PMS-HLD-Part02-M2-AMS (planned) | Indexed |
+| FR-AMS-014 | AMS0020, AMS0030 | PMS-HLD-Part02-M2-AMS (planned) | Indexed |
+| FR-AMS-015 | AMS0020 | PMS-HLD-Part02-M2-AMS (planned) | Indexed |
+| FR-AMS-016 | AMS0030 | PMS-HLD-Part02-M2-AMS (planned) | Indexed |
+| FR-AMS-017 | AMS0040 | PMS-HLD-Part02-M2-AMS (planned) | Indexed |
+| FR-AMS-020 | AMS0050 | PMS-HLD-Part02-M2-AMS (planned) | Indexed |
+| FR-AMS-021 | AMS0050 | PMS-HLD-Part02-M2-AMS (planned) | Indexed |
+| FR-AMS-022 | AMS0060 | PMS-HLD-Part02-M2-AMS (planned) | Indexed |
+| FR-AMS-023 | AMS0070 | PMS-HLD-Part02-M2-AMS (planned) | Indexed |
+| FR-AMS-024 | AMS0050 | PMS-HLD-Part02-M2-AMS (planned) | Indexed |
+| FR-AMS-025 | AMS0080 | PMS-HLD-Part02-M2-AMS (planned) | Indexed |
+| FR-AMS-026 | AMS0050 | PMS-HLD-Part02-M2-AMS (planned) | Indexed |
+| FR-AMS-027 | AMS0050 | PMS-HLD-Part02-M2-AMS (planned) | Indexed |
+| FR-AMS-030 | AMS0060 | PMS-HLD-Part02-M2-AMS (planned) | Indexed |
+| FR-AMS-031 | AMS0080 | PMS-HLD-Part02-M2-AMS (planned) | Indexed |
+| FR-AMS-032 | AMS0100 | PMS-HLD-Part02-M2-AMS (planned) | Indexed |
+| FR-LMS-001 | LMS0010 | PMS-HLD-Part02-M3-LMS (planned) | Indexed |
+| FR-LMS-002 | LMS0010 | PMS-HLD-Part02-M3-LMS (planned) | Indexed |
+| FR-LMS-003 | LMS0010 | PMS-HLD-Part02-M3-LMS (planned) | Indexed |
+| FR-LMS-004 | LMS0030 | PMS-HLD-Part02-M3-LMS (planned) | Indexed |
+| FR-LMS-005 | LMS0030 | PMS-HLD-Part02-M3-LMS (planned) | Indexed |
+| FR-LMS-006 | LMS0010 | PMS-HLD-Part02-M3-LMS (planned) | Indexed |
+| FR-LMS-007 | LMS0010 | PMS-HLD-Part02-M3-LMS (planned) | Indexed |
+| FR-LMS-008 | LMS0010 | PMS-HLD-Part02-M3-LMS (planned) | Indexed |
+| FR-LMS-009 | LMS0010 | PMS-HLD-Part02-M3-LMS (planned) | Indexed |
+| FR-LMS-010 | LMS0020 | PMS-HLD-Part02-M3-LMS (planned) | Indexed |
+| FR-LMS-011 | LMS0020 | PMS-HLD-Part02-M3-LMS (planned) | Indexed |
+| FR-LMS-012 | LMS0020 | PMS-HLD-Part02-M3-LMS (planned) | Indexed |
+| FR-LMS-013 | LMS0020 | PMS-HLD-Part02-M3-LMS (planned) | Indexed |
+| FR-LMS-014 | LMS0020 | PMS-HLD-Part02-M3-LMS (planned) | Indexed |
+| FR-LMS-015 | LMS0020 | PMS-HLD-Part02-M3-LMS (planned) | Indexed |
+| FR-LMS-016 | LMS0020 | PMS-HLD-Part02-M3-LMS (planned) | Indexed |
+| FR-LMS-020 | LMS0040 | PMS-HLD-Part02-M3-LMS (planned) | Indexed |
+| FR-LMS-021 | LMS0040 | PMS-HLD-Part02-M3-LMS (planned) | Indexed |
+| FR-LMS-022 | LMS0040 | PMS-HLD-Part02-M3-LMS (planned) | Indexed |
+| FR-LMS-023 | LMS0050 | PMS-HLD-Part02-M3-LMS (planned) | Indexed |
+| FR-LMS-024 | LMS0060 | PMS-HLD-Part02-M3-LMS (planned) | Indexed |
+| FR-LMS-025 | LMS0050 | PMS-HLD-Part02-M3-LMS (planned) | Indexed |
+| FR-LMS-026 | LMS0040 | PMS-HLD-Part02-M3-LMS (planned) | Indexed |
+| FR-LMS-027 | LMS0040 | PMS-HLD-Part02-M3-LMS (planned) | Indexed |
+| FR-LMS-028 | LMS0040 | PMS-HLD-Part02-M3-LMS (planned) | Indexed |
+| FR-SMS-001 | SMS0010 | PMS-HLD-Part02-M4-SMS (planned) | Indexed |
+| FR-SMS-002 | SMS0010 | PMS-HLD-Part02-M4-SMS (planned) | Indexed |
+| FR-SMS-003 | SMS0010 | PMS-HLD-Part02-M4-SMS (planned) | Indexed |
+| FR-SMS-004 | SMS0010 | PMS-HLD-Part02-M4-SMS (planned) | Indexed |
+| FR-SMS-005 | SMS0010 | PMS-HLD-Part02-M4-SMS (planned) | Indexed |
+| FR-SMS-006 | SMS0010 | PMS-HLD-Part02-M4-SMS (planned) | Indexed |
+| FR-SMS-007 | SMS0020 | PMS-HLD-Part02-M4-SMS (planned) | Indexed |
+| FR-SMS-008 | SMS0020 | PMS-HLD-Part02-M4-SMS (planned) | Indexed |
+| FR-SMS-009 | SMS0030 | PMS-HLD-Part02-M4-SMS (planned) | Indexed |
+| FR-SMS-010 | SMS0030 | PMS-HLD-Part02-M4-SMS (planned) | Indexed |
+| FR-SMS-011 | SMS0020, SMS0030 | PMS-HLD-Part02-M4-SMS (planned) | Indexed |
+| FR-SMS-012 | SMS0010 | PMS-HLD-Part02-M4-SMS (planned) | Indexed |
+| FR-SMS-013 | SMS0010 | PMS-HLD-Part02-M4-SMS (planned) | Indexed |
+| FR-SMS-014 | SMS0010 | PMS-HLD-Part02-M4-SMS (planned) | Indexed |
+| FR-SMS-020 | SMS0040 | PMS-HLD-Part02-M4-SMS (planned) | Indexed |
+| FR-SMS-021 | SMS0040 | PMS-HLD-Part02-M4-SMS (planned) | Indexed |
+| FR-SMS-022 | SMS0050 | PMS-HLD-Part02-M4-SMS (planned) | Indexed |
+| FR-SMS-023 | SMS0040 | PMS-HLD-Part02-M4-SMS (planned) | Indexed |
+| FR-SMS-024 | SMS0050 | PMS-HLD-Part02-M4-SMS (planned) | Indexed |
+| FR-SMS-025 | SMS0060 | PMS-HLD-Part02-M4-SMS (planned) | Indexed |
+| FR-SMS-026 | SMS0070 | PMS-HLD-Part02-M4-SMS (planned) | Indexed |
+| FR-SMS-027 | SMS0040 | PMS-HLD-Part02-M4-SMS (planned) | Indexed |
+| FR-SMS-028 | SMS0040 | PMS-HLD-Part02-M4-SMS (planned) | Indexed |
+| FR-SMS-029 | SMS0040 | PMS-HLD-Part02-M4-SMS (planned) | Indexed |
+| FR-SMS-040 | SMS0080 | PMS-HLD-Part02-M4-SMS (planned) | Indexed |
+| FR-SMS-041 | SMS0080 | PMS-HLD-Part02-M4-SMS (planned) | Indexed |
+| FR-SMS-042 | SMS0090 | PMS-HLD-Part02-M4-SMS (planned) | Indexed |
+| FR-SMS-043 | SMS0100 | PMS-HLD-Part02-M4-SMS (planned) | Indexed |
+| FR-SMS-044 | SMS0100 | PMS-HLD-Part02-M4-SMS (planned) | Indexed |
+| FR-SMS-045 | SMS0100 | PMS-HLD-Part02-M4-SMS (planned) | Indexed |
+| FR-SMS-046 | SMS0110 | PMS-HLD-Part02-M4-SMS (planned) | Indexed |
+| FR-UM-001 | UM0010 | PMS-HLD-Part02-M5-SUP (planned) | Indexed |
+| FR-UM-002 | UM0010 | PMS-HLD-Part02-M5-SUP (planned) | Indexed |
+| FR-UM-003 | UM0040 | PMS-HLD-Part02-M5-SUP (planned) | Indexed |
+| FR-UM-004 | UM0020 | PMS-HLD-Part02-M5-SUP (planned) | Indexed |
+| FR-UM-005 | UM0020 | PMS-HLD-Part02-M5-SUP (planned) | Indexed |
+| FR-UM-006 | UM0030 | PMS-HLD-Part02-M5-SUP (planned) | Indexed |
+| FR-UM-007 | UM0040 | PMS-HLD-Part02-M5-SUP (planned) | Indexed |
+| FR-UM-010 | UM0050 | PMS-HLD-Part02-M5-SUP (planned) | Indexed |
+| FR-UM-011 | UM0050 | PMS-HLD-Part02-M5-SUP (planned) | Indexed |
+| FR-UM-012 | SH0010 | This anchor §5.5, §6.5 | Draft (this anchor) |
+| FR-UM-013 | UM0060 | PMS-HLD-Part02-M5-SUP (planned) | Indexed |
+| FR-UM-014 | UM0060 | PMS-HLD-Part02-M5-SUP (planned) | Indexed |
+| FR-UM-015 | UM0070 | PMS-HLD-Part02-M5-SUP (planned) | Indexed |
+| FR-AUTH-001 | AUTH0010 | PMS-HLD-Part02-M5-SUP (planned) | Indexed |
+| FR-AUTH-002 | AUTH0010 | PMS-HLD-Part02-M5-SUP (planned) | Indexed |
+| FR-AUTH-003 | AUTH0010 | PMS-HLD-Part02-M5-SUP (planned) | Indexed |
+| FR-AUTH-004 | AUTH0010 | PMS-HLD-Part02-M5-SUP (planned) | Indexed |
+| FR-AUTH-005 | AUTH0010 | PMS-HLD-Part02-M5-SUP (planned) | Indexed |
+| FR-AUTH-006 | AUTH0010, AUTH0020 | PMS-HLD-Part02-M5-SUP (planned) | Indexed |
+| FR-AUTH-007 | AUTH0010 | PMS-HLD-Part02-M5-SUP (planned) | Indexed |
+| FR-AUTH-008 | AUTH0010 | PMS-HLD-Part02-M5-SUP (planned) | Indexed |
+| FR-AUTH-010 | AUTH0020 | PMS-HLD-Part02-M5-SUP (planned) | Indexed |
+| FR-AUTH-011 | AUTH0030 | PMS-HLD-Part02-M5-SUP (planned) | Indexed |
+| FR-AUTH-012 | AUTH0020, AUTH0030 | PMS-HLD-Part02-M5-SUP (planned) | Indexed |
+| FR-AUTH-013 | AUTH0020 | PMS-HLD-Part02-M5-SUP (planned) | Indexed |
+| FR-AUTH-014 | AUTH0010 | PMS-HLD-Part02-M5-SUP (planned) | Indexed |
+| FR-AUTH-015 | AUTH0020, AUTH0030 | PMS-HLD-Part02-M5-SUP (planned) | Indexed |
+| FR-AUTH-020 | AUTH0040 | PMS-HLD-Part02-M5-SUP (planned) | Indexed |
+| FR-AUTH-021 | AUTH0040 | PMS-HLD-Part02-M5-SUP (planned) | Indexed |
+| FR-AUTH-022 | AUTH0030 | PMS-HLD-Part02-M5-SUP (planned) | Indexed |
+| FR-AUTH-023 | AUTH0050 | PMS-HLD-Part02-M5-SUP (planned) | Indexed |
+| FR-AUTH-024 | SH0010 | This anchor §5.5, §6.5 | Draft (this anchor) |
+| FR-AUTH-030 | AUTH0060 | PMS-HLD-Part02-M5-SUP (planned) | Indexed |
+| FR-ADM-101 | ADM0010 | PMS-HLD-Part02-M5-SUP (planned) | Indexed |
+| FR-ADM-102 | ADM0010 | PMS-HLD-Part02-M5-SUP (planned) | Indexed |
+| FR-ADM-103 | ADM0010 | PMS-HLD-Part02-M5-SUP (planned) | Indexed |
+| FR-ADM-104 | ADM0010 | PMS-HLD-Part02-M5-SUP (planned) | Indexed |
+| FR-ADM-105 | ADM0020 | PMS-HLD-Part02-M5-SUP (planned) | Indexed |
+| FR-ADM-111 | ADM0030 | PMS-HLD-Part02-M5-SUP (planned) | Indexed |
+| FR-ADM-112 | ADM0030 | PMS-HLD-Part02-M5-SUP (planned) | Indexed |
+| FR-ADM-113 | ADM0040 | PMS-HLD-Part02-M5-SUP (planned) | Indexed |
+| FR-ADM-114 | ADM0050 | PMS-HLD-Part02-M5-SUP (planned) | Indexed |
+| FR-ADM-115 | ADM0030 | PMS-HLD-Part02-M5-SUP (planned) | Indexed |
+| FR-ADM-116 | ADM0030 | PMS-HLD-Part02-M5-SUP (planned) | Indexed |
+| FR-ADM-117 | ADM0060 | PMS-HLD-Part02-M5-SUP (planned) | Indexed |
+| BR-CMN-01 | EIMS0180; XF-08 | PMS-HLD-Part02-M1-EIMS (planned); this anchor §5.8 | Indexed |
+| BR-CMN-02 | All decision functions; XF-08 | Module documents (planned); PMS-HLD-Part03 (planned) | Indexed |
+| BR-CMN-03 | EIMS0160, AMS0070, AMS0080, LMS0060, SMS0060 | Module documents (planned); this anchor §6.5 (remarks dialog) | Indexed |
+| BR-CMN-04 | EIMS0090, EIMS0120, AMS0030, LMS0020 | Module documents (planned) | Indexed |
+| BR-CMN-05 | EIMS0110 to EIMS0150, AMS0080 | Module documents (planned) | Indexed |
+| BR-CMN-06 | EIMS0050, UM0040; XF-09 | This anchor §5.9, §6.1 (no DELETE); module documents (planned) | Covered in this anchor |
+| BR-CMN-07 | ADM0010 | This anchor §6.4; PMS-HLD-Part03 (planned) | Indexed |
+| BR-CMN-08 | EIMS0180, UM0060; XF-02 | This anchor §5.2; module documents (planned) | Indexed |
+| BR-CMN-09 | AMS0030, LMS0020, EIMS0170 | Module documents (planned) | Indexed |
+| BR-CMN-10 | AMS0020, AMS0030, AMS0110, LMS0020, LMS0070; XF-06 | This anchor §5.6 (OI-P02-02) | Covered in this anchor, open item |
+| BR-CMN-11 | EIMS0110 to EIMS0150, EIMS0170 | PMS-HLD-Part02-M1-EIMS (planned) | Indexed |
+| BR-CMN-12 | SH0040, EIMS0150, AMS0060, LMS0050, SMS0050 | This anchor §6.1 (bulk actions); module documents (planned) | Covered in this anchor |
+| BR-CMN-13 | EIMS0040, EIMS0190, SMS0080; XF-02 | This anchor §5.2; module documents (planned) | Covered in this anchor |
+| BR-CMN-14 | EIMS0040, EIMS0050; XF-09 | This anchor §5.9; PMS-HLD-Part02-M1-EIMS (planned) | Indexed |
+| BR-CMN-15 | AMS0080, SMS0070, SMS0090; XF-03 | This anchor §5.3 | Covered in this anchor |
+| BR-CMN-16 | SMS0010, SMS0040, SMS0120; XF-05 | This anchor §5.5; PMS-HLD-Part02-M4-SMS (planned) | Indexed |
+| BR-CMN-17 | SMS0080; XF-02 | This anchor §5.2 | Covered in this anchor |
+| BR-CMN-18 | All | This anchor §6.1, §6.5 | Covered in this anchor |
+| BR-CMN-19 | ADM0010 | This anchor §6.4 | Covered in this anchor |
+| INT-01 | AMS0060, AMS0090, SMS0080; XF-02 | This anchor §5.2, §6.2, §7.2 | Covered in this anchor |
+| INT-02 | AMS0080, AMS0090, SMS0090; XF-03 | This anchor §5.3, §6.2, §7.2 | Covered in this anchor |
+| INT-03 | EIMS0170; XF-05, XF-08 | This anchor §7.1; PMS-HLD-Part02-M1-EIMS (planned) | Covered in this anchor |
+| INT-04 | EIMS0180; XF-02, XF-05, XF-08 | This anchor §5.8, §7.1 | Covered in this anchor |
+| INT-05 | EIMS0190; XF-02, XF-04 | This anchor §7.1 | Covered in this anchor |
+| INT-06 | AMS0110, LMS0070; XF-06 | This anchor §5.6 (OI-P02-02) | Covered in this anchor, open item |
+| INT-07 | SH0020, SH0030, EIMS0200, AMS0130, LMS0090, SMS0120; XF-05 | This anchor §5.5 | Covered in this anchor |
+| INT-08 | UM0010 to UM0050; XF-01, XF-09 | This anchor §5.1, §5.9; PMS-HLD-Part02-M5-SUP (planned, OI-P02-01) | Covered in this anchor, open item |
+| INT-09 | AMS0120, LMS0080; XF-07 | This anchor §5.7 | Covered in this anchor |
+| INT-10 | AMS0050, AMS0080, SMS0110; XF-03 | This anchor §3.2, §5.3 (caller: AMS service, D-122) | Covered in this anchor |
+| JOB-CMN-01 | SMS0100, AMS0100; XF-04 | This anchor §5.4, §7.3 | Covered in this anchor |
+| NFR-01 to NFR-09 | §8 | This anchor §8 | Covered in this anchor |
+
+## 10. Appendix
+
+### 10.1 Open items
+
+| Id | Question | Owner | Status |
+| --- | --- | --- | --- |
+| OI-P02-01 | Onboarding and account changes (XF-01, XF-09): order of the identity-provider call and the EIMS commit, retry of a half-done onboarding by the same Employee Id, any gap in the Employee Id sequence, and recovery when the second step fails | Enterprise Architect – PMS-HLD-Part02-M5-SUP (Part01 §8.2 row 9) | Open (D-123) |
+| OI-P02-02 | Attendance / leave date check and date-of-joining check (XF-06, XF-07) are check-then-act across two databases: simultaneous submissions for the same employee and date can pass both checks. Decide prevention or detection | Enterprise Architect – before PMS-HLD-Part02-M2-AMS | Open (D-123) |
+
+### 10.2 Items brought forward from Part01 and Part01a
+
+Not in the template; records how this anchor settled the items handed over.
+
+| Item | Source | Outcome in this document |
+| --- | --- | --- |
+| OI-P01a-06 Ordering of approved and reopened events per attendance | Part01a §7 | Closed (D-122): subject version in every event, SMS applies only a higher version – §6.2, XF-02, XF-03; ADR-006 follow-up note |
+| OI-P01a-03 Shared design system | Part01a §7 | Closed (D-122, D-124): style tokens and common components in §6.5; detail rules in docs/04-standards/frontend-and-ux (planned) |
+| OI-P01a-07 Dead-letter replay | Part01a §7 | Stays with docs/04-standards/api-and-integration (D-122); §6.2 sets only the design rule |
+| OI-P01a-11 Version scheme | Part01a §7 | Stays with docs/04-standards/api-and-integration; §6.1 fixes only the version form in the path (D-122) |
+| OI-P01a-08 Threat-modelling method | Part01a §7 | Unchanged; due before the module Part02 documents |
+| INT-10 caller | Part01 §8.2 row 11 | AMS service (D-122) – §3.2, XF-03; Part01 row 11 to be aligned at the set consistency check |
+| Standard error body and common error catalogue | Part01 §8.2 row 12, §10.3 | §6.3 (D-124) |
+| Event envelope and schema | ADR-006 follow-up | §6.2 envelope and payload (D-124); schemas in contracts/events with PMS-HLD-Part02-M2-AMS |
+| Competing consumers on the SMS subscription | Part01a AP-CP-11 | §6.2 (D-124) |

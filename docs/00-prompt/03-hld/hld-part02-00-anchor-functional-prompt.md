@@ -4,9 +4,9 @@
 | --- | --- |
 | Document | docs/03-hld/PMS-HLD-Part02-Functional.md |
 | Template | templates/03-hld/hld-part02-anchor-functional-template.md |
-| Used | – |
-| Outcome | – |
-| Status | Ready for the next session |
+| Used | 23 Nov 2026 |
+| Outcome | PMS-HLD-Part02-Functional v1.0 rev 0.4, all sections reviewed (D-122 to D-125): 77 functions (new prefix SH), cross-module flows XF-01 to XF-09, API / event / error / audit / frontend conventions, event ordering by attendance version, shared design system, coverage of 175 FR ids; OI-P01a-03 and 06 closed (Part01a rev 0.6); open items OI-P02-01 and 02 |
+| Status | Used – final approval at the Stage 3 gate |
 
 ## Prompt
 
