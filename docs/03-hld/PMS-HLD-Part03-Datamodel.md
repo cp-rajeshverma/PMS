@@ -15,12 +15,13 @@ Date: November 2026
 | 1.0 | 0.1 | 23-Nov-2026 | Rajesh Verma | First draft of §1–§3, based on the approved BRD set v1.0 (D-107), PMS-HLD-Part01 v1.0 rev 0.9, PMS-HLD-Part01a v1.0 rev 0.6 and PMS-HLD-Part02-Functional v1.0 rev 0.4; Part03 anchor design answers of 23 Nov 2026 (D-126) |
 | 1.0 | 0.2 | 23-Nov-2026 | Rajesh Verma | Draft of §4 (master ER of the 5 business entities with text-version table; system tables and what they relate to) and §5 (cross-service data and consistency, 12 data objects) (D-127) |
 | 1.0 | 0.3 | 23-Nov-2026 | Rajesh Verma | Draft of §6 (classification and privacy roll-up), §7 (volumetrics, retention, clean-up rules JOB-AMS-01 and JOB-CMN-01 step) and §8 (schema management, seed data, backups) (D-128) |
+| 1.0 | 0.4 | 23-Nov-2026 | Rajesh Verma | Draft of §9 (open items OI-P03-01 to 03, OI-P02-02 data-side options; items brought forward from Part02 and Part01a); all sections drafted (D-129) |
 
 ### 1.2 Review and approval
 
 | Role | Name | Date | Decision |
 | --- | --- | --- | --- |
-| Architect | Rajesh Verma (Enterprise Architect) | 23-Nov-2026 | §1–§3 approved (D-126); §4–§5 approved (D-127); §6–§8 approved (D-128) |
+| Architect | Rajesh Verma (Enterprise Architect) | 23-Nov-2026 | §1–§3 approved (D-126); §4–§5 approved (D-127); §6–§8 approved (D-128); §9 approved (D-129); all sections reviewed – final approval with the HLD set at the Stage 3 gate |
 | Data / DB lead | | | |
 | Dev lead | | | |
 | Security lead | | | |
@@ -303,4 +304,26 @@ Roll-up of the module documents; until they are written, figures from BRD anchor
 
 ### 9.1 Open items
 
-Drafted in a later review.
+| Id | Question | Owner | Status |
+| --- | --- | --- | --- |
+| OI-P03-01 | PMS-HLD-Part01 §12 (SMS row: "reconciliation run log, processed-event record, job lock") and §17 (outbox "cleanup of sent events decided in Part03") predate this anchor: align them with §2.2, §3.2 and §7 (version record, mismatch rows, AMS job lock, Employee Id counter, JOB-AMS-01) | Enterprise Architect – set consistency check (D-108) | Open |
+| OI-P03-02 | How SMS holds the attendance from and to time shown on salary screens (FR-SMS-001 to 006, BRD M4-SMS §9.1): copied from the approved event into SALARY_RECORD, or read from AMS when shown | Enterprise Architect – PMS-HLD-Part03-M4-SMS | Open |
+| OI-P03-03 | Lifetime of the short-lived in-memory copies of employee and approver details in AMS, LMS and SMS (§5) | Enterprise Architect – PMS-HLD-Part02-M2-AMS (first module that uses them), then the other module documents | Open |
+| OI-P02-02 (data side, not decided here) | Check-then-act across databases (XF-06, XF-07). Data-side options noted for the decision: a database cannot hold a unique key across ams and lms, so prevention needs one owner of the "employee + date taken" fact (e.g. a claim record in one service that the other calls), while detection can be a nightly cross-check of attendance and leave per employee and date logged like JOB-CMN-01 mismatches | Enterprise Architect – before PMS-HLD-Part02-M2-AMS | Open (D-123), unchanged |
+
+### 9.2 Items brought forward from Part02 and Part01a
+
+Not in the template; records how this anchor settled the items handed over (as PMS-HLD-Part02 §10.2).
+
+| Item | Source | Outcome in this document |
+| --- | --- | --- |
+| (a) SMS per-attendance version record and processed-event record | Part02 §6.2, XF-02 to XF-04 | ATTENDANCE_APPLIED_VERSION (row lock serialises two SMS instances) and PROCESSED_EVENT (unique event id), §3.2, §4.1, §5 (D-126); columns in PMS-HLD-Part03-M4-SMS |
+| (b) Audit table per module | Part02 §6.4 | One common AUDIT_ENTRY structure in each service database, insert-and-select-only grant, index for the history extract – §2.5 (D-126) |
+| (c) Outbox table and clean-up rule – ADR-006 follow-up | ADR-006; Part01 §17; Part01a AP-EIP-61, AP-DATA-11 | Sent rows deleted after 90 days by JOB-AMS-01; processed event ids after 90 days by a JOB-CMN-01 step – §7 (D-126, D-128); ADR-006 note, Part01a rev 0.7 and Part02 rev 0.5 (§7.3) updated; follow-up closed |
+| (d) Record version on every business record | Part02 §6.1 | `row_version`, 1 on creation, + 1 per change, on the 5 business records; none on system tables – §2.3, §2.4 (D-126) |
+| (e) Reconciliation run record | Part02 XF-04; D-93 | RECONCILIATION_RUN plus RECONCILIATION_MISMATCH rows linked to the run, kept like business records; SMS job lock – §3.2, §7 (D-126) |
+| (f) Employee Id sequence gaps – OI-P02-01, data side | Part02 §10.1 | Counter row raised in the EIMS transaction, no gap from a rolled-back onboarding – §2.3 (D-126); the order of the identity-provider call and recovery stay with PMS-HLD-Part02-M5-SUP; OI-P02-01 stays open |
+| OI-P02-02 check-then-act across databases | Part02 §10.1 | Not decided here; data-side options noted in §9.1 |
+| OI-P01a-16 migration reversal plan | Part01a §7 | Stays with docs/04-standards/database-and-data; §8 gives only the approach |
+| Identity-provider data | ADR-003; BRD M5-SUP §11.1 | Not PMS entities – §2.2, §6; need-basis result in PMS-HLD-Part03-M5-SUP |
+| Replicated read copies | Part01 §12 | None; short-lived in-memory copies only (§2.2, §5) |

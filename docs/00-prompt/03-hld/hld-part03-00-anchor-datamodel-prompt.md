@@ -4,9 +4,9 @@
 | --- | --- |
 | Document | docs/03-hld/PMS-HLD-Part03-Datamodel.md |
 | Template | templates/03-hld/hld-part03-anchor-datamodel-template.md |
-| Used | – |
-| Outcome | – |
-| Status | Ready for the next session |
+| Used | 23 Nov 2026 |
+| Outcome | PMS-HLD-Part03-Datamodel v1.0 rev 0.4, all sections reviewed (D-126 to D-129): ownership per service, conventions, common columns and common audit entry, 5 business entities and 9 system tables, master ER, cross-service consistency of 12 data objects, classification, volumetrics, clean-up JOB-AMS-01 and the JOB-CMN-01 step (ADR-006 follow-up closed), schema management; Part01a rev 0.7, Part02 rev 0.5; open items OI-P03-01 to 03 |
+| Status | Used – final approval at the Stage 3 gate |
 
 ## Prompt
 
