@@ -19,13 +19,14 @@ Date: November 2026
 | 1.0 | 0.5 | 23-Nov-2026 | Rajesh Verma | §3.2.5 EIMS0050 deactivation and §3.2.6 EIMS0060 password reset drafted: API-EIMS-05, API-EIMS-06, UM0040 and UM0030 inside the EIMS transaction (OI-P02-01 complete for EIMS); OI-P02M1-03 (D-134) |
 | 1.0 | 0.6 | 23-Nov-2026 | Rajesh Verma | §3.2.7 to §3.2.10 EIMS0070 to EIMS0100 my profile drafted: API-EIMS-07 to 10 (my-profile resources, owner from the token), draft-save checks, submit with the form, ISO country codes (D-135) |
 | 1.0 | 0.7 | 23-Nov-2026 | Rajesh Verma | §3.2.11 to §3.2.13 EIMS0110 to EIMS0130 profile change request drafted: API-EIMS-11 to 15 (open request under my-profile), one open request under the own row lock, server-computed changed fields, full set of requested values (D-136) |
+| 1.0 | 0.8 | 23-Nov-2026 | Rajesh Verma | §3.2.14 to §3.2.16 EIMS0140 to EIMS0160 review, approve and reject drafted: API-EIMS-16 to 21, approver check per item, bulk approve per kind, previous values copied and email re-checked at approval, Admin review limited to the top-level employee (D-137) |
 
 ### 1.2 Review and approval
 
 | Role | Name | Date | Decision |
 | --- | --- | --- | --- |
-| Architect | Rajesh Verma (Enterprise Architect) | 23-Nov-2026 | §1–§3.1 approved (D-130); §3.2.1 EIMS0010 approved (D-131); §3.2.2–§3.2.3 EIMS0020–EIMS0030 approved (D-132); §3.2.4 EIMS0040 approved (D-133); §3.2.5–§3.2.6 EIMS0050–EIMS0060 approved (D-134); §3.2.7–§3.2.10 EIMS0070–EIMS0100 approved (D-135); §3.2.11–§3.2.13 EIMS0110–EIMS0130 approved (D-136) |
-| Product owner | Rajesh Verma | 23-Nov-2026 | §1–§3.1 approved (D-130); §3.2.1 EIMS0010 approved (D-131); §3.2.2–§3.2.3 EIMS0020–EIMS0030 approved (D-132); §3.2.4 EIMS0040 approved (D-133); §3.2.5–§3.2.6 EIMS0050–EIMS0060 approved (D-134); §3.2.7–§3.2.10 EIMS0070–EIMS0100 approved (D-135); §3.2.11–§3.2.13 EIMS0110–EIMS0130 approved (D-136) |
+| Architect | Rajesh Verma (Enterprise Architect) | 23-Nov-2026 | §1–§3.1 approved (D-130); §3.2.1 EIMS0010 approved (D-131); §3.2.2–§3.2.3 EIMS0020–EIMS0030 approved (D-132); §3.2.4 EIMS0040 approved (D-133); §3.2.5–§3.2.6 EIMS0050–EIMS0060 approved (D-134); §3.2.7–§3.2.10 EIMS0070–EIMS0100 approved (D-135); §3.2.11–§3.2.13 EIMS0110–EIMS0130 approved (D-136); §3.2.14–§3.2.16 EIMS0140–EIMS0160 approved (D-137) |
+| Product owner | Rajesh Verma | 23-Nov-2026 | §1–§3.1 approved (D-130); §3.2.1 EIMS0010 approved (D-131); §3.2.2–§3.2.3 EIMS0020–EIMS0030 approved (D-132); §3.2.4 EIMS0040 approved (D-133); §3.2.5–§3.2.6 EIMS0050–EIMS0060 approved (D-134); §3.2.7–§3.2.10 EIMS0070–EIMS0100 approved (D-135); §3.2.11–§3.2.13 EIMS0110–EIMS0130 approved (D-136); §3.2.14–§3.2.16 EIMS0140–EIMS0160 approved (D-137) |
 | Business analyst | | | |
 | Dev lead | | | |
 
@@ -61,7 +62,7 @@ Reading rules:
 | --- | --- | --- |
 | 1 | PMS-BRD (anchor) – §4.3 roles and data scope, §5.3 dashboard and inbox, §6 BR-CMN, §7 INT-03 to INT-05, INT-07 to INT-09; PMS-BRD-M1-EIMS; PMS-BRD-M5-SUP (FR-UM-001 to 015, FR-AUTH, FR-ADM-101 to 117) | v1.0, approved baseline (D-107) |
 | 2 | UX Journey Index and UX Summaries SCR-EIMS-01 to 04, SCR-SH-03, SCR-SH-04; mockups `docs/01-ux/mockups/html/scr-eims-0*.html` | v1.1 (D-105) |
-| 3 | Decision log / ADRs | D-01 to D-136; ADR-001 to ADR-006 |
+| 3 | Decision log / ADRs | D-01 to D-137; ADR-001 to ADR-006 |
 
 **Design documents**
 
@@ -209,9 +210,9 @@ Business statuses and transitions are defined in PMS-BRD-M1-EIMS §6.1 (profile)
 | EIMS0110 | Start and save a profile change request (FR-EIMS-025, 026) | Screen | SCR-EIMS-03 | POC | Approved |
 | EIMS0120 | Submit or resubmit a profile change request (FR-EIMS-026, 027) | Screen | SCR-EIMS-03 | POC | Approved |
 | EIMS0130 | Withdraw a profile change request (FR-EIMS-027) | Screen | SCR-EIMS-03 | POC | Approved |
-| EIMS0140 | Open a profile or change request for review, or read only from the directory (FR-EIMS-030 to 032, 034, 035) | Screen | SCR-EIMS-04 | POC | Not started |
-| EIMS0150 | Approve profiles or change requests, one or several; apply approved changes (FR-EIMS-033, 028) | Screen | SCR-EIMS-04, SCR-SH-04 | POC | Not started |
-| EIMS0160 | Reject a profile or change request with remarks (FR-EIMS-033) | Screen | SCR-EIMS-04, SCR-SH-04 | POC | Not started |
+| EIMS0140 | Open a profile or change request for review, or read only from the directory (FR-EIMS-030 to 032, 034, 035) | Screen | SCR-EIMS-04 | POC | Approved |
+| EIMS0150 | Approve profiles or change requests, one or several; apply approved changes (FR-EIMS-033, 028) | Screen | SCR-EIMS-04, SCR-SH-04 | POC | Approved |
+| EIMS0160 | Reject a profile or change request with remarks (FR-EIMS-033) | Screen | SCR-EIMS-04, SCR-SH-04 | POC | Approved |
 | EIMS0170 | Provide employee details to other modules (INT-03) | API | – | POC | Not started |
 | EIMS0180 | Resolve the approver of a record (INT-04) | API | – | POC | Not started |
 | EIMS0190 | Provide the current hourly wage rate (INT-05) | API | – | POC | Not started |
@@ -2408,7 +2409,473 @@ One local transaction; no events.
 
 1. None.
 
-Further function chapters are added review by review (R8 to R9).
+#### 3.2.14 EIMS0140 – Open a profile or change request for review, or read only from the directory (Module: EIMS, Approved)
+
+##### 3.2.14.1 Purpose, trigger and conditions
+
+The approver opens a submitted profile or change request to decide it; a manager opens a direct report's profile read only from My Team (FR-EIMS-030 to 032, 034, 035).
+
+| Item | Detail |
+| --- | --- |
+| Delivery phase | POC |
+| Trigger | "Open" on a profile item in SCR-SH-04; "View" in SCR-EIMS-01 (manager); an old link to an item |
+| Pre-conditions | Signed in as Manager (owner is a direct report) or Admin (owner is the top-level employee) |
+| Post-conditions | None – read only |
+
+##### 3.2.14.2 Actor & data scope
+
+| Role | Access (Read / Read-write / Approve / None) | Data scope (row-level) |
+| --- | --- | --- |
+| Employee | None – route refused (EIMS-ACC-002) | – |
+| Manager | Read; Approve through EIMS0150 / EIMS0160 | Direct reports only (current Manager Id = own Employee Id); never own profile or request (BR-CMN-08) |
+| Admin | Read; Approve through EIMS0150 / EIMS0160 | Top-level employee only (BRD §4.2, D-137); any other employee → neutral 404 |
+
+##### 3.2.14.3 Requirement traceability
+
+| Source | References |
+| --- | --- |
+| BRD functional requirements | FR-EIMS-030, 031, 032, 034, 035 |
+| BRD business / validation rules | BR-CMN-01, 08; BR-EIMS-10 |
+| BRD NFRs | NFR-01, NFR-03; NFR-EIMS-01 |
+| UX | UJ-EIMS-03, 09; SCR-EIMS-04; SCR-SH-04 (Open) |
+| Decisions | D-58, D-63, D-70, D-99, D-104, D-123, D-136, D-137 |
+| Related functions – depends on | EIMS0090, EIMS0120 (submitted items); UM0060, UM0070, ADM0030, ADM0040 |
+| Related functions – used by | EIMS0150, EIMS0160; SH0030 (Open) |
+
+##### 3.2.14.4 Navigation & prototype reference
+
+**Navigation:** Approvals > Profiles > Open > Profile review · My Team > View > Profile review (read only)
+
+**Prototype:** `docs/01-ux/mockups/html/scr-eims-04-profile-review.html` · UX summary `docs/01-ux/ux-summary/scr-eims-04-profile-review.md`
+
+##### 3.2.14.5 Solution approach
+
+###### 3.2.14.5.1 Design description
+
+The [Open a profile or change request for review] function shows the following cases:
+
+1. New profile for review
+2. Change request for review
+3. Read-only view from My Team
+4. Already decided or withdrawn
+
+**New profile for review**
+
+1. Header (name, Employee Id, date of joining, submission date, status) and one "Submitted" column (FR-EIMS-030, 031).
+2. Data fetched via [API-EIMS-16 : GET /api/eims/v1/employees/{employeeId}/profile-review (Purpose : a profile for review or read-only view, within the approver's scope)].
+3. DB entity: [EMPLOYEE]
+4. `canDecide` is true only when the profile is Submitted and the caller is its approver now.
+
+**Change request for review**
+
+1. "Approved profile" and "Requested change" columns; changed rows with the "Changed" badge and the old value struck through (FR-EIMS-032).
+2. Data fetched via [API-EIMS-17 : GET /api/eims/v1/profile-change-requests/{id} (Purpose : a change request with approved and requested values and changed fields, within the approver's scope)].
+3. DB entities: [PROFILE_CHANGE_REQUEST], [EMPLOYEE]
+4. `changedFields` as computed for the owner (D-136); for an approved request the previous values kept on it are shown instead of the current profile.
+
+**Read-only view from My Team**
+
+1. One "Value" column with the profile as it stands, no actions (FR-EIMS-034).
+2. API-EIMS-16; the frontend opens it read only from SCR-EIMS-01.
+3. The hourly wage rate is not returned to a manager (BR-EIMS-10).
+
+**Already decided or withdrawn**
+
+1. Actions hidden; banner "Already approved / rejected by <name> on <date>" or "Withdrawn by the employee" (FR-EIMS-035).
+2. Both read APIs return the status and, for a decided item, the deciding approver's name and decision time; a profile that went back to Draft, or a Withdrawn request, gives the withdrawn banner.
+
+###### 3.2.14.5.2 Design notes
+
+1. **Approver scope in the query (D-137).** The owner's current Manager Id must equal the caller's Employee Id; for the Admin, the owner must be the top-level employee. Anything else – unknown id, another team, own record – returns the same neutral 404 (EIMS-ACC-001, D-99), so a link to someone else's item reveals nothing.
+2. **Approver resolved now.** No approver is stored on a waiting item (D-123 (5)); after a manager change the new manager can open the item and the old one gets 404 (XF-08).
+3. **Inactive owner.** An item of an employee deactivated while it was waiting can still be opened and decided by the approver (BR-CMN-06, D-104).
+
+###### 3.2.14.5.3 Sequence & orchestration
+
+Single-service synchronous read, as EIMS0010 (§3.2.1.5.3) with the approver scope in the query. No cross-service or asynchronous steps.
+
+###### 3.2.14.5.4 Frontend
+
+Only what is not already in the UX summary:
+
+1. The entry point chooses the mode: from SCR-SH-04 the review mode, from SCR-EIMS-01 the read-only mode; Approve and Reject are shown only when `canDecide` is true.
+2. A 404 shows the no-access page (UM0070).
+
+###### 3.2.14.5.5 Backend
+
+| API id | API name | Method & endpoint | Purpose | Request (key fields) | Response (key fields) | Roles |
+| --- | --- | --- | --- | --- | --- | --- |
+| API-EIMS-16 | Get profile for review | GET /api/eims/v1/employees/{employeeId}/profile-review | A profile for review or read-only view, within the approver's scope | – | employeeId, name, dateOfJoining, submittedAt, status, employee-editable fields, decidedByName, decidedAt, remarks, canDecide, version; no hourly wage rate | Manager, Admin |
+| API-EIMS-17 | Get change request for review | GET /api/eims/v1/profile-change-requests/{id} | A change request with approved and requested values, within the approver's scope | – | id, employee header, status, approvedValues (or previous values once approved), requestedValues, changedFields, submittedAt, decidedByName, decidedAt, remarks, canDecide, version | Manager, Admin |
+
+Read only; safe to retry.
+
+###### 3.2.14.5.6 Database
+
+| Entity | Operation (C / R / U / soft-D) | Purpose in this function |
+| --- | --- | --- |
+| EMPLOYEE | R | Owner, approver scope, profile values, deciding approver's name |
+| PROFILE_CHANGE_REQUEST | R | Requested and previous values, status, decision fields |
+
+###### 3.2.14.5.7 Validation & error handling
+
+| Rule ref (BRD VR / BR) | Layer (UI / API / DB) | Error code | HTTP status | Message |
+| --- | --- | --- | --- | --- |
+| Neutral refused response (FR-UM-015) – not found, outside scope, own record | API | EIMS-ACC-001 | 404 | "You don't have access to this page." |
+| BRD §4.2 – Employee | Gateway, API | EIMS-ACC-002 | 403 | "You don't have access to this page." |
+| – | API | EIMS-SYS-001 | 500 | Error panel with Retry and the reference |
+
+###### 3.2.14.5.8 Security & data privacy
+
+| Item | Detail |
+| --- | --- |
+| Authorization check per API | API-EIMS-16, 17: Manager and Admin route; approver scope in the query (D-137) |
+| Sensitive fields | Sensitive personal fields of the owner (D-71); no hourly wage rate |
+| Masking (UI / API response) | Shown unmasked within the approver scope (Part03 anchor §6) |
+| Encryption (in transit / at rest / field-level) | TLS; encrypted storage |
+| Logging rule | Ids, status and result only; refused reads logged with the real reason (FR-ADM-117) |
+| Threat review – TB-1 browser → gateway | S: stolen session – HttpOnly cookie, idle timeout. I: TLS |
+| Threat review – TB-2 gateway → EIMS | E / I: reading another team's or own profile by id – approver scope in the query, neutral 404 for every miss (D-99). R: refused reads in the activity log |
+| Threat review – TB-5 EIMS → database | I: encrypted storage and backups |
+
+###### 3.2.14.5.9 Notifications, audit & activity log
+
+| Trigger | Notification (NOT id) | Activity log entry | Audit fields captured |
+| --- | --- | --- | --- |
+| Item opened | None (C-05) | `process` API-EIMS-16 or 17; steps `scope-applied`, `loaded` | None |
+| Refused | None | Event type `refused` with the reason (FR-ADM-117) | None |
+
+###### 3.2.14.5.10 Scenarios
+
+| Scenario id | Scenario | Type | Requirement ref | Pre-condition | Expected result | Test level |
+| --- | --- | --- | --- | --- | --- | --- |
+| EIMS0140-S01 | Manager opens a submitted profile | Positive | FR-EIMS-030, 031 | Direct report Submitted | Header and one column; canDecide true | API, E2E |
+| EIMS0140-S02 | Change request shows only the changed row | Positive | FR-EIMS-032 | Only mobile changed | changedFields [mobile] | API, E2E |
+| EIMS0140-S03 | Read only from My Team | Positive | FR-EIMS-034 | Approved report | One column, no actions, no rate | API, E2E |
+| EIMS0140-S04 | Withdrawn request from an old link | Edge | FR-EIMS-035 | Request Withdrawn | Withdrawn banner, canDecide false | API, E2E |
+| EIMS0140-S05 | Another team's item | Negative | FR-UM-015 | Owner reports to M2 | M1 gets 404 EIMS-ACC-001 | API |
+| EIMS0140-S06 | Admin opens a non-top-level profile | Negative | BRD §4.2, D-137 | Owner has a manager | 404 EIMS-ACC-001 | API |
+| EIMS0140-S07 | After a manager change | Edge | FR-EIMS-017, XF-08 | Item moved M1 → M2 | M2 can open it; M1 gets 404 | API |
+
+##### 3.2.14.6 Notes, issues & assumptions
+
+1. None.
+
+#### 3.2.15 EIMS0150 – Approve profiles or change requests, one or several; apply approved changes (Module: EIMS, Approved)
+
+##### 3.2.15.1 Purpose, trigger and conditions
+
+The approver approves submitted profiles or change requests, one from the review or several from the approvals inbox; an approved change request's values become the profile (FR-EIMS-033, 028).
+
+| Item | Detail |
+| --- | --- |
+| Delivery phase | POC |
+| Trigger | "Approve" on SCR-EIMS-04 or on a row of SCR-SH-04; "Approve selected" on SCR-SH-04 (FR-CMN-011) |
+| Pre-conditions | Per item: Submitted; the caller is the item's approver now (current manager, or the Admin for the top-level employee; never the owner); the item's version matches |
+| Post-conditions | Per item, in its own transaction: profile → Approved; or request → Approved, the approved values it replaces copied to the request as previous values, the requested values applied to EMPLOYEE (profile stays Approved); approver and decision time stored (BR-CMN-02); versions + 1; item leaves the inbox. Failed items keep their own error (FR-CMN-014) |
+
+##### 3.2.15.2 Actor & data scope
+
+| Role | Access (Read / Read-write / Approve / None) | Data scope (row-level) |
+| --- | --- | --- |
+| Employee | None – route refused (EIMS-ACC-002) | – |
+| Manager | Approve | Direct reports' items; never own (BR-CMN-08) |
+| Admin | Approve | Top-level employee's items (BR-CMN-01, D-58) |
+
+##### 3.2.15.3 Requirement traceability
+
+| Source | References |
+| --- | --- |
+| BRD functional requirements | FR-EIMS-028, 033; FR-CMN-011, 014; NOT-EIMS-05 |
+| BRD business / validation rules | BR-CMN-01, 02, 08, 11; BR-EIMS-03; VR-EIMS-02 (re-check) |
+| BRD NFRs | NFR-01, NFR-05, NFR-06 |
+| UX | UJ-EIMS-03; SCR-EIMS-04; SCR-SH-04 |
+| Decisions | D-58, D-70, D-104, D-123, D-124, D-136, D-137 |
+| Related functions – depends on | EIMS0140; UM0060, ADM0010, ADM0030, ADM0040 |
+| Related functions – used by | SH0040 (inbox decisions); EIMS0170 (approved profile used by other modules, BR-CMN-09, 11); EIMS0200 |
+
+##### 3.2.15.4 Navigation & prototype reference
+
+**Navigation:** Approvals > Profiles > Approve / Approve selected · Approvals > Open > Profile review > Approve
+
+**Prototype:** `docs/01-ux/mockups/html/scr-eims-04-profile-review.html`, `scr-sh-04-approvals.html` · UX summaries `scr-eims-04-profile-review.md`, `scr-sh-04-approvals.md`
+
+##### 3.2.15.5 Solution approach
+
+###### 3.2.15.5.1 Design description
+
+The [Approve profiles or change requests] function lets the approver work with the following activities:
+
+1. Approve new profiles
+2. Approve change requests and apply them
+
+**Approve new profiles**
+
+1. Approves one or several submitted profiles; "Profile approved." or "<n> item(s) approved." (UX summaries §5).
+2. Saved via [API-EIMS-18 : POST /api/eims/v1/employees/profiles/approve (Purpose : approve one or several submitted profiles with a result per item)].
+3. DB entities: [EMPLOYEE], [AUDIT_ENTRY]
+4. Rules: approver now, not own (BR-CMN-01, 08); status Submitted; version.
+
+**Approve change requests and apply them**
+
+1. Approves one or several submitted change requests and applies each to the profile (FR-EIMS-028).
+2. Saved via [API-EIMS-19 : POST /api/eims/v1/profile-change-requests/approve (Purpose : approve one or several change requests, apply the requested values, with a result per item)].
+3. DB entities: [PROFILE_CHANGE_REQUEST], [EMPLOYEE], [AUDIT_ENTRY]
+4. Rules: as above; email uniqueness re-checked against all other employees (VR-EIMS-02, D-136).
+
+###### 3.2.15.5.2 Design notes
+
+1. **One request per kind, one transaction per item (D-137).** The inbox sends one request per kind with its selected items; the review screen sends one item. Each item is decided in its own local transaction, and the response is always 200 with `results[]` per item (anchor §6.1), so one failed item never undoes the others.
+2. **Approver check per item.** Under the row lock, the owner's current Manager Id must equal the caller's Employee Id, or the owner must be the top-level employee and the caller the Admin; otherwise the item fails with the neutral EIMS-ACC-001 (D-99). The approver is not taken from the request (D-123 (5)).
+3. **Applying a change request.** Lock order: the owner's EMPLOYEE row first, then the request (the same order as EIMS0110, so no deadlock with a start or a withdraw). In one transaction: check status and version, re-check email uniqueness, copy the full set of current approved values to the request as previous values (BRD §9.2), write the requested values to EMPLOYEE (version + 1, status stays Approved), set the request Approved with approver and decision time. The previous values make an approved request show exactly what it replaced (EIMS0140).
+4. **Email taken meanwhile (D-137).** The item fails with EIMS-VAL-005 and stays Submitted; the approver sees the reason and can reject it with remarks. No automatic decision.
+5. **Race with the owner.** A withdraw or a new submit by the owner changes status and version; the item fails with EIMS-CON-001 or EIMS-BUS-005 and the inbox shows it (FR-CMN-014).
+6. **Effect on other modules.** None is notified: AMS and LMS read the profile status through EIMS0170 when they next need it (BR-CMN-09); a request's new values are visible to other modules only from its approval (BR-CMN-11).
+
+###### 3.2.15.5.3 Sequence & orchestration
+
+```mermaid
+sequenceDiagram
+  actor AP as Approver
+  participant FE as Shell / EIMS package
+  participant GW as API gateway
+  participant E as EIMS service
+  participant DB as eims database
+  AP->>FE: Approve selected change requests
+  FE->>GW: POST profile-change-requests/approve (items id and version, CSRF token)
+  GW->>E: POST approve (access token, X-Flow-Ref)
+  loop Each item, own transaction
+    E->>DB: Begin, lock owner employee row, lock request
+    E->>E: Approver now, status Submitted, version, email unique
+    alt Check fails
+      E->>DB: Rollback
+      E->>E: Result failed with its error code
+    else OK
+      E->>DB: Copy approved values as previous values
+      E->>DB: Apply requested values to employee (version + 1)
+      E->>DB: Request Approved, approver, decision time, audit
+      E->>DB: Commit
+      E->>E: Result done with new version
+    end
+  end
+  E-->>FE: 200 results per item
+  FE-->>AP: n items approved, failed items stay selected with their error
+```
+
+Single-service synchronous command: no cross-service or asynchronous steps. Profiles (API-EIMS-18) follow the same loop without the copy and apply steps.
+
+**Text version of the diagram**
+
+| Step | From → to | Message | Result |
+| --- | --- | --- | --- |
+| 1 | Approver → frontend → gateway → EIMS | Approve with items (id, version) | – |
+| 2 | EIMS → database, per item | Begin; lock owner row, then the request | – |
+| 3 | EIMS, per item | Approver now, status, version, email uniqueness | Fail: rollback, item result with EIMS-ACC-001, CON-001, BUS-005 or VAL-005 |
+| 4 | EIMS → database, per item | Copy previous values; apply requested values; request Approved; audit; commit | Item result done |
+| 5 | EIMS → frontend | 200 with results per item | Approved items leave the inbox; failed items stay selected |
+
+###### 3.2.15.5.4 Frontend
+
+Only what is not already in the UX summary:
+
+1. The inbox groups the selected EIMS items by kind and sends at most one request per kind; per-item results are shown on their rows (FR-CMN-014).
+2. After the response the inbox and the EIMS card reload (EIMS0200).
+
+###### 3.2.15.5.5 Backend
+
+| API id | API name | Method & endpoint | Purpose | Request (key fields) | Response (key fields) | Roles |
+| --- | --- | --- | --- | --- | --- | --- |
+| API-EIMS-18 | Approve profiles | POST /api/eims/v1/employees/profiles/approve | Approve one or several submitted profiles | items[]: employeeId, version | 200 results[]: id, outcome (done / failed), version, error | Manager, Admin |
+| API-EIMS-19 | Approve change requests | POST /api/eims/v1/profile-change-requests/approve | Approve one or several change requests and apply them | items[]: id, version | 200 results[]: id, outcome, version, error | Manager, Admin |
+
+1. Items per request: at most 100 (anchor §6.1 page size); more → EIMS-VAL-001.
+2. One local transaction per item; no events; not retried automatically.
+
+###### 3.2.15.5.6 Database
+
+| Entity | Operation (C / R / U / soft-D) | Purpose in this function |
+| --- | --- | --- |
+| EMPLOYEE | R, U | Approver scope; profile status → APPROVED with approver and decision time; requested values applied for a change request; version + 1 |
+| PROFILE_CHANGE_REQUEST | R, U | Status → APPROVED, previous values, approver and decision time; version + 1 |
+| AUDIT_ENTRY | C | Status change of the profile or request; one EMPLOYEE entry per applied field (process API-EIMS-19) |
+
+###### 3.2.15.5.7 Validation & error handling
+
+| Rule ref (BRD VR / BR) | Layer (UI / API / DB) | Error code | HTTP status | Message |
+| --- | --- | --- | --- | --- |
+| BR-CMN-01, 08 – not the approver now | API (per item) | EIMS-ACC-001 | 200 (item failed) | "You don't have access to this page." |
+| Status not Submitted (withdrawn, decided) | API (per item) | EIMS-BUS-005 | 200 (item failed) | Already decided or withdrawn; refresh |
+| FR-CMN-014 | API (per item) | EIMS-CON-001 | 200 (item failed) | Refresh message |
+| VR-EIMS-02 – email taken | API (per item) | EIMS-VAL-005 | 200 (item failed) | Duplicate-email message |
+| Too many items or bad body | API | EIMS-VAL-001 | 400 | Generic validation message |
+| BRD §4.2 – Employee | Gateway, API | EIMS-ACC-002 | 403 | "You don't have access to this page." |
+
+###### 3.2.15.5.8 Security & data privacy
+
+| Item | Detail |
+| --- | --- |
+| Authorization check per API | API-EIMS-18, 19: Manager and Admin route; approver check per item under the row lock |
+| Sensitive fields | Applied values are sensitive personal fields (D-71) |
+| Masking (UI / API response) | Results carry ids, outcome, version and error code only |
+| Encryption (in transit / at rest / field-level) | TLS; encrypted storage |
+| Logging rule | Ids, outcome and error code per item; never values |
+| Threat review – TB-1 browser → gateway | T: forged approval – CSRF token (ADR-004) |
+| Threat review – TB-2 gateway → EIMS | E: approving own or another team's item – approver check per item, never own (BR-CMN-08), neutral failure. T: approving a changed item – version check. R: approver and decision time stored with the record and audited |
+| Threat review – TB-5 EIMS → database | T / R: profile changes only with an approved request, audited per field in the same transaction |
+
+###### 3.2.15.5.9 Notifications, audit & activity log
+
+| Trigger | Notification (NOT id) | Activity log entry | Audit fields captured |
+| --- | --- | --- | --- |
+| Profile approved | None (C-05); NOT-EIMS-05 is the status shown to the employee | `process` API-EIMS-18; per item `approver-checked`, `version-checked`, `approved`; exit with done / failed counts | EMPLOYEE `status` SUBMITTED → APPROVED; approver_id, approved_at; changed_by approver |
+| Change request approved | None | `process` API-EIMS-19; per item `approver-checked`, `version-checked`, `changes-applied`, `approved` | PROFILE_CHANGE_REQUEST `status` → APPROVED; one EMPLOYEE entry per applied field |
+
+###### 3.2.15.5.10 Scenarios
+
+| Scenario id | Scenario | Type | Requirement ref | Pre-condition | Expected result | Test level |
+| --- | --- | --- | --- | --- | --- | --- |
+| EIMS0150-S01 | Approve a new profile | Positive | FR-EIMS-033 | Direct report Submitted | Approved; employee can enter attendance and leave (BR-CMN-09) | API, E2E |
+| EIMS0150-S02 | Approve an address change | Positive | FR-EIMS-028 | Request Submitted | Profile shows the new address, stays Approved; request holds the old address as previous value | API, E2E |
+| EIMS0150-S03 | Approve three, one withdrawn meanwhile | Concurrency | FR-CMN-011, 014 | 3 selected | 2 done, 1 failed EIMS-BUS-005 and stays selected | API, E2E |
+| EIMS0150-S04 | Email taken by another employee | Negative | VR-EIMS-02, D-137 | Requested email now used | Item failed EIMS-VAL-005; request still Submitted | API |
+| EIMS0150-S05 | Manager approves own item | Negative | BR-CMN-08 | Manager's own request id | Item failed EIMS-ACC-001 | API |
+| EIMS0150-S06 | Old manager after a manager change | Edge | FR-EIMS-017, XF-08 | Item moved to M2 | M1's approve fails EIMS-ACC-001; M2's succeeds | API |
+| EIMS0150-S07 | Admin approves the top-level employee | Positive | BR-CMN-01 | Top-level profile Submitted | Done | API |
+| EIMS0150-S08 | Inactive owner's waiting item | Edge | BR-CMN-06, D-104 | Owner deactivated while Submitted | Approval succeeds | API |
+
+##### 3.2.15.6 Notes, issues & assumptions
+
+1. Note: EIMS-ACC-001 inside a per-item result is shown as the item's error text; the whole response stays 200 (anchor §6.1).
+
+#### 3.2.16 EIMS0160 – Reject a profile or change request with remarks (Module: EIMS, Approved)
+
+##### 3.2.16.1 Purpose, trigger and conditions
+
+The approver returns a submitted profile or change request to the employee with remarks (FR-EIMS-033, BR-CMN-03).
+
+| Item | Detail |
+| --- | --- |
+| Delivery phase | POC |
+| Trigger | "Reject" on SCR-EIMS-04 or on a row of SCR-SH-04, then the remarks dialog |
+| Pre-conditions | Submitted; the caller is the approver now; remarks not blank, up to 500 characters; version matches |
+| Post-conditions | Profile or request → Rejected with remarks, approver and decision time (BR-CMN-02); version + 1; the employee sees the remarks and can correct and resubmit (BR-CMN-04); "Profile rejected and returned to <name>." |
+
+##### 3.2.16.2 Actor & data scope
+
+| Role | Access (Read / Read-write / Approve / None) | Data scope (row-level) |
+| --- | --- | --- |
+| Employee | None – route refused (EIMS-ACC-002) | – |
+| Manager | Approve (reject) | Direct reports' items; never own |
+| Admin | Approve (reject) | Top-level employee's items |
+
+##### 3.2.16.3 Requirement traceability
+
+| Source | References |
+| --- | --- |
+| BRD functional requirements | FR-EIMS-033; FR-CMN-012; NOT-EIMS-04 |
+| BRD business / validation rules | BR-CMN-01, 02, 03, 04, 08 |
+| BRD NFRs | NFR-05, NFR-06 |
+| UX | UJ-EIMS-03; SCR-EIMS-04; SCR-SH-04 |
+| Decisions | D-24 (reject one at a time), D-70, D-123, D-137 |
+| Related functions – depends on | EIMS0140; UM0060, ADM0010, ADM0030, ADM0040 |
+| Related functions – used by | SH0040; EIMS0070, EIMS0110 (remarks shown); EIMS0200 (to-do item) |
+
+##### 3.2.16.4 Navigation & prototype reference
+
+**Navigation:** Approvals > Profiles > Reject · Profile review > Reject
+
+**Prototype:** `docs/01-ux/mockups/html/scr-eims-04-profile-review.html`, `scr-sh-04-approvals.html`
+
+##### 3.2.16.5 Solution approach
+
+###### 3.2.16.5.1 Design description
+
+The [Reject a profile or change request with remarks] function covers one activity:
+
+1. Reject with remarks, one item at a time (D-24)
+
+**Reject with remarks**
+
+1. The dialog requires remarks; on success the item leaves the inbox.
+2. Saved via [API-EIMS-20 : POST /api/eims/v1/employees/{employeeId}/profile/reject (Purpose : reject a submitted profile with remarks)] or [API-EIMS-21 : POST /api/eims/v1/profile-change-requests/{id}/reject (Purpose : reject a submitted change request with remarks)].
+3. DB entities: [EMPLOYEE] or [PROFILE_CHANGE_REQUEST], [AUDIT_ENTRY]
+4. Rules: BR-CMN-03 (remarks), approver now, status Submitted, version.
+
+###### 3.2.16.5.2 Design notes
+
+1. **Same checks as approval (D-137).** Row lock, approver now, status and version; an item outside the scope returns the neutral 404 (EIMS-ACC-001).
+2. **Rejected request.** The approved profile is untouched; the request stays open (Rejected) until the owner resubmits or withdraws it (BR-EIMS-03).
+
+###### 3.2.16.5.3 Sequence & orchestration
+
+Single-service synchronous command, as one item of EIMS0150 without the apply steps. No cross-service or asynchronous steps.
+
+###### 3.2.16.5.4 Frontend
+
+Only what is not already in the UX summary:
+
+1. Remarks are checked in the dialog (not blank, at most 500 characters) and again by the service.
+
+###### 3.2.16.5.5 Backend
+
+| API id | API name | Method & endpoint | Purpose | Request (key fields) | Response (key fields) | Roles |
+| --- | --- | --- | --- | --- | --- | --- |
+| API-EIMS-20 | Reject profile | POST /api/eims/v1/employees/{employeeId}/profile/reject | Reject a submitted profile with remarks | remarks, version | 200: employeeId, status REJECTED, version | Manager, Admin |
+| API-EIMS-21 | Reject change request | POST /api/eims/v1/profile-change-requests/{id}/reject | Reject a submitted change request with remarks | remarks, version | 200: id, status REJECTED, version | Manager, Admin |
+
+One local transaction; no events.
+
+###### 3.2.16.5.6 Database
+
+| Entity | Operation (C / R / U / soft-D) | Purpose in this function |
+| --- | --- | --- |
+| EMPLOYEE or PROFILE_CHANGE_REQUEST | R, U | Status → REJECTED, remarks, approver, decision time, version + 1 |
+| AUDIT_ENTRY | C | `status` SUBMITTED → REJECTED with the remarks |
+
+###### 3.2.16.5.7 Validation & error handling
+
+| Rule ref (BRD VR / BR) | Layer (UI / API / DB) | Error code | HTTP status | Message |
+| --- | --- | --- | --- | --- |
+| BR-CMN-03 | UI, API | EIMS-VAL-015 | 400 | "Remarks are required to reject." (or the 500-character limit) |
+| BR-CMN-01, 08 – not the approver now | API | EIMS-ACC-001 | 404 | "You don't have access to this page." |
+| Status not Submitted | API | EIMS-BUS-005 | 422 | Already decided or withdrawn; refresh |
+| FR-CMN-014 | API | EIMS-CON-001 | 409 | Refresh message |
+| BRD §4.2 – Employee | Gateway, API | EIMS-ACC-002 | 403 | "You don't have access to this page." |
+
+###### 3.2.16.5.8 Security & data privacy
+
+| Item | Detail |
+| --- | --- |
+| Authorization check per API | API-EIMS-20, 21: Manager and Admin route; approver check under the row lock |
+| Sensitive fields | Remarks (free text) |
+| Masking (UI / API response) | Remarks shown to the owner and the approver only |
+| Encryption (in transit / at rest / field-level) | TLS; encrypted storage |
+| Logging rule | Never the remarks text (Part01 §10.8) |
+| Threat review – TB-1 browser → gateway | T: forged rejection – CSRF token |
+| Threat review – TB-2 gateway → EIMS | E: rejecting own or another team's item – approver check, neutral 404. R: approver, time and remarks stored and audited |
+| Threat review – TB-5 EIMS → database | R: audit in the same transaction |
+
+###### 3.2.16.5.9 Notifications, audit & activity log
+
+| Trigger | Notification (NOT id) | Activity log entry | Audit fields captured |
+| --- | --- | --- | --- |
+| Profile or request rejected | None (C-05); NOT-EIMS-04 is the employee's to-do item and banner | `process` API-EIMS-20 or 21; steps `validated`, `approver-checked`, `version-checked`, `rejected` | `status` SUBMITTED → REJECTED with remarks; approver_id, approved_at; changed_by approver |
+
+###### 3.2.16.5.10 Scenarios
+
+| Scenario id | Scenario | Type | Requirement ref | Pre-condition | Expected result | Test level |
+| --- | --- | --- | --- | --- | --- | --- |
+| EIMS0160-S01 | Reject with remarks | Positive | FR-EIMS-033 | Submitted | Rejected; employee sees the remarks and can resubmit | API, E2E |
+| EIMS0160-S02 | Empty remarks | Negative | BR-CMN-03 | – | 400 EIMS-VAL-015 "Remarks are required to reject."; status unchanged | API, E2E |
+| EIMS0160-S03 | 501 characters | Negative | BR-CMN-03 | – | 400 EIMS-VAL-015 | API |
+| EIMS0160-S04 | Reject a change request | Positive | FR-EIMS-033, BR-EIMS-03 | Request Submitted | Request Rejected; profile unchanged | API |
+| EIMS0160-S05 | Already withdrawn | Negative | FR-EIMS-035 | Owner withdrew | 422 EIMS-BUS-005 | API |
+
+##### 3.2.16.6 Notes, issues & assumptions
+
+1. None.
+
+Further function chapters are added with R9.
 
 ## 4. NFR summary & inventories
 
