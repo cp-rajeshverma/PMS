@@ -15,13 +15,14 @@ Date: November 2026
 | 1.0 | 0.1 | 23-Nov-2026 | Rajesh Verma | First draft of §1–§2 and §3.1, based on the approved BRD set v1.0 (D-107), UX v1.1 (D-105), PMS-HLD-Part01 v1.0 rev 0.9, Part01a v1.0 rev 0.7, the Part02 anchor v1.0 rev 0.5 and the Part03 anchor v1.0 rev 0.4; threat-review method, settlement of the identity-provider order in this document and review grouping of 23 Nov 2026 (D-130) |
 | 1.0 | 0.2 | 23-Nov-2026 | Rajesh Verma | §3.2.1 EIMS0010 employee directory drafted: API-EIMS-01, role copy on EMPLOYEE, search, sort and paging (D-131) |
 | 1.0 | 0.3 | 23-Nov-2026 | Rajesh Verma | §3.2.2 EIMS0020 onboarding and §3.2.3 EIMS0030 Employee Id and temporary password drafted: API-EIMS-02, API-EIMS-03, identity-provider call inside the EIMS transaction with take-over of an orphan account (OI-P02-01 for onboarding), 12-character temporary password; OI-P02M1-01 (D-132) |
+| 1.0 | 0.4 | 23-Nov-2026 | Rajesh Verma | §3.2.4 EIMS0040 Admin-owned fields drafted: API-EIMS-04, processing order, UM0050 inside the EIMS transaction (OI-P02-01 for the role change), reporting-line locks, inactive employees read only; OI-P02M1-02 (D-133) |
 
 ### 1.2 Review and approval
 
 | Role | Name | Date | Decision |
 | --- | --- | --- | --- |
-| Architect | Rajesh Verma (Enterprise Architect) | 23-Nov-2026 | §1–§3.1 approved (D-130); §3.2.1 EIMS0010 approved (D-131); §3.2.2–§3.2.3 EIMS0020–EIMS0030 approved (D-132) |
-| Product owner | Rajesh Verma | 23-Nov-2026 | §1–§3.1 approved (D-130); §3.2.1 EIMS0010 approved (D-131); §3.2.2–§3.2.3 EIMS0020–EIMS0030 approved (D-132) |
+| Architect | Rajesh Verma (Enterprise Architect) | 23-Nov-2026 | §1–§3.1 approved (D-130); §3.2.1 EIMS0010 approved (D-131); §3.2.2–§3.2.3 EIMS0020–EIMS0030 approved (D-132); §3.2.4 EIMS0040 approved (D-133) |
+| Product owner | Rajesh Verma | 23-Nov-2026 | §1–§3.1 approved (D-130); §3.2.1 EIMS0010 approved (D-131); §3.2.2–§3.2.3 EIMS0020–EIMS0030 approved (D-132); §3.2.4 EIMS0040 approved (D-133) |
 | Business analyst | | | |
 | Dev lead | | | |
 
@@ -57,7 +58,7 @@ Reading rules:
 | --- | --- | --- |
 | 1 | PMS-BRD (anchor) – §4.3 roles and data scope, §5.3 dashboard and inbox, §6 BR-CMN, §7 INT-03 to INT-05, INT-07 to INT-09; PMS-BRD-M1-EIMS; PMS-BRD-M5-SUP (FR-UM-001 to 015, FR-AUTH, FR-ADM-101 to 117) | v1.0, approved baseline (D-107) |
 | 2 | UX Journey Index and UX Summaries SCR-EIMS-01 to 04, SCR-SH-03, SCR-SH-04; mockups `docs/01-ux/mockups/html/scr-eims-0*.html` | v1.1 (D-105) |
-| 3 | Decision log / ADRs | D-01 to D-132; ADR-001 to ADR-006 |
+| 3 | Decision log / ADRs | D-01 to D-133; ADR-001 to ADR-006 |
 
 **Design documents**
 
@@ -195,7 +196,7 @@ Business statuses and transitions are defined in PMS-BRD-M1-EIMS §6.1 (profile)
 | EIMS0010 | View the employee directory – search, filter, show inactive (FR-EIMS-001 to 004, 006) | Screen | SCR-EIMS-01 | POC | Approved |
 | EIMS0020 | Onboard an employee – create the employee and the user account (FR-EIMS-010, 011, 014; INT-08) | Screen | SCR-EIMS-02 | POC | Approved |
 | EIMS0030 | Generate Employee Id and temporary password (FR-EIMS-040, 041; UJ-SYS-04) | Backend process | – (shown once on SCR-EIMS-02) | POC | Approved |
-| EIMS0040 | Edit Admin-owned fields – date of joining, role, manager, hourly wage rate (FR-EIMS-012 to 017; INT-08, INT-09) | Screen | SCR-EIMS-02 | POC | Not started |
+| EIMS0040 | Edit Admin-owned fields – date of joining, role, manager, hourly wage rate (FR-EIMS-012 to 017; INT-08, INT-09) | Screen | SCR-EIMS-02 | POC | Approved |
 | EIMS0050 | Deactivate an employee (FR-EIMS-018; INT-08) | Screen | SCR-EIMS-02 | POC | Not started |
 | EIMS0060 | Reset an employee's password (FR-EIMS-005; INT-08) | Screen | SCR-EIMS-01 | POC | Not started |
 | EIMS0070 | View my profile and its status (FR-EIMS-020) | Screen | SCR-EIMS-03 | POC | Not started |
@@ -773,7 +774,250 @@ No API. Internal component of the EIMS service, used inside the caller's transac
 
 1. Note: the counter is created at 0 by the eims migrations (Part03 anchor §8).
 
-Further function chapters are added review by review (R4 to R9).
+#### 3.2.4 EIMS0040 – Edit Admin-owned fields (Module: EIMS, Approved)
+
+##### 3.2.4.1 Purpose, trigger and conditions
+
+The Admin changes an employee's date of joining, role, manager or hourly wage rate without employee approval (BR-CMN-13, BR-EIMS-04).
+
+| Item | Detail |
+| --- | --- |
+| Delivery phase | POC |
+| Trigger | Admin saves SCR-EIMS-02 in edit mode ("Edit" in SCR-EIMS-01) |
+| Pre-conditions | Signed in as Admin; employee active (inactive employees are read only, D-133); the command carries the version the form was loaded with |
+| Post-conditions | Changed fields saved in one transaction, version + 1, profile status unchanged (FR-EIMS-012); role change: identity-provider role set and all the user's sessions ended (UM0050, XF-09); manager change: approval views and inboxes follow the new reporting line at once (XF-08); rate change: applies to salary records generated afterwards (FR-EIMS-013); audit entries written |
+
+##### 3.2.4.2 Actor & data scope
+
+| Role | Access (Read / Read-write / Approve / None) | Data scope (row-level) |
+| --- | --- | --- |
+| Employee | None – route refused (EIMS-ACC-002) | – |
+| Manager | None – route refused (EIMS-ACC-002) | – |
+| Admin | Read-write (active employees); read only (inactive employees) | All employees |
+
+##### 3.2.4.3 Requirement traceability
+
+| Source | References |
+| --- | --- |
+| BRD functional requirements | FR-EIMS-012 to 017; FR-UM-010, 011, 014; INT-08, INT-09 |
+| BRD business / validation rules | VR-EIMS-01, 04, 05, 06; BR-EIMS-04, 05, 06, 07, 09; BR-CMN-01, 08, 13 |
+| BRD NFRs | NFR-02, NFR-03, NFR-05, NFR-06; NFR-EIMS-01 |
+| UX | UJ-EIMS-06; SCR-EIMS-02 (edit mode) |
+| Decisions | D-71, D-97, D-104, D-111, D-123, D-124, D-131, D-132, D-133 |
+| Related functions – depends on | EIMS0170 (employee details for the form), API-EIMS-03 manager options (§3.2.2), AMS0120 and LMS0080 (INT-09), UM0050 (role and sessions), UM0060, ADM0010, ADM0030, ADM0040 |
+| Related functions – used by | EIMS0010 (Edit); XF-07, XF-08, XF-09 (anchor §5.7 to §5.9); EIMS0180 and the approval functions of all modules (new reporting line); SMS0080 through EIMS0190 (new rate) |
+
+##### 3.2.4.4 Navigation & prototype reference
+
+**Navigation:** Menu > Employees > Edit > Employee admin form (edit)
+
+**Prototype:** `docs/01-ux/mockups/html/scr-eims-02-admin-form.html` · UX summary `docs/01-ux/ux-summary/scr-eims-02-admin-form.md`
+
+##### 3.2.4.5 Solution approach
+
+###### 3.2.4.5.1 Design description
+
+The [Edit Admin-owned fields] function lets the Admin work with the following sections / activities:
+
+1. Employee header and read-only fields
+2. Admin-owned fields – date of joining, role, manager, hourly wage rate
+3. Save
+
+**Employee header and read-only fields**
+
+1. Shows Employee Id, name and email read only (maintained by the employee, FR-EIMS-012), profile status and Active / Inactive badges.
+2. Data fetched via the employee details API of EIMS0170 (INT-03; API id assigned in §3.2.17) and [API-EIMS-03 : GET /api/eims/v1/manager-options (Purpose : eligible managers and the current top-level employee, with forEmployeeId)].
+3. DB entity: [EMPLOYEE]
+4. An inactive employee opens fully read only, without Save and Deactivate (D-133).
+
+**Admin-owned fields**
+
+1. Date of joining, role (Employee, Manager), manager or "None – top-level", hourly wage rate.
+2. Saved via [API-EIMS-04 : PUT /api/eims/v1/employees/{employeeId}/admin-details (Purpose : change date of joining, role, manager and hourly wage rate in one save)].
+3. DB entities: [EMPLOYEE], [AUDIT_ENTRY]; AMS and LMS through INT-09; identity provider through UM0050.
+4. Rules: VR-EIMS-04, 06; VR-EIMS-05 with loop and top-level checks; BR-EIMS-05 and VR-EIMS-01 for a new date of joining; BR-EIMS-06 for Manager → Employee.
+
+**Save**
+
+1. One save for all four fields with the loaded version; only changed fields are processed; a refused rule refuses the whole save (D-133).
+2. Success message "Changes saved." (FR-EIMS-012); the form reloads with the new version.
+
+###### 3.2.4.5.2 Design notes
+
+1. **Processing order of one save (D-133).** (a) Load the employee; inactive → refused (EIMS-BUS-003). (b) Validate the fields (VAL). (c) If the date of joining changes: call AMS0120 and LMS0080 in parallel with the EIMS service token (INT-09, Part01 §9.9) and check VR-EIMS-01 against the date of birth when the profile already holds one; any record before the new date → refused with the blocking records (EIMS-BUS-001); a check that cannot be made → refused (EIMS-SYS-003, Part01 §8.2 row 10). These reads run before the transaction. (d) Open the local transaction, lock the employee row and compare the version (EIMS-CON-001). (e) Rules on the reporting line and role (below). (f) Update EMPLOYEE (version + 1) and write the audit entries. (g) If the role changes: call UM0050. (h) Commit.
+2. **Order of the identity-provider call and the commit for a role change (D-133, settles OI-P02-01 for the role change).** Same pattern as onboarding (D-132): UM0050 is called inside the EIMS transaction, after the employee update and before the commit. UM0050 sets the role to the given value and ends all the user's sessions (FR-UM-011, D-97, XF-09); it is called only when the role changes. If the identity provider fails, the transaction is rolled back and nothing changes (EIMS-SYS-002). If the commit fails after UM0050 succeeded, the identity provider holds the new role and the role copy the old one; the form still shows the old role, so the Admin selects the new role again, which is a change, calls UM0050 again (setting the same role is harmless) and brings the copy in step. The failed commit is in the activity log with the flow reference.
+3. **Reporting line (VR-EIMS-05, BR-CMN-01).** A new manager must be active, hold the Manager role (copy, D-131) and not be the employee; walking up from the new manager to the top-level employee must not reach the employee (no loop). "None – top-level" is allowed only if no other active employee is top-level. To keep two saves from building a loop or a second top-level employee together, the service locks, in Employee Id order, the employee's row and the rows on the new manager's chain before checking; the one-active-top-level database rule is the backstop (PMS-HLD-Part03-M1-EIMS-Datamodel, planned).
+4. **Role Manager → Employee (BR-EIMS-06, FR-EIMS-016).** Refused while any active employee has this Manager Id; the error lists those reports (EIMS-BUS-002). Employee → Manager has no condition.
+5. **Manager change (FR-EIMS-017, XF-08).** Only the Manager Id changes; nothing is copied to other modules. Waiting items carry no stored approver (D-123 (5)), so every module resolves the new approver at listing and decision time through EIMS0180 (INT-04); no identity-provider call.
+6. **Hourly wage rate (BR-CMN-13, FR-EIMS-013).** Only EMPLOYEE changes; SMS reads the current rate when it generates a record (EIMS0190, INT-05), so existing salary records keep their copied rate.
+7. **Date-of-joining check is check-then-act across databases.** An attendance or leave saved in AMS or LMS between the INT-09 check and the EIMS commit is not seen; this is OI-P02-02, decided before PMS-HLD-Part02-M2-AMS, and not decided here. The INT-09 answers are used only for this save and never cached (§3.1.1).
+8. **Profile status.** Never changed by this function (FR-EIMS-012); an open profile change request is not affected, as it covers only employee-editable fields (BR-EIMS-04).
+
+###### 3.2.4.5.3 Sequence & orchestration
+
+```mermaid
+sequenceDiagram
+  actor AD as Admin
+  participant FE as Shell / EIMS package
+  participant GW as API gateway
+  participant E as EIMS service
+  participant A as AMS (AMS0120)
+  participant L as LMS (LMS0080)
+  participant DB as eims database
+  participant IDP as Identity provider (UM0050)
+  AD->>FE: Save changes
+  FE->>GW: PUT admin-details (fields, version, CSRF token)
+  GW->>E: PUT admin-details (access token, X-Flow-Ref)
+  E->>DB: Load employee
+  alt Inactive or field errors
+    E-->>FE: 422 EIMS-BUS-003 or 400 EIMS-VAL-nnn
+  else Valid, date of joining changed
+    par
+      E->>A: Attendance before the new date (service token, INT-09)
+    and
+      E->>L: Leave other than Cancelled before the new date (service token, INT-09)
+    end
+    A-->>E: Records or none
+    L-->>E: Records or none
+  end
+  alt Records found or a check failed
+    E-->>FE: 422 EIMS-BUS-001 with the records, or 503 EIMS-SYS-003
+  else Checks passed
+    E->>DB: Begin, lock employee row, compare version
+    E->>DB: Lock reporting-line rows, check loop, top-level, active reports
+    E->>DB: Update employee (version + 1), audit entries
+    opt Role changed
+      E->>IDP: Set role and end sessions
+      IDP-->>E: OK or error
+    end
+    alt All steps OK
+      E->>DB: Commit
+      E-->>FE: 200 admin details, new version
+      FE-->>AD: Changes saved
+    else Version, rule or identity-provider error
+      E->>DB: Rollback
+      E-->>FE: 409 EIMS-CON-001, 422 EIMS-BUS-002, 400 EIMS-VAL-008 or 009, or 503 EIMS-SYS-002
+    end
+  end
+```
+
+| Step | Type (sync call / event / job / workflow) | Producer → consumer | Event / API | Consistency (local tx / outbox / saga / compensation) |
+| --- | --- | --- | --- | --- |
+| 1 | Sync call | Frontend → EIMS (gateway) | API-EIMS-04 | Version check in the local transaction |
+| 2 | Sync call (parallel, read only) | EIMS → AMS, EIMS → LMS (service token) | AMS0120, LMS0080 (INT-09) – API ids in PMS-HLD-Part02-M2-AMS and M3-LMS (planned) | Before the transaction; check-then-act, OI-P02-02 |
+| 3 | Sync call (role change only) | EIMS → identity provider (`eims-admin` client) | UM0050 (INT-08) | Inside the local transaction, commit after success (D-133) |
+| 4 | Internal | EIMS → eims database | – | Commit or rollback |
+
+**Text version of the diagram**
+
+| Step | From → to | Message | Result |
+| --- | --- | --- | --- |
+| 1 | Admin → frontend → gateway → EIMS | Save: PUT admin-details with the version | – |
+| 2 | EIMS → database | Load employee | Inactive: 422 EIMS-BUS-003; field errors: 400 |
+| 3 | EIMS → AMS and LMS, in parallel | Records before the new date of joining (only if it changes) | Records: 422 EIMS-BUS-001 listing them; check failed: 503 EIMS-SYS-003 |
+| 4 | EIMS → database | Begin, lock employee row, compare version | Mismatch: 409 EIMS-CON-001 |
+| 5 | EIMS → database | Lock reporting-line rows; check loop, top-level, active reports | Refused: 400 EIMS-VAL-008 or 009, 422 EIMS-BUS-002 |
+| 6 | EIMS → database | Update employee, audit entries | Not yet committed |
+| 7 | EIMS → identity provider | Set role and end sessions (only if the role changes) | Error: rollback, 503 EIMS-SYS-002 |
+| 8 | EIMS → database → frontend | Commit; 200 with the new version | "Changes saved." |
+
+###### 3.2.4.5.4 Frontend
+
+Only what is not already in the UX summary:
+
+1. The form loads the employee details and API-EIMS-03 with `forEmployeeId`, and keeps the version for the save.
+2. An inactive employee is shown read only: no Save, no Deactivate, Inactive badge (D-133).
+3. EIMS-BUS-001 and EIMS-BUS-002 are shown at the date-of-joining and role fields with the records or reports they list; 409 shows the refresh message (FR-CMN-014) and reloads on confirmation.
+4. Save is disabled while the request runs.
+
+###### 3.2.4.5.5 Backend
+
+| API id | API name | Method & endpoint | Purpose | Request (key fields) | Response (key fields) | Roles |
+| --- | --- | --- | --- | --- | --- | --- |
+| API-EIMS-04 | Update admin details | PUT /api/eims/v1/employees/{employeeId}/admin-details | Change date of joining, role, manager and hourly wage rate in one save | dateOfJoining, role, managerId or topLevel true, hourlyWageRate, version | 200: employeeId, dateOfJoining, role, managerId, hourlyWageRate, status, isActive, version | Admin |
+
+1. Server-side validation: as design note 1; field errors collected and returned together.
+2. Transaction boundary: from the employee row lock to the commit, with UM0050 inside it for a role change; the INT-09 reads before it.
+3. Idempotency: none; the version makes a repeated save fail with 409 once the first has committed.
+4. No events.
+
+###### 3.2.4.5.6 Database
+
+| Entity | Operation (C / R / U / soft-D) | Purpose in this function |
+| --- | --- | --- |
+| EMPLOYEE | R, U (row locks) | Load and version check; reporting-line checks over the new manager's chain; active direct reports; update of date of joining, role copy, Manager Id, hourly wage rate |
+| AUDIT_ENTRY | C | One EMPLOYEE entry per changed field; USER_ACCOUNT role entry for a role change |
+
+No in-memory copy of other services' data: the INT-09 answers are used for this save only.
+
+###### 3.2.4.5.7 Validation & error handling
+
+| Rule ref (BRD VR / BR) | Layer (UI / API / DB) | Error code | HTTP status | Message |
+| --- | --- | --- | --- | --- |
+| VR-EIMS-04 | UI, API | EIMS-VAL-006 | 400 | Future-joining-date message |
+| VR-EIMS-06 | UI, API | EIMS-VAL-007 | 400 | Invalid-rate message |
+| VR-EIMS-05 (not eligible, loop) | API | EIMS-VAL-008 | 400 | Manager-choice message |
+| VR-EIMS-05 (top-level held) | API, DB | EIMS-VAL-009 | 400 | Message naming the current top-level employee |
+| FR-UM-010 (role) | API | EIMS-VAL-010 | 400 | Role-choice message |
+| VR-EIMS-01 (age on new date) | API | EIMS-VAL-011 | 400 | Under-18-on-joining-date message (FR-EIMS-015) |
+| BR-EIMS-05 | API | EIMS-BUS-001 | 422 | Change refused, naming the blocking attendance and leave dates (FR-EIMS-015) |
+| BR-EIMS-06 | API | EIMS-BUS-002 | 422 | Role change refused, listing the active reports (FR-EIMS-016) |
+| D-133 – inactive read only | UI, API | EIMS-BUS-003 | 422 | Inactive employee cannot be changed |
+| FR-CMN-014 | API | EIMS-CON-001 | 409 | Refresh message |
+| Neutral refused response | API | EIMS-ACC-001 | 404 | "You don't have access to this page." (unknown Employee Id) |
+| BRD §4.2 – Admin only | Gateway, API | EIMS-ACC-002 | 403 | "You don't have access to this page." |
+| INT-08 – role not changed | API | EIMS-SYS-002 | 503 | "Changes could not be saved. Please try again." with the reference |
+| INT-09 – check not possible | API | EIMS-SYS-003 | 503 | As above, with the reference |
+
+###### 3.2.4.5.8 Security & data privacy
+
+| Item | Detail |
+| --- | --- |
+| Authorization check per API | API-EIMS-04: gateway Admin route; service checks the Admin role claim |
+| Sensitive fields | Hourly wage rate (sensitive pay); date of birth used for the age check (sensitive personal, read only) |
+| Masking (UI / API response) | Shown to the Admin unmasked; the date of birth is never returned by this API |
+| Encryption (in transit / at rest / field-level) | TLS at the edge; encrypted storage |
+| Logging rule | Activity log: Employee Id, which fields changed (names only), steps and result; never values of rate, dates of birth or blocking-record details (Part01 §10.8) |
+| Threat review – TB-1 browser → gateway | S / T: forged save – CSRF token and SameSite cookie (ADR-004) |
+| Threat review – TB-2 gateway → EIMS | E: non-Admin changing roles or rates – Admin route and role check (EIMS-ACC-002). T: lost update – version check (EIMS-CON-001). R: who changed what – audit per field with the Admin user name |
+| Threat review – TB-3 EIMS → AMS, LMS | S: EIMS calling as another caller – EIMS service token, network policy per service pair (Part01 §9.9). I: more than needed – INT-09 returns only dates and types of blocking records |
+| Threat review – TB-4 EIMS → identity provider | E: a demoted manager keeping access – UM0050 ends every session at once (D-97, D-111). R: role change without a record – USER_ACCOUNT audit entry and identity-provider admin event (AUTH0060) |
+| Threat review – TB-5 EIMS → database | T / R: audit in the same transaction, insert-and-select-only grant (Part03 anchor §2.5) |
+
+###### 3.2.4.5.9 Notifications, audit & activity log
+
+| Trigger | Notification (NOT id) | Activity log entry | Audit fields captured |
+| --- | --- | --- | --- |
+| Admin details saved | None (C-05) | `process` API-EIMS-04; steps `validated`, `joining-date-checked` (if changed), `version-checked`, `rules-checked`, `employee-updated`, `role-changed` (if changed), `committed` | One EMPLOYEE entry per changed field (date_of_joining, role, manager_id, hourly_wage_rate) with old and new value; USER_ACCOUNT `role` for a role change; changed_by Admin user name |
+| Refused or failed | None | Steps up to the refusal, result with the error code; `rolled-back` after a failed identity-provider call or commit | None |
+
+###### 3.2.4.5.10 Scenarios
+
+| Scenario id | Scenario | Type | Requirement ref | Pre-condition | Expected result | Test level |
+| --- | --- | --- | --- | --- | --- | --- |
+| EIMS0040-S01 | Rate change on an approved profile | Positive | FR-EIMS-012, 013 | Approved, rate 250 | 200; rate 300, status still Approved; next salary record uses 300, existing ones keep 250 | API, E2E |
+| EIMS0040-S02 | New joining date after existing attendance | Negative | FR-EIMS-015, BR-EIMS-05 | Attendance on 05-Nov | Joining date 10-Nov → 422 EIMS-BUS-001 naming 05-Nov; nothing changed | API |
+| EIMS0040-S03 | Cancelled leave before the new date | Positive | BR-EIMS-05 | Only Cancelled leave before the date | 200 | API |
+| EIMS0040-S04 | AMS unreachable during a joining-date change | Failure | Part01 §8.2 row 10 | AMS down | 503 EIMS-SYS-003 with reference; nothing changed | API |
+| EIMS0040-S05 | Under 18 on the new joining date | Negative | VR-EIMS-01 | Date of birth on the profile | 400 EIMS-VAL-011 | API |
+| EIMS0040-S06 | Manager → Employee with active reports | Negative | FR-EIMS-016, BR-EIMS-06 | 3 active reports | 422 EIMS-BUS-002 listing the 3 | API, E2E |
+| EIMS0040-S07 | Role change ends sessions | Positive | FR-UM-011, XF-09 | Employee signed in | 200; next action of the user opens sign-in; new menu after sign-in | E2E |
+| EIMS0040-S08 | Identity provider fails on a role change | Failure | D-133 | Identity provider down | 503 EIMS-SYS-002; role copy and other fields unchanged | API |
+| EIMS0040-S09 | Commit fails after the role was set | Failure | D-133 | Database fails at commit | Copy shows the old role; saving the new role again calls UM0050 again and brings the copy in step | API (integration) |
+| EIMS0040-S10 | Reporting loop | Negative | FR-EIMS-014, VR-EIMS-05 | A manages B | Setting B as A's manager → 400 EIMS-VAL-008 | API |
+| EIMS0040-S11 | Second top-level employee | Negative | VR-EIMS-05 | C is top-level | "None – top-level" for D → 400 EIMS-VAL-009 naming C | API |
+| EIMS0040-S12 | Manager change moves waiting items | Positive | FR-EIMS-017, XF-08 | B's leave waiting for M1 | After the change it is in M2's inbox, not in M1's | E2E |
+| EIMS0040-S13 | Two saves on the same version | Concurrency | FR-CMN-014 | Two sessions | First 200, second 409 EIMS-CON-001 | API |
+| EIMS0040-S14 | Inactive employee | Negative | D-133 | Employee inactive | Form read only; API → 422 EIMS-BUS-003 | API, E2E |
+| EIMS0040-S15 | Non-Admin call | Negative | BRD §4.2 | Manager session | 403 EIMS-ACC-002 | API |
+
+##### 3.2.4.6 Notes, issues & assumptions
+
+1. Note: the INT-09 APIs of AMS0120 and LMS0080 return the dates and types of records before a given date for one Employee Id; their ids and contracts are designed in PMS-HLD-Part02-M2-AMS and M3-LMS (planned).
+2. Note: OI-P02-02 (check-then-act of the joining-date check) is referenced, not decided (design note 7).
+3. Q: inactive employees read only (D-133) is a design choice where the BRD is silent; open item OI-P02M1-02 to confirm it in the BRD at the set consistency check.
+
+Further function chapters are added review by review (R5 to R9).
 
 ## 4. NFR summary & inventories
 
@@ -788,3 +1032,4 @@ Drafted with R10; open items are added as they arise.
 | Id | Question | Owner | Status |
 | --- | --- | --- | --- |
 | OI-P02M1-01 | After an eims database restore, user accounts may exist for Employee Ids issued after the backup point; the counter would issue those Ids again and UM0010 would take over those accounts (EIMS0020 design note 2). Restore procedure: compare identity-provider accounts with restored employees and disable or re-onboard the accounts above the restored counter before onboarding resumes | Enterprise Architect – docs/04-standards/database-and-data (planned), with PMS-HLD-Part02-M5-SUP | Open |
+| OI-P02M1-02 | Inactive employees are read only in the admin form (D-133); the BRD (PMS-BRD-M1-EIMS §6.2, FR-EIMS-012) is silent – confirm in the BRD at the set consistency check | Enterprise Architect – set consistency check | Open |
