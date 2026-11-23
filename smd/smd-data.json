@@ -1,12 +1,12 @@
 {
  "meta": {
   "smd_version": "1.0",
-  "generated_at": "2026-11-23T13:20+05:30",
+  "generated_at": "2026-11-23T19:03+05:30",
   "generated_by": "SMD update run",
   "repo_root": "D:\\POC\\PMS",
-  "repo_commit": "9b0ead9",
-  "working_tree_note": "Refreshed at 9b0ead9 (9 commits since 3efd265: 09f23ac to 9b0ead9); clean working tree apart from this run.",
-  "previous_snapshot": "snapshots/2026-11-22_2246.json",
+  "repo_commit": "7aff5c1",
+  "working_tree_note": "Refreshed at 7aff5c1 (8 commits since 9b0ead9: a208701 to 7aff5c1); clean working tree apart from this run.",
+  "previous_snapshot": "snapshots/2026-11-23_1320.json",
   "repo_rel_prefix": "../../",
   "remote_base_url": "https://github.com/cp-rajeshverma/PMS/blob/main/",
   "audience": "customer-facing (rule PR-03 applied)",
@@ -61,8 +61,8 @@
    },
    {
     "date": "2026-11-23",
-    "decisions": 127,
-    "commits": 130,
+    "decisions": 131,
+    "commits": 138,
     "artifacts_done": 46
    }
   ]
@@ -85,7 +85,7 @@
   },
   "target_go_live": "2027-01-29",
   "health": "G",
-  "health_reason": "Stage 3 Solution Design in progress (15%): HLD Part01 (rev 0.9) and HLD Part01a Principles, patterns and decisions (v1.0 rev 0.5, 330 catalogue items assessed, ADR register ADR-001 to ADR-006) reviewed section by section (D-109 to D-121); final approval with the HLD set at the Stage 3 gate. Stage 3 planned 23 Nov – 11 Dec 2026 (D-108), on track. No Critical or High findings open; 17 Low HLD open items (OI-P01a-01 to 17) assigned to the standards and the HLD Part02 anchor, none overdue."
+  "health_reason": "Stage 3 Solution Design in progress (20%): HLD Part01 (rev 0.9), Part01a (rev 0.6) and the HLD Part02 Functional anchor (v1.0 rev 0.4: 77 system functions, cross-module flows XF-01 to XF-09, common API, event, error, audit and frontend conventions, coverage of all 175 functional requirements) reviewed section by section (D-109 to D-125); final approval with the HLD set at the Stage 3 gate. Stage 3 planned 23 Nov – 11 Dec 2026 (D-108), on track. No Critical or High findings open; 17 Low HLD open items open (15 from Part01a for the standards, OI-P02-01 and 02 for the module documents), none overdue."
  },
  "people": [
   {
@@ -566,7 +566,7 @@
      "planned_end": "2026-12-11",
      "actual_start": "2026-11-21",
      "actual_end": null,
-     "percent": 15,
+     "percent": 20,
      "source": "declared",
      "gate": {
       "criteria": [
@@ -578,7 +578,7 @@
        {
         "text": "HLD Part02 (functional) set approved",
         "met": false,
-        "evidence": null
+        "evidence": "docs/03-hld/PMS-HLD-Part02-Functional.md"
        },
        {
         "text": "HLD Part03 (data model) set approved",
@@ -611,11 +611,11 @@
       },
       {
        "id": "S3.2",
-       "name": "Part02 Functional (anchor, modules, SUP)",
+       "name": "Part02 Functional (anchor, modules, SUP) – anchor all sections reviewed (D-122 to D-125); module documents not started",
        "agent": null,
-       "status": "Not Started",
-       "date": null,
-       "artifact": null
+       "status": "In Progress",
+       "date": "2026-11-23",
+       "artifact": "PMS-HLD-Part02-Functional"
       },
       {
        "id": "S3.3",
@@ -660,6 +660,13 @@
       {
        "id": "M3.0c",
        "name": "HLD Part01a Principles, patterns and decisions – all sections approved (D-117 to D-121)",
+       "planned": null,
+       "actual": "2026-11-23",
+       "status": "Completed"
+      },
+      {
+       "id": "M3.0d",
+       "name": "HLD Part02 Functional anchor – all sections approved (D-122 to D-125)",
        "planned": null,
        "actual": "2026-11-23",
        "status": "Completed"
@@ -2481,7 +2488,7 @@
    "status": "Approved",
    "started": "2026-11-22",
    "completed": "2026-11-22",
-   "last_updated": "2026-11-22",
+   "last_updated": "2026-11-23",
    "path": "docs/decisions/adr/ADR-006-ams-sms-outbox-and-reconciliation.md",
    "source": "declared",
    "reviewers": [
@@ -2530,7 +2537,7 @@
    "type": "HLD",
    "stage": 3,
    "step": "HLD Part01",
-   "version": "v1.0 rev 0.5",
+   "version": "v1.0 rev 0.6",
    "status": "In Review",
    "completed": null,
    "last_updated": "2026-11-23",
@@ -2540,7 +2547,36 @@
     "PMS-HLD-Part01-Architecture-and-Design",
     "PMS-BRD"
    ],
-   "summary": "Catalogue of 330 architecture principles and patterns in 18 groups, each assessed with applicability, realization and reference: 230 Applied, 35 Partial, 3 Deferred, 62 N/A; architecture decision register ADR-001 to ADR-006 and the ADR record format; 17 open items for the standards and the HLD Part02 anchor. All sections approved section by section (D-117 to D-121); final approval with the HLD set at the Stage 3 gate.",
+   "summary": "Catalogue of 330 architecture principles and patterns in 18 groups, each assessed with applicability, realization and reference: 230 Applied, 35 Partial, 3 Deferred, 62 N/A; architecture decision register ADR-001 to ADR-006 and the ADR record format; 17 open items for the standards and the HLD Part02 anchor (OI-P01a-03 and 06 closed by the Part02 anchor, D-122). All sections approved section by section (D-117 to D-121); final approval with the HLD set at the Stage 3 gate.",
+   "reviewers": [
+    "Rajesh Verma"
+   ],
+   "files": [],
+   "module": "ALL",
+   "pipeline": "PMS-TX-01",
+   "author": "Rajesh Verma",
+   "planned": "2026-12-11",
+   "started": "2026-11-23"
+  },
+  {
+   "code": "PMS-HLD-Part02-Functional",
+   "name": "HLD Part02 Functional design – anchor",
+   "type": "HLD",
+   "stage": 3,
+   "step": "HLD Part02",
+   "version": "v1.0 rev 0.4",
+   "status": "In Review",
+   "completed": null,
+   "last_updated": "2026-11-23",
+   "path": "docs/03-hld/PMS-HLD-Part02-Functional.md",
+   "source": "declared",
+   "depends_on": [
+    "PMS-BRD",
+    "PMS-HLD-Part01-Architecture-and-Design",
+    "PMS-HLD-Part01a-Principles-Patterns-Decisions",
+    "PMS-TPL-HLD-PART02-ANCHOR-FUNCTIONAL"
+   ],
+   "summary": "Functional design anchor: module overview and dependency map; system function index of 77 functions (one per screen action or system process, shell functions SH); cross-module flows XF-01 to XF-09 with sequence diagrams (onboarding, attendance approval to salary, dispute and reopen, nightly reconciliation, dashboard and approvals inbox, date checks, manager change, account changes); common API, event (ordering by attendance version), error (problem details, neutral refused response), audit and frontend conventions with the shared design system; roll-up inventories; cross-module NFR summary; coverage of all 175 functional requirements; open items OI-P02-01 and 02. All sections approved section by section (D-122 to D-125); final approval with the HLD set at the Stage 3 gate.",
    "reviewers": [
     "Rajesh Verma"
    ],
@@ -2896,6 +2932,21 @@
    "verdict": "Approved",
    "path": "docs/decisions/decision-log.md",
    "title": "HLD Part01a section-by-section review (D-117 to D-121)"
+  },
+  {
+   "id": "RV-14",
+   "type": "peer",
+   "artifacts": [
+    "PMS-HLD-Part02-Functional",
+    "PMS-HLD-Part01a-Principles-Patterns-Decisions"
+   ],
+   "reviewers": [
+    "Rajesh Verma"
+   ],
+   "date": "2026-11-23",
+   "verdict": "Approved",
+   "path": "docs/decisions/decision-log.md",
+   "title": "HLD Part02 Functional anchor section-by-section review (D-122 to D-125)"
   }
  ],
  "findings": [
@@ -3218,10 +3269,10 @@
    "target": "PMS-HLD-Part01a-Principles-Patterns-Decisions",
    "category": "Open item",
    "severity": "Low",
-   "status": "Open",
+   "status": "Resolved",
    "owner": "Enterprise Architect",
-   "due": "HLD Part02 anchor or docs/04-standards/frontend-and-ux",
-   "summary": "Shared design system: component library and style tokens for the shell and every module.",
+   "due": "Closed 2026-11-23 (D-122)",
+   "summary": "Shared design system: style tokens and common components defined in the HLD Part02 anchor §6.5; detail rules in the frontend-and-ux standard.",
    "origin": "declared"
   },
   {
@@ -3257,10 +3308,10 @@
    "target": "PMS-HLD-Part01a-Principles-Patterns-Decisions",
    "category": "Open item",
    "severity": "Low",
-   "status": "Open",
+   "status": "Resolved",
    "owner": "Enterprise Architect",
-   "due": "HLD Part02 anchor",
-   "summary": "Ordering of attendance approved and reopened events for the same attendance.",
+   "due": "Closed 2026-11-23 (D-122)",
+   "summary": "Ordering of attendance approved and reopened events: every event carries the attendance version; SMS applies only a higher version (HLD Part02 anchor §6.2).",
    "origin": "declared"
   },
   {
@@ -3405,6 +3456,32 @@
    "due": "docs/04-standards/documentation-and-governance",
    "summary": "Definition-of-done checklist per story.",
    "origin": "declared"
+  },
+  {
+   "id": "OI-P02-01",
+   "review": null,
+   "source": "PMS-HLD-Part02-Functional",
+   "target": "PMS-HLD-Part02-Functional",
+   "category": "Open item",
+   "severity": "Low",
+   "status": "Open",
+   "owner": "Enterprise Architect",
+   "due": "HLD Part02 SUP module document",
+   "summary": "Onboarding and account changes: order of the identity-provider call and the employee record update, and recovery when the second step fails.",
+   "origin": "declared"
+  },
+  {
+   "id": "OI-P02-02",
+   "review": null,
+   "source": "PMS-HLD-Part02-Functional",
+   "target": "PMS-HLD-Part02-Functional",
+   "category": "Open item",
+   "severity": "Low",
+   "status": "Open",
+   "owner": "Enterprise Architect",
+   "due": "Before the HLD Part02 AMS module document",
+   "summary": "Attendance / leave date check and date-of-joining check run across two databases: simultaneous submissions can pass both checks; prevention or detection to be decided.",
+   "origin": "declared"
   }
  ],
  "coverage": [
@@ -3435,17 +3512,61 @@
   {
    "from": "BRD (FR / BR / VR)",
    "to": "HLD Part02",
-   "total": 0,
-   "covered": 0,
+   "total": 175,
+   "covered": 175,
    "partial": 0,
    "missing": 0,
    "missing_items": [],
    "orphans": [],
-   "source": "config",
-   "note": "Starts when HLD Part02 is drafted."
+   "source": "declared",
+   "note": "All 175 functional requirement ids assigned to system functions in the HLD Part02 anchor §9; per-function design follows in the module documents (planned)."
   }
  ],
  "decisions": [
+  {
+   "id": "D-125",
+   "title": "HLD Part02 anchor §7–§10 approved; all sections reviewed",
+   "date": "2026-11-23",
+   "author": "Rajesh Verma",
+   "area": "Architecture",
+   "stage": 3,
+   "summary": "Roll-up inventories (cross-module APIs, two attendance events, nightly job, no notifications in the POC), cross-module NFR summary, coverage of all 175 functional requirements, open items OI-P02-01 and 02; final approval at the Stage 3 gate.",
+   "path": "docs/decisions/decision-log.md",
+   "status": "Approved"
+  },
+  {
+   "id": "D-124",
+   "title": "HLD Part02 anchor §6 common conventions approved",
+   "date": "2026-11-23",
+   "author": "Rajesh Verma",
+   "area": "Architecture",
+   "stage": 3,
+   "summary": "API conventions (module path and version, action resources, record version in every command, paging, formats, flow reference), event envelope and idempotent consumer, problem-details errors with module error codes and a neutral refused response, audit and activity log, no notifications in the POC, frontend composition and shared design system.",
+   "path": "docs/decisions/decision-log.md",
+   "status": "Approved"
+  },
+  {
+   "id": "D-123",
+   "title": "HLD Part02 anchor §4–§5 approved",
+   "date": "2026-11-23",
+   "author": "Rajesh Verma",
+   "area": "Architecture",
+   "stage": 3,
+   "summary": "System function index of 77 functions with the new shell prefix SH; cross-module flows XF-01 to XF-09; approver resolved from the current manager at listing and decision time; open items OI-P02-01 and 02.",
+   "path": "docs/decisions/decision-log.md",
+   "status": "Approved"
+  },
+  {
+   "id": "D-122",
+   "title": "HLD Part02 anchor §1–§3 approved with the design answers",
+   "date": "2026-11-23",
+   "author": "Rajesh Verma",
+   "area": "Architecture",
+   "stage": 3,
+   "summary": "Event ordering by attendance version (closes OI-P01a-06, extends ADR-006), shared design system in the anchor (closes OI-P01a-03), one function per screen action or system process, API path /api/<module>/v1, nine cross-module flows, salary status checked by the attendance service.",
+   "path": "docs/decisions/decision-log.md",
+   "status": "Approved"
+  },
   {
    "id": "D-121",
    "title": "HLD Part01a §5–§6 approved; all sections reviewed",
@@ -4850,6 +4971,118 @@
    "actor": "Rajesh Verma",
    "kind": "human",
    "type": "session",
+   "summary": "Working session handoff: HLD Part02 Functional anchor drafted and reviewed section by section (D-122 to D-125); 77 system functions, nine cross-module flows, common conventions; OI-P01a-03 and 06 closed; next: HLD Part03 anchor (data model).",
+   "ref": null
+  },
+  {
+   "date": "2026-11-23",
+   "actor": "Rajesh Verma",
+   "kind": "human",
+   "type": "status-change",
+   "summary": "Stage 3 Solution Design 15% → 20%: HLD Part02 anchor all sections approved.",
+   "ref": "#/stage/3"
+  },
+  {
+   "date": "2026-11-23",
+   "actor": "Rajesh Verma",
+   "kind": "human",
+   "type": "decision",
+   "summary": "D-125: HLD Part02 anchor §7–§10 approved; all sections reviewed.",
+   "ref": "D-125"
+  },
+  {
+   "date": "2026-11-23",
+   "actor": "Rajesh Verma",
+   "kind": "human",
+   "type": "commit",
+   "summary": "docs(hld): Part02 anchor §7–§10 approved, all sections reviewed (D-125)",
+   "ref": "7aff5c1"
+  },
+  {
+   "date": "2026-11-23",
+   "actor": "Rajesh Verma",
+   "kind": "human",
+   "type": "decision",
+   "summary": "D-124: HLD Part02 anchor common conventions approved.",
+   "ref": "D-124"
+  },
+  {
+   "date": "2026-11-23",
+   "actor": "Rajesh Verma",
+   "kind": "human",
+   "type": "commit",
+   "summary": "docs(hld): Part02 anchor §6 approved (D-124): API, event, error, audit and frontend conventions",
+   "ref": "e3d0e9e"
+  },
+  {
+   "date": "2026-11-23",
+   "actor": "Rajesh Verma",
+   "kind": "human",
+   "type": "decision",
+   "summary": "D-123: HLD Part02 anchor function index and cross-module flows approved.",
+   "ref": "D-123"
+  },
+  {
+   "date": "2026-11-23",
+   "actor": "Rajesh Verma",
+   "kind": "human",
+   "type": "commit",
+   "summary": "docs(hld): Part02 anchor §4–§5 approved (D-123): function index, cross-module flows XF-01 to XF-09",
+   "ref": "30b30ff"
+  },
+  {
+   "date": "2026-11-23",
+   "actor": "Rajesh Verma",
+   "kind": "human",
+   "type": "decision",
+   "summary": "D-122: HLD Part02 anchor §1–§3 and design answers approved; OI-P01a-03 and 06 closed.",
+   "ref": "D-122"
+  },
+  {
+   "date": "2026-11-23",
+   "actor": "Rajesh Verma",
+   "kind": "human",
+   "type": "commit",
+   "summary": "docs(hld): Part02 anchor §1–§3 approved (D-122); OI-P01a-03 and 06 closed (Part01a rev 0.6); ADR-006 ordering follow-up",
+   "ref": "3471f5e"
+  },
+  {
+   "date": "2026-11-23",
+   "actor": "Rajesh Verma",
+   "kind": "human",
+   "type": "commit",
+   "summary": "Internal delivery-tooling decision / housekeeping",
+   "ref": "d768f4b"
+  },
+  {
+   "date": "2026-11-23",
+   "actor": "Rajesh Verma",
+   "kind": "human",
+   "type": "commit",
+   "summary": "Internal delivery-tooling decision / housekeeping",
+   "ref": "6609512"
+  },
+  {
+   "date": "2026-11-23",
+   "actor": "Rajesh Verma",
+   "kind": "human",
+   "type": "commit",
+   "summary": "Internal delivery-tooling decision / housekeeping",
+   "ref": "93c5eae"
+  },
+  {
+   "date": "2026-11-23",
+   "actor": "Rajesh Verma",
+   "kind": "human",
+   "type": "commit",
+   "summary": "chore(smd): refresh dashboard 2026-11-23",
+   "ref": "a208701"
+  },
+  {
+   "date": "2026-11-23",
+   "actor": "Rajesh Verma",
+   "kind": "human",
+   "type": "session",
    "summary": "Working session handoff: HLD Part01a Principles, patterns and decisions drafted and reviewed section by section (D-117 to D-121); 330 catalogue items assessed; ADR register; HLD Part01 rev 0.9; next: HLD Part02 anchor.",
    "ref": null
   },
@@ -6195,19 +6428,25 @@
  ],
  "next_actions": [
   {
-   "item": "Draft HLD Part02 anchor (functional): module and function index, cross-module flows, common API, event and error conventions; settle OI-P01a-03 (design system) and OI-P01a-06 (event ordering)",
+   "item": "Draft HLD Part03 anchor (data model): conventions, ownership, entity index, cross-service rules; include the per-attendance version and processed-event records of the Part02 anchor",
    "owner": "Rajesh Verma",
    "when": "Next working session",
    "ref": "#/stage/3"
   },
   {
-   "item": "Write the 12 standards in docs/04-standards/ after the HLD documents, closing open items OI-P01a-01 to 17 (OI-P01a-08 threat-modelling method before the module Part02 documents)",
+   "item": "Decide OI-P02-02 (simultaneous submissions across attendance and leave) before the HLD Part02 AMS module document; settle OI-P02-01 in the SUP module document",
+   "owner": "Enterprise Architect",
+   "when": "Stage 3, before the module documents",
+   "ref": "#/stage/3"
+  },
+  {
+   "item": "Write the 12 standards in docs/04-standards/ after the HLD documents, closing open items OI-P01a-01 to 17 that remain (OI-P01a-08 threat-modelling method before the module Part02 documents)",
    "owner": "Enterprise Architect",
    "when": "Stage 3, by 11 Dec 2026",
    "ref": "#/stage/3"
   },
   {
-   "item": "Draft HLD Part02 anchor and Part03 anchor, then Part02 and Part03 per module (D-108 order)",
+   "item": "Draft HLD Part02 and Part03 per module (EIMS, AMS, LMS, SMS, SUP, D-108 order)",
    "owner": "Rajesh Verma",
    "when": "Stage 3, by 11 Dec 2026",
    "ref": "#/stage/3"
@@ -7157,7 +7396,7 @@
    "folder": "docs/decisions",
    "kind": "artifact",
    "ext": ".md",
-   "size": 51895,
+   "size": 59205,
    "created": "2026-11-15",
    "last_updated": "2026-11-23",
    "last_author": "cp-rajeshverma",
@@ -7423,9 +7662,9 @@
    "folder": "docs/decisions/adr",
    "kind": "artifact",
    "ext": ".md",
-   "size": 2289,
+   "size": 2535,
    "created": "2026-11-22",
-   "last_updated": "2026-11-22",
+   "last_updated": "2026-11-23",
    "last_author": "cp-rajeshverma",
    "module": "ALL",
    "links": [
@@ -7437,7 +7676,7 @@
    "folder": "docs/03-hld",
    "kind": "artifact",
    "ext": ".md",
-   "size": 80930,
+   "size": 81240,
    "created": "2026-11-23",
    "last_updated": "2026-11-23",
    "last_author": "cp-rajeshverma",
@@ -7445,71 +7684,92 @@
    "links": [
     "PMS-HLD-Part01a-Principles-Patterns-Decisions"
    ]
+  },
+  {
+   "path": "docs/03-hld/PMS-HLD-Part02-Functional.md",
+   "folder": "docs/03-hld",
+   "kind": "artifact",
+   "ext": ".md",
+   "size": 96272,
+   "created": "2026-11-23",
+   "last_updated": "2026-11-23",
+   "last_author": "cp-rajeshverma",
+   "module": "ALL",
+   "links": [
+    "PMS-HLD-Part02-Functional"
+   ]
   }
  ],
  "changes_since_last": [
   {
    "entity": "stage",
    "id": "S3",
-   "change": "HLD Part01a all sections approved; Part01 updated",
-   "from": "In Progress · 10%",
-   "to": "In Progress · 15%"
+   "change": "HLD Part02 Functional anchor all sections approved",
+   "from": "In Progress · 15%",
+   "to": "In Progress · 20%"
+  },
+  {
+   "entity": "artifact",
+   "id": "PMS-HLD-Part02-Functional",
+   "change": "Drafted and reviewed section by section (D-122 to D-125); final approval at the Stage 3 gate",
+   "from": "Planned",
+   "to": "In Review · v1.0 rev 0.4"
   },
   {
    "entity": "artifact",
    "id": "PMS-HLD-Part01a-Principles-Patterns-Decisions",
-   "change": "Drafted and reviewed section by section (D-117 to D-121); final approval at the Stage 3 gate",
-   "from": "Planned",
-   "to": "In Review · v1.0 rev 0.5"
-  },
-  {
-   "entity": "artifact",
-   "id": "PMS-HLD-Part01-Architecture-and-Design",
-   "change": "Group R renamed (D-116); §4.1 compliance counts, §4.2 reference, §18 register link (D-121)",
-   "from": "v1.0 rev 0.7",
-   "to": "v1.0 rev 0.9"
+   "change": "OI-P01a-03 and 06 closed by the Part02 anchor (D-122)",
+   "from": "v1.0 rev 0.5",
+   "to": "v1.0 rev 0.6"
   },
   {
    "entity": "decision",
-   "id": "D-116..D-121",
-   "change": "Six new decisions (principles catalogue group R; Part01a section reviews)",
-   "from": "D-115",
-   "to": "D-121"
+   "id": "D-122..D-125",
+   "change": "Four new decisions (Part02 anchor section reviews and design answers); ADR-006 follow-up on event ordering",
+   "from": "D-121",
+   "to": "D-125"
   },
   {
    "entity": "step",
-   "id": "S3.1",
-   "change": "Part01 and Part01a reviewed section by section",
-   "from": "In Progress",
-   "to": "Completed"
+   "id": "S3.2",
+   "change": "Part02 anchor complete; module documents not started",
+   "from": "Not Started",
+   "to": "In Progress"
   },
   {
    "entity": "milestone",
-   "id": "M3.0c",
-   "change": "HLD Part01a all sections approved",
+   "id": "M3.0d",
+   "change": "HLD Part02 anchor all sections approved",
    "from": "—",
    "to": "Completed"
   },
   {
    "entity": "review",
-   "id": "RV-13",
-   "change": "HLD Part01a section-by-section review",
+   "id": "RV-14",
+   "change": "HLD Part02 anchor section-by-section review",
    "from": "—",
    "to": "Approved"
   },
   {
    "entity": "finding",
-   "id": "OI-P01-01",
-   "change": "Closed by the Part01a assessment (D-121)",
+   "id": "OI-P01a-03, OI-P01a-06",
+   "change": "Closed by the Part02 anchor (D-122)",
    "from": "Open (Low)",
    "to": "Resolved"
   },
   {
    "entity": "finding",
-   "id": "OI-P01a-01..17",
-   "change": "New HLD open items for the standards and the Part02 anchor",
+   "id": "OI-P02-01, OI-P02-02",
+   "change": "New HLD open items for the module documents (D-123)",
    "from": "—",
-   "to": "17 Open (Low)"
+   "to": "2 Open (Low)"
+  },
+  {
+   "entity": "coverage",
+   "id": "BRD → HLD Part02",
+   "change": "All functional requirements assigned to system functions",
+   "from": "0 / 0",
+   "to": "175 / 175"
   },
   {
    "entity": "health",
@@ -7520,11 +7780,11 @@
   }
  ],
  "data_quality": {
-  "artifacts_declared": 46,
+  "artifacts_declared": 47,
   "artifacts_inferred": 0,
   "artifacts_git": 2,
   "artifacts_config": 6,
-  "neutralised_items": 37,
+  "neutralised_items": 40,
   "warnings": [
    "No artifact carries an smd: front-matter block yet; status comes from document control tables, the decision log and git.",
    "Screenshot (PNG) to screen mapping is inferred from file names (15 of 17 screens; SCR-EIMS-02 and SCR-SH-02 have no screenshot).",
@@ -7532,9 +7792,11 @@
    "FR numbering has gaps in every module BRD (e.g. 31 requirements used in FR-SMS-001..046; 45 in FR-UM-001..015, FR-AUTH-001..030, FR-ADM-101..117), by design; counts are taken from PMS-BRD §11.",
    "BRD reviewer names are sample names for the POC (D-106); each review decision was confirmed by the product owner.",
    "Planned dates are set for Stage 3 (23 Nov – 11 Dec 2026, D-108) and the target go-live (29 Jan 2027); later stages are still to be planned.",
-   "HLD Part01 and Part01a carry no smd: front-matter; status and version come from their document control tables and the decision log.",
+   "HLD Part01, Part01a and the Part02 anchor carry no smd: front-matter; status and version come from their document control tables and the decision log.",
    "Internal working-file, prompt-template and screenshots folders are now excluded in the configuration (2026-11-22); HLD open items now feed the findings list; the neutral pattern is limited to usage-logging wording.",
-   "Stage 7 step S7.2 still names the former cloud target in its title (\"Docker Compose / Azure\"); Azure is no longer a target (D-109) – renaming proposed."
+   "Stage 7 step S7.2 still names the former cloud target in its title (\"Docker Compose / Azure\"); Azure is no longer a target (D-109) – renaming proposed.",
+   "HLD Part01 §8.2 row 11 still says the salary-status caller (INT-10) is fixed in Part02; the Part02 anchor sets it to the attendance service (D-122) – Part01 to be aligned at the HLD set consistency check.",
+   "BRD → HLD Part02 coverage counts requirements assigned to functions in the anchor; per-function design status is 'Not started' until the module documents are written."
   ]
  }
 }

@@ -1,5 +1,14 @@
 # SMD changelog
 
+## 2026-11-23 19:03 IST – refresh (HLD Part02 Functional anchor all sections approved)
+
+- Refreshed from commit `7aff5c1` (8 commits since `9b0ead9`: `a208701` to `7aff5c1`); clean working tree.
+- **Stage 3 Solution Design In Progress, 15% → 20%**: PMS-HLD-Part02-Functional (anchor) drafted and reviewed section by section (D-122 to D-125), v1.0 rev 0.4 – 77 system functions, cross-module flows XF-01 to XF-09, common API, event, error, audit and frontend conventions, coverage of all 175 functional requirements; HLD Part01a rev 0.6; ADR-006 follow-up on event ordering. Step S3.2 In Progress (module documents not started); final approval at the Stage 3 gate.
+- Health **Green** (unchanged): no Critical or High findings open; Stage 3 on plan.
+- Findings: OI-P01a-03 and OI-P01a-06 closed; OI-P02-01 and OI-P02-02 added (Low, for the module documents). New review RV-14; milestone M3.0d completed. BRD → HLD Part02 coverage 175 / 175 requirements assigned.
+- Data: 55 artifacts (46 approved, 3 in review), 131 decisions / ADRs (+4), 41 open items / findings (17 open), 14 reviews (+RV-14), 8 risks, 89 linked repository files (+1).
+- Warnings: HLD Part01 §8.2 row 11 to be aligned with the Part02 anchor at the set consistency check; Stage 7 step S7.2 still names the former cloud target. Customer-facing filtering: 40 texts neutralised (+3).
+
 ## 2026-11-23 13:20 IST – refresh (HLD Part01a all sections approved)
 
 - Refreshed from commit `9b0ead9` (9 commits since `3efd265`: `09f23ac` to `9b0ead9`); clean working tree.
