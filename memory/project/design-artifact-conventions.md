@@ -24,7 +24,8 @@ Status: templates frozen 17 Nov 2026 (D-35 to D-42); data model split 18 Nov 202
 ## Conventions adopted
 
 - Document ID pattern `<PRJ>-<DOC>-v<x.y>`; version / revision history and review-approval table in every document.
-- Function ids `<MOD>0010`, step 10; supporting prefixes ADM, UM, AUTH, NM, DM.
+- Function ids `<MOD>0010`, step 10; supporting prefixes ADM, UM, AUTH, NM, DM; SH for the shell (layout and menu, dashboard, approvals inbox), designed in the Part02 anchor (D-123).
+- Function index design status "Not started" until the owning module document is drafted (D-123).
 - Per-function chapter (Part02 module template §3.2.1, D-38): purpose / trigger / conditions → actor & data scope → traceability (incl. related functions) → navigation & prototype → solution approach (design description, design notes, sequence & orchestration, frontend, backend, database, validation & errors, security & privacy, notifications & audit, scenarios) → notes.
 - SUP functions reuse the Part02 §3.2.1 structure; no appendix copy.
 - Design / entity status values: Draft, In review, Approved, Deferred, Moved, Removed (stub kept with reason or new location).
