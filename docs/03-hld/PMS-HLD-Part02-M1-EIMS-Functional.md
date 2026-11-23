@@ -17,13 +17,14 @@ Date: November 2026
 | 1.0 | 0.3 | 23-Nov-2026 | Rajesh Verma | §3.2.2 EIMS0020 onboarding and §3.2.3 EIMS0030 Employee Id and temporary password drafted: API-EIMS-02, API-EIMS-03, identity-provider call inside the EIMS transaction with take-over of an orphan account (OI-P02-01 for onboarding), 12-character temporary password; OI-P02M1-01 (D-132) |
 | 1.0 | 0.4 | 23-Nov-2026 | Rajesh Verma | §3.2.4 EIMS0040 Admin-owned fields drafted: API-EIMS-04, processing order, UM0050 inside the EIMS transaction (OI-P02-01 for the role change), reporting-line locks, inactive employees read only; OI-P02M1-02 (D-133) |
 | 1.0 | 0.5 | 23-Nov-2026 | Rajesh Verma | §3.2.5 EIMS0050 deactivation and §3.2.6 EIMS0060 password reset drafted: API-EIMS-05, API-EIMS-06, UM0040 and UM0030 inside the EIMS transaction (OI-P02-01 complete for EIMS); OI-P02M1-03 (D-134) |
+| 1.0 | 0.6 | 23-Nov-2026 | Rajesh Verma | §3.2.7 to §3.2.10 EIMS0070 to EIMS0100 my profile drafted: API-EIMS-07 to 10 (my-profile resources, owner from the token), draft-save checks, submit with the form, ISO country codes (D-135) |
 
 ### 1.2 Review and approval
 
 | Role | Name | Date | Decision |
 | --- | --- | --- | --- |
-| Architect | Rajesh Verma (Enterprise Architect) | 23-Nov-2026 | §1–§3.1 approved (D-130); §3.2.1 EIMS0010 approved (D-131); §3.2.2–§3.2.3 EIMS0020–EIMS0030 approved (D-132); §3.2.4 EIMS0040 approved (D-133); §3.2.5–§3.2.6 EIMS0050–EIMS0060 approved (D-134) |
-| Product owner | Rajesh Verma | 23-Nov-2026 | §1–§3.1 approved (D-130); §3.2.1 EIMS0010 approved (D-131); §3.2.2–§3.2.3 EIMS0020–EIMS0030 approved (D-132); §3.2.4 EIMS0040 approved (D-133); §3.2.5–§3.2.6 EIMS0050–EIMS0060 approved (D-134) |
+| Architect | Rajesh Verma (Enterprise Architect) | 23-Nov-2026 | §1–§3.1 approved (D-130); §3.2.1 EIMS0010 approved (D-131); §3.2.2–§3.2.3 EIMS0020–EIMS0030 approved (D-132); §3.2.4 EIMS0040 approved (D-133); §3.2.5–§3.2.6 EIMS0050–EIMS0060 approved (D-134); §3.2.7–§3.2.10 EIMS0070–EIMS0100 approved (D-135) |
+| Product owner | Rajesh Verma | 23-Nov-2026 | §1–§3.1 approved (D-130); §3.2.1 EIMS0010 approved (D-131); §3.2.2–§3.2.3 EIMS0020–EIMS0030 approved (D-132); §3.2.4 EIMS0040 approved (D-133); §3.2.5–§3.2.6 EIMS0050–EIMS0060 approved (D-134); §3.2.7–§3.2.10 EIMS0070–EIMS0100 approved (D-135) |
 | Business analyst | | | |
 | Dev lead | | | |
 
@@ -59,7 +60,7 @@ Reading rules:
 | --- | --- | --- |
 | 1 | PMS-BRD (anchor) – §4.3 roles and data scope, §5.3 dashboard and inbox, §6 BR-CMN, §7 INT-03 to INT-05, INT-07 to INT-09; PMS-BRD-M1-EIMS; PMS-BRD-M5-SUP (FR-UM-001 to 015, FR-AUTH, FR-ADM-101 to 117) | v1.0, approved baseline (D-107) |
 | 2 | UX Journey Index and UX Summaries SCR-EIMS-01 to 04, SCR-SH-03, SCR-SH-04; mockups `docs/01-ux/mockups/html/scr-eims-0*.html` | v1.1 (D-105) |
-| 3 | Decision log / ADRs | D-01 to D-134; ADR-001 to ADR-006 |
+| 3 | Decision log / ADRs | D-01 to D-135; ADR-001 to ADR-006 |
 
 **Design documents**
 
@@ -200,10 +201,10 @@ Business statuses and transitions are defined in PMS-BRD-M1-EIMS §6.1 (profile)
 | EIMS0040 | Edit Admin-owned fields – date of joining, role, manager, hourly wage rate (FR-EIMS-012 to 017; INT-08, INT-09) | Screen | SCR-EIMS-02 | POC | Approved |
 | EIMS0050 | Deactivate an employee (FR-EIMS-018; INT-08) | Screen | SCR-EIMS-02 | POC | Approved |
 | EIMS0060 | Reset an employee's password (FR-EIMS-005; INT-08) | Screen | SCR-EIMS-01 | POC | Approved |
-| EIMS0070 | View my profile and its status (FR-EIMS-020) | Screen | SCR-EIMS-03 | POC | Not started |
-| EIMS0080 | Save a profile draft (FR-EIMS-021) | Screen | SCR-EIMS-03 | POC | Not started |
-| EIMS0090 | Submit or resubmit my profile (FR-EIMS-022, 024) | Screen | SCR-EIMS-03 | POC | Not started |
-| EIMS0100 | Withdraw my submitted profile (FR-EIMS-023) | Screen | SCR-EIMS-03 | POC | Not started |
+| EIMS0070 | View my profile and its status (FR-EIMS-020) | Screen | SCR-EIMS-03 | POC | Approved |
+| EIMS0080 | Save a profile draft (FR-EIMS-021) | Screen | SCR-EIMS-03 | POC | Approved |
+| EIMS0090 | Submit or resubmit my profile (FR-EIMS-022, 024) | Screen | SCR-EIMS-03 | POC | Approved |
+| EIMS0100 | Withdraw my submitted profile (FR-EIMS-023) | Screen | SCR-EIMS-03 | POC | Approved |
 | EIMS0110 | Start and save a profile change request (FR-EIMS-025, 026) | Screen | SCR-EIMS-03 | POC | Not started |
 | EIMS0120 | Submit or resubmit a profile change request (FR-EIMS-026, 027) | Screen | SCR-EIMS-03 | POC | Not started |
 | EIMS0130 | Withdraw a profile change request (FR-EIMS-027) | Screen | SCR-EIMS-03 | POC | Not started |
@@ -1389,7 +1390,575 @@ Only what is not already in the UX summary:
 
 1. Note: replacing the credential, clearing the lock and ending sessions are designed in PMS-HLD-Part02-M5-SUP (UM0030, AUTH0040).
 
-Further function chapters are added review by review (R6 to R9).
+#### 3.2.7 EIMS0070 – View my profile and its status (Module: EIMS, Approved)
+
+##### 3.2.7.1 Purpose, trigger and conditions
+
+The employee sees the profile, its status banner and the read-only block set by the Admin (FR-EIMS-020).
+
+| Item | Detail |
+| --- | --- |
+| Delivery phase | POC |
+| Trigger | Employee or Manager opens "My Profile" (menu, dashboard banner or to-do item); reload after any profile or change-request action |
+| Pre-conditions | Signed in as Employee or Manager (every such user has an EMPLOYEE record) |
+| Post-conditions | None – read only |
+
+##### 3.2.7.2 Actor & data scope
+
+| Role | Access (Read / Read-write / Approve / None) | Data scope (row-level) |
+| --- | --- | --- |
+| Employee | Read (own) | Own record only: Employee Id from the token (`preferred_username`) |
+| Manager | Read (own) | As Employee |
+| Admin | None – route refused (EIMS-ACC-002); the Admin has no profile (BR-EIMS-08) | – |
+
+##### 3.2.7.3 Requirement traceability
+
+| Source | References |
+| --- | --- |
+| BRD functional requirements | FR-EIMS-020, 023 to 025, 027, 028 (banners and read-only states); NOT-EIMS-01, 04, 05 (banners) |
+| BRD business / validation rules | BR-EIMS-02, 03, 10; BR-CMN-01, 11 |
+| BRD NFRs | NFR-01, NFR-03; NFR-EIMS-01 |
+| UX | UJ-EIMS-02, 04, 05; SCR-EIMS-03 |
+| Decisions | D-70, D-72, D-123, D-130, D-135 |
+| Related functions – depends on | UM0060, ADM0030, ADM0040 |
+| Related functions – used by | EIMS0080 to EIMS0130 (actions on the screen); EIMS0200 (dashboard banner links here) |
+
+##### 3.2.7.4 Navigation & prototype reference
+
+**Navigation:** Menu > My Profile (or dashboard banner / Things to do > My Profile)
+
+**Prototype:** `docs/01-ux/mockups/html/scr-eims-03-my-profile.html` · UX summary `docs/01-ux/ux-summary/scr-eims-03-my-profile.md`
+
+##### 3.2.7.5 Solution approach
+
+###### 3.2.7.5.1 Design description
+
+The [View my profile and its status] function shows the following sections:
+
+1. Status banner and badges
+2. "Set by your administrator" block
+3. Profile sections – Name, Parents, Birth, Employment, Address, Contact
+
+**Status banner and badges**
+
+1. Banner per profile status (UX summary §2): Draft; Submitted "Waiting for <approver>"; Rejected with the approver's remarks; Approved with "Request a change", or a link to the open change request with its status badge.
+2. Data fetched via [API-EIMS-07 : GET /api/eims/v1/my-profile (Purpose : the caller's own profile, Admin-set block, status, remarks, approver name and open change request)].
+3. DB entities: [EMPLOYEE], [PROFILE_CHANGE_REQUEST] (open request summary).
+4. Approver name: resolved at read time from the current Manager Id – the manager's name, or "the administrator" for the top-level employee (rule of EIMS0180, BR-CMN-01); after a decision, the stored deciding approver (BR-CMN-02).
+
+**"Set by your administrator" block**
+
+1. Employee Id, manager name, date of joining and hourly wage rate, read only (FR-EIMS-020); the employee sees the own rate (BR-EIMS-10).
+2. Same API.
+
+**Profile sections**
+
+1. Employee-editable fields of PMS-BRD-M1-EIMS §9.1, editable in Draft and Rejected, read only in Submitted and Approved (UX summary §2).
+2. Same API; edits saved by EIMS0080 and EIMS0090.
+3. While a change request is open the profile shows the approved values (FR-EIMS-028); the request values are shown by EIMS0110.
+
+###### 3.2.7.5.2 Design notes
+
+1. **Own record only (D-135).** The owner comes from the token, never from the path, so no other employee's profile can be addressed (Part01 §9.7).
+2. **One read.** One API call returns everything the screen needs, including the approver name, which is resolved inside EIMS with the EIMS0180 rule – no cross-service call.
+3. **Countries (D-135).** Country fields hold ISO 3166-1 alpha-2 codes; the frontend shows the English name from the shared design system.
+
+###### 3.2.7.5.3 Sequence & orchestration
+
+Single-service synchronous read: frontend → gateway → EIMS → eims database → frontend, as EIMS0010 (§3.2.1.5.3) without the list parameters. No cross-service or asynchronous steps.
+
+###### 3.2.7.5.4 Frontend
+
+Only what is not already in the UX summary:
+
+1. The response's `status` and `openChangeRequest` choose the banner, the badges, the editable or read-only state and the offered actions; the server checks every action again.
+2. The form keeps the `version` for EIMS0080 to EIMS0100.
+
+###### 3.2.7.5.5 Backend
+
+| API id | API name | Method & endpoint | Purpose | Request (key fields) | Response (key fields) | Roles |
+| --- | --- | --- | --- | --- | --- | --- |
+| API-EIMS-07 | Get my profile | GET /api/eims/v1/my-profile | The caller's own profile with status, remarks, approver name, Admin-set block and open change request | – | employeeId, employee-editable fields (names, parents, birth, last employer, address, contact), managerName, dateOfJoining, hourlyWageRate, status, remarks, approverName, submittedAt, version, openChangeRequest (id, status) or empty | Employee, Manager |
+
+Read only; safe to retry.
+
+###### 3.2.7.5.6 Database
+
+| Entity | Operation (C / R / U / soft-D) | Purpose in this function |
+| --- | --- | --- |
+| EMPLOYEE | R | Own record; manager's name |
+| PROFILE_CHANGE_REQUEST | R | Open request (Draft, Submitted, Rejected) of the caller, if any |
+
+###### 3.2.7.5.7 Validation & error handling
+
+| Rule ref (BRD VR / BR) | Layer (UI / API / DB) | Error code | HTTP status | Message |
+| --- | --- | --- | --- | --- |
+| BRD §4.2 – Admin has no profile | Gateway, API | EIMS-ACC-002 | 403 | "You don't have access to this page." |
+| – | API | EIMS-SYS-001 | 500 | "Profile could not be loaded" error panel with Retry and the reference |
+
+###### 3.2.7.5.8 Security & data privacy
+
+| Item | Detail |
+| --- | --- |
+| Authorization check per API | API-EIMS-07: gateway route for Employee and Manager; owner from the token |
+| Sensitive fields | Parents' names, date, place and country of birth, address, email, mobile (sensitive personal, D-71); hourly wage rate (sensitive pay) |
+| Masking (UI / API response) | Own data shown unmasked |
+| Encryption (in transit / at rest / field-level) | TLS at the edge; encrypted storage |
+| Logging rule | Employee Id, status and result only; never field values (NFR-EIMS-01) |
+| Threat review – TB-1 browser → gateway | S: stolen session – HttpOnly cookie, idle timeout (ADR-004). I: TLS |
+| Threat review – TB-2 gateway → EIMS | E / I: reading another employee's profile – no id in the request, owner from the token (D-135) |
+| Threat review – TB-5 EIMS → database | I: encrypted storage and backups |
+
+###### 3.2.7.5.9 Notifications, audit & activity log
+
+| Trigger | Notification (NOT id) | Activity log entry | Audit fields captured |
+| --- | --- | --- | --- |
+| Profile viewed | None (C-05); NOT-EIMS-01, 04, 05 are banners on this screen | `process` API-EIMS-07; step `loaded` | None |
+
+###### 3.2.7.5.10 Scenarios
+
+| Scenario id | Scenario | Type | Requirement ref | Pre-condition | Expected result | Test level |
+| --- | --- | --- | --- | --- | --- | --- |
+| EIMS0070-S01 | First visit after onboarding | Positive | FR-EIMS-020 | Draft, only Admin fields set | Admin block filled, other fields empty, Draft banner | API, E2E |
+| EIMS0070-S02 | Submitted banner names the current approver | Positive | FR-EIMS-023, XF-08 | Submitted; manager changed M1 → M2 | "Waiting for M2" | API |
+| EIMS0070-S03 | Top-level employee | Edge | BR-CMN-01 | No manager | Approver shown as the administrator | API |
+| EIMS0070-S04 | Approved with an open change request | Positive | FR-EIMS-025, 028 | Request Draft | Approved values; link to the request instead of "Request a change" | API, E2E |
+| EIMS0070-S05 | Admin calls the API | Negative | BR-EIMS-08 | Admin session | 403 EIMS-ACC-002 | API |
+
+##### 3.2.7.6 Notes, issues & assumptions
+
+1. None.
+
+#### 3.2.8 EIMS0080 – Save a profile draft (Module: EIMS, Approved)
+
+##### 3.2.8.1 Purpose, trigger and conditions
+
+The employee saves an incomplete profile at any time while it is Draft or Rejected (FR-EIMS-021).
+
+| Item | Detail |
+| --- | --- |
+| Delivery phase | POC |
+| Trigger | "Save draft" on SCR-EIMS-03 |
+| Pre-conditions | Own profile in Draft or Rejected; the command carries the loaded version |
+| Post-conditions | Employee-editable fields saved, status unchanged, version + 1, audit entries per changed field; "Draft saved." |
+
+##### 3.2.8.2 Actor & data scope
+
+| Role | Access (Read / Read-write / Approve / None) | Data scope (row-level) |
+| --- | --- | --- |
+| Employee | Read-write (own) | Own record from the token |
+| Manager | Read-write (own) | As Employee |
+| Admin | None – route refused (EIMS-ACC-002) | – |
+
+##### 3.2.8.3 Requirement traceability
+
+| Source | References |
+| --- | --- |
+| BRD functional requirements | FR-EIMS-021, 024 |
+| BRD business / validation rules | VR-EIMS-02 (uniqueness), 07, 09, 10 (no required check on draft); BR-EIMS-02, 04 |
+| BRD NFRs | NFR-03, NFR-05; NFR-EIMS-01 |
+| UX | UJ-EIMS-02, 04; SCR-EIMS-03 |
+| Decisions | D-70, D-71, D-132, D-135 |
+| Related functions – depends on | EIMS0070; UM0060, ADM0010, ADM0030, ADM0040 |
+| Related functions – used by | EIMS0090 (submit) |
+
+##### 3.2.8.4 Navigation & prototype reference
+
+**Navigation:** Menu > My Profile > Save draft
+
+**Prototype:** `docs/01-ux/mockups/html/scr-eims-03-my-profile.html` · UX summary `docs/01-ux/ux-summary/scr-eims-03-my-profile.md`
+
+##### 3.2.8.5 Solution approach
+
+###### 3.2.8.5.1 Design description
+
+The [Save a profile draft] function covers one activity:
+
+1. Save draft
+
+**Save draft**
+
+1. Saves every employee-editable field as entered, empty fields allowed; Admin-owned fields are not part of the request (BR-EIMS-04).
+2. Saved via [API-EIMS-08 : PUT /api/eims/v1/my-profile (Purpose : save the own profile as a draft without required-field checks)].
+3. DB entities: [EMPLOYEE], [AUDIT_ENTRY]
+4. Checks on a draft (D-135): maximum lengths (VR-EIMS-07), valid dates, country codes from the list (VR-EIMS-09) and email uniqueness (VR-EIMS-02); required fields, email format, mobile, zip and age only on submit (EIMS0090).
+
+###### 3.2.8.5.2 Design notes
+
+1. **Why these checks.** The draft must fit the stored structure and keep the email unique across employees (database backstop, D-132); everything else would stop a half-finished save, which FR-EIMS-021 allows.
+2. **Status and version.** Allowed only in Draft or Rejected (BR-EIMS-02); the update compares the version and status in one statement under the row lock, so a save cannot overwrite a profile that was submitted or decided in the meantime (EIMS-CON-001, EIMS-BUS-005).
+3. **Rejected stays Rejected.** A draft save of a rejected profile keeps the status and the remarks until the employee resubmits (BRD §6.1).
+
+###### 3.2.8.5.3 Sequence & orchestration
+
+Single-service synchronous command: frontend → gateway → EIMS (validate, lock, version and status check, update, audit, commit) → frontend. No cross-service or asynchronous steps.
+
+###### 3.2.8.5.4 Frontend
+
+Only what is not already in the UX summary:
+
+1. Save draft sends the whole form with the version; field errors are shown at the fields; the form reloads with the new version.
+
+###### 3.2.8.5.5 Backend
+
+| API id | API name | Method & endpoint | Purpose | Request (key fields) | Response (key fields) | Roles |
+| --- | --- | --- | --- | --- | --- | --- |
+| API-EIMS-08 | Save my profile draft | PUT /api/eims/v1/my-profile | Save the own profile in Draft or Rejected without required-field checks | Employee-editable fields, version | As API-EIMS-07 with the new version | Employee, Manager |
+
+One local transaction; no events; not retried automatically.
+
+###### 3.2.8.5.6 Database
+
+| Entity | Operation (C / R / U / soft-D) | Purpose in this function |
+| --- | --- | --- |
+| EMPLOYEE | R, U | Email uniqueness; update of employee-editable fields, version + 1 |
+| AUDIT_ENTRY | C | One entry per changed field |
+
+###### 3.2.8.5.7 Validation & error handling
+
+| Rule ref (BRD VR / BR) | Layer (UI / API / DB) | Error code | HTTP status | Message |
+| --- | --- | --- | --- | --- |
+| VR-EIMS-07 | UI, API | EIMS-VAL-003 | 400 | Maximum-length message |
+| VR-EIMS-09 (country), valid date | UI, API | EIMS-VAL-012 | 400 | Invalid-value message |
+| VR-EIMS-02 (unique) | API, DB | EIMS-VAL-005 | 400 | Duplicate-email message |
+| BR-EIMS-02 – status no longer Draft or Rejected | API | EIMS-BUS-005 | 422 | Action not possible in the current status; refresh |
+| FR-CMN-014 | API | EIMS-CON-001 | 409 | Refresh message |
+| BRD §4.2 | Gateway, API | EIMS-ACC-002 | 403 | "You don't have access to this page." |
+| – | API | EIMS-SYS-001 | 500 | "Profile could not be saved. Please try again." with the reference |
+
+###### 3.2.8.5.8 Security & data privacy
+
+| Item | Detail |
+| --- | --- |
+| Authorization check per API | API-EIMS-08: Employee and Manager route; owner from the token; Admin-owned fields cannot be sent |
+| Sensitive fields | As EIMS0070 |
+| Masking (UI / API response) | Own data unmasked |
+| Encryption (in transit / at rest / field-level) | TLS; encrypted storage |
+| Logging rule | Names of changed fields only, never values |
+| Threat review – TB-1 browser → gateway | T: forged save – CSRF token (ADR-004) |
+| Threat review – TB-2 gateway → EIMS | E: changing another profile or Admin-owned fields – owner from the token, Admin-owned fields not in the contract. T: injected values – contract validation, parameterised queries |
+| Threat review – TB-5 EIMS → database | R: audit per changed field in the same transaction |
+
+###### 3.2.8.5.9 Notifications, audit & activity log
+
+| Trigger | Notification (NOT id) | Activity log entry | Audit fields captured |
+| --- | --- | --- | --- |
+| Draft saved | None (C-05) | `process` API-EIMS-08; steps `validated`, `version-checked`, `saved` | One EMPLOYEE entry per changed field, old and new value; changed_by Employee Id |
+
+###### 3.2.8.5.10 Scenarios
+
+| Scenario id | Scenario | Type | Requirement ref | Pre-condition | Expected result | Test level |
+| --- | --- | --- | --- | --- | --- | --- |
+| EIMS0080-S01 | Half-empty draft | Positive | FR-EIMS-021 | Draft | 200 "Draft saved."; status Draft | API, E2E |
+| EIMS0080-S02 | Email of another employee | Negative | VR-EIMS-02 | – | 400 EIMS-VAL-005 | API |
+| EIMS0080-S03 | Mobile with 9 digits in a draft | Edge | D-135 | – | Saved; refused only on submit | API |
+| EIMS0080-S04 | Save while Submitted | Negative | BR-EIMS-02 | Submitted in another tab | 409 EIMS-CON-001 (or 422 EIMS-BUS-005 with the current version) | API |
+| EIMS0080-S05 | Rejected profile draft | Positive | FR-EIMS-024 | Rejected | Saved; still Rejected with remarks | API |
+
+##### 3.2.8.6 Notes, issues & assumptions
+
+1. None.
+
+#### 3.2.9 EIMS0090 – Submit or resubmit my profile (Module: EIMS, Approved)
+
+##### 3.2.9.1 Purpose, trigger and conditions
+
+The employee submits the completed profile, or resubmits a rejected one, for approval (FR-EIMS-022, 024).
+
+| Item | Detail |
+| --- | --- |
+| Delivery phase | POC |
+| Trigger | "Submit for approval" on SCR-EIMS-03 |
+| Pre-conditions | Own profile in Draft or Rejected; all required fields and validations pass (VR-EIMS-01 to 03, 07 to 10); the command carries the form and the loaded version |
+| Post-conditions | Fields saved and status Submitted in one transaction; submission time set; previous decision fields cleared (no stored approver while waiting, D-123 (5)); version + 1; item appears in the approver's inbox (EIMS0200); "Profile submitted to <approver> for approval." |
+
+##### 3.2.9.2 Actor & data scope
+
+| Role | Access (Read / Read-write / Approve / None) | Data scope (row-level) |
+| --- | --- | --- |
+| Employee | Read-write (own) | Own record from the token |
+| Manager | Read-write (own) | As Employee; never approves own profile (BR-CMN-08) |
+| Admin | None – route refused (EIMS-ACC-002) | – |
+
+##### 3.2.9.3 Requirement traceability
+
+| Source | References |
+| --- | --- |
+| BRD functional requirements | FR-EIMS-022, 024; NOT-EIMS-02 |
+| BRD business / validation rules | VR-EIMS-01, 02, 03, 07, 08, 09, 10; BR-EIMS-02; BR-CMN-01, 02, 04, 08 |
+| BRD NFRs | NFR-03, NFR-05, NFR-06; NFR-EIMS-01 |
+| UX | UJ-EIMS-02, 04; SCR-EIMS-03 |
+| Decisions | D-70, D-71, D-123, D-135 |
+| Related functions – depends on | EIMS0070; UM0060, ADM0010, ADM0030, ADM0040 |
+| Related functions – used by | EIMS0140 to EIMS0160 (review and decision); EIMS0200 (inbox item and count); EIMS0100 (withdraw) |
+
+##### 3.2.9.4 Navigation & prototype reference
+
+**Navigation:** Menu > My Profile > Submit for approval
+
+**Prototype:** `docs/01-ux/mockups/html/scr-eims-03-my-profile.html` · UX summary `docs/01-ux/ux-summary/scr-eims-03-my-profile.md`
+
+##### 3.2.9.5 Solution approach
+
+###### 3.2.9.5.1 Design description
+
+The [Submit or resubmit my profile] function covers one activity:
+
+1. Submit with full validation
+
+**Submit with full validation**
+
+1. Validates the whole form, saves it and sets the status Submitted in one step; on errors the fields are highlighted with "Please correct the highlighted fields." and nothing changes (FR-EIMS-022).
+2. Saved via [API-EIMS-09 : POST /api/eims/v1/my-profile/submit (Purpose : save and submit the own profile for approval)].
+3. DB entities: [EMPLOYEE], [AUDIT_ENTRY]
+4. Rules: VR-EIMS-10 (required to submit), VR-EIMS-01 (age ≥ 18 on the date of joining), 02, 03, 07, 08 (6 digits for country IN, otherwise 3 to 10 letters, digits, spaces or hyphens), 09; status Draft or Rejected (BR-EIMS-02, BR-CMN-04).
+
+###### 3.2.9.5.2 Design notes
+
+1. **Save and submit in one command (D-135).** The submit carries the form, so what is validated is exactly what is submitted; no separate save is needed.
+2. **Waiting item without approver.** On submit, the decision fields of an earlier rejection (approver, decision time, remarks) are cleared on the record and remain in the audit history; the approver is resolved from the current Manager Id whenever the item is listed or decided (D-123 (5), XF-08).
+3. **Approver name in the message.** Resolved inside EIMS with the EIMS0180 rule and returned with the response.
+4. **Concurrency.** Version and status checked under the row lock (EIMS-CON-001, EIMS-BUS-005).
+
+###### 3.2.9.5.3 Sequence & orchestration
+
+```mermaid
+sequenceDiagram
+  actor U as Employee / Manager
+  participant FE as Shell / EIMS package
+  participant GW as API gateway
+  participant E as EIMS service
+  participant DB as eims database
+  U->>FE: Submit for approval
+  FE->>GW: POST my-profile/submit (form, version, CSRF token)
+  GW->>E: POST my-profile/submit (access token, X-Flow-Ref)
+  E->>E: Validate all fields (VR-EIMS-01 to 03, 07 to 10)
+  alt Field errors
+    E-->>FE: 400 with one EIMS-VAL code per field
+    FE-->>U: Highlighted fields, Please correct the highlighted fields
+  else Valid
+    E->>DB: Begin, lock own row, check version and status, check email unique
+    alt Version or status changed
+      E->>DB: Rollback
+      E-->>FE: 409 EIMS-CON-001 or 422 EIMS-BUS-005
+    else OK
+      E->>DB: Update fields, status Submitted, submitted time, clear decision fields, audit
+      E->>DB: Commit
+      E->>E: Resolve approver name (EIMS0180 rule)
+      E-->>FE: 200 profile, approverName, new version
+      FE-->>U: Profile submitted to approver for approval
+    end
+  end
+```
+
+Single-service synchronous command: no cross-service or asynchronous steps.
+
+**Text version of the diagram**
+
+| Step | From → to | Message | Result |
+| --- | --- | --- | --- |
+| 1 | User → frontend → gateway → EIMS | Submit with the form and the version | – |
+| 2 | EIMS | Validate all fields | Errors: 400, fields highlighted, nothing changed |
+| 3 | EIMS → database | Begin, lock own row, check version, status and email uniqueness | Changed: 409 EIMS-CON-001 or 422 EIMS-BUS-005 |
+| 4 | EIMS → database | Update fields, status Submitted, submitted time, clear decision fields, audit; commit | – |
+| 5 | EIMS → frontend | 200 with the approver name and new version | "Profile submitted to <approver> for approval." |
+
+###### 3.2.9.5.4 Frontend
+
+Only what is not already in the UX summary:
+
+1. Required and format checks also run in the browser for quick feedback; the server's answer is authoritative.
+2. Submit is disabled while the request runs; after success the screen reloads read only with the Submitted banner.
+
+###### 3.2.9.5.5 Backend
+
+| API id | API name | Method & endpoint | Purpose | Request (key fields) | Response (key fields) | Roles |
+| --- | --- | --- | --- | --- | --- | --- |
+| API-EIMS-09 | Submit my profile | POST /api/eims/v1/my-profile/submit | Save and submit the own profile (Draft or Rejected) for approval | Employee-editable fields, version | As API-EIMS-07 with status SUBMITTED, approverName, new version | Employee, Manager |
+
+One local transaction; no events; not retried automatically.
+
+###### 3.2.9.5.6 Database
+
+| Entity | Operation (C / R / U / soft-D) | Purpose in this function |
+| --- | --- | --- |
+| EMPLOYEE | R, U | Email uniqueness; fields, status SUBMITTED, submitted time, decision fields cleared, version + 1 |
+| AUDIT_ENTRY | C | Changed fields; `status` old → SUBMITTED |
+
+###### 3.2.9.5.7 Validation & error handling
+
+| Rule ref (BRD VR / BR) | Layer (UI / API / DB) | Error code | HTTP status | Message |
+| --- | --- | --- | --- | --- |
+| VR-EIMS-10 | UI, API | EIMS-VAL-002 | 400 | Required-field message; toast "Please correct the highlighted fields." |
+| VR-EIMS-07 | UI, API | EIMS-VAL-003 | 400 | Maximum-length message |
+| VR-EIMS-02 | UI, API, DB | EIMS-VAL-004, EIMS-VAL-005 | 400 | Invalid / duplicate email message |
+| VR-EIMS-01 | UI, API | EIMS-VAL-011 | 400 | Under-18 message |
+| VR-EIMS-09, valid date | UI, API | EIMS-VAL-012 | 400 | Invalid-value message |
+| VR-EIMS-03 | UI, API | EIMS-VAL-013 | 400 | Mobile-number message |
+| VR-EIMS-08 | UI, API | EIMS-VAL-014 | 400 | Zip / PIN message |
+| BR-EIMS-02, BR-CMN-04 | API | EIMS-BUS-005 | 422 | Action not possible in the current status; refresh |
+| FR-CMN-014 | API | EIMS-CON-001 | 409 | Refresh message |
+| BRD §4.2 | Gateway, API | EIMS-ACC-002 | 403 | "You don't have access to this page." |
+| – | API | EIMS-SYS-001 | 500 | "Profile could not be saved. Please try again." with the reference |
+
+###### 3.2.9.5.8 Security & data privacy
+
+| Item | Detail |
+| --- | --- |
+| Authorization check per API | API-EIMS-09: Employee and Manager route; owner from the token |
+| Sensitive fields | As EIMS0070 |
+| Masking (UI / API response) | Own data unmasked |
+| Encryption (in transit / at rest / field-level) | TLS; encrypted storage |
+| Logging rule | Field names in validation results, never values |
+| Threat review – TB-1 browser → gateway | T: forged submit – CSRF token |
+| Threat review – TB-2 gateway → EIMS | E: submitting for someone else or choosing the approver – owner from the token, approver never taken from the request (BR-CMN-01, 08). T: lost update – version check |
+| Threat review – TB-5 EIMS → database | R: audit of fields and status in the same transaction |
+
+###### 3.2.9.5.9 Notifications, audit & activity log
+
+| Trigger | Notification (NOT id) | Activity log entry | Audit fields captured |
+| --- | --- | --- | --- |
+| Profile submitted | None (C-05); NOT-EIMS-02 is the approver's inbox item (EIMS0200) | `process` API-EIMS-09; steps `validated`, `version-checked`, `saved`, `submitted` | Changed fields; `status` old → SUBMITTED; changed_by Employee Id |
+
+###### 3.2.9.5.10 Scenarios
+
+| Scenario id | Scenario | Type | Requirement ref | Pre-condition | Expected result | Test level |
+| --- | --- | --- | --- | --- | --- | --- |
+| EIMS0090-S01 | Complete profile submitted | Positive | FR-EIMS-022 | Draft, all fields valid | 200 Submitted; message names the manager; item in the manager's inbox | API, E2E |
+| EIMS0090-S02 | Mobile missing | Negative | FR-EIMS-022, VR-EIMS-10 | – | 400 EIMS-VAL-002 at mobile; status Draft | API, E2E |
+| EIMS0090-S03 | Under 18 on the date of joining | Negative | VR-EIMS-01 | – | 400 EIMS-VAL-011 | API |
+| EIMS0090-S04 | Zip for India and abroad | Positive / negative | VR-EIMS-08 | – | IN with 5 digits refused (EIMS-VAL-014); DE with "10115" accepted | API |
+| EIMS0090-S05 | Resubmit a rejected profile | Positive | FR-EIMS-024, BR-CMN-04 | Rejected with remarks | 200 Submitted; decision fields cleared on the record, kept in the audit | API |
+| EIMS0090-S06 | Top-level employee submits | Edge | BR-CMN-01 | No manager | Message names the administrator; item in the Admin's inbox | API |
+
+##### 3.2.9.6 Notes, issues & assumptions
+
+1. Note: attendance and leave stay blocked until the profile is Approved (BR-CMN-09); AMS and LMS read the profile status through EIMS0170.
+
+#### 3.2.10 EIMS0100 – Withdraw my submitted profile (Module: EIMS, Approved)
+
+##### 3.2.10.1 Purpose, trigger and conditions
+
+The employee takes a submitted profile back to Draft before a decision (FR-EIMS-023, D-70).
+
+| Item | Detail |
+| --- | --- |
+| Delivery phase | POC |
+| Trigger | "Withdraw" on SCR-EIMS-03 while the profile is Submitted |
+| Pre-conditions | Own profile Submitted and not yet decided; the command carries the loaded version |
+| Post-conditions | Status Draft, version + 1; item leaves the approver's inbox (EIMS0200); "Profile withdrawn. You can edit it again." |
+
+##### 3.2.10.2 Actor & data scope
+
+| Role | Access (Read / Read-write / Approve / None) | Data scope (row-level) |
+| --- | --- | --- |
+| Employee | Read-write (own) | Own record from the token |
+| Manager | Read-write (own) | As Employee |
+| Admin | None – route refused (EIMS-ACC-002) | – |
+
+##### 3.2.10.3 Requirement traceability
+
+| Source | References |
+| --- | --- |
+| BRD functional requirements | FR-EIMS-023; NOT-EIMS-03 |
+| BRD business / validation rules | BR-EIMS-02 |
+| BRD NFRs | NFR-05, NFR-06 |
+| UX | UJ-EIMS-02; SCR-EIMS-03 |
+| Decisions | D-70, D-135 |
+| Related functions – depends on | EIMS0070; UM0060, ADM0010, ADM0030, ADM0040 |
+| Related functions – used by | EIMS0140 (withdrawn banner, FR-EIMS-035), EIMS0200 (inbox) |
+
+##### 3.2.10.4 Navigation & prototype reference
+
+**Navigation:** Menu > My Profile > Withdraw
+
+**Prototype:** `docs/01-ux/mockups/html/scr-eims-03-my-profile.html` · UX summary `docs/01-ux/ux-summary/scr-eims-03-my-profile.md`
+
+##### 3.2.10.5 Solution approach
+
+###### 3.2.10.5.1 Design description
+
+The [Withdraw my submitted profile] function covers one activity:
+
+1. Withdraw before a decision
+
+**Withdraw before a decision**
+
+1. Returns the profile to Draft with its values unchanged.
+2. Saved via [API-EIMS-10 : POST /api/eims/v1/my-profile/withdraw (Purpose : take the own submitted profile back to Draft before a decision)].
+3. DB entities: [EMPLOYEE], [AUDIT_ENTRY]
+4. Rule: only Submitted (BR-EIMS-02).
+
+###### 3.2.10.5.2 Design notes
+
+1. **Race with the approver.** Withdraw and decision both lock the row and check the version and status; whichever commits first wins, the other gets EIMS-CON-001 or EIMS-BUS-005 (FR-EIMS-035 on the approver's side).
+
+###### 3.2.10.5.3 Sequence & orchestration
+
+Single-service synchronous command, as EIMS0090 without the field validation. No cross-service or asynchronous steps.
+
+###### 3.2.10.5.4 Frontend
+
+Only what is not already in the UX summary:
+
+1. After success the screen reloads editable with the Draft banner; on 409 / 422 it reloads and shows the decision.
+
+###### 3.2.10.5.5 Backend
+
+| API id | API name | Method & endpoint | Purpose | Request (key fields) | Response (key fields) | Roles |
+| --- | --- | --- | --- | --- | --- | --- |
+| API-EIMS-10 | Withdraw my profile | POST /api/eims/v1/my-profile/withdraw | Take the own submitted profile back to Draft before a decision | version | As API-EIMS-07 with status DRAFT, new version | Employee, Manager |
+
+One local transaction; no events.
+
+###### 3.2.10.5.6 Database
+
+| Entity | Operation (C / R / U / soft-D) | Purpose in this function |
+| --- | --- | --- |
+| EMPLOYEE | R, U | Status SUBMITTED → DRAFT, version + 1 |
+| AUDIT_ENTRY | C | `status` SUBMITTED → DRAFT |
+
+###### 3.2.10.5.7 Validation & error handling
+
+| Rule ref (BRD VR / BR) | Layer (UI / API / DB) | Error code | HTTP status | Message |
+| --- | --- | --- | --- | --- |
+| BR-EIMS-02 – already decided | API | EIMS-BUS-005 | 422 | Action not possible in the current status; refresh |
+| FR-CMN-014 | API | EIMS-CON-001 | 409 | Refresh message |
+| BRD §4.2 | Gateway, API | EIMS-ACC-002 | 403 | "You don't have access to this page." |
+| – | API | EIMS-SYS-001 | 500 | Generic message with the reference |
+
+###### 3.2.10.5.8 Security & data privacy
+
+| Item | Detail |
+| --- | --- |
+| Authorization check per API | API-EIMS-10: Employee and Manager route; owner from the token |
+| Sensitive fields | None changed |
+| Masking (UI / API response) | Own data unmasked |
+| Encryption (in transit / at rest / field-level) | TLS; encrypted storage |
+| Logging rule | Employee Id, status and result only |
+| Threat review – TB-1 browser → gateway | T: forged withdraw – CSRF token |
+| Threat review – TB-2 gateway → EIMS | E: withdrawing another employee's profile – owner from the token. T: withdrawing after a decision – status and version check |
+| Threat review – TB-5 EIMS → database | R: status audit in the same transaction |
+
+###### 3.2.10.5.9 Notifications, audit & activity log
+
+| Trigger | Notification (NOT id) | Activity log entry | Audit fields captured |
+| --- | --- | --- | --- |
+| Profile withdrawn | None (C-05); NOT-EIMS-03 is the item leaving the inbox | `process` API-EIMS-10; steps `version-checked`, `withdrawn` | `status` SUBMITTED → DRAFT; changed_by Employee Id |
+
+###### 3.2.10.5.10 Scenarios
+
+| Scenario id | Scenario | Type | Requirement ref | Pre-condition | Expected result | Test level |
+| --- | --- | --- | --- | --- | --- | --- |
+| EIMS0100-S01 | Withdraw before a decision | Positive | FR-EIMS-023 | Submitted | 200 Draft; item gone from the approver's inbox | API, E2E |
+| EIMS0100-S02 | Approver decides first | Concurrency | FR-EIMS-023, 035 | Manager approves at the same time | Withdraw → 409 EIMS-CON-001 or 422 EIMS-BUS-005; profile Approved | API |
+| EIMS0100-S03 | Withdraw a Draft | Negative | BR-EIMS-02 | Draft | 422 EIMS-BUS-005 | API |
+
+##### 3.2.10.6 Notes, issues & assumptions
+
+1. None.
+
+Further function chapters are added review by review (R7 to R9).
 
 ## 4. NFR summary & inventories
 
