@@ -17,6 +17,7 @@ Date: November 2026
 | 1.0 | 0.3 | 23-Nov-2026 | Rajesh Verma | Draft of §6 (API, event, error, audit and activity log, notification and frontend conventions; event ordering rule; shared design system) |
 | 1.0 | 0.4 | 23-Nov-2026 | Rajesh Verma | Draft of §7–§10 (roll-up inventories, cross-module NFR summary, requirement coverage of 175 FR ids, open items OI-P02-01 and 02, items brought forward); all sections drafted |
 | 1.0 | 0.5 | 23-Nov-2026 | Rajesh Verma | §7.3: JOB-AMS-01 outbox clean-up added and the processed-event clean-up step of JOB-CMN-01, from the PMS-HLD-Part03 anchor (D-128) |
+| 1.0 | 0.6 | 23-Nov-2026 | Rajesh Verma | From PMS-HLD-Part02-M1-EIMS v1.0 rev 0.10 (D-130 to D-139): §2.2 EIMS document status; §4 design status and sections of EIMS0010 to EIMS0200; §6.3 EIMS error-code row; §7.1 EIMS API ids and endpoints – API-EIMS-01 to 28 (INT-07 split into card and approval items); §10.1 OI-P02-01 settled for EIMS, UM side with PMS-HLD-Part02-M5-SUP |
 
 ### 1.2 Review and approval
 
@@ -55,7 +56,7 @@ Reading rules:
 
 | Module | Document | Owning service | Version | Status |
 | --- | --- | --- | --- | --- |
-| EIMS | PMS-HLD-Part02-M1-EIMS-Functional | EIMS service (/eims) | – | Not started |
+| EIMS | PMS-HLD-Part02-M1-EIMS-Functional | EIMS service (/eims) | v1.0 rev 0.10 | In review – all sections reviewed (D-130 to D-139); final approval at the Stage 3 gate |
 | AMS | PMS-HLD-Part02-M2-AMS-Functional | AMS service (/ams) | – | Not started |
 | LMS | PMS-HLD-Part02-M3-LMS-Functional | LMS service (/lms) | – | Not started |
 | SMS | PMS-HLD-Part02-M4-SMS-Functional | SMS service (/sms), incl. JOB-CMN-01 | – | Not started |
@@ -128,26 +129,26 @@ One function is one user action on a screen or one system process (D-122); ids `
 | SH0020 | Show the dashboard per role, one card per module (FR-CMN-001 to 008) | Shell | Screen | SCR-SH-03 | POC | Draft | This anchor §5.5 (XF-05), §6.5 |
 | SH0030 | Show the approvals inbox across modules, tabs and counts (FR-CMN-010, 013) | Shell | Screen | SCR-SH-04 | POC | Draft | This anchor §5.5 (XF-05), §6.5 |
 | SH0040 | Decide inbox items – approve one or several, reject one, keep as is or reopen – through the owning module functions (FR-CMN-011, 012, 014) | Shell | Screen | SCR-SH-04 | POC | Draft | This anchor §5.5 (XF-05), §6.1 |
-| EIMS0010 | View the employee directory – search, filter, show inactive; Admin all, manager direct reports (FR-EIMS-001 to 004, 006) | EIMS | Screen | SCR-EIMS-01 | POC | Not started | PMS-HLD-Part02-M1-EIMS (planned) |
-| EIMS0020 | Onboard an employee – create the employee and the user account (FR-EIMS-010, 011, 014; INT-08) | EIMS | Screen | SCR-EIMS-02 | POC | Not started | PMS-HLD-Part02-M1-EIMS (planned) |
-| EIMS0030 | Generate Employee Id and temporary password (FR-EIMS-040, 041; UJ-SYS-04) | EIMS | Backend process | – | POC | Not started | PMS-HLD-Part02-M1-EIMS (planned) |
-| EIMS0040 | Edit Admin-owned fields – date of joining, role, manager, hourly wage rate (FR-EIMS-012 to 017; INT-08, INT-09) | EIMS | Screen | SCR-EIMS-02 | POC | Not started | PMS-HLD-Part02-M1-EIMS (planned) |
-| EIMS0050 | Deactivate an employee (FR-EIMS-018; INT-08) | EIMS | Screen | SCR-EIMS-02 | POC | Not started | PMS-HLD-Part02-M1-EIMS (planned) |
-| EIMS0060 | Reset an employee's password (FR-EIMS-005; INT-08) | EIMS | Screen | SCR-EIMS-01 | POC | Not started | PMS-HLD-Part02-M1-EIMS (planned) |
-| EIMS0070 | View my profile and its status (FR-EIMS-020) | EIMS | Screen | SCR-EIMS-03 | POC | Not started | PMS-HLD-Part02-M1-EIMS (planned) |
-| EIMS0080 | Save a profile draft (FR-EIMS-021) | EIMS | Screen | SCR-EIMS-03 | POC | Not started | PMS-HLD-Part02-M1-EIMS (planned) |
-| EIMS0090 | Submit or resubmit my profile (FR-EIMS-022, 024) | EIMS | Screen | SCR-EIMS-03 | POC | Not started | PMS-HLD-Part02-M1-EIMS (planned) |
-| EIMS0100 | Withdraw my submitted profile (FR-EIMS-023) | EIMS | Screen | SCR-EIMS-03 | POC | Not started | PMS-HLD-Part02-M1-EIMS (planned) |
-| EIMS0110 | Start and save a profile change request (FR-EIMS-025, 026) | EIMS | Screen | SCR-EIMS-03 | POC | Not started | PMS-HLD-Part02-M1-EIMS (planned) |
-| EIMS0120 | Submit or resubmit a profile change request (FR-EIMS-026, 027) | EIMS | Screen | SCR-EIMS-03 | POC | Not started | PMS-HLD-Part02-M1-EIMS (planned) |
-| EIMS0130 | Withdraw a profile change request (FR-EIMS-027) | EIMS | Screen | SCR-EIMS-03 | POC | Not started | PMS-HLD-Part02-M1-EIMS (planned) |
-| EIMS0140 | Open a profile or change request for review, or read only from the directory (FR-EIMS-030 to 032, 034, 035) | EIMS | Screen | SCR-EIMS-04 | POC | Not started | PMS-HLD-Part02-M1-EIMS (planned) |
-| EIMS0150 | Approve profiles or change requests, one or several; apply approved changes (FR-EIMS-033, 028) | EIMS | Screen | SCR-EIMS-04, SCR-SH-04 | POC | Not started | PMS-HLD-Part02-M1-EIMS (planned) |
-| EIMS0160 | Reject a profile or change request with remarks (FR-EIMS-033) | EIMS | Screen | SCR-EIMS-04, SCR-SH-04 | POC | Not started | PMS-HLD-Part02-M1-EIMS (planned) |
-| EIMS0170 | Provide employee details to other modules (INT-03) | EIMS | API | – | POC | Not started | PMS-HLD-Part02-M1-EIMS (planned) |
-| EIMS0180 | Resolve the approver of a record (INT-04) | EIMS | API | – | POC | Not started | PMS-HLD-Part02-M1-EIMS (planned) |
-| EIMS0190 | Provide the current hourly wage rate (INT-05) | EIMS | API | – | POC | Not started | PMS-HLD-Part02-M1-EIMS (planned) |
-| EIMS0200 | Supply EIMS dashboard tiles, to-do items and inbox items (INT-07) | EIMS | API | SCR-SH-03, SCR-SH-04 | POC | Not started | PMS-HLD-Part02-M1-EIMS (planned) |
+| EIMS0010 | View the employee directory – search, filter, show inactive; Admin all, manager direct reports (FR-EIMS-001 to 004, 006) | EIMS | Screen | SCR-EIMS-01 | POC | Approved | PMS-HLD-Part02-M1-EIMS §3.2.1 |
+| EIMS0020 | Onboard an employee – create the employee and the user account (FR-EIMS-010, 011, 014; INT-08) | EIMS | Screen | SCR-EIMS-02 | POC | Approved | PMS-HLD-Part02-M1-EIMS §3.2.2 |
+| EIMS0030 | Generate Employee Id and temporary password (FR-EIMS-040, 041; UJ-SYS-04) | EIMS | Backend process | – | POC | Approved | PMS-HLD-Part02-M1-EIMS §3.2.3 |
+| EIMS0040 | Edit Admin-owned fields – date of joining, role, manager, hourly wage rate (FR-EIMS-012 to 017; INT-08, INT-09) | EIMS | Screen | SCR-EIMS-02 | POC | Approved | PMS-HLD-Part02-M1-EIMS §3.2.4 |
+| EIMS0050 | Deactivate an employee (FR-EIMS-018; INT-08) | EIMS | Screen | SCR-EIMS-02 | POC | Approved | PMS-HLD-Part02-M1-EIMS §3.2.5 |
+| EIMS0060 | Reset an employee's password (FR-EIMS-005; INT-08) | EIMS | Screen | SCR-EIMS-01 | POC | Approved | PMS-HLD-Part02-M1-EIMS §3.2.6 |
+| EIMS0070 | View my profile and its status (FR-EIMS-020) | EIMS | Screen | SCR-EIMS-03 | POC | Approved | PMS-HLD-Part02-M1-EIMS §3.2.7 |
+| EIMS0080 | Save a profile draft (FR-EIMS-021) | EIMS | Screen | SCR-EIMS-03 | POC | Approved | PMS-HLD-Part02-M1-EIMS §3.2.8 |
+| EIMS0090 | Submit or resubmit my profile (FR-EIMS-022, 024) | EIMS | Screen | SCR-EIMS-03 | POC | Approved | PMS-HLD-Part02-M1-EIMS §3.2.9 |
+| EIMS0100 | Withdraw my submitted profile (FR-EIMS-023) | EIMS | Screen | SCR-EIMS-03 | POC | Approved | PMS-HLD-Part02-M1-EIMS §3.2.10 |
+| EIMS0110 | Start and save a profile change request (FR-EIMS-025, 026) | EIMS | Screen | SCR-EIMS-03 | POC | Approved | PMS-HLD-Part02-M1-EIMS §3.2.11 |
+| EIMS0120 | Submit or resubmit a profile change request (FR-EIMS-026, 027) | EIMS | Screen | SCR-EIMS-03 | POC | Approved | PMS-HLD-Part02-M1-EIMS §3.2.12 |
+| EIMS0130 | Withdraw a profile change request (FR-EIMS-027) | EIMS | Screen | SCR-EIMS-03 | POC | Approved | PMS-HLD-Part02-M1-EIMS §3.2.13 |
+| EIMS0140 | Open a profile or change request for review, or read only from the directory (FR-EIMS-030 to 032, 034, 035) | EIMS | Screen | SCR-EIMS-04 | POC | Approved | PMS-HLD-Part02-M1-EIMS §3.2.14 |
+| EIMS0150 | Approve profiles or change requests, one or several; apply approved changes (FR-EIMS-033, 028) | EIMS | Screen | SCR-EIMS-04, SCR-SH-04 | POC | Approved | PMS-HLD-Part02-M1-EIMS §3.2.15 |
+| EIMS0160 | Reject a profile or change request with remarks (FR-EIMS-033) | EIMS | Screen | SCR-EIMS-04, SCR-SH-04 | POC | Approved | PMS-HLD-Part02-M1-EIMS §3.2.16 |
+| EIMS0170 | Provide employee details to other modules (INT-03) | EIMS | API | – | POC | Approved | PMS-HLD-Part02-M1-EIMS §3.2.17 |
+| EIMS0180 | Resolve the approver of a record (INT-04) | EIMS | API | – | POC | Approved | PMS-HLD-Part02-M1-EIMS §3.2.18 |
+| EIMS0190 | Provide the current hourly wage rate (INT-05) | EIMS | API | – | POC | Approved | PMS-HLD-Part02-M1-EIMS §3.2.19 |
+| EIMS0200 | Supply EIMS dashboard tiles, to-do items and inbox items (INT-07) | EIMS | API | SCR-SH-03, SCR-SH-04 | POC | Approved | PMS-HLD-Part02-M1-EIMS §3.2.20 |
 | AMS0010 | View my attendance – month calendar or list, tiles, missing weekdays, leave days (FR-AMS-001 to 008) | AMS | Screen | SCR-AMS-01 | POC | Not started | PMS-HLD-Part02-M2-AMS (planned) |
 | AMS0020 | Save an attendance draft (FR-AMS-010, 011, 014, 015; INT-06) | AMS | Screen | SCR-AMS-02 | POC | Not started | PMS-HLD-Part02-M2-AMS (planned) |
 | AMS0030 | Submit or resubmit attendance (FR-AMS-012 to 014, 016; INT-04, INT-06) | AMS | Screen | SCR-AMS-02 | POC | Not started | PMS-HLD-Part02-M2-AMS (planned) |
@@ -673,7 +674,7 @@ Every error response uses problem details (RFC 9457) with three PMS fields:
 
 | Module | Error code range / prefix | Owner |
 | --- | --- | --- |
-| EIMS | EIMS-VAL / BUS / CON / ACC / SYS-001 … | PMS-HLD-Part02-M1-EIMS (planned) |
+| EIMS | EIMS-VAL-001 to 015, EIMS-BUS-001 to 007, EIMS-CON-001, EIMS-ACC-001, 002, EIMS-SYS-001 to 003 | PMS-HLD-Part02-M1-EIMS §4.5 |
 | AMS | AMS-… | PMS-HLD-Part02-M2-AMS (planned) |
 | LMS | LMS-… | PMS-HLD-Part02-M3-LMS (planned) |
 | SMS | SMS-… | PMS-HLD-Part02-M4-SMS (planned) |
@@ -745,10 +746,34 @@ API ids `API-<MOD>-nn` and endpoints are assigned in the module documents (§6.1
 
 | API id | API name | Module | Method & endpoint | Roles | Idempotent | Function |
 | --- | --- | --- | --- | --- | --- | --- |
-| API-EIMS-nn (planned) | Employee details (INT-03) | EIMS | GET /api/eims/v1/… – Module document (planned) | User token relayed (scope applied) or service token | Yes (read) | EIMS0170 |
-| API-EIMS-nn (planned) | Approver resolution (INT-04) | EIMS | GET /api/eims/v1/… – Module document (planned) | User token relayed or service token | Yes (read) | EIMS0180 |
-| API-EIMS-nn (planned) | Current hourly wage rate (INT-05) | EIMS | GET /api/eims/v1/internal/… – Module document (planned) | Service token (SMS) | Yes (read) | EIMS0190 |
-| API-EIMS-nn (planned) | EIMS dashboard card and inbox items (INT-07) | EIMS | GET /api/eims/v1/… – Module document (planned) | Employee, Manager, Admin | Yes (read) | EIMS0200 |
+| API-EIMS-01 | List employees | EIMS | GET /api/eims/v1/employees | Admin, Manager | Yes (read) | EIMS0010 |
+| API-EIMS-02 | Onboard employee | EIMS | POST /api/eims/v1/employees | Admin | No (D-132) | EIMS0020 |
+| API-EIMS-03 | Manager options | EIMS | GET /api/eims/v1/manager-options | Admin | Yes (read) | EIMS0020, EIMS0040 |
+| API-EIMS-04 | Update admin details | EIMS | PUT /api/eims/v1/employees/{employeeId}/admin-details | Admin | No (version check) | EIMS0040 |
+| API-EIMS-05 | Deactivate employee | EIMS | POST /api/eims/v1/employees/{employeeId}/deactivate | Admin | No (version check) | EIMS0050 |
+| API-EIMS-06 | Reset password | EIMS | POST /api/eims/v1/employees/{employeeId}/reset-password | Admin | No | EIMS0060 |
+| API-EIMS-07 | Get my profile | EIMS | GET /api/eims/v1/my-profile | Employee, Manager | Yes (read) | EIMS0070 |
+| API-EIMS-08 | Save my profile draft | EIMS | PUT /api/eims/v1/my-profile | Employee, Manager | No (version check) | EIMS0080 |
+| API-EIMS-09 | Submit my profile | EIMS | POST /api/eims/v1/my-profile/submit | Employee, Manager | No (version check) | EIMS0090 |
+| API-EIMS-10 | Withdraw my profile | EIMS | POST /api/eims/v1/my-profile/withdraw | Employee, Manager | No (version check) | EIMS0100 |
+| API-EIMS-11 | Get my change request | EIMS | GET /api/eims/v1/my-profile/change-request | Employee, Manager | Yes (read) | EIMS0110 |
+| API-EIMS-12 | Start my change request | EIMS | POST /api/eims/v1/my-profile/change-request | Employee, Manager | No (one open request) | EIMS0110 |
+| API-EIMS-13 | Save my change request | EIMS | PUT /api/eims/v1/my-profile/change-request | Employee, Manager | No (version check) | EIMS0110 |
+| API-EIMS-14 | Submit my change request | EIMS | POST /api/eims/v1/my-profile/change-request/submit | Employee, Manager | No (version check) | EIMS0120 |
+| API-EIMS-15 | Withdraw my change request | EIMS | POST /api/eims/v1/my-profile/change-request/withdraw | Employee, Manager | No (version check) | EIMS0130 |
+| API-EIMS-16 | Get profile for review | EIMS | GET /api/eims/v1/employees/{employeeId}/profile-review | Manager, Admin | Yes (read) | EIMS0140 |
+| API-EIMS-17 | Get change request for review | EIMS | GET /api/eims/v1/profile-change-requests/{id} | Manager, Admin | Yes (read) | EIMS0140 |
+| API-EIMS-18 | Approve profiles | EIMS | POST /api/eims/v1/employees/profiles/approve | Manager, Admin | No (version check per item) | EIMS0150 |
+| API-EIMS-19 | Approve change requests | EIMS | POST /api/eims/v1/profile-change-requests/approve | Manager, Admin | No (version check per item) | EIMS0150 |
+| API-EIMS-20 | Reject profile | EIMS | POST /api/eims/v1/employees/{employeeId}/profile/reject | Manager, Admin | No (version check) | EIMS0160 |
+| API-EIMS-21 | Reject change request | EIMS | POST /api/eims/v1/profile-change-requests/{id}/reject | Manager, Admin | No (version check) | EIMS0160 |
+| API-EIMS-22 | Employee details (INT-03) | EIMS | GET /api/eims/v1/employees/{employeeId}/details | User token relayed (scope applied) or service token | Yes (read) | EIMS0170 |
+| API-EIMS-23 | Employee details list (INT-03) | EIMS | GET /api/eims/v1/employee-details?employeeIds=… (up to 100) | User token relayed (scope applied) or service token | Yes (read) | EIMS0170 |
+| API-EIMS-24 | Approver of an employee (INT-04) | EIMS | GET /api/eims/v1/employees/{employeeId}/approver | User token relayed or service token | Yes (read) | EIMS0180 |
+| API-EIMS-25 | My approvees (INT-04) | EIMS | GET /api/eims/v1/my-approvees | User token relayed | Yes (read) | EIMS0180 |
+| API-EIMS-26 | Current hourly wage rate (INT-05) | EIMS | GET /api/eims/v1/internal/employees/{employeeId}/hourly-wage-rate | Service token (SMS) | Yes (read) | EIMS0190 |
+| API-EIMS-27 | EIMS dashboard card (INT-07) | EIMS | GET /api/eims/v1/dashboard-card | Employee, Manager, Admin | Yes (read) | EIMS0200 |
+| API-EIMS-28 | EIMS approval items (INT-07) | EIMS | GET /api/eims/v1/approval-items (paged) | Manager, Admin | Yes (read) | EIMS0200 |
 | API-AMS-nn (planned) | Approved attendance for reconciliation (JOB-CMN-01) | AMS | GET /api/ams/v1/internal/…, paged – Module document (planned) | Service token (SMS job) | Yes (read) | AMS0100 |
 | API-AMS-nn (planned) | Attendance on leave dates (INT-06) | AMS | GET /api/ams/v1/internal/… – Module document (planned) | Service token (LMS) | Yes (read) | AMS0110 |
 | API-AMS-nn (planned) | Attendance before a date of joining (INT-09) | AMS | GET /api/ams/v1/internal/… – Module document (planned) | Service token (EIMS) | Yes (read) | AMS0120 |
@@ -1018,7 +1043,7 @@ Every functional requirement of the approved BRD set (175 FR ids) is assigned to
 
 | Id | Question | Owner | Status |
 | --- | --- | --- | --- |
-| OI-P02-01 | Onboarding and account changes (XF-01, XF-09): order of the identity-provider call and the EIMS commit, retry of a half-done onboarding by the same Employee Id, any gap in the Employee Id sequence, and recovery when the second step fails | Enterprise Architect – PMS-HLD-Part02-M5-SUP (Part01 §8.2 row 9) | Open (D-123) |
+| OI-P02-01 | Onboarding and account changes (XF-01, XF-09): order of the identity-provider call and the EIMS commit, retry of a half-done onboarding by the same Employee Id, any gap in the Employee Id sequence, and recovery when the second step fails | Enterprise Architect – PMS-HLD-Part02-M5-SUP (Part01 §8.2 row 9) | Settled for EIMS in PMS-HLD-Part02-M1-EIMS (D-132 to D-134): every UM call inside the EIMS local transaction, commit after its success, rollback on failure; a failed commit repaired by the next onboarding (account take-over keyed by Employee Id) or by repeating the Admin action; restore case OI-P02M1-01. Open for the UM side (take-over, identity-provider operations) in PMS-HLD-Part02-M5-SUP |
 | OI-P02-02 | Attendance / leave date check and date-of-joining check (XF-06, XF-07) are check-then-act across two databases: simultaneous submissions for the same employee and date can pass both checks. Decide prevention or detection | Enterprise Architect – before PMS-HLD-Part02-M2-AMS | Open (D-123) |
 
 ### 10.2 Items brought forward from Part01 and Part01a

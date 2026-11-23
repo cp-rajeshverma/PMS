@@ -21,13 +21,14 @@ Date: November 2026
 | 1.0 | 0.7 | 23-Nov-2026 | Rajesh Verma | §3.2.11 to §3.2.13 EIMS0110 to EIMS0130 profile change request drafted: API-EIMS-11 to 15 (open request under my-profile), one open request under the own row lock, server-computed changed fields, full set of requested values (D-136) |
 | 1.0 | 0.8 | 23-Nov-2026 | Rajesh Verma | §3.2.14 to §3.2.16 EIMS0140 to EIMS0160 review, approve and reject drafted: API-EIMS-16 to 21, approver check per item, bulk approve per kind, previous values copied and email re-checked at approval, Admin review limited to the top-level employee (D-137) |
 | 1.0 | 0.9 | 23-Nov-2026 | Rajesh Verma | §3.2.17 to §3.2.20 EIMS0170 to EIMS0200 drafted: API-EIMS-22 to 28 for other modules and the shell (INT-03, 04, 05, 07), scope by token type, approvees list, dashboard card and approval items; all 20 functions drafted (D-138) |
+| 1.0 | 0.10 | 23-Nov-2026 | Rajesh Verma | §4 (NFR summary, API inventory API-EIMS-01 to 28, no events or jobs, error catalogue) and §5 (future scope, open items OI-P02M1-01 to 03, items brought forward (a) to (d)) drafted; all sections drafted (D-139) |
 
 ### 1.2 Review and approval
 
 | Role | Name | Date | Decision |
 | --- | --- | --- | --- |
-| Architect | Rajesh Verma (Enterprise Architect) | 23-Nov-2026 | §1–§3.1 approved (D-130); §3.2.1 EIMS0010 approved (D-131); §3.2.2–§3.2.3 EIMS0020–EIMS0030 approved (D-132); §3.2.4 EIMS0040 approved (D-133); §3.2.5–§3.2.6 EIMS0050–EIMS0060 approved (D-134); §3.2.7–§3.2.10 EIMS0070–EIMS0100 approved (D-135); §3.2.11–§3.2.13 EIMS0110–EIMS0130 approved (D-136); §3.2.14–§3.2.16 EIMS0140–EIMS0160 approved (D-137); §3.2.17–§3.2.20 EIMS0170–EIMS0200 approved (D-138) |
-| Product owner | Rajesh Verma | 23-Nov-2026 | §1–§3.1 approved (D-130); §3.2.1 EIMS0010 approved (D-131); §3.2.2–§3.2.3 EIMS0020–EIMS0030 approved (D-132); §3.2.4 EIMS0040 approved (D-133); §3.2.5–§3.2.6 EIMS0050–EIMS0060 approved (D-134); §3.2.7–§3.2.10 EIMS0070–EIMS0100 approved (D-135); §3.2.11–§3.2.13 EIMS0110–EIMS0130 approved (D-136); §3.2.14–§3.2.16 EIMS0140–EIMS0160 approved (D-137); §3.2.17–§3.2.20 EIMS0170–EIMS0200 approved (D-138) |
+| Architect | Rajesh Verma (Enterprise Architect) | 23-Nov-2026 | §1–§3.1 approved (D-130); §3.2.1 EIMS0010 approved (D-131); §3.2.2–§3.2.3 EIMS0020–EIMS0030 approved (D-132); §3.2.4 EIMS0040 approved (D-133); §3.2.5–§3.2.6 EIMS0050–EIMS0060 approved (D-134); §3.2.7–§3.2.10 EIMS0070–EIMS0100 approved (D-135); §3.2.11–§3.2.13 EIMS0110–EIMS0130 approved (D-136); §3.2.14–§3.2.16 EIMS0140–EIMS0160 approved (D-137); §3.2.17–§3.2.20 EIMS0170–EIMS0200 approved (D-138); §4–§5 approved, all sections reviewed (D-139) – final approval with the HLD set at the Stage 3 gate |
+| Product owner | Rajesh Verma | 23-Nov-2026 | §1–§3.1 approved (D-130); §3.2.1 EIMS0010 approved (D-131); §3.2.2–§3.2.3 EIMS0020–EIMS0030 approved (D-132); §3.2.4 EIMS0040 approved (D-133); §3.2.5–§3.2.6 EIMS0050–EIMS0060 approved (D-134); §3.2.7–§3.2.10 EIMS0070–EIMS0100 approved (D-135); §3.2.11–§3.2.13 EIMS0110–EIMS0130 approved (D-136); §3.2.14–§3.2.16 EIMS0140–EIMS0160 approved (D-137); §3.2.17–§3.2.20 EIMS0170–EIMS0200 approved (D-138); §4–§5 approved, all sections reviewed (D-139) – final approval with the HLD set at the Stage 3 gate |
 | Business analyst | | | |
 | Dev lead | | | |
 
@@ -63,7 +64,7 @@ Reading rules:
 | --- | --- | --- |
 | 1 | PMS-BRD (anchor) – §4.3 roles and data scope, §5.3 dashboard and inbox, §6 BR-CMN, §7 INT-03 to INT-05, INT-07 to INT-09; PMS-BRD-M1-EIMS; PMS-BRD-M5-SUP (FR-UM-001 to 015, FR-AUTH, FR-ADM-101 to 117) | v1.0, approved baseline (D-107) |
 | 2 | UX Journey Index and UX Summaries SCR-EIMS-01 to 04, SCR-SH-03, SCR-SH-04; mockups `docs/01-ux/mockups/html/scr-eims-0*.html` | v1.1 (D-105) |
-| 3 | Decision log / ADRs | D-01 to D-138; ADR-001 to ADR-006 |
+| 3 | Decision log / ADRs | D-01 to D-139; ADR-001 to ADR-006 |
 
 **Design documents**
 
@@ -3483,11 +3484,121 @@ Read only; safe to retry.
 
 ## 4. NFR summary & inventories
 
-Drafted with R10.
+### 4.1 NFR summary
+
+NFR detail is kept out of each function's design description; functions reference an NFR id, and the authoritative value lives in the BRD (anchor §8, PMS-BRD-M1-EIMS §13) and PMS-HLD-Part01 §14 and §16.3.
+
+| Seq | NFR id | Category | Requirement | Design approach | Applicable function(s) |
+| --- | --- | --- | --- | --- | --- |
+| 1 | NFR-01 | Performance | Page p95 ≤ 2 s, service p95 ≤ 500 ms at 25 users | One read per screen; server-side paging (25, max 100); no cross-service call on reads; only INT-09 (date-of-joining change) and INT-08 (account changes) leave EIMS; load tests PT-01 and PT-08 | EIMS0010, EIMS0070, EIMS0140, EIMS0170 to EIMS0200 |
+| 2 | NFR-02 | Availability | 99 % in business hours; one module down does not stop the others | EIMS card and Profiles tab fail on their own (FR-CMN-008); a failed INT-09 check or identity-provider call refuses only that Admin action, nothing half-done (D-132 to D-134) | EIMS0020, EIMS0040 to EIMS0060, EIMS0200 |
+| 3 | NFR-03 | Security | Role and data scope on every request | Scope in the query; owner from the token for own resources (D-135, D-136); approver scope per item (D-137); neutral 404 for every miss; internal rate API (D-138); CSRF token; STRIDE threat review at the boundaries crossed (§2) | All |
+| 4 | NFR-04 | Usability and accessibility | Consistent layout, WCAG 2.1 AA, desktop 1366 px | Shared design system and shell conventions (anchor §6.5); BRD and UX messages; per-item bulk results | EIMS0010 to EIMS0160, EIMS0200 |
+| 5 | NFR-05 | Auditability | Who created, changed and approved every record | Audit entry per changed field in the same transaction; USER_ACCOUNT entries for account create, role, enable and password reset without values; approver and decision time on every decision | EIMS0020 to EIMS0160 |
+| 6 | NFR-06 | Data integrity | No lost updates, no duplicates | Version on every record command; row locks (counter, employee, reporting-line chain, open request); Employee Id without gaps; one open request per employee; database backstops for email, top-level employee and open request (PMS-HLD-Part03-M1-EIMS) | EIMS0020 to EIMS0160 |
+| 7 | NFR-07 | Scalability | Each module scales on its own | Stateless service; only onboardings are serialised (counter row, one by one, D-104) | All |
+| 8 | NFR-08 | Maintainability | Technology-neutral, contract per module | OpenAPI contract `eims-v1` with API-EIMS-01 to 28; no product names in the design | All |
+| 9 | NFR-09 | Logging and observability | One flow reference per action across modules | Named activity-log steps per function; flow reference passed to UM and INT-09 calls and kept by the callers of EIMS0170 to EIMS0200 | All |
+| 10 | NFR-EIMS-01 | Security / privacy | Sensitive attributes only within scope, never in logs | Role-shaped responses (rate never to managers); search text, field values, remarks and rates never logged (Part01 §10.8) | EIMS0010, EIMS0020, EIMS0040, EIMS0070 to EIMS0160, EIMS0190 |
+| 11 | NFR-EIMS-02 | Security | Temporary password visible once, to the Admin | Generated by EIMS0030, returned only in the onboarding or reset response, never stored, audited or logged; frontend keeps it in memory only | EIMS0020, EIMS0030, EIMS0060 |
+
+### 4.2 API inventory
+
+Roll-up of the per-function API tables (§3.2.n.5.5); the API id is the key. Base path `/api/eims/v1`.
+
+| API id | API name | Purpose | Method & endpoint | Request (key fields) | Roles | Idempotent | Function |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| API-EIMS-01 | List employees | Directory within the caller's scope | GET /employees | q, status, includeInactive, page, size, sort | Admin, Manager | Yes (read) | EIMS0010 |
+| API-EIMS-02 | Onboard employee | Create employee and account; temporary password once | POST /employees | names, email, dateOfJoining, role, managerId or topLevel, hourlyWageRate | Admin | No (D-132) | EIMS0020 |
+| API-EIMS-03 | Manager options | Eligible managers and current top-level employee | GET /manager-options | forEmployeeId | Admin | Yes (read) | EIMS0020, EIMS0040 |
+| API-EIMS-04 | Update admin details | Date of joining, role, manager, rate in one save | PUT /employees/{employeeId}/admin-details | fields, version | Admin | No (version check) | EIMS0040 |
+| API-EIMS-05 | Deactivate employee | Inactive, account disabled, sessions ended | POST /employees/{employeeId}/deactivate | version | Admin | No (version check) | EIMS0050 |
+| API-EIMS-06 | Reset password | New temporary password once, lock cleared, sessions ended | POST /employees/{employeeId}/reset-password | – | Admin | No | EIMS0060 |
+| API-EIMS-07 | Get my profile | Own profile, status, approver name, open request | GET /my-profile | – | Employee, Manager | Yes (read) | EIMS0070 |
+| API-EIMS-08 | Save my profile draft | Draft without required-field checks | PUT /my-profile | fields, version | Employee, Manager | No (version check) | EIMS0080 |
+| API-EIMS-09 | Submit my profile | Save and submit | POST /my-profile/submit | fields, version | Employee, Manager | No (version check) | EIMS0090 |
+| API-EIMS-10 | Withdraw my profile | Back to Draft before a decision | POST /my-profile/withdraw | version | Employee, Manager | No (version check) | EIMS0100 |
+| API-EIMS-11 | Get my change request | Open request with changed fields | GET /my-profile/change-request | – | Employee, Manager | Yes (read) | EIMS0110 |
+| API-EIMS-12 | Start my change request | Start on the approved profile | POST /my-profile/change-request | – | Employee, Manager | No (one open request) | EIMS0110 |
+| API-EIMS-13 | Save my change request | Draft of the open request | PUT /my-profile/change-request | fields, version | Employee, Manager | No (version check) | EIMS0110 |
+| API-EIMS-14 | Submit my change request | Save and submit the open request | POST /my-profile/change-request/submit | fields, version | Employee, Manager | No (version check) | EIMS0120 |
+| API-EIMS-15 | Withdraw my change request | Close the open request as Withdrawn | POST /my-profile/change-request/withdraw | version | Employee, Manager | No (version check) | EIMS0130 |
+| API-EIMS-16 | Get profile for review | Profile for review or read-only view | GET /employees/{employeeId}/profile-review | – | Manager, Admin | Yes (read) | EIMS0140 |
+| API-EIMS-17 | Get change request for review | Approved and requested values | GET /profile-change-requests/{id} | – | Manager, Admin | Yes (read) | EIMS0140 |
+| API-EIMS-18 | Approve profiles | Bulk approve, result per item | POST /employees/profiles/approve | items (employeeId, version) | Manager, Admin | No (version check per item) | EIMS0150 |
+| API-EIMS-19 | Approve change requests | Bulk approve and apply, result per item | POST /profile-change-requests/approve | items (id, version) | Manager, Admin | No (version check per item) | EIMS0150 |
+| API-EIMS-20 | Reject profile | Reject with remarks | POST /employees/{employeeId}/profile/reject | remarks, version | Manager, Admin | No (version check) | EIMS0160 |
+| API-EIMS-21 | Reject change request | Reject with remarks | POST /profile-change-requests/{id}/reject | remarks, version | Manager, Admin | No (version check) | EIMS0160 |
+| API-EIMS-22 | Employee details (INT-03) | One employee, INT-03 fields | GET /employees/{employeeId}/details | – | User token relayed (scope applied) or service token | Yes (read) | EIMS0170 |
+| API-EIMS-23 | Employee details list (INT-03) | Up to 100 employees | GET /employee-details | employeeIds | As API-EIMS-22 | Yes (read) | EIMS0170 |
+| API-EIMS-24 | Approver of an employee (INT-04) | Current approver | GET /employees/{employeeId}/approver | – | As API-EIMS-22 | Yes (read) | EIMS0180 |
+| API-EIMS-25 | My approvees (INT-04) | Employees the caller decides | GET /my-approvees | – | User token relayed | Yes (read) | EIMS0180 |
+| API-EIMS-26 | Current hourly wage rate (INT-05) | Rate for salary generation | GET /internal/employees/{employeeId}/hourly-wage-rate | – | Service token (SMS) | Yes (read) | EIMS0190 |
+| API-EIMS-27 | EIMS dashboard card (INT-07) | Role-shaped EIMS card | GET /dashboard-card | – | Employee, Manager, Admin | Yes (read) | EIMS0200 |
+| API-EIMS-28 | EIMS approval items (INT-07) | Waiting items, paged | GET /approval-items | page, size | Manager, Admin | Yes (read) | EIMS0200 |
+
+Calls EIMS makes: UM0010, UM0030, UM0040, UM0050 through the identity-provider admin API (INT-08, PMS-HLD-Part02-M5-SUP); AMS0120 and LMS0080 (INT-09, PMS-HLD-Part02-M2-AMS and M3-LMS). Resilience defaults (timeouts, retries, circuit breaker, idempotency): Part01 §8.5.
+
+### 4.3 Event inventory
+
+| Seq | Event | Producer | Consumer(s) | Queue / topic | Key payload fields | Function |
+| --- | --- | --- | --- | --- | --- | --- |
+| – | None – EIMS publishes and consumes no events (D-130); other modules read current values through EIMS0170 to EIMS0200 | – | – | – | – | – |
+
+### 4.4 Scheduled job inventory
+
+| Seq | Job | Schedule | Purpose | Function |
+| --- | --- | --- | --- | --- |
+| – | None – EIMS has no scheduled jobs (PMS-BRD-M1-EIMS §11) | – | – | – |
+
+### 4.5 Error code catalogue
+
+Problem details per anchor §6.3; every VAL and BUS code names the BRD rule it enforces. Within bulk approvals (API-EIMS-18, 19) the codes appear per item inside a 200 response.
+
+| Error code | HTTP status | Meaning | Message |
+| --- | --- | --- | --- |
+| EIMS-VAL-001 | 400 | Invalid query parameters or request body: paging, sort, filters, id lists, bulk size (anchor §6.1) | Generic validation message |
+| EIMS-VAL-002 | 400 | Required field missing (VR-EIMS-10) | Required-field message; "Please correct the highlighted fields." |
+| EIMS-VAL-003 | 400 | Maximum length exceeded (VR-EIMS-07) | Maximum-length message |
+| EIMS-VAL-004 | 400 | Invalid email format (VR-EIMS-02) | Invalid-email message |
+| EIMS-VAL-005 | 400 | Email already used by another employee, active or inactive (VR-EIMS-02) | Duplicate-email message |
+| EIMS-VAL-006 | 400 | Date of joining after today (VR-EIMS-04) | Future-joining-date message |
+| EIMS-VAL-007 | 400 | Hourly wage rate not above 0 or more than 2 decimals (VR-EIMS-06) | Invalid-rate message |
+| EIMS-VAL-008 | 400 | Manager not eligible or reporting loop (VR-EIMS-05) | Manager-choice message |
+| EIMS-VAL-009 | 400 | Another active top-level employee exists (VR-EIMS-05) | Message naming the current top-level employee |
+| EIMS-VAL-010 | 400 | Role other than Employee or Manager (FR-UM-010) | Role-choice message |
+| EIMS-VAL-011 | 400 | Under 18 on the date of joining (VR-EIMS-01) | Under-18 message |
+| EIMS-VAL-012 | 400 | Invalid date or country code (VR-EIMS-09) | Invalid-value message |
+| EIMS-VAL-013 | 400 | Mobile number not exactly 10 digits (VR-EIMS-03) | Mobile-number message |
+| EIMS-VAL-014 | 400 | Zip / PIN format (VR-EIMS-08) | Zip / PIN message |
+| EIMS-VAL-015 | 400 | Remarks missing or longer than 500 characters (BR-CMN-03) | "Remarks are required to reject." |
+| EIMS-BUS-001 | 422 | Attendance or leave before the new date of joining (BR-EIMS-05) | Change refused, naming the blocking records |
+| EIMS-BUS-002 | 422 | Manager with active reports cannot become Employee (BR-EIMS-06) | Role change refused, listing the reports |
+| EIMS-BUS-003 | 422 | Inactive employee cannot be changed (BR-EIMS-07, D-133) | Inactive-employee message |
+| EIMS-BUS-004 | 422 | Manager with active reports cannot be deactivated (BR-CMN-14) | Deactivation refused, listing the reports |
+| EIMS-BUS-005 | 422 | Status no longer allows the action (BR-EIMS-02, 03) | Action not possible in the current status; refresh |
+| EIMS-BUS-006 | 422 | Change request without a changed value (D-72) | "No changes to submit." |
+| EIMS-BUS-007 | 422 | An open change request already exists (BR-EIMS-03) | Open-request message with a link to it |
+| EIMS-CON-001 | 409 | Changed by someone else – version mismatch (FR-CMN-014) | Refresh message |
+| EIMS-ACC-001 | 404 | Record not found or outside the data scope – neutral (FR-UM-015, D-99) | "You don't have access to this page." |
+| EIMS-ACC-002 | 403 | Route not allowed for the role or token type (FR-UM-015) | "You don't have access to this page." |
+| EIMS-SYS-001 | 500 | Unexpected error | Generic message with "Reference: <flow reference>" |
+| EIMS-SYS-002 | 503 | Identity provider refused or unavailable – account action not done (INT-08) | "… could not be saved / deactivated / reset. Please try again." with the reference |
+| EIMS-SYS-003 | 503 | Date-of-joining check in AMS or LMS not possible (INT-09) | "Changes could not be saved. Please try again." with the reference |
 
 ## 5. Appendix
 
-Drafted with R10; open items are added as they arise.
+### 5.1 Future scope (not designed in this phase)
+
+| Area | Requirement ref | Note |
+| --- | --- | --- |
+| Onboarding | D-71 | Onboarding before the joining date (pre-boarding); VR-EIMS-04 kept |
+| Onboarding | D-104 | Phase 2: bulk import of employees; onboarding stays one by one, serialised by the counter row |
+| Deactivation | D-71, BR-EIMS-07 | Reactivating an inactive employee; inactive employees read only (D-133) |
+| Passwords | BRD anchor §13.1 | Self-service password reset |
+| Directory | D-63 | Skip-level view for managers |
+| Documents | D-57 | Supporting documents attached to the profile (DM, Phase 2) |
+| Notifications | C-05, D-57 | Email notifications (NM, Phase 2); the temporary password is passed on by the Admin outside PMS (D-104) |
 
 ### 5.2 Open items
 
@@ -3496,3 +3607,14 @@ Drafted with R10; open items are added as they arise.
 | OI-P02M1-01 | After an eims database restore, user accounts may exist for Employee Ids issued after the backup point; the counter would issue those Ids again and UM0010 would take over those accounts (EIMS0020 design note 2). Restore procedure: compare identity-provider accounts with restored employees and disable or re-onboard the accounts above the restored counter before onboarding resumes | Enterprise Architect – docs/04-standards/database-and-data (planned), with PMS-HLD-Part02-M5-SUP | Open |
 | OI-P02M1-02 | Inactive employees are read only in the admin form (D-133); the BRD (PMS-BRD-M1-EIMS §6.2, FR-EIMS-012) is silent – confirm in the BRD at the set consistency check | Enterprise Architect – set consistency check | Open |
 | OI-P02M1-03 | A manager whose only reports are inactive can be deactivated (BR-CMN-14 counts active reports) while an inactive report still has items waiting for that manager's decision (BR-CMN-06); those items then have no active approver. Decide in the BRD: block the deactivation while the manager is the approver of waiting items, or let the Admin decide them | Product owner – set consistency check (BRD anchor BR-CMN-06, BR-CMN-14) | Open |
+
+### 5.3 Items brought forward
+
+Not in the template; records how this document settled the items handed over by the prompt of this document (as in the Part02 and Part03 anchors).
+
+| Item | Source | Outcome in this document |
+| --- | --- | --- |
+| (a) OI-P01a-08 Threat-modelling method | Part01a §7 | Closed (D-130): STRIDE at the trust boundaries TB-1 to TB-5 each function crosses, one threat-review row per boundary (§2); Part01a rev 0.8; method text in docs/04-standards/security (planned) |
+| (b) OI-P03-03 Lifetime of in-memory copies | Part03 anchor §9.1 | Not affected: no EIMS function keeps a copy of other services' data, INT-09 answers are never cached, and EIMS0170 to EIMS0200 read fresh (§3.1.1, D-130, D-138); stays with PMS-HLD-Part02-M2-AMS |
+| (c) OI-P02-01 Identity-provider order and recovery | Part02 anchor §10.1 | Settled for EIMS (D-132 to D-134): every UM call runs inside the EIMS local transaction and the commit follows its success; failures roll back; a failed commit is repaired by the next onboarding (account take-over keyed by Employee Id) or by repeating the Admin action; PMS-HLD-Part02-M5-SUP designs the UM side and references this document; restore case OI-P02M1-01 |
+| (d) OI-P02-02 Check-then-act of the date-of-joining check | Part02 anchor §10.1 | Referenced, not decided (EIMS0040 design note 7); stays open before PMS-HLD-Part02-M2-AMS |
