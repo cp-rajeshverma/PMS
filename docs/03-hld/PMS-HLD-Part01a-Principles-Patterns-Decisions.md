@@ -16,6 +16,7 @@ Date: November 2026
 | 1.0 | 0.5 | 23-Nov-2026 | Rajesh Verma | Draft of §5 (ADR register ADR-001 to ADR-006) and §6 (ADR record format); D-113 added to the Ref of AP-MS-29 and AP-CP-40; Part01 §4.1 counts recorded (Part01 rev 0.9) |
 | 1.0 | 0.6 | 23-Nov-2026 | Rajesh Verma | §7: OI-P01a-03 (shared design system) and OI-P01a-06 (event ordering) closed by the PMS-HLD-Part02 anchor (D-122) |
 | 1.0 | 0.7 | 23-Nov-2026 | Rajesh Verma | §4: Ref of AP-XF-06, AP-SD-15, AP-CP-25, AP-EIP-61, AP-DATA-07, 10, 11, 13 to 16 and AP-PERF-06 point to the PMS-HLD-Part03 anchor or the Part03 module documents; outbox and processed-event clean-up after 90 days (D-128) |
+| 1.0 | 0.8 | 23-Nov-2026 | Rajesh Verma | §7: OI-P01a-08 (threat-modelling method) closed by PMS-HLD-Part02-M1-EIMS §2 – STRIDE at the trust boundaries each function crosses (D-130); §4 AP-SEC-16 note and Ref updated |
 
 | Role | Name | Date | Decision |
 | --- | --- | --- | --- |
@@ -417,7 +418,7 @@ Source: Enterprise Integration Patterns (Hohpe & Woolf), messaging patterns cata
 | AP-SEC-13 | Input validation & output encoding | Prevent injection and XSS | Applied | Contract and BRD rule validation; parameterised queries; output encoding by the UI library; WAF rule set | Part01 §16.2 A03 |
 | AP-SEC-14 | API protection | Rate limiting, CORS, security headers, size limits | Applied | Rate limits, single origin, security headers, 1 MB payload limit | Part01 §9.8 |
 | AP-SEC-15 | OWASP Top 10 coverage | Each category mapped to a control | Applied | Each category mapped to a control | Part01 §16.2 |
-| AP-SEC-16 | Threat modelling | STRIDE (or similar) per component at design time | Partial | Threat review in the security and privacy part of each Part02 function design; method not yet chosen | Part01 §16.2 A04; D-38; OI-P01a-08 |
+| AP-SEC-16 | Threat modelling | STRIDE (or similar) per component at design time | Partial | Threat review in the security and privacy part of each Part02 function design: STRIDE at the trust boundaries the function crosses (PMS-HLD-Part02-M1-EIMS §2); method text in docs/04-standards/security (planned) | Part01 §16.2 A04; D-38; D-130; OI-P01a-08 (closed) |
 | AP-SEC-17 | Dependency scanning & SBOM | Vulnerable libraries blocked in the pipeline | Partial | Dependency and image scans block high and critical findings; SBOM not yet defined | Part01 §15, §16.1; OI-P01a-09 |
 | AP-SEC-18 | SAST / DAST | Static and dynamic security testing in the pipeline | Partial | Static code scanning as a pipeline gate; security testing in QA; dynamic scanning not yet defined | Part01 §15, §16.1; OI-P01a-10 |
 | AP-SEC-19 | Audit trail | Security-relevant actions logged, tamper-evident | Applied | Identity-provider security events and refused requests in the security log; audit entries cannot be changed or deleted | Part01 §10.2; FR-AUTH-030, FR-ADM-103 |
@@ -578,7 +579,7 @@ Each ADR file uses this structure:
 | OI-P01a-05 | Service template: content and upkeep of the template copied per service (framework, security, observability, error body, flow reference) without a shared runtime library (D-18) | AP-MS-30 | Enterprise Architect | docs/04-standards/coding-and-code-review |
 | OI-P01a-06 | Ordering of attendance approved and reopened events for the same attendance (late or out-of-order delivery) | AP-CP-38, AP-EIP-32 | Enterprise Architect | Closed (D-122): attendance version in every event, SMS ignores lower or equal versions – PMS-HLD-Part02 anchor §6.2 |
 | OI-P01a-07 | Dead-letter queue: inspection and replay procedure for IT operations | AP-INT-09 | Enterprise Architect | docs/04-standards/api-and-integration |
-| OI-P01a-08 | Threat-modelling method (e.g. STRIDE) for the security and privacy part of each Part02 function | AP-SEC-16 | Enterprise Architect | docs/04-standards/security, before Part02 modules |
+| OI-P01a-08 | Threat-modelling method (e.g. STRIDE) for the security and privacy part of each Part02 function | AP-SEC-16 | Enterprise Architect | Closed (D-130): STRIDE at the trust boundaries TB-1 to TB-5 that each function crosses, one threat-review row per boundary – PMS-HLD-Part02-M1-EIMS §2; method text in docs/04-standards/security (planned) |
 | OI-P01a-09 | Software bill of materials: whether and how it is produced per image | AP-SEC-17 | Enterprise Architect | docs/04-standards/devops-and-cicd |
 | OI-P01a-10 | Dynamic application security testing: whether and where it runs (e.g. QA) | AP-SEC-18 | Enterprise Architect | docs/04-standards/testing-and-quality |
 | OI-P01a-11 | Version scheme for services, APIs and events, and compatibility rules | AP-MS-33, AP-INT-10, AP-DEV-09 | Enterprise Architect | docs/04-standards/api-and-integration |
