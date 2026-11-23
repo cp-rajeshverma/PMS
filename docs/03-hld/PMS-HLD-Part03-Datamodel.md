@@ -13,12 +13,13 @@ Date: November 2026
 | Version | Revision | Date | Author | Change remark |
 | --- | --- | --- | --- | --- |
 | 1.0 | 0.1 | 23-Nov-2026 | Rajesh Verma | First draft of §1–§3, based on the approved BRD set v1.0 (D-107), PMS-HLD-Part01 v1.0 rev 0.9, PMS-HLD-Part01a v1.0 rev 0.6 and PMS-HLD-Part02-Functional v1.0 rev 0.4; Part03 anchor design answers of 23 Nov 2026 (D-126) |
+| 1.0 | 0.2 | 23-Nov-2026 | Rajesh Verma | Draft of §4 (master ER of the 5 business entities with text-version table; system tables and what they relate to) and §5 (cross-service data and consistency, 12 data objects) (D-127) |
 
 ### 1.2 Review and approval
 
 | Role | Name | Date | Decision |
 | --- | --- | --- | --- |
-| Architect | Rajesh Verma (Enterprise Architect) | 23-Nov-2026 | §1–§3 approved (D-126) |
+| Architect | Rajesh Verma (Enterprise Architect) | 23-Nov-2026 | §1–§3 approved (D-126); §4–§5 approved (D-127) |
 | Data / DB lead | | | |
 | Dev lead | | | |
 | Security lead | | | |
@@ -169,11 +170,77 @@ User accounts, credentials, roles, sessions and security events are held by the 
 
 ## 4. ER diagrams
 
-Drafted in the next review.
+### 4.1 Master ER diagram (logical, all services)
+
+Entity level only, business entities grouped by owning service; cross-service references are dashed (held as a key, no foreign key). System tables are listed below the diagram.
+
+```mermaid
+flowchart LR
+  subgraph EIMS["EIMS – eims"]
+    EMP["EMPLOYEE"]
+    PCR["PROFILE_CHANGE_REQUEST"]
+  end
+  subgraph AMS["AMS – ams"]
+    ATT["ATTENDANCE"]
+  end
+  subgraph LMS["LMS – lms"]
+    LV["LEAVE_REQUEST"]
+  end
+  subgraph SMS["SMS – sms"]
+    SAL["SALARY_RECORD"]
+  end
+  EMP -- "reports to (0..1 : 0..n)" --> EMP
+  EMP -- "has (1 : 0..n)" --> PCR
+  ATT -. "belongs to (n : 1)" .-> EMP
+  LV -. "belongs to (n : 1)" .-> EMP
+  SAL -. "belongs to (n : 1)" .-> EMP
+  SAL -. "is paid for (0..n : 1, at most one non-voided)" .-> ATT
+```
+
+| Entity | Related entity | Relationship (verb) | Cardinality | Same / cross-service |
+| --- | --- | --- | --- | --- |
+| EMPLOYEE | EMPLOYEE | reports to (Manager Id; empty for the one top-level employee, BR-CMN-01) | 0..1 : 0..n | Same (eims) |
+| PROFILE_CHANGE_REQUEST | EMPLOYEE | is raised for | 0..n : 1 | Same (eims) |
+| ATTENDANCE | EMPLOYEE | belongs to (Employee Id) | 0..n : 1 | Cross (ams → eims) |
+| LEAVE_REQUEST | EMPLOYEE | belongs to (Employee Id) | 0..n : 1 | Cross (lms → eims) |
+| SALARY_RECORD | EMPLOYEE | belongs to (Employee Id) | 0..n : 1 | Cross (sms → eims) |
+| SALARY_RECORD | ATTENDANCE | is paid for (attendance id); at most one non-voided record per attendance (BR-SMS-01, NFR-06) | 0..n : 1 | Cross (sms → ams) |
+| ATTENDANCE, LEAVE_REQUEST, PROFILE_CHANGE_REQUEST, SALARY_RECORD | EMPLOYEE | decided by (approver_id, stored only with the decision) | 0..n : 0..1 | Cross, except PROFILE_CHANGE_REQUEST and EMPLOYEE in eims |
+| ATTENDANCE | LEAVE_REQUEST | checked against on the same employee and date (INT-06); no stored reference | – | Cross (ams ↔ lms) |
+
+Employee Ids are never deleted or reused (BR-CMN-06, FR-EIMS-040), so a cross-service reference never points to a missing employee.
+
+**System tables and what they relate to**
+
+| System table | Service | Relates to | Relationship |
+| --- | --- | --- | --- |
+| AUDIT_ENTRY | eims, ams, lms, sms | Every business record of its own database (record type + record id) | Many entries per record, no foreign key (one table for all record types) |
+| EMPLOYEE_ID_COUNTER | eims | EMPLOYEE | One row; holds the last number issued |
+| OUTBOX_EVENT | ams | ATTENDANCE | 0..n events per attendance (approved, reopened), written in the same transaction |
+| JOB_LOCK | ams, sms | Outbox clean-up job; JOB-CMN-01 | One row per job |
+| ATTENDANCE_APPLIED_VERSION | sms | ATTENDANCE (attendance id, cross-service) | One row per attendance whose event or reconciliation was applied |
+| PROCESSED_EVENT | sms | OUTBOX_EVENT (event id, cross-service) | One row per consumed event |
+| RECONCILIATION_RUN | sms | – | One row per nightly run |
+| RECONCILIATION_MISMATCH | sms | RECONCILIATION_RUN (foreign key); ATTENDANCE and SALARY_RECORD by id | 0..n per run |
+
+Service-wise ER diagrams with full entity definitions are in each module data model document.
 
 ## 5. Cross-service data & consistency
 
-Drafted in the next review.
+| Data object | Owner service | Consumer service | Mechanism (API call / event-replicated read copy / none) | Event(s) | Consistency (strong / eventual, max lag) | Reconciliation |
+| --- | --- | --- | --- | --- | --- | --- |
+| Approved attendance: attendance id, Employee Id, work date, from and to time, hours, version | AMS | SMS | Event; the values a salary record needs are copied into SALARY_RECORD when it is generated (SMS0080, XF-02) | ams.attendance.approved (INT-01) | Eventual: normally under 1 minute (NFR-01); up to the next night if delivery fails | JOB-CMN-01 creates any missing record (XF-04) |
+| Reopened attendance | AMS | SMS | Event; voids the non-voided salary record (SMS0090, XF-03) | ams.attendance.reopened (INT-02) | Eventual: normally under 1 minute; the record stays Disputed meanwhile | JOB-CMN-01 voids any record whose attendance is no longer Approved |
+| Order and duplicates of the two events | AMS | SMS | Version and event id stored in ATTENDANCE_APPLIED_VERSION and PROCESSED_EVENT in the salary change transaction (Part02 §6.2) | INT-01, INT-02 | A lower or equal version, or a known event id, changes nothing | JOB-CMN-01 stores the version it read in the same way |
+| Approved attendance for a date range | AMS | SMS (reconciliation job) | Paged API, service token (AMS0100) | – | Read at run time | This is the reconciliation |
+| Hourly wage rate | EIMS | SMS | API (INT-05, EIMS0190) at generation; copied into the salary record (BR-SMS-02) | – | Strong at the read; the copied rate is not changed by a later rate change (BR-CMN-13, no rate history, D-90) | None needed |
+| Employee details (name, manager, active state, date of joining) | EIMS | AMS, LMS, SMS, shell | API (INT-03, EIMS0170); short-lived in-memory copy, lifetime set in the module documents | – | Strong at the read; a cached copy may lag by its lifetime | None |
+| Approver of a record | EIMS | AMS, LMS, SMS, shell | API (INT-04, EIMS0180) whenever an item is listed or decided; approver_id stored only with the decision (D-123 (5)) | – | Strong at the decision; a manager change moves waiting items at once (XF-08) | None needed |
+| Attendance / leave on the same date | AMS, LMS | LMS, AMS | API (INT-06, AMS0110, LMS0070) on save and submit; never skipped | – | Check-then-act across two databases: two simultaneous submissions can both pass (OI-P02-02) | None in the POC (OI-P02-02) |
+| Records before a new date of joining | AMS, LMS | EIMS | API (INT-09, AMS0120, LMS0080) before the change is saved | – | As above (OI-P02-02) | None in the POC (OI-P02-02) |
+| Salary status of approved attendance | SMS | AMS (and the shell through AMS) | API (INT-10, SMS0110) when history and inbox views load and before a reopen | – | Read at view time; reopen refused server-side unless the record is Disputed (D-122) | None needed |
+| Dashboard tiles, to-do items, inbox items | EIMS, AMS, LMS, SMS | Shell | API (INT-07), one call per module card | – | Read at load; each card fails on its own (FR-CMN-008) | None |
+| User account: Employee Id, role, enabled state | EIMS (values) | Identity provider (holds the account) | Admin API (INT-08) on onboarding, role change, reset and deactivation | – | Two steps in two systems; order and recovery designed in PMS-HLD-Part02-M5-SUP (OI-P02-01) | None in the POC (OI-P02-01) |
 
 ## 6. Data classification & privacy summary
 
