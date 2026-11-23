@@ -16,13 +16,14 @@ Date: November 2026
 | 1.0 | 0.2 | 23-Nov-2026 | Rajesh Verma | §3.2.1 EIMS0010 employee directory drafted: API-EIMS-01, role copy on EMPLOYEE, search, sort and paging (D-131) |
 | 1.0 | 0.3 | 23-Nov-2026 | Rajesh Verma | §3.2.2 EIMS0020 onboarding and §3.2.3 EIMS0030 Employee Id and temporary password drafted: API-EIMS-02, API-EIMS-03, identity-provider call inside the EIMS transaction with take-over of an orphan account (OI-P02-01 for onboarding), 12-character temporary password; OI-P02M1-01 (D-132) |
 | 1.0 | 0.4 | 23-Nov-2026 | Rajesh Verma | §3.2.4 EIMS0040 Admin-owned fields drafted: API-EIMS-04, processing order, UM0050 inside the EIMS transaction (OI-P02-01 for the role change), reporting-line locks, inactive employees read only; OI-P02M1-02 (D-133) |
+| 1.0 | 0.5 | 23-Nov-2026 | Rajesh Verma | §3.2.5 EIMS0050 deactivation and §3.2.6 EIMS0060 password reset drafted: API-EIMS-05, API-EIMS-06, UM0040 and UM0030 inside the EIMS transaction (OI-P02-01 complete for EIMS); OI-P02M1-03 (D-134) |
 
 ### 1.2 Review and approval
 
 | Role | Name | Date | Decision |
 | --- | --- | --- | --- |
-| Architect | Rajesh Verma (Enterprise Architect) | 23-Nov-2026 | §1–§3.1 approved (D-130); §3.2.1 EIMS0010 approved (D-131); §3.2.2–§3.2.3 EIMS0020–EIMS0030 approved (D-132); §3.2.4 EIMS0040 approved (D-133) |
-| Product owner | Rajesh Verma | 23-Nov-2026 | §1–§3.1 approved (D-130); §3.2.1 EIMS0010 approved (D-131); §3.2.2–§3.2.3 EIMS0020–EIMS0030 approved (D-132); §3.2.4 EIMS0040 approved (D-133) |
+| Architect | Rajesh Verma (Enterprise Architect) | 23-Nov-2026 | §1–§3.1 approved (D-130); §3.2.1 EIMS0010 approved (D-131); §3.2.2–§3.2.3 EIMS0020–EIMS0030 approved (D-132); §3.2.4 EIMS0040 approved (D-133); §3.2.5–§3.2.6 EIMS0050–EIMS0060 approved (D-134) |
+| Product owner | Rajesh Verma | 23-Nov-2026 | §1–§3.1 approved (D-130); §3.2.1 EIMS0010 approved (D-131); §3.2.2–§3.2.3 EIMS0020–EIMS0030 approved (D-132); §3.2.4 EIMS0040 approved (D-133); §3.2.5–§3.2.6 EIMS0050–EIMS0060 approved (D-134) |
 | Business analyst | | | |
 | Dev lead | | | |
 
@@ -58,7 +59,7 @@ Reading rules:
 | --- | --- | --- |
 | 1 | PMS-BRD (anchor) – §4.3 roles and data scope, §5.3 dashboard and inbox, §6 BR-CMN, §7 INT-03 to INT-05, INT-07 to INT-09; PMS-BRD-M1-EIMS; PMS-BRD-M5-SUP (FR-UM-001 to 015, FR-AUTH, FR-ADM-101 to 117) | v1.0, approved baseline (D-107) |
 | 2 | UX Journey Index and UX Summaries SCR-EIMS-01 to 04, SCR-SH-03, SCR-SH-04; mockups `docs/01-ux/mockups/html/scr-eims-0*.html` | v1.1 (D-105) |
-| 3 | Decision log / ADRs | D-01 to D-133; ADR-001 to ADR-006 |
+| 3 | Decision log / ADRs | D-01 to D-134; ADR-001 to ADR-006 |
 
 **Design documents**
 
@@ -197,8 +198,8 @@ Business statuses and transitions are defined in PMS-BRD-M1-EIMS §6.1 (profile)
 | EIMS0020 | Onboard an employee – create the employee and the user account (FR-EIMS-010, 011, 014; INT-08) | Screen | SCR-EIMS-02 | POC | Approved |
 | EIMS0030 | Generate Employee Id and temporary password (FR-EIMS-040, 041; UJ-SYS-04) | Backend process | – (shown once on SCR-EIMS-02) | POC | Approved |
 | EIMS0040 | Edit Admin-owned fields – date of joining, role, manager, hourly wage rate (FR-EIMS-012 to 017; INT-08, INT-09) | Screen | SCR-EIMS-02 | POC | Approved |
-| EIMS0050 | Deactivate an employee (FR-EIMS-018; INT-08) | Screen | SCR-EIMS-02 | POC | Not started |
-| EIMS0060 | Reset an employee's password (FR-EIMS-005; INT-08) | Screen | SCR-EIMS-01 | POC | Not started |
+| EIMS0050 | Deactivate an employee (FR-EIMS-018; INT-08) | Screen | SCR-EIMS-02 | POC | Approved |
+| EIMS0060 | Reset an employee's password (FR-EIMS-005; INT-08) | Screen | SCR-EIMS-01 | POC | Approved |
 | EIMS0070 | View my profile and its status (FR-EIMS-020) | Screen | SCR-EIMS-03 | POC | Not started |
 | EIMS0080 | Save a profile draft (FR-EIMS-021) | Screen | SCR-EIMS-03 | POC | Not started |
 | EIMS0090 | Submit or resubmit my profile (FR-EIMS-022, 024) | Screen | SCR-EIMS-03 | POC | Not started |
@@ -1017,7 +1018,378 @@ No in-memory copy of other services' data: the INT-09 answers are used for this 
 2. Note: OI-P02-02 (check-then-act of the joining-date check) is referenced, not decided (design note 7).
 3. Q: inactive employees read only (D-133) is a design choice where the BRD is silent; open item OI-P02M1-02 to confirm it in the BRD at the set consistency check.
 
-Further function chapters are added review by review (R5 to R9).
+#### 3.2.5 EIMS0050 – Deactivate an employee (Module: EIMS, Approved)
+
+##### 3.2.5.1 Purpose, trigger and conditions
+
+The Admin deactivates an employee: the employee becomes Inactive, the account is disabled and all open sessions end; every record is kept (BR-CMN-06).
+
+| Item | Detail |
+| --- | --- |
+| Delivery phase | POC |
+| Trigger | Admin confirms "Deactivate employee" in the Account section of SCR-EIMS-02 (edit mode) |
+| Pre-conditions | Signed in as Admin; employee active; no active employee has this employee as manager (BR-CMN-14); the command carries the loaded version |
+| Post-conditions | EMPLOYEE Inactive (`is_active` false), version + 1; account disabled and all the user's sessions ended (UM0040, FR-UM-007); items waiting for a decision stay with their approver, other open items stay as they are (BR-CMN-06, D-104); audit entries written. No reactivation in the POC (BR-EIMS-07) |
+
+##### 3.2.5.2 Actor & data scope
+
+| Role | Access (Read / Read-write / Approve / None) | Data scope (row-level) |
+| --- | --- | --- |
+| Employee | None – route refused (EIMS-ACC-002) | – |
+| Manager | None – route refused (EIMS-ACC-002) | – |
+| Admin | Read-write | All active employees; the Admin account is not an employee and cannot be deactivated (FR-UM-005) |
+
+##### 3.2.5.3 Requirement traceability
+
+| Source | References |
+| --- | --- |
+| BRD functional requirements | FR-EIMS-018; FR-UM-003, 005, 007; FR-AUTH-004, 022; INT-08 |
+| BRD business / validation rules | BR-CMN-06, BR-CMN-14; BR-EIMS-07 |
+| BRD NFRs | NFR-03, NFR-05 |
+| UX | UJ-EIMS-07; SCR-EIMS-02 (Account section, confirmation dialog) |
+| Decisions | D-29, D-97, D-104, D-111, D-132, D-133, D-134 |
+| Related functions – depends on | UM0040 (disable, end sessions), AUTH0040 (back-channel logout), UM0060, ADM0010, ADM0030, ADM0040 |
+| Related functions – used by | XF-09 (anchor §5.9); EIMS0010 (Inactive badge, "Show inactive"); EIMS0170 and EIMS0180 (active flag for other modules) |
+
+##### 3.2.5.4 Navigation & prototype reference
+
+**Navigation:** Menu > Employees > Edit > Employee admin form > Account > Deactivate employee
+
+**Prototype:** `docs/01-ux/mockups/html/scr-eims-02-admin-form.html` · UX summary `docs/01-ux/ux-summary/scr-eims-02-admin-form.md`
+
+##### 3.2.5.5 Solution approach
+
+###### 3.2.5.5.1 Design description
+
+The [Deactivate an employee] function lets the Admin work with one activity:
+
+1. Deactivate with confirmation
+
+**Deactivate with confirmation**
+
+1. The confirmation dialog names the employee; on confirm the employee becomes Inactive and "<name> deactivated." is shown (FR-EIMS-018, UX summary §5).
+2. Saved via [API-EIMS-05 : POST /api/eims/v1/employees/{employeeId}/deactivate (Purpose : deactivate an employee, disable the account and end all sessions)].
+3. DB entities: [EMPLOYEE], [AUDIT_ENTRY]; identity provider through UM0040.
+4. Rules: BR-CMN-14 (no active direct reports; the error lists them); employee active (D-133).
+
+###### 3.2.5.5.2 Design notes
+
+1. **Order of the identity-provider call and the commit (D-134, completes OI-P02-01 for EIMS).** Same pattern as D-132 and D-133: one EIMS transaction locks the employee row, compares the version, checks BR-CMN-14, sets `is_active` false, writes the audit entries, calls UM0040 (disable the account, end all sessions), and commits only after UM0040 succeeds. An identity-provider failure rolls back and nothing changes (EIMS-SYS-002). If the commit fails after UM0040, the account is disabled while the employee still shows Active; the Admin's next Deactivate calls UM0040 again (harmless for a disabled account) and commits. The failed commit is in the activity log.
+2. **Active direct reports (BR-CMN-14).** Counted in eims under the row lock of the employee; a manager change that would add a report to this employee waits on the same row lock (EIMS0040 locks the new manager's chain), so the check cannot be passed by a concurrent save.
+3. **Nothing changes in other modules (BR-CMN-06, XF-09).** AMS, LMS and SMS see the inactive flag through EIMS0170 and EIMS0180 when they next read it; waiting items stay with their approver and can still be decided.
+4. **Waiting items of an inactive report (OI-P02M1-03).** BR-CMN-14 counts active reports only. A manager whose only reports are inactive can therefore be deactivated while such a report still has items waiting for this manager's decision; those items would then have no active approver. Designed as the BRD stands; decision recorded as OI-P02M1-03.
+5. **Top-level employee.** Deactivating the top-level employee is allowed when no active employee reports to them; afterwards no active top-level employee exists until the Admin chooses "None – top-level" for another employee (VR-EIMS-05).
+
+###### 3.2.5.5.3 Sequence & orchestration
+
+```mermaid
+sequenceDiagram
+  actor AD as Admin
+  participant FE as Shell / EIMS package
+  participant GW as API gateway
+  participant E as EIMS service
+  participant DB as eims database
+  participant IDP as Identity provider (UM0040)
+  participant GWS as API gateway (all instances)
+  AD->>FE: Confirm Deactivate
+  FE->>GW: POST deactivate (version, CSRF token)
+  GW->>E: POST deactivate (access token, X-Flow-Ref)
+  E->>DB: Begin, lock employee row, compare version
+  E->>DB: Count active direct reports
+  alt Inactive, version changed or active reports
+    E->>DB: Rollback
+    E-->>FE: 422 EIMS-BUS-003 or EIMS-BUS-004 with the reports, or 409 EIMS-CON-001
+  else Allowed
+    E->>DB: Set inactive (version + 1), audit entries
+    E->>IDP: Disable account and end all sessions
+    IDP->>GWS: Back-channel logout per session (AUTH0040)
+    alt Identity provider OK
+      IDP-->>E: OK
+      E->>DB: Commit
+      E-->>FE: 200 isActive false, new version
+      FE-->>AD: Name deactivated
+    else Identity provider error
+      IDP-->>E: Error
+      E->>DB: Rollback
+      E-->>FE: 503 EIMS-SYS-002 with flow reference
+    end
+  end
+```
+
+| Step | Type (sync call / event / job / workflow) | Producer → consumer | Event / API | Consistency (local tx / outbox / saga / compensation) |
+| --- | --- | --- | --- | --- |
+| 1 | Sync call | Frontend → EIMS (gateway) | API-EIMS-05 | Version check in the local transaction |
+| 2 | Sync call | EIMS → identity provider (`eims-admin` client) | UM0040 (INT-08) | Inside the local transaction, commit after success (D-134) |
+| 3 | Back-channel logout | Identity provider → gateway instances | AUTH0040 (Part01 §9.6) | Every gateway instance drops the user's sessions |
+
+**Text version of the diagram**
+
+| Step | From → to | Message | Result |
+| --- | --- | --- | --- |
+| 1 | Admin → frontend → gateway → EIMS | Confirm: POST deactivate with the version | – |
+| 2 | EIMS → database | Begin, lock row, compare version, count active reports | Refused: 422 EIMS-BUS-003 or 004, or 409 EIMS-CON-001 |
+| 3 | EIMS → database | Set inactive, audit entries | Not yet committed |
+| 4 | EIMS → identity provider | Disable account, end all sessions | Back-channel logout to every gateway instance |
+| 5a | EIMS → database → frontend | OK: commit, 200 | "<name> deactivated." |
+| 5b | EIMS → database → frontend | Error: rollback, 503 EIMS-SYS-002 | Nothing changed |
+
+###### 3.2.5.5.4 Frontend
+
+Only what is not already in the UX summary:
+
+1. The dialog's confirm button is disabled while the request runs; EIMS-BUS-004 is shown in the dialog with the listed reports and a hint to reassign them first (FR-EIMS-018).
+2. After success the form reloads read only with the Inactive badge (D-133).
+
+###### 3.2.5.5.5 Backend
+
+| API id | API name | Method & endpoint | Purpose | Request (key fields) | Response (key fields) | Roles |
+| --- | --- | --- | --- | --- | --- | --- |
+| API-EIMS-05 | Deactivate employee | POST /api/eims/v1/employees/{employeeId}/deactivate | Deactivate the employee, disable the account and end all sessions | version | 200: employeeId, isActive false, status, version | Admin |
+
+1. Transaction boundary: row lock to commit, with UM0040 inside it.
+2. Idempotency: none; a repeated call after success is refused as inactive (EIMS-BUS-003); after a failed commit it repeats UM0040 harmlessly (design note 1).
+3. No events.
+
+###### 3.2.5.5.6 Database
+
+| Entity | Operation (C / R / U / soft-D) | Purpose in this function |
+| --- | --- | --- |
+| EMPLOYEE | R, soft-D (`is_active` false) | Row lock, version check, active direct reports, deactivation |
+| AUDIT_ENTRY | C | EMPLOYEE `is_active` true → false; USER_ACCOUNT `enabled` true → false |
+
+###### 3.2.5.5.7 Validation & error handling
+
+| Rule ref (BRD VR / BR) | Layer (UI / API / DB) | Error code | HTTP status | Message |
+| --- | --- | --- | --- | --- |
+| BR-CMN-14 | API | EIMS-BUS-004 | 422 | Deactivation refused, listing the active direct reports (FR-EIMS-018) |
+| BR-EIMS-07, D-133 – already inactive | API | EIMS-BUS-003 | 422 | Inactive employee cannot be changed |
+| FR-CMN-014 | API | EIMS-CON-001 | 409 | Refresh message |
+| Neutral refused response | API | EIMS-ACC-001 | 404 | "You don't have access to this page." |
+| BRD §4.2 – Admin only | Gateway, API | EIMS-ACC-002 | 403 | "You don't have access to this page." |
+| INT-08 – account not disabled | API | EIMS-SYS-002 | 503 | "Employee could not be deactivated. Please try again." with the reference |
+
+###### 3.2.5.5.8 Security & data privacy
+
+| Item | Detail |
+| --- | --- |
+| Authorization check per API | API-EIMS-05: gateway Admin route; service checks the Admin role claim |
+| Sensitive fields | None returned |
+| Masking (UI / API response) | Not applicable |
+| Encryption (in transit / at rest / field-level) | TLS at the edge; encrypted storage |
+| Logging rule | Employee Id, steps and result only |
+| Threat review – TB-1 browser → gateway | T: forged deactivation – CSRF token and SameSite cookie (ADR-004) |
+| Threat review – TB-2 gateway → EIMS | E: non-Admin – route and role check (EIMS-ACC-002). R: who deactivated – audit with the Admin user name and flow reference |
+| Threat review – TB-4 EIMS → identity provider | S / E: a deactivated user keeping access – account disabled and every session ended at once, back-channel logout to every gateway instance (D-97, D-111); remaining exposure at most the access-token lifetime (Part01 AR-02). R: identity-provider admin event (AUTH0060) |
+| Threat review – TB-5 EIMS → database | T / R: audit in the same transaction, insert-and-select-only grant |
+
+###### 3.2.5.5.9 Notifications, audit & activity log
+
+| Trigger | Notification (NOT id) | Activity log entry | Audit fields captured |
+| --- | --- | --- | --- |
+| Employee deactivated | None (C-05) | `process` API-EIMS-05; steps `validated`, `version-checked`, `rules-checked`, `employee-deactivated`, `account-disabled`, `committed` | EMPLOYEE `is_active`; USER_ACCOUNT `enabled`; changed_by Admin user name |
+| Refused or failed | None | Steps up to the refusal; `rolled-back` after a failed identity-provider call or commit | None |
+
+###### 3.2.5.5.10 Scenarios
+
+| Scenario id | Scenario | Type | Requirement ref | Pre-condition | Expected result | Test level |
+| --- | --- | --- | --- | --- | --- | --- |
+| EIMS0050-S01 | Deactivate an employee without reports | Positive | FR-EIMS-018, FR-UM-007 | EMP0009 signed in elsewhere | 200; Inactive; EMP0009's next action opens sign-in; sign-in with the correct password shows the inactive-account message | API, E2E |
+| EIMS0050-S02 | Manager with active reports | Negative | BR-CMN-14 | 2 active reports | 422 EIMS-BUS-004 listing both; nothing changed | API |
+| EIMS0050-S03 | Waiting items stay with the approver | Positive | BR-CMN-06, D-104 | Employee's leave waiting for M1 | After deactivation M1 can still approve it | E2E |
+| EIMS0050-S04 | Identity provider down | Failure | D-134 | – | 503 EIMS-SYS-002; employee still Active; account unchanged | API |
+| EIMS0050-S05 | Commit fails after the account was disabled | Failure | D-134 | Database fails at commit | Employee shows Active; repeating Deactivate succeeds and commits | API (integration) |
+| EIMS0050-S06 | Already inactive | Negative | BR-EIMS-07 | Inactive employee | 422 EIMS-BUS-003 | API |
+| EIMS0050-S07 | Stale version | Concurrency | FR-CMN-014 | Rate changed in another session | 409 EIMS-CON-001 | API |
+| EIMS0050-S08 | Non-Admin call | Negative | BRD §4.2 | Manager session | 403 EIMS-ACC-002 | API |
+
+##### 3.2.5.6 Notes, issues & assumptions
+
+1. Q: waiting items of an inactive report whose manager is then deactivated have no active approver – OI-P02M1-03 (§5.2).
+2. Note: the disabling and session ending are designed in PMS-HLD-Part02-M5-SUP (UM0040, AUTH0040).
+
+#### 3.2.6 EIMS0060 – Reset an employee's password (Module: EIMS, Approved)
+
+##### 3.2.6.1 Purpose, trigger and conditions
+
+The Admin issues a new temporary password for an employee; earlier passwords stop working, any lock is cleared and all sessions end (FR-EIMS-005, FR-UM-006).
+
+| Item | Detail |
+| --- | --- |
+| Delivery phase | POC |
+| Trigger | Admin confirms "Reset password" on a row of SCR-EIMS-01 |
+| Pre-conditions | Signed in as Admin; employee active (D-134) |
+| Post-conditions | Account holds a new temporary password to be replaced at the next sign-in; lock and failed-attempt count cleared; all the user's sessions ended (UM0030); audit entry written; temporary password returned once. No EIMS business record changes |
+
+##### 3.2.6.2 Actor & data scope
+
+| Role | Access (Read / Read-write / Approve / None) | Data scope (row-level) |
+| --- | --- | --- |
+| Employee | None – route refused (EIMS-ACC-002); no self-service reset (D-07) | – |
+| Manager | None – route refused (EIMS-ACC-002) | – |
+| Admin | Read-write | All active employees; the Admin's own password is reset by IT operations outside PMS (FR-UM-005) |
+
+##### 3.2.6.3 Requirement traceability
+
+| Source | References |
+| --- | --- |
+| BRD functional requirements | FR-EIMS-005; FR-UM-006; FR-AUTH-005, 013, 022; NOT-EIMS-06; INT-08 |
+| BRD business / validation rules | BR-EIMS-07 |
+| BRD NFRs | NFR-03, NFR-05; NFR-EIMS-02; NFR-SUP-01 |
+| UX | UJ-EIMS-08; SCR-EIMS-01 (Reset password dialog) |
+| Decisions | D-07, D-28, D-97, D-104, D-111, D-132, D-134 |
+| Related functions – depends on | EIMS0030 (temporary password), UM0030 (set temporary password, clear lock, end sessions), AUTH0040, UM0060, ADM0010, ADM0030, ADM0040 |
+| Related functions – used by | EIMS0010 (row action); XF-09 (anchor §5.9); AUTH0020 (Set password at the next sign-in) |
+
+##### 3.2.6.4 Navigation & prototype reference
+
+**Navigation:** Menu > Employees > row action Reset password > confirmation dialog > one-time password panel
+
+**Prototype:** `docs/01-ux/mockups/html/scr-eims-01-directory.html` · UX summary `docs/01-ux/ux-summary/scr-eims-01-directory.md`
+
+##### 3.2.6.5 Solution approach
+
+###### 3.2.6.5.1 Design description
+
+The [Reset an employee's password] function lets the Admin work with one activity:
+
+1. Reset with confirmation and one-time display
+
+**Reset with confirmation and one-time display**
+
+1. After confirmation the temporary password is shown once with Copy and "Temporary password issued…" (UX summary §5, NOT-EIMS-06).
+2. Run via [API-EIMS-06 : POST /api/eims/v1/employees/{employeeId}/reset-password (Purpose : issue a new temporary password, clear any lock and end all sessions; return the password once)].
+3. DB entities: [EMPLOYEE] (read, row lock), [AUDIT_ENTRY]; identity provider through UM0030.
+4. Rules: employee active (D-134); no version, as no EIMS record changes.
+
+###### 3.2.6.5.2 Design notes
+
+1. **Order of the identity-provider call and the commit (D-134).** One EIMS transaction locks the employee row and checks it is active, generates the temporary password (EIMS0030), writes the USER_ACCOUNT audit entry (no value), calls UM0030 and commits only after it succeeds; the password is returned only after the commit. An identity-provider failure rolls back (EIMS-SYS-002), so nothing changes and no audit entry claims a reset. If the commit fails after UM0030, the account holds a temporary password nobody saw and there is no audit entry; the Admin resets again, which replaces it (FR-UM-006). The failed commit is in the activity log.
+2. **Row lock.** Serialises a reset with a deactivation of the same employee, so a reset never re-enables or follows a disabled account.
+3. **No version.** The command changes no EIMS business record (anchor §6.1 version rule applies to record changes); repeated resets simply issue a new password each time.
+4. **Temporary password.** Same generator and handling as onboarding (EIMS0030, D-132): returned only in the 200 response, never stored, audited or logged.
+
+###### 3.2.6.5.3 Sequence & orchestration
+
+```mermaid
+sequenceDiagram
+  actor AD as Admin
+  participant FE as Shell / EIMS package
+  participant GW as API gateway
+  participant E as EIMS service
+  participant DB as eims database
+  participant IDP as Identity provider (UM0030)
+  AD->>FE: Confirm Reset password
+  FE->>GW: POST reset-password (CSRF token)
+  GW->>E: POST reset-password (access token, X-Flow-Ref)
+  E->>DB: Begin, lock employee row, check active
+  alt Inactive
+    E->>DB: Rollback
+    E-->>FE: 422 EIMS-BUS-003
+  else Active
+    E->>E: EIMS0030 temporary password
+    E->>DB: Audit entry USER_ACCOUNT password reset (no value)
+    E->>IDP: Set temporary password, clear lock, end all sessions
+    alt Identity provider OK
+      IDP-->>E: OK
+      E->>DB: Commit
+      E-->>FE: 200 temporaryPassword (once)
+      FE-->>AD: One-time panel with Copy
+    else Identity provider error
+      IDP-->>E: Error
+      E->>DB: Rollback
+      E-->>FE: 503 EIMS-SYS-002 with flow reference
+    end
+  end
+```
+
+| Step | Type (sync call / event / job / workflow) | Producer → consumer | Event / API | Consistency (local tx / outbox / saga / compensation) |
+| --- | --- | --- | --- | --- |
+| 1 | Sync call | Frontend → EIMS (gateway) | API-EIMS-06 | Row lock in the local transaction |
+| 2 | Sync call | EIMS → identity provider (`eims-admin` client) | UM0030 (INT-08) | Inside the local transaction, commit after success (D-134) |
+| 3 | Back-channel logout | Identity provider → gateway instances | AUTH0040 | Every gateway instance drops the user's sessions |
+
+**Text version of the diagram**
+
+| Step | From → to | Message | Result |
+| --- | --- | --- | --- |
+| 1 | Admin → frontend → gateway → EIMS | Confirm: POST reset-password | – |
+| 2 | EIMS → database | Begin, lock row, check active | Inactive: 422 EIMS-BUS-003 |
+| 3 | EIMS | EIMS0030 generates the temporary password | – |
+| 4 | EIMS → database | USER_ACCOUNT audit entry (no value) | Not yet committed |
+| 5 | EIMS → identity provider | Set temporary password, clear lock, end sessions | – |
+| 6a | EIMS → database → frontend | OK: commit, 200 with the password | One-time panel |
+| 6b | EIMS → database → frontend | Error: rollback, 503 EIMS-SYS-002 | Nothing changed |
+
+###### 3.2.6.5.4 Frontend
+
+Only what is not already in the UX summary:
+
+1. The row action is shown only for active employees; the dialog's confirm is disabled while the request runs.
+2. The temporary password is held only in the panel's memory and dropped when the panel closes or the page reloads (as EIMS0020).
+
+###### 3.2.6.5.5 Backend
+
+| API id | API name | Method & endpoint | Purpose | Request (key fields) | Response (key fields) | Roles |
+| --- | --- | --- | --- | --- | --- | --- |
+| API-EIMS-06 | Reset password | POST /api/eims/v1/employees/{employeeId}/reset-password | Issue a new temporary password, clear any lock, end all sessions; return the password once | – (no body) | 200: employeeId, temporaryPassword | Admin |
+
+1. Transaction boundary: row lock to commit, with UM0030 inside it.
+2. Idempotency: none; each call issues a new password.
+3. No events.
+
+###### 3.2.6.5.6 Database
+
+| Entity | Operation (C / R / U / soft-D) | Purpose in this function |
+| --- | --- | --- |
+| EMPLOYEE | R (row lock) | Employee exists and is active; serialises with deactivation |
+| AUDIT_ENTRY | C | USER_ACCOUNT `password-reset`, no old or new value (FR-ADM-104) |
+
+###### 3.2.6.5.7 Validation & error handling
+
+| Rule ref (BRD VR / BR) | Layer (UI / API / DB) | Error code | HTTP status | Message |
+| --- | --- | --- | --- | --- |
+| BR-EIMS-07, D-134 – inactive | API | EIMS-BUS-003 | 422 | Inactive employee cannot be changed |
+| Neutral refused response | API | EIMS-ACC-001 | 404 | "You don't have access to this page." |
+| BRD §4.2 – Admin only | Gateway, API | EIMS-ACC-002 | 403 | "You don't have access to this page." |
+| INT-08 – reset failed | API | EIMS-SYS-002 | 503 | "Password could not be reset. Please try again." with the reference |
+
+###### 3.2.6.5.8 Security & data privacy
+
+| Item | Detail |
+| --- | --- |
+| Authorization check per API | API-EIMS-06: gateway Admin route; service checks the Admin role claim |
+| Sensitive fields | Temporary password (secret) |
+| Masking (UI / API response) | Only in the 200 response and the one-time panel |
+| Encryption (in transit / at rest / field-level) | TLS at the edge; never at rest in PMS (ADR-003) |
+| Logging rule | Never logged or audited as a value (FR-ADM-104, NFR-EIMS-02); Employee Id and steps only |
+| Threat review – TB-1 browser → gateway | T: forged reset (account takeover attempt) – CSRF token and SameSite cookie (ADR-004). I: password in transit – TLS, no caching of API responses |
+| Threat review – TB-2 gateway → EIMS | E: non-Admin resetting another user – Admin route and role check (EIMS-ACC-002). R: who reset – audit entry with the Admin user name |
+| Threat review – TB-4 EIMS → identity provider | S: old password or session still usable – UM0030 replaces every earlier password and ends every session (FR-UM-006, D-97). R: identity-provider admin event (AUTH0060) |
+| Threat review – TB-5 EIMS → database | R: audit entry in the same transaction; no password value stored |
+
+###### 3.2.6.5.9 Notifications, audit & activity log
+
+| Trigger | Notification (NOT id) | Activity log entry | Audit fields captured |
+| --- | --- | --- | --- |
+| Password reset | None (C-05); NOT-EIMS-06 is the one-time panel | `process` API-EIMS-06; steps `validated`, `employee-checked`, `password-reset`, `committed` | USER_ACCOUNT `password-reset` without values; changed_by Admin user name |
+| Refused or failed | None | Steps up to the refusal; `rolled-back` after a failed identity-provider call or commit | None |
+
+###### 3.2.6.5.10 Scenarios
+
+| Scenario id | Scenario | Type | Requirement ref | Pre-condition | Expected result | Test level |
+| --- | --- | --- | --- | --- | --- | --- |
+| EIMS0060-S01 | Reset a locked, signed-in employee | Positive | FR-EIMS-005, FR-UM-006 | EMP0007 locked and signed in elsewhere | 200 with a temporary password; other session returns to sign-in; old password refused; new one signs in at once and opens Set password | E2E |
+| EIMS0060-S02 | Password shown once | Positive | NFR-EIMS-02 | After S01 | Not shown again; not in audit or activity log | E2E, log review |
+| EIMS0060-S03 | Inactive employee | Negative | D-134 | Inactive | Row action hidden; API 422 EIMS-BUS-003 | API, E2E |
+| EIMS0060-S04 | Identity provider down | Failure | D-134 | – | 503 EIMS-SYS-002; old password still works; no audit entry | API |
+| EIMS0060-S05 | Two resets in a row | Edge | FR-UM-006 | – | Only the second temporary password works | API (integration) |
+| EIMS0060-S06 | Non-Admin call | Negative | BRD §4.2 | Employee session | 403 EIMS-ACC-002 | API |
+
+##### 3.2.6.6 Notes, issues & assumptions
+
+1. Note: replacing the credential, clearing the lock and ending sessions are designed in PMS-HLD-Part02-M5-SUP (UM0030, AUTH0040).
+
+Further function chapters are added review by review (R6 to R9).
 
 ## 4. NFR summary & inventories
 
@@ -1033,3 +1405,4 @@ Drafted with R10; open items are added as they arise.
 | --- | --- | --- | --- |
 | OI-P02M1-01 | After an eims database restore, user accounts may exist for Employee Ids issued after the backup point; the counter would issue those Ids again and UM0010 would take over those accounts (EIMS0020 design note 2). Restore procedure: compare identity-provider accounts with restored employees and disable or re-onboard the accounts above the restored counter before onboarding resumes | Enterprise Architect – docs/04-standards/database-and-data (planned), with PMS-HLD-Part02-M5-SUP | Open |
 | OI-P02M1-02 | Inactive employees are read only in the admin form (D-133); the BRD (PMS-BRD-M1-EIMS §6.2, FR-EIMS-012) is silent – confirm in the BRD at the set consistency check | Enterprise Architect – set consistency check | Open |
+| OI-P02M1-03 | A manager whose only reports are inactive can be deactivated (BR-CMN-14 counts active reports) while an inactive report still has items waiting for that manager's decision (BR-CMN-06); those items then have no active approver. Decide in the BRD: block the deactivation while the manager is the approver of waiting items, or let the Admin decide them | Product owner – set consistency check (BRD anchor BR-CMN-06, BR-CMN-14) | Open |
