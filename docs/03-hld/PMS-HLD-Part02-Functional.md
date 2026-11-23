@@ -14,13 +14,14 @@ Date: November 2026
 | --- | --- | --- | --- | --- |
 | 1.0 | 0.1 | 23-Nov-2026 | Rajesh Verma | First draft of §1–§3, based on the approved BRD set v1.0 (D-107), UX v1.1 (D-105), PMS-HLD-Part01 v1.0 rev 0.9 and PMS-HLD-Part01a v1.0 rev 0.5; Part02 anchor design answers of 23 Nov 2026 (D-122) |
 | 1.0 | 0.2 | 23-Nov-2026 | Rajesh Verma | Draft of §4 (function index, 77 functions) and §5 (cross-module flows XF-01 to XF-09); open items OI-P02-01 and 02 (D-123) |
+| 1.0 | 0.3 | 23-Nov-2026 | Rajesh Verma | Draft of §6 (API, event, error, audit and activity log, notification and frontend conventions; event ordering rule; shared design system) |
 
 ### 1.2 Review and approval
 
 | Role | Name | Date | Decision |
 | --- | --- | --- | --- |
-| Architect | Rajesh Verma (Enterprise Architect) | 23-Nov-2026 | §1–§3 approved (D-122); §4–§5 approved (D-123) |
-| Product owner | Rajesh Verma | 23-Nov-2026 | §1–§3 approved (D-122); §4–§5 approved (D-123) |
+| Architect | Rajesh Verma (Enterprise Architect) | 23-Nov-2026 | §1–§3 approved (D-122); §4–§5 approved (D-123); §6 approved (D-124) |
+| Product owner | Rajesh Verma | 23-Nov-2026 | §1–§3 approved (D-122); §4–§5 approved (D-123); §6 approved (D-124) |
 | Business analyst | | | |
 | Dev lead | | | |
 
@@ -613,3 +614,121 @@ sequenceDiagram
 **Failure handling & compensation:** If the identity provider cannot be reached, the Admin action is refused with the flow reference and nothing changes. The order of the identity-provider call and the EIMS commit, and recovery when the second fails, are designed in PMS-HLD-Part02-M5-SUP (OI-P02-01). Deactivation does not touch AMS, LMS or SMS: waiting items stay with the approver and other open items stay as they are (BR-CMN-06). A user's own password change ends only their other sessions and stays within AUTH (AUTH0030, D-100).
 
 **Reconciliation:** None automatic in the POC; identity-provider security events (AUTH0060) and the activity log show every account change with its flow reference.
+
+## 6. Common design conventions
+
+Conventions every module document applies. Values that a standard will detail refer to the planned standard; the conventions themselves are fixed here (D-124).
+
+### 6.1 API conventions
+
+| Topic | Convention |
+| --- | --- |
+| Base path and versioning | `/api/<module>/v1/<resource>`, module context first, then the major version (D-122): `/api/eims/v1`, `/api/ams/v1`, `/api/lms/v1`, `/api/sms/v1`. The edge passes `/api` to the API gateway, which routes by `/api/<module>` (Part01 §8.2 row 12). Each module versions its contract on its own; additive changes stay in v1. Version scheme and compatibility rules: docs/04-standards/api-and-integration (planned), OI-P01a-11 |
+| User and system APIs | APIs a user calls (through the gateway, or relayed by another service on behalf of a user, Part01 §9.9) are normal resources. APIs only systems call with a service token – INT-05, INT-06, INT-09, the reconciliation query and the identity-provider hand-over – are grouped under `/api/<module>/v1/internal/…`, which the gateway never routes from the browser |
+| Contracts | One OpenAPI 3 contract per module and major version in `contracts/openapi/` (e.g. `ams-v1.yaml`), written before implementation (D-16, D-18); each operation carries its API id `API-<MOD>-nn` (§7.1) and a function id (§4) |
+| Resource naming | Plural nouns in kebab-case, ids in the path (`/attendance-entries/{id}`, `/leave-requests/{id}`, `/salary-records/{id}`, `/employees/{employeeId}`, `/profile-change-requests/{id}`). A status change is an action sub-resource with POST (`/{id}/submit`, `/{id}/approve`, `/{id}/reject`, `/{id}/withdraw`, `/{id}/reopen`, `/{id}/accept`, `/{id}/dispute`, `/{id}/keep-as-is`, `/{id}/discard`, `/{id}/cancel`); a bulk action is POST on the collection action (`/attendance-entries/approve`) with a list of items |
+| Methods and status codes | GET reads (safe, may be retried); POST creates (201 with the created record) and runs actions (200 with the updated record, or per-item results for bulk); PUT saves a whole draft or form (200); no DELETE – records are never physically deleted (BR-CMN-06), discard and cancel are actions. Errors: 400 validation (VAL), 401 no or expired session, 403 route not allowed for the role (ACC), 404 record not found or outside the data scope (ACC, neutral, §6.3), 409 changed by someone else (CON), 422 business rule (BUS), 503 a dependency is unavailable (SYS), 500 unexpected (SYS) |
+| Request / response envelope | No wrapper for single records. Lists: `{ items, page, size, totalItems }`. Bulk actions: `{ results: [ { id, outcome: "done" \| "failed", version, error } ] }`, always 200 when the request itself was valid, so failed items keep their own error and stay selected (FR-CMN-014) |
+| Error format | Problem details (RFC 9457) with PMS fields – §6.3 |
+| Pagination, sorting, filtering | Server-side paging on every list (AP-DATA-17): `page` (from 1) and `size` (default 25, maximum 100); `sort=<field>,asc\|desc` on the fields the module document lists; filters as named query parameters; date ranges `from` and `to`, inclusive, from on or before to. The reconciliation query (AMS0100) uses the same paging |
+| Idempotency | No idempotency key in the POC: commands are never retried automatically (Part01 §8.5); a repeated command is refused by the status rules or the version check. Reads are retried up to 2 times. Event consumers are idempotent (§6.2) |
+| Concurrency | Every business record has an integer version, raised by 1 on each change; the same number is carried in events as the subject version (§6.2). Every command carries the version it was based on in its body – per item in bulk commands. A mismatch returns 409 with code `<MOD>-CON-001` and the message to refresh (FR-CMN-014, NFR-06) |
+| Date, time, money, enum formats | JSON with camelCase names. Business dates (work date, leave dates, date of joining) as ISO dates `yyyy-mm-dd`, meaning the IST calendar date; times of day `HH:mm` (attendance in 15-minute steps); timestamps ISO-8601 in UTC with `Z`, shown in IST (BR-CMN-18, AP-DATA-13). Amounts and hourly wage rates as decimal strings with 2 decimals (e.g. `"2150.00"`), always INR, no currency field (D-08); hours as decimal numbers with 2 decimals. Status and type values as upper-case codes (`SUBMITTED`, `MANAGER_APPROVED`, `CASUAL`); screen labels follow the UX summaries |
+| Correlation and tracing headers | `X-Flow-Ref` on every request and response: created by the gateway when a user request has none, by SMS for each job run, and passed on by every service call (Part01 §10.5); `traceparent` (W3C Trace Context) on every call. Every error body repeats the flow reference |
+| Session and request protection | Browser → gateway: HttpOnly session cookie plus the CSRF token header on every POST and PUT (ADR-004, Part01 §9.6); gateway → service and service → service: bearer access token (user token relayed or service token, Part01 §9.9); payload limit 1 MB (Part01 §9.8) |
+
+### 6.2 Event conventions
+
+| Topic | Convention |
+| --- | --- |
+| Naming | `<module>.<entity>.<past-tense-verb>`: `ams.attendance.approved` (INT-01), `ams.attendance.reopened` (INT-02). One topic for attendance events with one durable subscription for SMS (Part01 §8.3) |
+| Envelope | `eventId` (unique id), `eventType`, `eventVersion` (schema major version), `occurredAt` (UTC), `source` (module), `flowRef`, `traceparent`, `actor` (`type`: EMPLOYEE, ADMIN or SYSTEM; `id`: Employee Id or Admin user name), `subject` (`type`: attendance; `id`; `version` – the attendance's record version after the change), `data` (event payload). The actor is recorded in the consumer's audit entries (FR-ADM-102, Part01 §9.9) |
+| Payload | Approved: attendance id, Employee Id, work date, from and to time, hours, approver and approval time (FR-AMS-030). Reopened: attendance id, Employee Id, work date, reopen remarks, reopened by and reopen time (FR-AMS-031, FR-SMS-042). Schemas in `contracts/events/` (e.g. `ams.attendance.approved-v1.json`), designed in PMS-HLD-Part02-M2-AMS (planned) – the ADR-006 follow-up |
+| Versioning and compatibility | Within one `eventVersion` only optional fields are added; a breaking change publishes a new version alongside the old until the consumer has moved; scheme in docs/04-standards/api-and-integration (planned), OI-P01a-11 |
+| Delivery and ordering guarantees | At least once. The outbox row is written in the same transaction as the status change; the relay publishes unsent rows in the order they were written and marks them sent after the broker confirms (ADR-006). Arrival order is not guaranteed (redelivery, dead-letter, two SMS instances). **Ordering rule (D-122, closes OI-P01a-06):** for each attendance, SMS applies an event only if its `subject.version` is higher than the last version it applied for that attendance; otherwise it acknowledges the event, changes nothing and logs it as stale |
+| Idempotent consumers | In one local transaction SMS checks the event id (already processed → acknowledge, no change), checks the ordering rule, applies the change (approved: create the Generated record unless a non-voided record already exists for the attendance, FR-SMS-041; reopened: void the non-voided record if there is one) and stores the event id and the applied version. Without a salary record to void, the reopened version is still stored, so a late approved event with a lower version is ignored. The nightly reconciliation stores the version it read in the same way (XF-04). Storage in PMS-HLD-Part03 (planned) |
+| Competing consumers | The SMS instances share the one subscription queue; each event goes to one instance (AP-CP-11). Two events for the same attendance handled at the same time by two instances are serialised by the per-attendance version record (one instance waits or fails and is redelivered), so the ordering rule holds |
+| Dead-letter and replay | Redelivery up to 5 times with backoff (1 s doubling); processing time limit 30 s; then the dead-letter queue, an alert to IT operations, and the nightly reconciliation repairs the business outcome (Part01 §8.5). A replayed event passes the same id and version checks, so a replay never undoes a newer change. The inspection and replay procedure stays with docs/04-standards/api-and-integration (planned), OI-P01a-07 (D-122) |
+
+### 6.3 Error code scheme
+
+Every error response uses problem details (RFC 9457) with three PMS fields:
+
+| Field | Content |
+| --- | --- |
+| `type`, `title`, `status`, `detail` | Standard fields; `title` is the user message from the BRD / UX summary; `detail` never holds personal or confidential values or stack traces |
+| `code` | `<MOD>-<CAT>-nnn` |
+| `flowRef` | The flow reference; the frontend shows "Reference: <flow reference>" with every system error (FR-ADM-114) |
+| `errors[]` | For validation and business-rule errors: `field`, `code`, `message` per field, shown at the field (UX summaries §7) |
+
+| Category | Meaning | HTTP status | Message shown |
+| --- | --- | --- | --- |
+| VAL | Validation of input (BRD VR rules) | 400 | BRD / UX field message |
+| BUS | Business rule refused (BRD BR rules, status rules) | 422 | BRD / UX message |
+| CON | Changed by someone else (version mismatch) | 409 | Refresh message (FR-CMN-014) |
+| ACC | Refused access – neutral response | 404 for a record (missing or outside the data scope); 403 for a route the role may not use | "You don't have access to this page." (FR-UM-015) |
+| SYS | System or dependency error | 503 or 500 | Generic message plus "Reference: <flow reference>" |
+
+| Module | Error code range / prefix | Owner |
+| --- | --- | --- |
+| EIMS | EIMS-VAL / BUS / CON / ACC / SYS-001 … | PMS-HLD-Part02-M1-EIMS (planned) |
+| AMS | AMS-… | PMS-HLD-Part02-M2-AMS (planned) |
+| LMS | LMS-… | PMS-HLD-Part02-M3-LMS (planned) |
+| SMS | SMS-… | PMS-HLD-Part02-M4-SMS (planned) |
+| API gateway | GW-… (session expired, CSRF token missing, rate limit, downstream unavailable) | PMS-HLD-Part02-M5-SUP (planned) |
+| Shell | SH-… (client-side errors, e.g. a card that cannot load) | This anchor §6.5 |
+
+Rules:
+
+- Every VAL and BUS code names the BRD VR or BR id it enforces; the error catalogue of each module is in its module document and is rolled up for the activity log (Part01 §10.3).
+- **Neutral refused response (FR-UM-015, D-99):** a record that does not exist and a record outside the user's data scope return the same 404 body with code `<MOD>-ACC-001` and no record data; a route the role may never use returns 403 with `<MOD>-ACC-002`. The shell shows the same no-access page for both (UM0070). Both are written to the activity log as refused with the real reason, user and flow reference (FR-ADM-117).
+- Sign-in, password and lockout messages are those of FR-AUTH-002 to 015, shown by the identity provider's pages; they never reveal whether an Employee Id exists (NFR-03).
+
+### 6.4 Audit, activity log and notification conventions
+
+| Topic | Convention |
+| --- | --- |
+| Audit log – what | Every create, update and status change of a business record (employee incl. Admin-owned fields, profile change request, attendance, leave, salary record) and every user-account change made through EIMS: one entry per changed field with old and new value; creation with its initial values; a status change with old and new status and the remarks entered (FR-ADM-101, 102, BR-CMN-19) |
+| Audit log – where and how | In the owning module's own database, written in the same local transaction as the change (Part01 §5.1, D-110 (12)); append only, never changed or deleted, kept as long as the record (FR-ADM-103); sensitive values kept in full and protected like the record; passwords never recorded (FR-ADM-104). Entry fields: record type, record id, field, old value, new value, process (API id or job / event id, e.g. API-AMS-nn, JOB-CMN-01, INT-01), user (Employee Id, Admin user name or System; for event-driven changes the envelope actor), UTC time, flow reference. Table structure in PMS-HLD-Part03 (planned) |
+| Account changes | Account create, role change, password reset and disable are audited by EIMS as account changes (no password values) and recorded by the identity provider as security events (FR-AUTH-030, AUTH0060) |
+| Audit history extract | No viewer in the POC; IT operations extract a record's history at the request of the HR or Finance Manager (FR-ADM-105, ADM0020); procedure in docs/04-standards/logging-and-observability (planned) |
+| Activity log | Standard log record of Part01 §10.3 for every API operation, job and event: entry, each completed step, exit with result and duration (FR-ADM-111, 112); `process` = API id, job id or event type; refused requests with event type `refused` and the reason (FR-ADM-117); stale or duplicate events with event type `event-consumed` and result `ignored`. Masking of personal and confidential values (FR-ADM-115) and retention 90 days in Production (FR-ADM-116) as Part01 §10.8 |
+| Step names | Each module document names the significant steps of its functions (e.g. `validated`, `approver-resolved`, `saved`, `outbox-written`), so a flow can be followed step by step with one flow reference (US-ADM-02) |
+| Notifications | None in the POC (C-05; NM is Phase 2, D-57). Reminders are dashboard to-do items and approvals-inbox items (BRD §5.3, XF-05); the temporary password is passed on by the Admin outside PMS (D-104). Operational alerts to IT operations (Part01 §10.7, D-111 (4)) are not business notifications. §7.4 records this |
+
+### 6.5 Frontend conventions
+
+**Composition (ADR-001).** The shell application (`platform/shell-ui`) is built with the four module packages (`services/<module>/frontend`) into one application. The shell owns the layout, menu, session handling, the shared API client, the system-error and no-access pages, and the dashboard and inbox frames (SH0010 to SH0040). Each module package registers with the shell: its routes (under `/eims`, `/ams`, `/lms`, `/sms`), its menu items per role (navigation map, UX Journey Index), its dashboard card and its approvals-inbox tab with count. Packages never call each other's code; they call only their own module's API through the gateway, apart from documented cross-module actions (SMS0070 → AMS0080).
+
+**Shared design system (D-122, closes OI-P01a-03).** A design-system part of the shell provides the style tokens and common components; module packages use only these and define no tokens of their own. It is consumed at build time with the shell (ADR-001); it is frontend code of the shell, not a shared backend library, so D-18 (contracts-only sharing between services) holds. Detail rules (naming, component API, upkeep) in docs/04-standards/frontend-and-ux (planned).
+
+| Style token group | Values (from the approved mockup style, D-27, `docs/01-ux/mockups/html/assets/pms-mockup.css`) |
+| --- | --- |
+| Colours – surfaces and text | background `#f5f7fa`, surface `#ffffff`, border `#dde3ea`, strong border `#c3ccd7`; text `#1f2933`, secondary `#52606d`, tertiary `#7b8794` |
+| Colours – meaning | primary `#1f5fae` (hover `#184d8e`, tint `#e8f0fa`); success `#1e7b4f` (tint `#e3f4ea`); warning `#a35f00` (tint `#fdf1dc`); danger `#b42318` (tint `#fdeceb`); muted tint `#eef1f4` |
+| Shape and type | radius 8 px; light shadow; system sans-serif font stack; base text 14 px, line height 1.5; visible focus outline 2 px in primary |
+| Layout | header 56 px; sidebar 232 px; content area designed for 1366 px wide screens (NFR-04) |
+
+| Common component | Used for | Source |
+| --- | --- | --- |
+| Layout – header with user menu, role-filtered sidebar with Approvals count, breadcrumb, page head | Every screen | SCR-SH-00 |
+| Card and tile | Dashboard cards, module summary tiles | SCR-SH-03, SCR-AMS-01, SCR-LMS-01, SCR-SMS-01 |
+| Table with toolbar, filters, tabs with counts, bulk-selection bar | Lists, team views, approvals inbox | SCR-SH-04, SCR-AMS-03, SCR-LMS-03, SCR-SMS-02, SCR-EIMS-01 |
+| Status badge (Draft, Submitted, Approved, Rejected, Cancelled, Leave, warning) – text plus colour, never colour alone | Status display | All module screens; NFR-04 |
+| Alert and banner | Status banners, remarks of a rejection, profile-not-approved banner | SCR-EIMS-03, SCR-AMS-02, SCR-LMS-02 |
+| Form field with hint, required mark and field error | Forms | SCR-EIMS-02, SCR-EIMS-03, SCR-AMS-02, SCR-LMS-02, SCR-SH-02 |
+| Buttons (primary, secondary, danger) | Actions | All |
+| Dialog for confirmation and required remarks (up to 500 characters) | Reject, reopen, keep as is, dispute, discard, cancel, deactivate, reset password | BR-CMN-03; module screens |
+| Toast | Success messages | All |
+| Empty state, loading indicator, error panel with Retry and "Reference: <flow reference>" | Screen and card states | UX summaries §7; FR-CMN-008; FR-ADM-114 |
+| No-access page | Neutral refused response | SCR-SH-00; FR-UM-015 |
+| Month calendar grid | My attendance | SCR-AMS-01 |
+| Key-value list and side-by-side compare | Profile view and change-request review | SCR-EIMS-03, SCR-EIMS-04 |
+
+| Topic | Convention |
+| --- | --- |
+| State handling | The module API is the source of truth; each page loads its own data and keeps no copy across pages; after a command the affected records are reloaded; bulk results are shown per item and failed items stay selected (FR-CMN-014) |
+| Errors and session | The shared API client sends the CSRF token, reads `X-Flow-Ref`, and maps responses: 401 → sign-in page with "Your session has expired. Please sign in again." (FR-CMN-016); 403 and 404 with an ACC code → no-access page; 400 / 422 → field or form messages; 409 → refresh message; 5xx → error panel with Retry and the reference |
+| Screen states | Empty, loading, validation error, system error, no access as in each UX summary §7; a dashboard card fails on its own (FR-CMN-008) |
+| Formats on screen | Dates and times in IST, amounts with ₹ and 2 decimals, hours with 2 decimals, labels and messages exactly as in the BRD and UX summaries; English only |
+| Accessibility and browsers | WCAG 2.1 AA, contrast at least 4.5:1, keyboard operable, landmarks as SCR-SH-00 §8; latest Chrome and Edge on desktop (NFR-04) |
