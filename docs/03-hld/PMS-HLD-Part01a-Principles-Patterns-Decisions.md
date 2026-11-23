@@ -14,6 +14,7 @@ Date: November 2026
 | 1.0 | 0.3 | 23-Nov-2026 | Rajesh Verma | Draft of §4 groups G–L (MS, CP, EIP, INT, DATA, SEC); open items OI-P01a-04 to 11; §2 Partial rule clarified |
 | 1.0 | 0.4 | 23-Nov-2026 | Rajesh Verma | Draft of §4 groups M–R (OBS, PERF, RES, DEV, QA, DG); all 330 rows assessed; §3 totals; open items OI-P01a-12 to 17 |
 | 1.0 | 0.5 | 23-Nov-2026 | Rajesh Verma | Draft of §5 (ADR register ADR-001 to ADR-006) and §6 (ADR record format); D-113 added to the Ref of AP-MS-29 and AP-CP-40; Part01 §4.1 counts recorded (Part01 rev 0.9) |
+| 1.0 | 0.6 | 23-Nov-2026 | Rajesh Verma | §7: OI-P01a-03 (shared design system) and OI-P01a-06 (event ordering) closed by the PMS-HLD-Part02 anchor (D-122) |
 
 | Role | Name | Date | Decision |
 | --- | --- | --- | --- |
@@ -571,10 +572,10 @@ Each ADR file uses this structure:
 | --- | --- | --- | --- | --- |
 | OI-P01a-01 | Fitness functions: which key qualities (e.g. response time, coupling between modules, contract compatibility) are checked automatically, and how | AP-GOV-10 | Enterprise Architect | docs/04-standards/architecture-and-design |
 | OI-P01a-02 | Internal service structure: whether domain logic is isolated from framework code by ports and adapters, to support replatforming (D-12) | AP-SD-16 | Enterprise Architect | docs/04-standards/coding-and-code-review |
-| OI-P01a-03 | Shared design system: component library and style tokens used by the shell and every module package | AP-FE-04 | Enterprise Architect | Part02 anchor or docs/04-standards/frontend-and-ux |
+| OI-P01a-03 | Shared design system: component library and style tokens used by the shell and every module package | AP-FE-04 | Enterprise Architect | Closed (D-122): defined in PMS-HLD-Part02 anchor §6.5; detail rules in docs/04-standards/frontend-and-ux (planned) |
 | OI-P01a-04 | Consumer-driven contract tests in addition to schema-based contract verification | AP-MS-26 | Enterprise Architect | docs/04-standards/testing-and-quality |
 | OI-P01a-05 | Service template: content and upkeep of the template copied per service (framework, security, observability, error body, flow reference) without a shared runtime library (D-18) | AP-MS-30 | Enterprise Architect | docs/04-standards/coding-and-code-review |
-| OI-P01a-06 | Ordering of attendance approved and reopened events for the same attendance (late or out-of-order delivery) | AP-CP-38, AP-EIP-32 | Enterprise Architect | Part02 anchor (event conventions) |
+| OI-P01a-06 | Ordering of attendance approved and reopened events for the same attendance (late or out-of-order delivery) | AP-CP-38, AP-EIP-32 | Enterprise Architect | Closed (D-122): attendance version in every event, SMS ignores lower or equal versions – PMS-HLD-Part02 anchor §6.2 |
 | OI-P01a-07 | Dead-letter queue: inspection and replay procedure for IT operations | AP-INT-09 | Enterprise Architect | docs/04-standards/api-and-integration |
 | OI-P01a-08 | Threat-modelling method (e.g. STRIDE) for the security and privacy part of each Part02 function | AP-SEC-16 | Enterprise Architect | docs/04-standards/security, before Part02 modules |
 | OI-P01a-09 | Software bill of materials: whether and how it is produced per image | AP-SEC-17 | Enterprise Architect | docs/04-standards/devops-and-cicd |

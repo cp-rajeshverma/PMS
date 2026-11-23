@@ -28,4 +28,4 @@ AMS writes each attendance-approved or attendance-reopened event to an outbox ta
 
 - **Positive:** Hand-over survives broker or SMS outages; duplicates are harmless; any remaining gap is repaired nightly; one flow reference links AMS and SMS entries.
 - **Negative / trade-offs:** Outbox relay, idempotency record and job lock to build and operate; eventual consistency of up to 1 minute (normal) or one night (failure).
-- **Follow-ups:** Event envelope and schema in `contracts/events` (Part02 anchor); outbox clean-up rule in Part03.
+- **Follow-ups:** Event envelope and schema in `contracts/events` (Part02 anchor); outbox clean-up rule in Part03. Ordering (D-122): every event carries the attendance's record version and SMS ignores an event whose version is lower than or equal to the last one applied for that attendance (PMS-HLD-Part02 anchor §6.2); this extends the decision, no new ADR.
