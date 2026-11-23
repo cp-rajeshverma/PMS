@@ -14,13 +14,14 @@ Date: November 2026
 | --- | --- | --- | --- | --- |
 | 1.0 | 0.1 | 23-Nov-2026 | Rajesh Verma | First draft of §1–§2 and §3.1, based on the approved BRD set v1.0 (D-107), UX v1.1 (D-105), PMS-HLD-Part01 v1.0 rev 0.9, Part01a v1.0 rev 0.7, the Part02 anchor v1.0 rev 0.5 and the Part03 anchor v1.0 rev 0.4; threat-review method, settlement of the identity-provider order in this document and review grouping of 23 Nov 2026 (D-130) |
 | 1.0 | 0.2 | 23-Nov-2026 | Rajesh Verma | §3.2.1 EIMS0010 employee directory drafted: API-EIMS-01, role copy on EMPLOYEE, search, sort and paging (D-131) |
+| 1.0 | 0.3 | 23-Nov-2026 | Rajesh Verma | §3.2.2 EIMS0020 onboarding and §3.2.3 EIMS0030 Employee Id and temporary password drafted: API-EIMS-02, API-EIMS-03, identity-provider call inside the EIMS transaction with take-over of an orphan account (OI-P02-01 for onboarding), 12-character temporary password; OI-P02M1-01 (D-132) |
 
 ### 1.2 Review and approval
 
 | Role | Name | Date | Decision |
 | --- | --- | --- | --- |
-| Architect | Rajesh Verma (Enterprise Architect) | 23-Nov-2026 | §1–§3.1 approved (D-130); §3.2.1 EIMS0010 approved (D-131) |
-| Product owner | Rajesh Verma | 23-Nov-2026 | §1–§3.1 approved (D-130); §3.2.1 EIMS0010 approved (D-131) |
+| Architect | Rajesh Verma (Enterprise Architect) | 23-Nov-2026 | §1–§3.1 approved (D-130); §3.2.1 EIMS0010 approved (D-131); §3.2.2–§3.2.3 EIMS0020–EIMS0030 approved (D-132) |
+| Product owner | Rajesh Verma | 23-Nov-2026 | §1–§3.1 approved (D-130); §3.2.1 EIMS0010 approved (D-131); §3.2.2–§3.2.3 EIMS0020–EIMS0030 approved (D-132) |
 | Business analyst | | | |
 | Dev lead | | | |
 
@@ -56,7 +57,7 @@ Reading rules:
 | --- | --- | --- |
 | 1 | PMS-BRD (anchor) – §4.3 roles and data scope, §5.3 dashboard and inbox, §6 BR-CMN, §7 INT-03 to INT-05, INT-07 to INT-09; PMS-BRD-M1-EIMS; PMS-BRD-M5-SUP (FR-UM-001 to 015, FR-AUTH, FR-ADM-101 to 117) | v1.0, approved baseline (D-107) |
 | 2 | UX Journey Index and UX Summaries SCR-EIMS-01 to 04, SCR-SH-03, SCR-SH-04; mockups `docs/01-ux/mockups/html/scr-eims-0*.html` | v1.1 (D-105) |
-| 3 | Decision log / ADRs | D-01 to D-131; ADR-001 to ADR-006 |
+| 3 | Decision log / ADRs | D-01 to D-132; ADR-001 to ADR-006 |
 
 **Design documents**
 
@@ -192,8 +193,8 @@ Business statuses and transitions are defined in PMS-BRD-M1-EIMS §6.1 (profile)
 | Function id | System function | Type (screen / API / backend job) | UX screen | Delivery phase | Design status |
 | --- | --- | --- | --- | --- | --- |
 | EIMS0010 | View the employee directory – search, filter, show inactive (FR-EIMS-001 to 004, 006) | Screen | SCR-EIMS-01 | POC | Approved |
-| EIMS0020 | Onboard an employee – create the employee and the user account (FR-EIMS-010, 011, 014; INT-08) | Screen | SCR-EIMS-02 | POC | Not started |
-| EIMS0030 | Generate Employee Id and temporary password (FR-EIMS-040, 041; UJ-SYS-04) | Backend process | – (shown once on SCR-EIMS-02) | POC | Not started |
+| EIMS0020 | Onboard an employee – create the employee and the user account (FR-EIMS-010, 011, 014; INT-08) | Screen | SCR-EIMS-02 | POC | Approved |
+| EIMS0030 | Generate Employee Id and temporary password (FR-EIMS-040, 041; UJ-SYS-04) | Backend process | – (shown once on SCR-EIMS-02) | POC | Approved |
 | EIMS0040 | Edit Admin-owned fields – date of joining, role, manager, hourly wage rate (FR-EIMS-012 to 017; INT-08, INT-09) | Screen | SCR-EIMS-02 | POC | Not started |
 | EIMS0050 | Deactivate an employee (FR-EIMS-018; INT-08) | Screen | SCR-EIMS-02 | POC | Not started |
 | EIMS0060 | Reset an employee's password (FR-EIMS-005; INT-08) | Screen | SCR-EIMS-01 | POC | Not started |
@@ -415,7 +416,364 @@ No in-memory copy of other services' data (OI-P03-03 not affected).
 1. Note: the role copy (design note 2) is written only by EIMS0020 and EIMS0040; how it stays in step with the identity provider when one of the two steps fails is designed with those functions (OI-P02-01).
 2. Note: the Admin dashboard's "Recently onboarded employees" (RPT-EIMS-05) is supplied by EIMS0200, not by this API.
 
-Further function chapters are added review by review (R3 to R9).
+#### 3.2.2 EIMS0020 – Onboard an employee (Module: EIMS, Approved)
+
+##### 3.2.2.1 Purpose, trigger and conditions
+
+The Admin creates a new employee and the employee's user account in one action; the Employee Id and the temporary password are shown once.
+
+| Item | Detail |
+| --- | --- |
+| Delivery phase | POC |
+| Trigger | Admin saves SCR-EIMS-02 in create mode ("+ Onboard employee" from SCR-EIMS-01 or the Admin dashboard) |
+| Pre-conditions | Signed in as Admin; the form passes VR-EIMS-02, 04 to 07 and 10 (create); for "None – top-level", no other active top-level employee |
+| Post-conditions | EMPLOYEE saved with a new Employee Id, profile Draft, Active, role copy; user account enabled with the Employee Id as user name, the chosen role and a temporary password to be replaced at first sign-in (FR-UM-001); audit entries written; temporary password returned once. On any failure nothing is saved and no Employee Id is used up |
+
+##### 3.2.2.2 Actor & data scope
+
+| Role | Access (Read / Read-write / Approve / None) | Data scope (row-level) |
+| --- | --- | --- |
+| Employee | None – route refused (EIMS-ACC-002) | – |
+| Manager | None – route refused (EIMS-ACC-002) | – |
+| Admin | Read-write | All employees (manager options from all active managers) |
+
+##### 3.2.2.3 Requirement traceability
+
+| Source | References |
+| --- | --- |
+| BRD functional requirements | FR-EIMS-010, 011, 014; FR-UM-001, 002, 010; NOT-EIMS-06 |
+| BRD business / validation rules | VR-EIMS-02, 04, 05, 06, 07, 10; BR-EIMS-01, 08, 09; BR-CMN-01, 07 |
+| BRD NFRs | NFR-03, NFR-05; NFR-EIMS-01, NFR-EIMS-02 |
+| UX | UJ-EIMS-01, UJ-SYS-04; SCR-EIMS-02 (create mode) |
+| Decisions | D-02, D-24, D-28, D-29, D-71, D-104, D-126, D-130, D-131, D-132; ADR-003 |
+| Related functions – depends on | EIMS0030 (Employee Id, temporary password), UM0010 (account), UM0060, ADM0010, ADM0030, ADM0040 |
+| Related functions – used by | EIMS0010 (+ Onboard employee); XF-01 (anchor §5.1); AUTH0010, AUTH0020 (first sign-in); EIMS0070 (employee completes the profile) |
+
+##### 3.2.2.4 Navigation & prototype reference
+
+**Navigation:** Menu > Employees > + Onboard employee (or Admin dashboard > + Onboard employee) > Employee admin form (create)
+
+**Prototype:** `docs/01-ux/mockups/html/scr-eims-02-admin-form.html` · UX summary `docs/01-ux/ux-summary/scr-eims-02-admin-form.md`
+
+##### 3.2.2.5 Solution approach
+
+###### 3.2.2.5.1 Design description
+
+The [Onboard an employee] function lets the Admin work with the following sections / activities:
+
+1. Basic details, role, manager and hourly wage rate
+2. Save – employee, Employee Id, temporary password and user account in one action
+3. One-time success panel
+
+**Basic details, role, manager and hourly wage rate**
+
+1. Captures first, middle and last name, email, date of joining, role (Employee or Manager), manager or "None – top-level", and hourly wage rate (FR-EIMS-010).
+2. The manager dropdown and the current top-level employee are loaded via [API-EIMS-03 : GET /api/eims/v1/manager-options (Purpose : eligible managers and the current top-level employee for the admin form)].
+3. DB entity: [EMPLOYEE]
+4. Rules: VR-EIMS-02, 04, 06, 07, 10 (create) on the fields; VR-EIMS-05 for the manager; role only Employee or Manager (FR-UM-010).
+
+**Save**
+
+1. Creates the employee and the user account together; on any failure neither exists (D-132).
+2. Saved via [API-EIMS-02 : POST /api/eims/v1/employees (Purpose : onboard an employee – create the employee and the user account, return the Employee Id and the temporary password once)].
+3. DB entities: [EMPLOYEE_ID_COUNTER], [EMPLOYEE], [AUDIT_ENTRY]; identity provider through UM0010.
+4. Employee Id and temporary password from EIMS0030; profile status Draft, Active (BRD §6.1, §6.2).
+
+**One-time success panel**
+
+1. Shows the Employee Id and the temporary password with Copy, then "Back to employees" (UX summary §2, NOT-EIMS-06).
+2. The temporary password comes only from the API-EIMS-02 response and cannot be fetched again (NFR-EIMS-02).
+
+###### 3.2.2.5.2 Design notes
+
+1. **Order of the identity-provider call and the EIMS commit (D-132, settles OI-P02-01 for onboarding).** One EIMS local transaction holds every step: validate, lock and raise EMPLOYEE_ID_COUNTER, generate the temporary password (EIMS0030), insert EMPLOYEE and its audit entries, call UM0010, and commit only when the account exists. If the identity provider refuses, times out or cannot be reached, the transaction is rolled back: no employee, no audit entry, and the counter is not raised, so no Employee Id is lost (FR-EIMS-040, Part03 anchor §2.3).
+2. **Half-done onboarding.** If the commit fails after the account was created – or a timeout hid a successful create – an account exists under an Employee Id that the rollback freed, without an employee. The next onboarding receives the same Id from the counter. UM0010 is "create or take over", keyed by Employee Id (Part01 §8.5): when an account with that user name already exists, it sets the chosen role, a new temporary password and the enabled state, and the onboarding continues. This is safe because an account can only exist without an employee for an Id the counter has not issued: Employee Ids reach EMPLOYEE only by a committed onboarding and are never deleted or reused (BR-EIMS-01, BR-CMN-06). The take-over is written to the activity log (`account-taken-over`) and recorded by the identity provider as a security event. The take-over itself is designed in PMS-HLD-Part02-M5-SUP (UM0010).
+3. **Concurrency.** The counter row lock serialises onboardings: a second Admin save waits until the first commits or rolls back – at most the identity-provider response time (5 s, Part01 §8.5). Onboarding is one by one (D-104), so this wait is acceptable. The same lock also serialises the email-uniqueness and top-level checks of two onboardings; a database uniqueness rule on email and on the one active top-level employee is the backstop (PMS-HLD-Part03-M1-EIMS-Datamodel, planned).
+4. **Not retried.** The command is never retried automatically (anchor §6.1); the Admin saves again after a failure and gets the same Employee Id.
+5. **Email.** Compared case-insensitively against every employee, active or inactive (VR-EIMS-02, D-71); stored as entered.
+6. **Role copy.** The chosen role is saved on EMPLOYEE in the same transaction as the account is created with it (D-131).
+7. **Manager options.** API-EIMS-03 returns active employees whose role copy is Manager, minus the employee and every direct or indirect report of the employee (none at create), plus the current active top-level employee, if any. The save checks VR-EIMS-05 again; the list is a convenience, not the rule.
+8. **Temporary password handling.** Returned only in the 201 response of API-EIMS-02; never stored in eims, never audited or logged; API responses are not cached (Part01 §9.8).
+
+###### 3.2.2.5.3 Sequence & orchestration
+
+```mermaid
+sequenceDiagram
+  actor A as Admin
+  participant FE as Shell / EIMS package
+  participant GW as API gateway
+  participant E as EIMS service
+  participant DB as eims database
+  participant IDP as Identity provider (UM0010)
+  A->>FE: Open create form
+  FE->>GW: GET manager-options
+  GW->>E: GET manager-options (access token)
+  E->>DB: Active managers and top-level employee
+  E-->>FE: managers, topLevelEmployee
+  A->>FE: Save
+  FE->>GW: POST employees (session cookie, CSRF token)
+  GW->>E: POST employees (access token, X-Flow-Ref)
+  E->>E: Validate fields (VR-EIMS-02, 04 to 07, 10)
+  alt Field errors
+    E-->>FE: 400 EIMS-VAL-nnn per field
+  else Valid
+    E->>DB: Begin, lock counter row, raise number
+    E->>E: EIMS0030 Employee Id and temporary password
+    E->>DB: Check email and top-level rule, insert employee Draft Active, audit entries
+    E->>IDP: Create or take over account (Employee Id, role, temporary password)
+    alt Account created or taken over
+      IDP-->>E: OK
+      E->>DB: Commit
+      E-->>FE: 201 employee and temporaryPassword (once)
+      FE-->>A: Success panel with Copy
+    else Refused, timeout or unreachable
+      IDP-->>E: Error
+      E->>DB: Rollback (counter not raised)
+      E-->>FE: 503 EIMS-SYS-002 with flow reference
+      FE-->>A: Employee could not be saved, Reference
+    end
+  end
+```
+
+| Step | Type (sync call / event / job / workflow) | Producer → consumer | Event / API | Consistency (local tx / outbox / saga / compensation) |
+| --- | --- | --- | --- | --- |
+| 1 | Sync call | Frontend → EIMS (gateway) | API-EIMS-02 | Local transaction opened |
+| 2 | Internal | EIMS | EIMS0030 | Counter raised inside the local transaction |
+| 3 | Sync call | EIMS → identity provider (service client `eims-admin`, Part01 §9.2) | UM0010, INT-08 | Create or take over, keyed by Employee Id |
+| 4 | Internal | EIMS → eims database | – | Commit only after step 3 succeeds; rollback otherwise (D-132) |
+
+**Text version of the diagram**
+
+| Step | From → to | Message | Result |
+| --- | --- | --- | --- |
+| 1 | Admin → frontend → EIMS | Open create form; get manager options | Eligible managers, current top-level employee |
+| 2 | Admin → frontend → gateway → EIMS | Save: POST employees | – |
+| 3 | EIMS | Validate fields | Errors: 400 with one EIMS-VAL code per field, nothing saved |
+| 4 | EIMS → database | Begin, lock counter row, raise number | Next Employee Id reserved inside the transaction |
+| 5 | EIMS | EIMS0030 builds the Employee Id and the temporary password | – |
+| 6 | EIMS → database | Check email and top-level rule, insert employee and audit entries | Not yet committed |
+| 7 | EIMS → identity provider | Create or take over the account | – |
+| 8a | EIMS → database → frontend | Account OK: commit, 201 with the temporary password | Success panel |
+| 8b | EIMS → database → frontend | Account failed: rollback, 503 EIMS-SYS-002 | Error with reference; Employee Id not used up |
+
+###### 3.2.2.5.4 Frontend
+
+Only what is not already in the UX summary:
+
+1. The create form loads API-EIMS-03 on open; the role list offers Employee and Manager only; "None – top-level" is offered always, and the form shows the current top-level employee's name when one exists (FR-EIMS-014).
+2. Save is disabled while the request runs, so a double click sends one command.
+3. Field errors from the 400 response are shown at their fields; 503 shows "Employee could not be saved. Please try again." with "Reference: <flow reference>" (UX summary §7).
+4. The temporary password is held only in the success panel's memory and is dropped when the panel is left or the page is reloaded; it is never written to browser storage or the URL.
+
+###### 3.2.2.5.5 Backend
+
+| API id | API name | Method & endpoint | Purpose | Request (key fields) | Response (key fields) | Roles |
+| --- | --- | --- | --- | --- | --- | --- |
+| API-EIMS-02 | Onboard employee | POST /api/eims/v1/employees | Create the employee and the user account; return the Employee Id and the temporary password once | firstName, middleName, lastName, email, dateOfJoining, role (EMPLOYEE, MANAGER), managerId or topLevel true, hourlyWageRate | 201: employeeId, names, email, dateOfJoining, role, managerId, hourlyWageRate, status DRAFT, isActive true, version 1, temporaryPassword | Admin |
+| API-EIMS-03 | Manager options | GET /api/eims/v1/manager-options | Eligible managers and the current top-level employee for the admin form | Query: forEmployeeId (left out at create) | managers[]: employeeId, name; topLevelEmployee: employeeId, name, or empty | Admin |
+
+1. Server-side validation: all create rules (VR-EIMS-02, 04 to 07, 10; FR-UM-010) are checked again in the service; field errors are collected and returned together.
+2. Transaction boundary: one local transaction from the counter lock to the commit, with the UM0010 call inside it (design note 1).
+3. Idempotency: none (anchor §6.1); a repeated save after a failure reuses the freed Employee Id and takes over any orphan account (design note 2).
+4. No events.
+
+###### 3.2.2.5.6 Database
+
+| Entity | Operation (C / R / U / soft-D) | Purpose in this function |
+| --- | --- | --- |
+| EMPLOYEE_ID_COUNTER | R, U (row lock) | Next Employee Id number, raised only by a committed onboarding |
+| EMPLOYEE | R, C | Email uniqueness, top-level rule, manager eligibility; new employee Draft, Active, role copy, row_version 1 |
+| AUDIT_ENTRY | C | EMPLOYEE `created` with initial values; USER_ACCOUNT `created` with the role (no password) |
+
+No in-memory copy of other services' data.
+
+###### 3.2.2.5.7 Validation & error handling
+
+| Rule ref (BRD VR / BR) | Layer (UI / API / DB) | Error code | HTTP status | Message |
+| --- | --- | --- | --- | --- |
+| VR-EIMS-10 (create) | UI, API | EIMS-VAL-002 | 400 | Required-field message (UX SCR-EIMS-02) |
+| VR-EIMS-07 | UI, API | EIMS-VAL-003 | 400 | Maximum-length message |
+| VR-EIMS-02 (format) | UI, API | EIMS-VAL-004 | 400 | Invalid-email message |
+| VR-EIMS-02 (unique) | API, DB | EIMS-VAL-005 | 400 | Duplicate-email message (FR-EIMS-011) |
+| VR-EIMS-04 | UI, API | EIMS-VAL-006 | 400 | Future-joining-date message |
+| VR-EIMS-06 | UI, API | EIMS-VAL-007 | 400 | Invalid-rate message |
+| VR-EIMS-05 (manager not eligible) | API | EIMS-VAL-008 | 400 | Manager-choice message |
+| VR-EIMS-05 (top-level already held) | API, DB | EIMS-VAL-009 | 400 | Message naming the current top-level employee (FR-EIMS-014) |
+| FR-UM-010 (role) | API | EIMS-VAL-010 | 400 | Role-choice message |
+| BRD §4.2 – Admin only | Gateway, API | EIMS-ACC-002 | 403 | "You don't have access to this page." |
+| INT-08 – account not created | API | EIMS-SYS-002 | 503 | "Employee could not be saved. Please try again." with "Reference: <flow reference>" |
+| – | API | EIMS-SYS-001 | 500 | Generic message with the reference |
+
+###### 3.2.2.5.8 Security & data privacy
+
+| Item | Detail |
+| --- | --- |
+| Authorization check per API | API-EIMS-02, API-EIMS-03: gateway Admin route; service checks the Admin role claim |
+| Sensitive fields | Email (sensitive personal); hourly wage rate (sensitive pay); temporary password (secret) |
+| Masking (UI / API response) | Email and rate shown to the Admin unmasked; temporary password only in the 201 response and the one-time panel |
+| Encryption (in transit / at rest / field-level) | TLS at the edge; encrypted storage; the temporary password is never at rest in PMS (held hashed by the identity provider only, ADR-003) |
+| Logging rule | Activity log: Employee Id, steps and result only; never names, email, rate, request or response bodies, or the temporary password (Part01 §10.8, NFR-EIMS-01, 02) |
+| Threat review – TB-1 browser → gateway | S / T: forged create from another site – CSRF token and SameSite cookie (ADR-004). I: temporary password in transit – TLS, HSTS, no caching of API responses (Part01 §9.8) |
+| Threat review – TB-2 gateway → EIMS | E: non-Admin creating employees – Admin route and service role check (EIMS-ACC-002). T: invalid or injected values – contract and VR validation, parameterised queries. R: who onboarded – audit entries with the Admin user name and flow reference (anchor §6.4) |
+| Threat review – TB-4 EIMS → identity provider | S / E: misuse of the admin API – separate `eims-admin` client limited to user management (Part01 §9.2). T: taking over a live account – take-over only for an Id with no employee, which only a failed onboarding leaves (design note 2). R: account change without a record – USER_ACCOUNT audit entry and identity-provider admin event (AUTH0060). I: temporary password – sent only in the admin API call, never logged |
+| Threat review – TB-5 EIMS → database | T / R: change outside the application – audit in the same transaction, insert-and-select-only grant (Part03 anchor §2.5). I: data at rest – encrypted storage and backups |
+
+###### 3.2.2.5.9 Notifications, audit & activity log
+
+| Trigger | Notification (NOT id) | Activity log entry | Audit fields captured |
+| --- | --- | --- | --- |
+| Employee onboarded | None (C-05); NOT-EIMS-06 is the one-time panel | `process` API-EIMS-02; steps `validated`, `id-generated`, `employee-saved`, `account-created` or `account-taken-over`, `committed` | EMPLOYEE `created` with initial values (names, email, date of joining, manager, rate, status, is_active, role copy); USER_ACCOUNT `created` with the role; changed_by Admin user name; process API-EIMS-02 |
+| Account step failed | None | Steps up to `employee-saved`, then `account-failed`, `rolled-back`; result error EIMS-SYS-002 | None (rolled back) |
+| Manager options read | None | `process` API-EIMS-03; steps `validated`, `listed` | None |
+
+###### 3.2.2.5.10 Scenarios
+
+| Scenario id | Scenario | Type | Requirement ref | Pre-condition | Expected result | Test level |
+| --- | --- | --- | --- | --- | --- | --- |
+| EIMS0020-S01 | Onboard a valid employee | Positive | FR-EIMS-010, FR-UM-001 | Highest Id EMP0012 | 201 with EMP0013, Draft, Active, temporary password; account EMP0013 enabled with the role; next sign-in opens Set password | API, E2E |
+| EIMS0020-S02 | Duplicate email of an inactive employee | Negative | FR-EIMS-011, VR-EIMS-02 | Inactive employee with the same email in other letter case | 400 EIMS-VAL-005; nothing created; counter unchanged | API |
+| EIMS0020-S03 | Future date of joining, invalid rate, no manager choice | Negative | FR-EIMS-011, VR-EIMS-04, 06, 10 | – | 400 with three field errors in one response | API, E2E |
+| EIMS0020-S04 | Second top-level employee | Negative | FR-EIMS-014, VR-EIMS-05 | C is the active top-level employee | 400 EIMS-VAL-009 naming C | API |
+| EIMS0020-S05 | Identity provider unreachable | Failure | INT-08, D-132 | Identity provider down | 503 EIMS-SYS-002 with reference; no employee; the next successful onboarding gets the same Id | API |
+| EIMS0020-S06 | Commit fails after the account was created | Failure | D-132 | Database fails at commit | 500; account left without employee; next onboarding gets the same Id, takes over the account with the new role and temporary password; activity log shows `account-taken-over` | API (integration) |
+| EIMS0020-S07 | Two Admins save at the same time | Concurrency | FR-EIMS-040 | Two browser sessions | Second save waits; Ids EMP0013 and EMP0014, no gap, no duplicate | API |
+| EIMS0020-S08 | Temporary password shown once | Positive | NFR-EIMS-02 | After S01 | Reloading the page or reopening the employee never shows it again; not in the activity log or audit | E2E, log review |
+| EIMS0020-S09 | Manager or Employee calls the API | Negative | BRD §4.2 | Non-Admin session | 403 EIMS-ACC-002; refused entry in the activity log | API |
+| EIMS0020-S10 | Manager options | Positive | FR-EIMS-014 | Inactive manager and an Employee-role employee exist | Neither is offered; top-level employee returned | API |
+| EIMS0020-S11 | Role outside Employee and Manager | Negative | FR-UM-010 | – | `role=ADMIN` → 400 EIMS-VAL-010 | API |
+
+##### 3.2.2.6 Notes, issues & assumptions
+
+1. Note: the take-over of an existing account (design note 2) is a rule of UM0010; PMS-HLD-Part02-M5-SUP designs it and references this chapter.
+2. Issue: after an eims database restore (Part03 anchor §8), accounts may exist for Employee Ids issued after the backup point; the counter would issue those Ids again and UM0010 would take over the accounts of employees onboarded in the lost period. Open item OI-P02M1-01 (§5.2).
+3. Assumption: the identity provider answers a create for an existing user name with a conflict that UM0010 can tell apart from other errors.
+
+#### 3.2.3 EIMS0030 – Generate Employee Id and temporary password (Module: EIMS, Approved)
+
+##### 3.2.3.1 Purpose, trigger and conditions
+
+The system (SYS-EIMS) issues the next Employee Id and a temporary password for a new employee, and a new temporary password for a password reset.
+
+| Item | Detail |
+| --- | --- |
+| Delivery phase | POC |
+| Trigger | Called inside EIMS0020 (Employee Id and temporary password) and EIMS0060 (temporary password only); no API of its own |
+| Pre-conditions | The caller's local transaction is open (EIMS0020) |
+| Post-conditions | Employee Id `EMP` + 4 digits, one above the last committed number; temporary password meeting the password policy; both handed to the caller only |
+
+##### 3.2.3.2 Actor & data scope
+
+| Role | Access (Read / Read-write / Approve / None) | Data scope (row-level) |
+| --- | --- | --- |
+| Employee | None | – |
+| Manager | None | – |
+| Admin | Indirect, through EIMS0020 and EIMS0060 | – |
+| System (SYS-EIMS) | Read-write | EMPLOYEE_ID_COUNTER |
+
+##### 3.2.3.3 Requirement traceability
+
+| Source | References |
+| --- | --- |
+| BRD functional requirements | FR-EIMS-040, 041; FR-EIMS-005 (reset) |
+| BRD business / validation rules | BR-EIMS-01 |
+| BRD NFRs | NFR-EIMS-02; NFR-SUP-01 |
+| UX | UJ-SYS-04 |
+| Decisions | D-02, D-28, D-71, D-97, D-126, D-132 |
+| Related functions – depends on | – |
+| Related functions – used by | EIMS0020, EIMS0060 |
+
+##### 3.2.3.4 Navigation & prototype reference
+
+**Navigation:** None – backend process; results shown on SCR-EIMS-02 (create) and SCR-EIMS-01 (reset).
+
+**Prototype:** UX summaries `scr-eims-02-admin-form.md` (success panel), `scr-eims-01-directory.md` (reset dialog)
+
+##### 3.2.3.5 Solution approach
+
+###### 3.2.3.5.1 Design description
+
+The [Generate Employee Id and temporary password] function covers two activities:
+
+1. Next Employee Id
+2. Temporary password
+
+**Next Employee Id**
+
+1. Reads and locks the single EMPLOYEE_ID_COUNTER row inside the caller's transaction, adds 1 and formats `EMP` + the number padded to 4 digits (FR-EIMS-040, BR-EIMS-01).
+2. No API; called by EIMS0020.
+3. DB entity: [EMPLOYEE_ID_COUNTER]
+4. The raised number becomes permanent only when the caller commits; a rollback leaves the counter unchanged, so no number is lost (D-126, D-132).
+
+**Temporary password**
+
+1. Generates a 12-character password with at least one upper-case letter, one lower-case letter, one digit and one special character, never containing the Employee Id, from a cryptographically secure random source (D-132). Look-alike characters (0, O, 1, l, I) are left out so the Admin can pass it on without errors.
+2. No API; returned to the caller, which passes it to the identity provider (UM0010 or UM0030) and returns it once to the Admin.
+3. DB entity: none – never stored in eims.
+4. Meets the D-28 password policy (minimum 8, character classes, not the user name), so the identity provider accepts it as a temporary credential.
+
+###### 3.2.3.5.2 Design notes
+
+1. **Counter, not a database sequence.** A sequence would keep numbers taken by rolled-back transactions and leave gaps; the counter row is raised in the onboarding transaction (D-126).
+2. **Beyond EMP9999.** Four digits allow 9,999 employees against about 100 (BRD §13); FR-EIMS-040 pads to "4 digits", so EMP10000 onwards would remain valid if ever reached. No action in the POC.
+3. **Password length.** 12 characters is above the policy minimum because a temporary password does not expire until it is replaced (FR-AUTH-013).
+4. **One generator.** The same generator serves onboarding and reset, so both meet the same rules.
+
+###### 3.2.3.5.3 Sequence & orchestration
+
+Internal step of EIMS0020 (§3.2.2.5.3, steps 4–5) and EIMS0060; no diagram of its own, no cross-service steps.
+
+###### 3.2.3.5.4 Frontend
+
+None.
+
+###### 3.2.3.5.5 Backend
+
+No API. Internal component of the EIMS service, used inside the caller's transaction.
+
+###### 3.2.3.5.6 Database
+
+| Entity | Operation (C / R / U / soft-D) | Purpose in this function |
+| --- | --- | --- |
+| EMPLOYEE_ID_COUNTER | R, U (row lock) | Last number issued; raised by 1 inside the caller's transaction |
+
+###### 3.2.3.5.7 Validation & error handling
+
+| Rule ref (BRD VR / BR) | Layer (UI / API / DB) | Error code | HTTP status | Message |
+| --- | --- | --- | --- | --- |
+| BR-EIMS-01 – Employee Id unique | DB (unique Employee Id) | EIMS-SYS-001 | 500 | Generic message with the reference (not expected: the counter row lock serialises issuing) |
+
+###### 3.2.3.5.8 Security & data privacy
+
+| Item | Detail |
+| --- | --- |
+| Authorization check per API | No API; reachable only through EIMS0020 and EIMS0060 (Admin) |
+| Sensitive fields | Temporary password (secret) |
+| Masking (UI / API response) | Returned only to the calling function |
+| Encryption (in transit / at rest / field-level) | Never at rest in PMS |
+| Logging rule | Never logged or audited (FR-ADM-104, NFR-EIMS-02); the Employee Id may be logged |
+| Threat review | No trust boundary of its own; the boundaries are those of EIMS0020 and EIMS0060. I: guessable password – cryptographically secure random source, 12 characters |
+
+###### 3.2.3.5.9 Notifications, audit & activity log
+
+| Trigger | Notification (NOT id) | Activity log entry | Audit fields captured |
+| --- | --- | --- | --- |
+| Employee Id issued | None (C-05) | Step `id-generated` of EIMS0020 | Within EMPLOYEE `created` (Employee Id) |
+| Temporary password generated | None | No step of its own (part of `account-created` / `password-reset`) | None |
+
+###### 3.2.3.5.10 Scenarios
+
+| Scenario id | Scenario | Type | Requirement ref | Pre-condition | Expected result | Test level |
+| --- | --- | --- | --- | --- | --- | --- |
+| EIMS0030-S01 | Next Id after inactive employees | Positive | FR-EIMS-040 | EMP0012 inactive and the highest | EMP0013 | Unit, API |
+| EIMS0030-S02 | Rolled-back onboarding | Edge | D-126, D-132 | Onboarding of EMP0013 fails | Next onboarding gets EMP0013 | API |
+| EIMS0030-S03 | Password rules | Positive | FR-EIMS-041, D-28 | 10,000 generated passwords | Every one: 12 characters, all four classes, no look-alikes, no Employee Id | Unit |
+| EIMS0030-S04 | Accepted by the identity provider | Positive | FR-UM-001 | – | Temporary credential set without a policy error | Integration |
+
+##### 3.2.3.6 Notes, issues & assumptions
+
+1. Note: the counter is created at 0 by the eims migrations (Part03 anchor §8).
+
+Further function chapters are added review by review (R4 to R9).
 
 ## 4. NFR summary & inventories
 
@@ -423,4 +781,10 @@ Drafted with R10.
 
 ## 5. Appendix
 
-Drafted with R10.
+Drafted with R10; open items are added as they arise.
+
+### 5.2 Open items
+
+| Id | Question | Owner | Status |
+| --- | --- | --- | --- |
+| OI-P02M1-01 | After an eims database restore, user accounts may exist for Employee Ids issued after the backup point; the counter would issue those Ids again and UM0010 would take over those accounts (EIMS0020 design note 2). Restore procedure: compare identity-provider accounts with restored employees and disable or re-onboard the accounts above the restored counter before onboarding resumes | Enterprise Architect – docs/04-standards/database-and-data (planned), with PMS-HLD-Part02-M5-SUP | Open |
