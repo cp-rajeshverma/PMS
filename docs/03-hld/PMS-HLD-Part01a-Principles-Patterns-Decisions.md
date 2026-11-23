@@ -11,11 +11,12 @@ Date: November 2026
 | --- | --- | --- | --- | --- |
 | 1.0 | 0.1 | 23-Nov-2026 | Rajesh Verma | First draft of §1–§3, based on PMS-HLD-Part01-Architecture-and-Design v1.0 rev 0.8 (D-109 to D-116), the approved BRD set v1.0 (D-107) and ADR-001 to ADR-006 |
 | 1.0 | 0.2 | 23-Nov-2026 | Rajesh Verma | Draft of §4 groups A–F (GOV, XF, WA, SD, TF, FE); open items OI-P01a-01 to 03 |
+| 1.0 | 0.3 | 23-Nov-2026 | Rajesh Verma | Draft of §4 groups G–L (MS, CP, EIP, INT, DATA, SEC); open items OI-P01a-04 to 11; §2 Partial rule clarified |
 
 | Role | Name | Date | Decision |
 | --- | --- | --- | --- |
-| Architect | Rajesh Verma (Enterprise Architect) | 23-Nov-2026 | §1–§3 approved (D-117); §4 A–F approved (D-118) |
-| Product owner | Rajesh Verma | 23-Nov-2026 | §1–§3 approved (D-117); §4 A–F approved (D-118) |
+| Architect | Rajesh Verma (Enterprise Architect) | 23-Nov-2026 | §1–§3 approved (D-117); §4 A–F approved (D-118); §4 G–L approved (D-119) |
+| Product owner | Rajesh Verma | 23-Nov-2026 | §1–§3 approved (D-117); §4 A–F approved (D-118); §4 G–L approved (D-119) |
 
 ## 2. How to use this document
 
@@ -31,7 +32,7 @@ This document holds (a) the catalogue of architecture principles and patterns th
 **Reading rules for PMS**
 
 - **Applied** – the POC design meets the item in full; detail may still be designed in a later HLD document or standard.
-- **Partial** – the POC meets part of the item; the realization states which part, and the remainder is Deferred (Part01 §20.3) or an open item (§7).
+- **Partial** – the POC meets part of the item; the realization states which part, and the remainder is Deferred (Part01 §20.3), an open item (§7) or excluded by the assumption, constraint or decision named in Ref.
 - **Deferred** – not in the POC; planned for a later phase (Part01 §20.3 or the decision named in Ref).
 - **N/A** – does not fit PMS; the reason is stated (assumption, constraint or decision).
 - A row Deferred or N/A because of a decision references the ADR or decision id in Ref.
@@ -64,12 +65,12 @@ The catalogue sources describe patterns only; they do not set the PMS platform (
 | D. Software design principles | SD | 19 | 17 | 2 | 0 | 0 |
 | E. Twelve-Factor App | TF | 12 | 11 | 1 | 0 | 0 |
 | F. Frontend & experience architecture | FE | 10 | 5 | 3 | 0 | 2 |
-| G. Microservice design patterns | MS | 34 | | | | |
-| H. Cloud design patterns | CP | 44 | | | | |
-| I. Enterprise integration patterns | EIP | 64 | | | | |
-| J. Integration principles | INT | 13 | | | | |
-| K. Data architecture | DATA | 17 | | | | |
-| L. Security architecture | SEC | 20 | | | | |
+| G. Microservice design patterns | MS | 34 | 25 | 3 | 1 | 5 |
+| H. Cloud design patterns | CP | 44 | 24 | 2 | 1 | 17 |
+| I. Enterprise integration patterns | EIP | 64 | 28 | 1 | 0 | 35 |
+| J. Integration principles | INT | 13 | 11 | 2 | 0 | 0 |
+| K. Data architecture | DATA | 17 | 14 | 2 | 0 | 1 |
+| L. Security architecture | SEC | 20 | 13 | 6 | 1 | 0 |
 | M. Logging & observability | OBS | 12 | | | | |
 | N. Performance & scalability | PERF | 10 | | | | |
 | O. Resilience & availability | RES | 10 | | | | |
@@ -192,7 +193,233 @@ Group R follows D-116: tool-neutral wording, ids AP-DG-01 to AP-DG-05, linked to
 | AP-FE-09 | Client-side security | Tokens handled securely; no secrets in the browser | Applied | Browser holds only an HttpOnly session cookie and a CSRF token; tokens stay in the gateway | Part01 §9.5; ADR-004 |
 | AP-FE-10 | Consistent feedback | Standard loading, empty, error and success states | Applied | Consistent layout and messages on every screen; per-card error with Retry; system errors show the flow reference | FR-CMN-008, FR-CMN-015, FR-ADM-114; Part02 (planned) |
 
-Groups G–R: to be drafted.
+### G. Microservice design patterns (MS)
+
+| Id | Pattern | Description | Applicability | Realization | Ref |
+| --- | --- | --- | --- | --- | --- |
+| AP-MS-01 | Decompose by business capability | Services aligned to business capabilities | Applied | One service per business module: EIMS, AMS, LMS, SMS | Part01 §4.4, §5.3; D-10 |
+| AP-MS-02 | Decompose by subdomain | Services aligned to DDD subdomains / bounded contexts | Applied | Domains Employee, Time & absence, Pay and Platform; one tower per bounded context | Part01 §5.3 |
+| AP-MS-03 | Database per service | Each service owns its data; no direct access by others | Applied | One database per service with its own credentials; no foreign keys across databases | Part01 §4.4, §12; C-02 |
+| AP-MS-04 | Shared database (anti-pattern check) | Confirm services do not share tables | Applied | Confirmed: no shared tables; one database server per environment holds separate databases, each reachable only with its owner's credentials | Part01 §6.3, §12 |
+| AP-MS-05 | API gateway | Single entry point for clients; routing, auth, rate limits | Applied | Gateway holds the session, relays the token, routes by module context and limits request rates | Part01 §4.4, §6.1, §9.8; ADR-004 |
+| AP-MS-06 | Backends for frontends | Separate gateway / API per client type | N/A | One client type (desktop browser) | A-03; AP-FE-05 |
+| AP-MS-07 | Service discovery / registry | Services locate each other dynamically | Applied | Services call configured internal service names resolved by the container platform; no separate registry | Part01 §6.2, §16.2 A10 |
+| AP-MS-08 | Saga – choreography | Distributed transaction via events between services | Applied | Attendance approval and reopen in AMS drive salary generation and voiding in SMS by events | Part01 §4.4, §8.2; ADR-006 |
+| AP-MS-09 | Saga – orchestration | Distributed transaction via a central orchestrator | N/A | No long-running multi-step process; the dispute cycle is a sequence of user actions with events | Part01 §8.4 |
+| AP-MS-10 | Transactional outbox | Events written in the same DB transaction as state, then published | Applied | AMS writes each event to its outbox table in the status-change transaction | Part01 §8.2, §8.3; ADR-006 |
+| AP-MS-11 | Polling publisher / transaction log tailing | How outbox events are relayed to the broker | Applied | Polling publisher: an outbox relay in AMS reads unsent rows, publishes and marks them sent after the broker confirms; no log tailing | Part01 §8.3 |
+| AP-MS-12 | Domain events | Services publish events when domain state changes | Applied | Attendance approved (INT-01) and attendance reopened (INT-02) | Part01 §4.4, §8.2 |
+| AP-MS-13 | Event sourcing | State stored as a sequence of events | N/A | State kept as current records with a field-level audit log | Part01 §12; BR-CMN-19 |
+| AP-MS-14 | CQRS | Separate read and write models | N/A | One model per service; read volumes are small | Part01 §12, §17 |
+| AP-MS-15 | API composition | Query that joins data from several services in a composer | Applied | Dashboard tiles, to-dos and the approvals inbox composed in the shell, one call per module card | Part01 §4.4, §8.2 (row 8); FR-CMN-008 |
+| AP-MS-16 | Idempotent consumer | Duplicate messages processed safely | Applied | SMS checks event id and attendance id before processing; one non-voided salary record per attendance | Part01 §8.5; ADR-006; NFR-06 |
+| AP-MS-17 | Circuit breaker | Stop calling a failing service for a period | Applied | Per downstream service: opens after 50 % failures in a 20-call window, half-open after 30 s | Part01 §8.5 |
+| AP-MS-18 | Externalized configuration | Configuration outside the deployable artifact | Applied | Settings per environment in deployment values and platform secrets | Part01 §4.4, §9.10; D-97 |
+| AP-MS-19 | Health check API | Endpoint reporting liveness and readiness | Applied | Liveness and readiness endpoints per component, reachable inside the cluster only | Part01 §4.4, §9.8, §10.7 |
+| AP-MS-20 | Log aggregation | Logs from all services collected centrally | Applied | All components ship structured logs to one collector and log store | Part01 §4.4, §10.1 |
+| AP-MS-21 | Distributed tracing | Requests traced across services with trace ids | Applied | Trace context on every call and event; traces in the trace store | Part01 §10.5 |
+| AP-MS-22 | Application metrics | Services expose metrics for monitoring | Applied | Metrics from every component to the metric store; dashboards and alerts | Part01 §10.7 |
+| AP-MS-23 | Audit logging | User actions recorded per business entity | Applied | Field-level audit entries in each module database, written in the same transaction as the change | Part01 §4.4, §10.2; BR-CMN-19 |
+| AP-MS-24 | Exception tracking | Exceptions reported centrally with context | Applied | Errors logged with error code, stack trace and flow reference; error-rate alert | Part01 §10.3, §10.7 |
+| AP-MS-25 | Access token | Identity propagated to services via a token (e.g. JWT) | Applied | Signed JWT access token relayed by the gateway; service token for system calls | Part01 §9.5, §9.9; ADR-003, ADR-004 |
+| AP-MS-26 | Consumer-driven contract test | Consumers define contract tests the provider must pass | Partial | Providers and consumers verified against the shared contracts (schema-based); consumer-driven tests not yet decided | Part01 §15; D-117; OI-P01a-04 |
+| AP-MS-27 | Service component test | Service tested in isolation with test doubles | Applied | Component tests per service with test doubles and containerised database, broker and identity provider | Part01 §11.1, §15; D-16 |
+| AP-MS-28 | Service instance per container | Each service instance in its own container | Applied | One container image per component; each replica in its own container | Part01 §4.4, §7.2; ADR-002 |
+| AP-MS-29 | Sidecar | Cross-cutting concerns in a co-deployed process | Deferred | No sidecars; cross-cutting concerns in the service and a central collector; service mesh Future | Part01 §9.9, §20.3; AR-04 |
+| AP-MS-30 | Microservice chassis / service template | Common framework and starter for all services | Partial | Same framework, security and observability set-up in every service; a service template is copied per service; no shared runtime library | Part01 §11; D-18, D-117; OI-P01a-05 |
+| AP-MS-31 | Strangler application | Incremental replacement of a legacy system | N/A | Greenfield; no legacy system | Part01 §13; D-109 |
+| AP-MS-32 | Anti-corruption layer | Translation layer between different domain models | Applied | Only EIMS translates employee records into identity-provider accounts; no other module uses the identity provider's model | Part01 §8.2 (row 9); INT-08; Part02 (planned) |
+| AP-MS-33 | API versioning | Backward-compatible evolution of service contracts | Applied | Versioned contracts with backward-compatible changes; version scheme in the API standard | Part01 §4.4; docs/04-standards/api-and-integration (planned); OI-P01a-11 |
+| AP-MS-34 | Self-contained service | A service can answer synchronous requests without waiting on others | Partial | Employee and approver details read from EIMS synchronously, with circuit breaker and short-lived in-memory copies; shared cache Future | Part01 §8.2, §12, §20.3; D-110 |
+
+### H. Cloud design patterns (CP)
+
+Source: Azure Architecture Center cloud design patterns catalogue.
+
+| Id | Pattern | Summary | Applicability | Realization | Ref |
+| --- | --- | --- | --- | --- | --- |
+| AP-CP-01 | Ambassador | Helper service sends network requests on behalf of a consumer | N/A | Client-side resilience is built into each service; no proxy per consumer | Part01 §8.5 |
+| AP-CP-02 | Anti-Corruption Layer | Façade / adapter between a modern application and a legacy system | N/A | Greenfield; no legacy system | Part01 §13; D-109 |
+| AP-CP-03 | Asynchronous Request-Reply | Decouple backend processing from the frontend while giving a timely response | N/A | No long-running user request; every user action completes synchronously | Part01 §8.4 |
+| AP-CP-04 | Backends for Frontends | Separate backend services per frontend | N/A | One client type (desktop browser) | A-03; AP-FE-05 |
+| AP-CP-05 | Bulkhead | Isolate elements into pools so one failure does not take down others | Applied | Each module runs in its own containers with its own database and credentials; one module failing does not stop the others | Part01 §4.3 (AP-WA-09); FR-CMN-008 |
+| AP-CP-06 | Cache-Aside | Load data into a cache on demand | Partial | Services keep short-lived in-memory copies of read-mostly data from EIMS, loaded on demand; shared cache Future | Part01 §6.1, §12, §20.3; D-110 |
+| AP-CP-07 | Choreography | Services decide how to process a business operation without a central orchestrator | Applied | AMS publishes, SMS reacts; no orchestrator | Part01 §4.4, §8.2; ADR-006 |
+| AP-CP-08 | Circuit Breaker | Handle faults of variable duration when calling remote services | Applied | Circuit breaker per downstream service with the §8.5 defaults | Part01 §4.4, §8.5 |
+| AP-CP-09 | Claim Check | Split large messages into a claim check and a payload | N/A | Events are small (about 0.5 KB) | Part01 §17 |
+| AP-CP-10 | Compensating Transaction | Undo steps of an eventually consistent operation | Applied | Attendance reopen voids the salary record (INT-02); reconciliation voids records whose attendance is no longer approved | Part01 §5.2, §8.2; ADR-006 |
+| AP-CP-11 | Competing Consumers | Several consumers process messages from one channel | Applied | The SMS instances consume from the one subscription queue; processing is idempotent | Part01 §6.2, §8.3; ADR-006; Part02 (planned) |
+| AP-CP-12 | Compute Resource Consolidation | Consolidate tasks into one computational unit | Applied | Nightly reconciliation runs inside SMS; the three environments share one cluster | Part01 §6.1, §6.2 |
+| AP-CP-13 | CQRS | Separate read and update interfaces | N/A | One model per service; read volumes are small | Part01 §17; AP-MS-14 |
+| AP-CP-14 | Deployment Stamps | Independent copies of components including data stores | N/A | Single company and single site; environments are separate but not stamps | A-01; D-109 |
+| AP-CP-15 | Event Sourcing | Append-only store of events describing changes | N/A | Current-state records with an audit log | AP-MS-13 |
+| AP-CP-16 | External Configuration Store | Configuration in a central location outside the package | Applied | Deployment values and platform secrets per environment, outside the images | Part01 §9.10, §11.2 |
+| AP-CP-17 | Federated Identity | Delegate authentication to an external identity provider | Applied | Sign-in at the OIDC identity provider; services accept its tokens | Part01 §4.4, §9.2, §9.3; ADR-003 |
+| AP-CP-18 | Gatekeeper | Dedicated host validates and sanitizes requests before back ends | Applied | Edge with WAF rule set and payload limits as the only entry | Part01 §6.3, §9.8; ADR-005 |
+| AP-CP-19 | Gateway Aggregation | Gateway aggregates several requests into one | N/A | Composition in the client, one call per card, so each card fails on its own | Part01 §8.2 (row 8); FR-CMN-008 |
+| AP-CP-20 | Gateway Offloading | Offload shared functionality to a gateway | Applied | TLS, WAF and security headers at the edge; session, token relay and rate limits at the gateway | Part01 §4.4, §9.8; ADR-004, ADR-005 |
+| AP-CP-21 | Gateway Routing | Route requests to several services through one endpoint | Applied | Gateway routes by module context /eims, /ams, /lms, /sms | Part01 §4.4, §8.2 (row 12) |
+| AP-CP-22 | Geode | Back ends deployed across geographically distributed nodes | N/A | Single site and single region (ap-south-1 on AWS) | D-109; Part01 §6.3 |
+| AP-CP-23 | Health Endpoint Monitoring | Functional checks exposed through endpoints | Applied | Health endpoints checked by the platform and the alert rules | Part01 §4.4, §10.7 |
+| AP-CP-24 | Idempotent Consumer | Duplicate delivery has the same effect as single delivery | Applied | As AP-MS-16 | Part01 §8.5; ADR-006 |
+| AP-CP-25 | Index Table | Indexes over frequently queried fields | Applied | Database indexes for the heaviest queries | Part01 §16.3; Part03 (planned) |
+| AP-CP-26 | Leader Election | One instance coordinates collaborating instances | Applied | A database lock lets one SMS instance run each reconciliation | Part01 §6.1, §6.4; ADR-006 |
+| AP-CP-27 | Materialized View | Prepopulated views for query needs | N/A | Volumes are small; queries read the service's own tables | Part01 §17 |
+| AP-CP-28 | Messaging Bridge | Intermediary between incompatible messaging systems | N/A | One broker | Part01 §6.1 |
+| AP-CP-29 | Pipes and Filters | Complex processing broken into reusable steps | N/A | No multi-step message processing | Part01 §8 |
+| AP-CP-30 | Priority Queue | Higher-priority requests processed first | N/A | One event flow with no priorities | Part01 §8.2 |
+| AP-CP-31 | Publisher-Subscriber | Announce events to many consumers asynchronously | Applied | Attendance events topic; SMS is the only subscriber in the POC | Part01 §4.4, §8.3 |
+| AP-CP-32 | Quarantine | External assets checked against agreed quality before use | Applied | Dependencies and container images scanned before use; no high or critical findings | Part01 §15, §16.1 |
+| AP-CP-33 | Queue-Based Load Leveling | Queue buffers load between a task and a service | Applied | The broker buffers bulk attendance approvals for salary generation | Part01 §8.3, §14.2 (PT-03) |
+| AP-CP-34 | Rate Limiting | Control resource consumption to avoid throttling | Applied | Per user and route at the gateway; per client address on the sign-in path at the edge | Part01 §4.4, §9.8 |
+| AP-CP-35 | Retry | Retry anticipated transient failures | Applied | Reads retried with backoff; broker redelivery; outbox relay retries | Part01 §4.4, §8.5 |
+| AP-CP-36 | Saga | Data consistency across microservices | Applied | Choreographed AMS → SMS hand-over with compensation and reconciliation | AP-MS-08; ADR-006 |
+| AP-CP-37 | Scheduler Agent Supervisor | Coordinate actions across distributed services | Applied | Nightly reconciliation job with result logging, alerts and repair | Part01 §4.4, §8.2 (row 3); JOB-CMN-01 |
+| AP-CP-38 | Sequential Convoy | Ordered processing of related messages without blocking others | Partial | Events carry the attendance id as business key; the ordering rule for approved and reopened events of one attendance is not yet designed | Part01 §8.2; OI-P01a-06 |
+| AP-CP-39 | Sharding | Horizontal partitions of a data store | N/A | Total database size below 3 GB in year 5 | Part01 §17 |
+| AP-CP-40 | Sidecar | Components in a separate process or container | Deferred | No sidecars in the POC; service mesh Future | Part01 §20.3; AR-04 |
+| AP-CP-41 | Static Content Hosting | Static content served from storage / CDN | Applied | Static web server serves the shell build; no CDN | Part01 §4.4, §6.1 |
+| AP-CP-42 | Strangler Fig | Incremental migration of a legacy system | N/A | Greenfield | Part01 §13 |
+| AP-CP-43 | Throttling | Control consumption by applications, tenants or services | Applied | Rate limits and payload limits at the gateway and edge | Part01 §9.8 |
+| AP-CP-44 | Valet Key | Token giving restricted direct access to a resource | N/A | No file or blob storage in the POC (document management Phase 2) | D-57 |
+
+### I. Enterprise integration patterns (EIP)
+
+Source: Enterprise Integration Patterns (Hohpe & Woolf), messaging patterns catalogue.
+
+| Id | Category | Pattern | Applicability | Realization | Ref |
+| --- | --- | --- | --- | --- | --- |
+| AP-EIP-01 | Integration style | File Transfer | N/A | No file interfaces; bulk data by paged REST | Part01 §8.4; C-05 |
+| AP-EIP-02 | Integration style | Shared Database | N/A | Excluded: database per service | C-02; AP-MS-04 |
+| AP-EIP-03 | Integration style | Remote Procedure Invocation | Applied | Synchronous REST for queries and commands between services | Part01 §4.4, §8.2 |
+| AP-EIP-04 | Integration style | Messaging | Applied | Broker events for the AMS → SMS hand-over | Part01 §4.4, §8.2 |
+| AP-EIP-05 | Channels | Message Channel | Applied | Attendance events topic, SMS subscription queue, dead-letter queue | Part01 §8.3 |
+| AP-EIP-06 | Channels | Point-to-Point Channel | Applied | SMS subscription queue and dead-letter queue | Part01 §8.3 |
+| AP-EIP-07 | Channels | Publish-Subscribe Channel | Applied | Attendance events topic | Part01 §8.3 |
+| AP-EIP-08 | Channels | Datatype Channel | Applied | The topic carries attendance events only | Part01 §8.3 |
+| AP-EIP-09 | Channels | Invalid Message Channel | Applied | Events that cannot be processed go to the dead-letter queue after the allowed redeliveries, with an alert | Part01 §8.5 |
+| AP-EIP-10 | Channels | Dead Letter Channel | Applied | Dead-letter queue after 5 attempts; alert; reconciliation repairs the outcome | Part01 §4.4, §8.5; ADR-006 |
+| AP-EIP-11 | Channels | Guaranteed Delivery | Applied | Persistent broker storage, outbox until confirmed, durable subscription | Part01 §4.4, §6.4, §8.3 |
+| AP-EIP-12 | Channels | Channel Adapter | Applied | Outbox relay moves events from the AMS database to the broker | Part01 §8.3 |
+| AP-EIP-13 | Channels | Messaging Bridge | N/A | One broker | Part01 §6.1 |
+| AP-EIP-14 | Channels | Message Bus | N/A | One event flow; services integrate mainly by REST | Part01 §8.4 |
+| AP-EIP-15 | Message construction | Command Message | N/A | Commands are REST calls | Part01 §8.4 |
+| AP-EIP-16 | Message construction | Document Message | N/A | Data transfer between services is by REST queries | Part01 §8.4 |
+| AP-EIP-17 | Message construction | Event Message | Applied | Attendance approved and reopened events | Part01 §4.4, §8.2 |
+| AP-EIP-18 | Message construction | Request-Reply | N/A | Request-reply is synchronous REST, not messaging | Part01 §8.4 |
+| AP-EIP-19 | Message construction | Return Address | N/A | No messaging request-reply | AP-EIP-18 |
+| AP-EIP-20 | Message construction | Correlation Identifier | Applied | Flow reference in every event envelope and HTTP header | Part01 §4.4, §10.5; FR-ADM-113 |
+| AP-EIP-21 | Message construction | Message Sequence | N/A | Events are small and single | Part01 §17 |
+| AP-EIP-22 | Message construction | Message Expiration | N/A | Every event must be processed; events never expire | ADR-006; NFR-06 |
+| AP-EIP-23 | Message construction | Format Indicator | Applied | Event type and version in the envelope | Part01 §8.2 |
+| AP-EIP-24 | Routing | Pipes and Filters | N/A | No multi-step message processing | AP-CP-29 |
+| AP-EIP-25 | Routing | Message Router | N/A | One subscriber; no routing logic | Part01 §8.3 |
+| AP-EIP-26 | Routing | Content-Based Router | N/A | As AP-EIP-25 | Part01 §8.3 |
+| AP-EIP-27 | Routing | Message Filter | N/A | As AP-EIP-25 | Part01 §8.3 |
+| AP-EIP-28 | Routing | Dynamic Router | N/A | As AP-EIP-25 | Part01 §8.3 |
+| AP-EIP-29 | Routing | Recipient List | N/A | Publish-subscribe topic instead | AP-EIP-07 |
+| AP-EIP-30 | Routing | Splitter | N/A | One event per attendance status change | Part01 §8.2 |
+| AP-EIP-31 | Routing | Aggregator | N/A | No messages combined | Part01 §8.2 |
+| AP-EIP-32 | Routing | Resequencer | Partial | Events carry the attendance id as business key; the ordering rule for one attendance is not yet designed | OI-P01a-06; AP-CP-38 |
+| AP-EIP-33 | Routing | Composed Message Processor | N/A | No composite messages | Part01 §8.2 |
+| AP-EIP-34 | Routing | Scatter-Gather | N/A | Dashboard composition is client-side REST, not messaging | AP-MS-15 |
+| AP-EIP-35 | Routing | Routing Slip | N/A | No multi-step routing | Part01 §8.4 |
+| AP-EIP-36 | Routing | Process Manager | N/A | No orchestrated process | AP-MS-09 |
+| AP-EIP-37 | Routing | Message Broker | Applied | One persistent broker per environment | Part01 §4.4, §6.1, §6.2 |
+| AP-EIP-38 | Transformation | Message Translator | N/A | Producer and consumer use the same event schema | Part01 §8.2 |
+| AP-EIP-39 | Transformation | Envelope Wrapper | Applied | Common envelope: event id, type, version, flow reference, trace context, acting user, time | Part01 §8.2, §9.9, §10.5 |
+| AP-EIP-40 | Transformation | Content Enricher | Applied | SMS adds the current hourly wage rate from EIMS when generating a salary record | Part01 §8.2 (row 6); INT-05 |
+| AP-EIP-41 | Transformation | Content Filter | N/A | No message reduced on the way | Part01 §8.2 |
+| AP-EIP-42 | Transformation | Claim Check | N/A | Events are small | AP-CP-09 |
+| AP-EIP-43 | Transformation | Normalizer | N/A | One producer, one format | Part01 §8.2 |
+| AP-EIP-44 | Transformation | Canonical Data Model | N/A | Each service owns its model; only the envelope is common | D-18; AP-EIP-39 |
+| AP-EIP-45 | Endpoints | Message Endpoint | Applied | AMS outbox relay and SMS event consumer | Part01 §8.3 |
+| AP-EIP-46 | Endpoints | Messaging Gateway | Applied | Broker access confined to the AMS outbox relay and the SMS consumer | Part01 §6.3, §8.3 |
+| AP-EIP-47 | Endpoints | Messaging Mapper | Applied | Events mapped to and from the schemas in `contracts/events` | Part01 §8.2; ADR-006 |
+| AP-EIP-48 | Endpoints | Transactional Client | Applied | Outbox write in the business transaction; SMS processing and idempotency record in one transaction | Part01 §4.4, §8.3, §12 |
+| AP-EIP-49 | Endpoints | Polling Consumer | N/A | The SMS consumer is event-driven | AP-EIP-50 |
+| AP-EIP-50 | Endpoints | Event-Driven Consumer | Applied | SMS consumes events as they arrive | Part01 §4.4, §8.3 |
+| AP-EIP-51 | Endpoints | Competing Consumers | Applied | As AP-CP-11 | Part01 §6.2, §8.3 |
+| AP-EIP-52 | Endpoints | Message Dispatcher | N/A | One message type per consumer | Part01 §8.3 |
+| AP-EIP-53 | Endpoints | Selective Consumer | N/A | SMS takes every attendance event | Part01 §8.3 |
+| AP-EIP-54 | Endpoints | Durable Subscriber | Applied | Durable subscription for SMS | Part01 §4.4, §8.3; ADR-006 |
+| AP-EIP-55 | Endpoints | Idempotent Receiver | Applied | Event id and attendance id checked before processing | Part01 §4.4, §8.5 |
+| AP-EIP-56 | Endpoints | Service Activator | Applied | The consumer calls the salary generation or void operation | Part01 §8.2 |
+| AP-EIP-57 | System management | Control Bus | N/A | Broker managed with platform tooling | Part01 §6.2 |
+| AP-EIP-58 | System management | Detour | N/A | No message routing to detour | Part01 §8.3 |
+| AP-EIP-59 | System management | Wire Tap | Applied | Publish and consume written to the activity log with the flow reference | Part01 §8.2 (row 14), §10.2 |
+| AP-EIP-60 | System management | Message History | Applied | Flow reference and acting user carried in the envelope and logged at each step | Part01 §9.9, §10.5 |
+| AP-EIP-61 | System management | Message Store | Applied | Published events kept in the AMS outbox table; clean-up rule in Part03 | Part01 §8.3, §17; Part03 (planned) |
+| AP-EIP-62 | System management | Smart Proxy | N/A | No messaging request-reply | AP-EIP-18 |
+| AP-EIP-63 | System management | Test Message | N/A | Health checks and alerts monitor the flow | Part01 §10.7 |
+| AP-EIP-64 | System management | Channel Purger | N/A | Test environments are restored from snapshots | Part01 §14.5 |
+
+### J. Integration principles (INT)
+
+| Id | Principle | Description | Applicability | Realization | Ref |
+| --- | --- | --- | --- | --- | --- |
+| AP-INT-01 | Async by default between services | Events for state propagation; synchronous calls only when an immediate answer is needed | Applied | State change AMS → SMS by events; synchronous queries only where the user needs the answer at once | Part01 §8.4 |
+| AP-INT-02 | Contract-first interfaces | OpenAPI for REST, schema for events, versioned | Applied | OpenAPI 3 contracts and event schemas in `contracts/`, versioned | Part01 §4.1, §8.2; D-16 |
+| AP-INT-03 | Protocol selection guide | REST/HTTPS for queries and commands, broker (AMQP/JMS) for events, batch files for bulk | Applied | Selection guide in Part01; bulk by paged REST instead of files | Part01 §8.4 |
+| AP-INT-04 | Authenticated integrations | Every call carries a user or service token; no anonymous endpoints | Applied | Relayed user token or service token on every call; broker credentials per service | Part01 §7.3, §9.9 |
+| AP-INT-05 | Transport security | TLS on every connection | Partial | TLS at the edge and to the managed database on AWS; traffic inside the local cluster is not encrypted and is limited by network policies; mutual TLS / service mesh Future | Part01 §7.3, §16.1, §19 AR-04, §20.3 |
+| AP-INT-06 | Correlation id propagation | One id carried across HTTP headers and message headers | Applied | Flow reference in the HTTP header and the event envelope | Part01 §4.1, §10.5 |
+| AP-INT-07 | At-least-once delivery with idempotency | Consumers deduplicate by message id | Applied | Redelivery with backoff; SMS deduplicates by event id and attendance id | Part01 §8.5; ADR-006 |
+| AP-INT-08 | Timeouts, retries and backoff | Bounded timeouts; retry only transient errors | Applied | Connect and response timeouts; reads retried with backoff; commands not retried automatically | Part01 §8.5 |
+| AP-INT-09 | Dead-letter handling | Poison messages parked, alerted and replayable | Partial | Parked in the dead-letter queue and alerted; reconciliation repairs the outcome; replay procedure not yet defined | Part01 §8.3, §8.5, §10.7; OI-P01a-07 |
+| AP-INT-10 | Event schema evolution | Backward-compatible changes; version in the envelope | Applied | Version in the envelope; compatibility rules in the API standard | Part01 §8.2; docs/04-standards/api-and-integration (planned); OI-P01a-11 |
+| AP-INT-11 | Canonical event envelope | Standard header fields (id, type, version, time, source, correlation id) | Applied | Common envelope with event id, type, version, flow reference and time | Part01 §8.2; Part02 (planned) |
+| AP-INT-12 | Reconciliation for eventual consistency | Scheduled check repairs missed events | Applied | Nightly reconciliation creates missing and voids stale salary records | Part01 §4.1, §8.2 (row 3); ADR-006 |
+| AP-INT-13 | Connection management | Pooled connections, keep-alive, limits per client | Applied | Pooled database and HTTP connections; limits in the performance standard | Part01 §14.9; docs/04-standards/performance-and-scalability (planned) |
+
+### K. Data architecture (DATA)
+
+| Id | Principle | Description | Applicability | Realization | Ref |
+| --- | --- | --- | --- | --- | --- |
+| AP-DATA-01 | Single source of truth | Each data item owned by exactly one service | Applied | Each entity owned by one module; others read through its API | Part01 §12; C-02 |
+| AP-DATA-02 | No cross-service joins | Data from other services obtained via API or events | Applied | APIs and events only; no cross-database queries | Part01 §8.4, §12 |
+| AP-DATA-03 | Schema migration as code | Versioned migrations (e.g. Flyway) run by the pipeline | Applied | Versioned migration scripts per service, applied when the service starts after a pipeline deployment | Part01 §11.1, §12; D-112 |
+| AP-DATA-04 | Soft delete | Records flagged inactive, never physically deleted | Applied | Records never physically deleted | Part01 §12; BR-CMN-06 |
+| AP-DATA-05 | Standard audit columns | created/updated by and at on every table | Applied | Audit fields on every business record | Part01 §12; BR-CMN-02, BR-CMN-07 |
+| AP-DATA-06 | Optimistic locking | Version column prevents lost updates | Applied | Version on every record; stale updates refused | Part01 §8.4, §12; FR-CMN-014 |
+| AP-DATA-07 | Referential integrity policy | Within a service: DB foreign keys; across services: application checks | Applied | Foreign keys inside a database only; cross-service checks by API (e.g. INT-09) | Part01 §8.2, §12; Part03 (planned) |
+| AP-DATA-08 | Read / write separation | Reporting reads separated from transactional writes where needed | N/A | Small volumes; no reporting workload in the POC | Part01 §17 |
+| AP-DATA-09 | Caching strategy | What is cached, TTL, invalidation | Partial | Short-lived in-memory copies of employee and approver details only; shared cache Future | Part01 §12, §20.3; D-110 |
+| AP-DATA-10 | Data classification | Personal and sensitive data identified and tagged | Applied | Sensitive attributes classified in the BRD; masked in logs | Part01 §10.8; D-71, D-93; Part03 (planned) |
+| AP-DATA-11 | Retention & archival | Retention period and archival per entity | Applied | Business records and audit kept with the record; logs 90 days in Prod; outbox clean-up in Part03; no archival needed at these volumes | Part01 §10.8, §17; FR-ADM-103; Part03 (planned) |
+| AP-DATA-12 | Backup & restore | RPO / RTO defined and tested | Applied | Daily backup, RPO 24 h, RTO 8 h; restore tested before go-live and monthly | Part01 §6.4, §12; NFR-02 |
+| AP-DATA-13 | UTC storage of timestamps | Stored in UTC, displayed in user time zone | Applied | Timestamps stored in UTC and shown in IST; business dates stored as dates | Part01 §10.3; BR-CMN-18, A-01; D-117; Part03 (planned) |
+| AP-DATA-14 | Naming conventions | Consistent table, column and key naming | Applied | Conventions in the data model anchor and the database standard | Part03 (planned); docs/04-standards/database-and-data (planned) |
+| AP-DATA-15 | Business keys vs surrogate keys | Immutable business id alongside technical primary key | Applied | Business ids (e.g. Employee Id) kept alongside technical keys; key design per entity in Part03 | FR-UM-001; Part03 (planned) |
+| AP-DATA-16 | Immutable approved records | Approved / financial records changed only by new versions | Partial | Salary records are voided and regenerated, never changed; profile changes go through change requests; approved attendance can be reopened by business rule | D-70, D-78, D-90; Part03 (planned) |
+| AP-DATA-17 | Pagination for lists | All list queries paginated server-side | Applied | List APIs and the reconciliation query paged server-side | Part01 §8.2 (row 3), §8.4; Part02 (planned) |
+
+### L. Security architecture (SEC)
+
+| Id | Principle | Description | Applicability | Realization | Ref |
+| --- | --- | --- | --- | --- | --- |
+| AP-SEC-01 | Zero trust | Every request authenticated and authorized, inside or outside the network | Partial | Every request carries a token validated at gateway and service, with role and data-scope checks; no mutual TLS inside the cluster; service mesh Future | Part01 §9.8, §9.9, §20.3 |
+| AP-SEC-02 | Least privilege | Users, services and pipelines get only the access they need | Applied | Role data scopes; service clients with only the roles they need; own database user per service; namespace-scoped deploy account | Part01 §9.1, §9.2, §7.3 |
+| AP-SEC-03 | Defense in depth | Layered controls: network, gateway, service, data | Applied | WAF at the edge, network policies, gateway checks, service and query checks, encrypted disks | Part01 §16.1 |
+| AP-SEC-04 | Secure by default | Deny by default; features opened explicitly | Applied | Network policies deny all other flows; gateway routes deny by default; unused identity-provider features disabled | Part01 §6.3, §9.2, §16.2 |
+| AP-SEC-05 | Centralized identity (OAuth2 / OIDC) | One identity provider issues tokens | Applied | One OIDC identity provider realm per environment | Part01 §9.2; ADR-003 |
+| AP-SEC-06 | Token validation at gateway and service | JWT signature, expiry, audience checked at both layers | Applied | Signature, issuer, audience, expiry checked at gateway and in every service | Part01 §9.8 |
+| AP-SEC-07 | Role-based access control | Permissions by role, enforced on API and UI | Applied | Roles Employee, Manager, Admin; route, operation and data-scope checks; menu by role | Part01 §9.7; FR-UM-013 |
+| AP-SEC-08 | Multi-factor authentication | MFA policy per user type | Deferred | No MFA in the POC; can be enabled by configuration later, starting with the PMS Administrator | Part01 §9.4, §20.3; D-109 |
+| AP-SEC-09 | Password & session policy | Complexity, lockout, idle timeout, session expiry | Applied | Password policy, lock after 5 failures, 30 minutes idle, 10 hours absolute | Part01 §9.2, §9.6; D-26, D-28 |
+| AP-SEC-10 | Secrets management | Secrets in a vault, rotated, never in code | Partial | Platform secrets per service from protected pipeline secrets, rotated per release; cloud secret store only on AWS | Part01 §9.10, §19 AR-04; D-110 |
+| AP-SEC-11 | Encryption in transit | TLS 1.2+ everywhere | Partial | TLS 1.2+ at the edge with HSTS and to the managed database on AWS; not inside the local cluster; mutual TLS Future | Part01 §16.1, §19 AR-04, §20.3 |
+| AP-SEC-12 | Encryption at rest | Databases, storage and backups encrypted | Applied | Workstation and backup drives encrypted by the operating system; managed encryption on AWS | Part01 §16.1; D-114 |
+| AP-SEC-13 | Input validation & output encoding | Prevent injection and XSS | Applied | Contract and BRD rule validation; parameterised queries; output encoding by the UI library; WAF rule set | Part01 §16.2 A03 |
+| AP-SEC-14 | API protection | Rate limiting, CORS, security headers, size limits | Applied | Rate limits, single origin, security headers, 1 MB payload limit | Part01 §9.8 |
+| AP-SEC-15 | OWASP Top 10 coverage | Each category mapped to a control | Applied | Each category mapped to a control | Part01 §16.2 |
+| AP-SEC-16 | Threat modelling | STRIDE (or similar) per component at design time | Partial | Threat review in the security and privacy part of each Part02 function design; method not yet chosen | Part01 §16.2 A04; D-38; OI-P01a-08 |
+| AP-SEC-17 | Dependency scanning & SBOM | Vulnerable libraries blocked in the pipeline | Partial | Dependency and image scans block high and critical findings; SBOM not yet defined | Part01 §15, §16.1; OI-P01a-09 |
+| AP-SEC-18 | SAST / DAST | Static and dynamic security testing in the pipeline | Partial | Static code scanning as a pipeline gate; security testing in QA; dynamic scanning not yet defined | Part01 §15, §16.1; OI-P01a-10 |
+| AP-SEC-19 | Audit trail | Security-relevant actions logged, tamper-evident | Applied | Identity-provider security events and refused requests in the security log; audit entries cannot be changed or deleted | Part01 §10.2; FR-AUTH-030, FR-ADM-103 |
+| AP-SEC-20 | Personal data masking | No personal data in logs or non-production data | Applied | Log allow-list with masking in the collector; synthetic data in every non-production environment | Part01 §10.8; R-04, NFR-SUP-04 |
+
+Groups M–R: to be drafted.
 
 ## 5. Architecture decision register (ADRs)
 
@@ -209,3 +436,11 @@ To be drafted.
 | OI-P01a-01 | Fitness functions: which key qualities (e.g. response time, coupling between modules, contract compatibility) are checked automatically, and how | AP-GOV-10 | Enterprise Architect | docs/04-standards/architecture-and-design |
 | OI-P01a-02 | Internal service structure: whether domain logic is isolated from framework code by ports and adapters, to support replatforming (D-12) | AP-SD-16 | Enterprise Architect | docs/04-standards/coding-and-code-review |
 | OI-P01a-03 | Shared design system: component library and style tokens used by the shell and every module package | AP-FE-04 | Enterprise Architect | Part02 anchor or docs/04-standards/frontend-and-ux |
+| OI-P01a-04 | Consumer-driven contract tests in addition to schema-based contract verification | AP-MS-26 | Enterprise Architect | docs/04-standards/testing-and-quality |
+| OI-P01a-05 | Service template: content and upkeep of the template copied per service (framework, security, observability, error body, flow reference) without a shared runtime library (D-18) | AP-MS-30 | Enterprise Architect | docs/04-standards/coding-and-code-review |
+| OI-P01a-06 | Ordering of attendance approved and reopened events for the same attendance (late or out-of-order delivery) | AP-CP-38, AP-EIP-32 | Enterprise Architect | Part02 anchor (event conventions) |
+| OI-P01a-07 | Dead-letter queue: inspection and replay procedure for IT operations | AP-INT-09 | Enterprise Architect | docs/04-standards/api-and-integration |
+| OI-P01a-08 | Threat-modelling method (e.g. STRIDE) for the security and privacy part of each Part02 function | AP-SEC-16 | Enterprise Architect | docs/04-standards/security, before Part02 modules |
+| OI-P01a-09 | Software bill of materials: whether and how it is produced per image | AP-SEC-17 | Enterprise Architect | docs/04-standards/devops-and-cicd |
+| OI-P01a-10 | Dynamic application security testing: whether and where it runs (e.g. QA) | AP-SEC-18 | Enterprise Architect | docs/04-standards/testing-and-quality |
+| OI-P01a-11 | Version scheme for services, APIs and events, and compatibility rules | AP-MS-33, AP-INT-10, AP-DEV-09 | Enterprise Architect | docs/04-standards/api-and-integration |
