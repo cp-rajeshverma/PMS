@@ -20,13 +20,14 @@ Date: November 2026
 | 1.0 | 0.6 | 23-Nov-2026 | Rajesh Verma | §3.2.7 to §3.2.10 EIMS0070 to EIMS0100 my profile drafted: API-EIMS-07 to 10 (my-profile resources, owner from the token), draft-save checks, submit with the form, ISO country codes (D-135) |
 | 1.0 | 0.7 | 23-Nov-2026 | Rajesh Verma | §3.2.11 to §3.2.13 EIMS0110 to EIMS0130 profile change request drafted: API-EIMS-11 to 15 (open request under my-profile), one open request under the own row lock, server-computed changed fields, full set of requested values (D-136) |
 | 1.0 | 0.8 | 23-Nov-2026 | Rajesh Verma | §3.2.14 to §3.2.16 EIMS0140 to EIMS0160 review, approve and reject drafted: API-EIMS-16 to 21, approver check per item, bulk approve per kind, previous values copied and email re-checked at approval, Admin review limited to the top-level employee (D-137) |
+| 1.0 | 0.9 | 23-Nov-2026 | Rajesh Verma | §3.2.17 to §3.2.20 EIMS0170 to EIMS0200 drafted: API-EIMS-22 to 28 for other modules and the shell (INT-03, 04, 05, 07), scope by token type, approvees list, dashboard card and approval items; all 20 functions drafted (D-138) |
 
 ### 1.2 Review and approval
 
 | Role | Name | Date | Decision |
 | --- | --- | --- | --- |
-| Architect | Rajesh Verma (Enterprise Architect) | 23-Nov-2026 | §1–§3.1 approved (D-130); §3.2.1 EIMS0010 approved (D-131); §3.2.2–§3.2.3 EIMS0020–EIMS0030 approved (D-132); §3.2.4 EIMS0040 approved (D-133); §3.2.5–§3.2.6 EIMS0050–EIMS0060 approved (D-134); §3.2.7–§3.2.10 EIMS0070–EIMS0100 approved (D-135); §3.2.11–§3.2.13 EIMS0110–EIMS0130 approved (D-136); §3.2.14–§3.2.16 EIMS0140–EIMS0160 approved (D-137) |
-| Product owner | Rajesh Verma | 23-Nov-2026 | §1–§3.1 approved (D-130); §3.2.1 EIMS0010 approved (D-131); §3.2.2–§3.2.3 EIMS0020–EIMS0030 approved (D-132); §3.2.4 EIMS0040 approved (D-133); §3.2.5–§3.2.6 EIMS0050–EIMS0060 approved (D-134); §3.2.7–§3.2.10 EIMS0070–EIMS0100 approved (D-135); §3.2.11–§3.2.13 EIMS0110–EIMS0130 approved (D-136); §3.2.14–§3.2.16 EIMS0140–EIMS0160 approved (D-137) |
+| Architect | Rajesh Verma (Enterprise Architect) | 23-Nov-2026 | §1–§3.1 approved (D-130); §3.2.1 EIMS0010 approved (D-131); §3.2.2–§3.2.3 EIMS0020–EIMS0030 approved (D-132); §3.2.4 EIMS0040 approved (D-133); §3.2.5–§3.2.6 EIMS0050–EIMS0060 approved (D-134); §3.2.7–§3.2.10 EIMS0070–EIMS0100 approved (D-135); §3.2.11–§3.2.13 EIMS0110–EIMS0130 approved (D-136); §3.2.14–§3.2.16 EIMS0140–EIMS0160 approved (D-137); §3.2.17–§3.2.20 EIMS0170–EIMS0200 approved (D-138) |
+| Product owner | Rajesh Verma | 23-Nov-2026 | §1–§3.1 approved (D-130); §3.2.1 EIMS0010 approved (D-131); §3.2.2–§3.2.3 EIMS0020–EIMS0030 approved (D-132); §3.2.4 EIMS0040 approved (D-133); §3.2.5–§3.2.6 EIMS0050–EIMS0060 approved (D-134); §3.2.7–§3.2.10 EIMS0070–EIMS0100 approved (D-135); §3.2.11–§3.2.13 EIMS0110–EIMS0130 approved (D-136); §3.2.14–§3.2.16 EIMS0140–EIMS0160 approved (D-137); §3.2.17–§3.2.20 EIMS0170–EIMS0200 approved (D-138) |
 | Business analyst | | | |
 | Dev lead | | | |
 
@@ -62,7 +63,7 @@ Reading rules:
 | --- | --- | --- |
 | 1 | PMS-BRD (anchor) – §4.3 roles and data scope, §5.3 dashboard and inbox, §6 BR-CMN, §7 INT-03 to INT-05, INT-07 to INT-09; PMS-BRD-M1-EIMS; PMS-BRD-M5-SUP (FR-UM-001 to 015, FR-AUTH, FR-ADM-101 to 117) | v1.0, approved baseline (D-107) |
 | 2 | UX Journey Index and UX Summaries SCR-EIMS-01 to 04, SCR-SH-03, SCR-SH-04; mockups `docs/01-ux/mockups/html/scr-eims-0*.html` | v1.1 (D-105) |
-| 3 | Decision log / ADRs | D-01 to D-137; ADR-001 to ADR-006 |
+| 3 | Decision log / ADRs | D-01 to D-138; ADR-001 to ADR-006 |
 
 **Design documents**
 
@@ -213,10 +214,10 @@ Business statuses and transitions are defined in PMS-BRD-M1-EIMS §6.1 (profile)
 | EIMS0140 | Open a profile or change request for review, or read only from the directory (FR-EIMS-030 to 032, 034, 035) | Screen | SCR-EIMS-04 | POC | Approved |
 | EIMS0150 | Approve profiles or change requests, one or several; apply approved changes (FR-EIMS-033, 028) | Screen | SCR-EIMS-04, SCR-SH-04 | POC | Approved |
 | EIMS0160 | Reject a profile or change request with remarks (FR-EIMS-033) | Screen | SCR-EIMS-04, SCR-SH-04 | POC | Approved |
-| EIMS0170 | Provide employee details to other modules (INT-03) | API | – | POC | Not started |
-| EIMS0180 | Resolve the approver of a record (INT-04) | API | – | POC | Not started |
-| EIMS0190 | Provide the current hourly wage rate (INT-05) | API | – | POC | Not started |
-| EIMS0200 | Supply EIMS dashboard tiles, to-do items and inbox items (INT-07) | API | SCR-SH-03, SCR-SH-04 | POC | Not started |
+| EIMS0170 | Provide employee details to other modules (INT-03) | API | – | POC | Approved |
+| EIMS0180 | Resolve the approver of a record (INT-04) | API | – | POC | Approved |
+| EIMS0190 | Provide the current hourly wage rate (INT-05) | API | – | POC | Approved |
+| EIMS0200 | Supply EIMS dashboard tiles, to-do items and inbox items (INT-07) | API | SCR-SH-03, SCR-SH-04 | POC | Approved |
 
 Review grouping (each review adds a revision row): R1 §1–§3.1 · R2 EIMS0010 · R3 EIMS0020–EIMS0030 · R4 EIMS0040 · R5 EIMS0050–EIMS0060 · R6 EIMS0070–EIMS0100 · R7 EIMS0110–EIMS0130 · R8 EIMS0140–EIMS0160 · R9 EIMS0170–EIMS0200 · R10 §4–§5.
 
@@ -830,7 +831,7 @@ The [Edit Admin-owned fields] function lets the Admin work with the following se
 **Employee header and read-only fields**
 
 1. Shows Employee Id, name and email read only (maintained by the employee, FR-EIMS-012), profile status and Active / Inactive badges.
-2. Data fetched via the employee details API of EIMS0170 (INT-03; API id assigned in §3.2.17) and [API-EIMS-03 : GET /api/eims/v1/manager-options (Purpose : eligible managers and the current top-level employee, with forEmployeeId)].
+2. Data fetched via the [API-EIMS-22 : GET /api/eims/v1/employees/{employeeId}/details (Purpose : employee details with the Admin-only fields)] (EIMS0170) and [API-EIMS-03 : GET /api/eims/v1/manager-options (Purpose : eligible managers and the current top-level employee, with forEmployeeId)].
 3. DB entity: [EMPLOYEE]
 4. An inactive employee opens fully read only, without Save and Deactivate (D-133).
 
@@ -2875,7 +2876,610 @@ One local transaction; no events.
 
 1. None.
 
-Further function chapters are added with R9.
+#### 3.2.17 EIMS0170 – Provide employee details to other modules (Module: EIMS, Approved)
+
+##### 3.2.17.1 Purpose, trigger and conditions
+
+EIMS gives AMS, LMS, SMS and the shell the employee data they need, always from the last approved profile (INT-03, BR-CMN-11).
+
+| Item | Detail |
+| --- | --- |
+| Delivery phase | POC |
+| Trigger | A call from another module or the shell: an AMS or LMS check that the profile is approved (BR-CMN-09), team and inbox views, salary generation, the EIMS admin form (EIMS0040) |
+| Pre-conditions | Relayed user token (caller's data scope applies) or service token of an EIMS-trusted service (Part01 §9.9) |
+| Post-conditions | None – read only |
+
+##### 3.2.17.2 Actor & data scope
+
+| Role | Access (Read / Read-write / Approve / None) | Data scope (row-level) |
+| --- | --- | --- |
+| Employee (relayed token) | Read | Own record |
+| Manager (relayed token) | Read | Own record and direct reports, active and inactive |
+| Admin (relayed token) | Read | All employees (D-58); Admin-only fields for the admin form |
+| Service (service token: AMS, LMS, SMS) | Read | Any employee, INT-03 fields only |
+
+##### 3.2.17.3 Requirement traceability
+
+| Source | References |
+| --- | --- |
+| BRD functional requirements | INT-03; FR-EIMS-028 (approved values only); FR-CMN-010 (inbox scope) |
+| BRD business / validation rules | BR-CMN-01, 06, 09, 11; BR-EIMS-10 |
+| BRD NFRs | NFR-01, NFR-02, NFR-03; NFR-EIMS-01 |
+| UX | – (used by SCR-AMS-*, SCR-LMS-*, SCR-SMS-*, SCR-SH-03, SCR-SH-04, SCR-EIMS-02) |
+| Decisions | D-58, D-63, D-111, D-122, D-124, D-127, D-130, D-133, D-138 |
+| Related functions – depends on | UM0060, ADM0030, ADM0040 |
+| Related functions – used by | AMS0010 to AMS0130, LMS0010 to LMS0090, SMS0010 to SMS0120 (module documents, planned); SH0020, SH0030; EIMS0040 (admin form); XF-02, XF-05, XF-08 |
+
+##### 3.2.17.4 Navigation & prototype reference
+
+**Navigation:** None – API for other modules.
+
+**Prototype:** –
+
+##### 3.2.17.5 Solution approach
+
+###### 3.2.17.5.1 Design description
+
+The [Provide employee details to other modules] function offers two reads:
+
+1. Details of one employee
+2. Details of a list of employees
+
+**Details of one employee**
+
+1. Returns the INT-03 fields: Employee Id, first, middle and last name, date of joining, Manager Id, profile status, active flag; for an Admin caller also email, role and hourly wage rate (the admin form, D-133).
+2. [API-EIMS-22 : GET /api/eims/v1/employees/{employeeId}/details (Purpose : INT-03 details of one employee within the caller's scope)]
+3. DB entity: [EMPLOYEE]
+4. Outside the caller's scope or unknown → neutral 404 (EIMS-ACC-001).
+
+**Details of a list of employees**
+
+1. Returns the same INT-03 fields for up to 100 Employee Ids in one call, for team and inbox views.
+2. [API-EIMS-23 : GET /api/eims/v1/employee-details?employeeIds=… (Purpose : INT-03 details of several employees within the caller's scope)]
+3. DB entity: [EMPLOYEE]
+4. Ids outside the scope or unknown are left out of `items`; the caller treats a missing id as not visible.
+
+###### 3.2.17.5.2 Design notes
+
+1. **Normal resources (D-138).** Users reach these data through other services, so the APIs are normal resources under `/api/eims/v1` (anchor §6.1), called with the relayed user token or a service token; they are not offered on any screen.
+2. **Scope by token (D-138).** With a user token the caller's data scope applies (Part01 §9.7): own record; a manager's direct reports (active and inactive, so waiting items of an inactive report stay visible, BR-CMN-06); the Admin all employees (D-58). With a service token any employee, INT-03 fields only.
+3. **Approved values only.** EMPLOYEE always holds the approved profile (or the first profile not yet approved); requested values of an open change request are never returned (BR-CMN-11, D-130). The profile status lets AMS and LMS enforce BR-CMN-09.
+4. **Fresh reads, short copies in the caller.** EIMS reads the database on every call. Callers may keep short-lived in-memory copies; their lifetime is OI-P03-03, owned by PMS-HLD-Part02-M2-AMS (Part03 anchor §5). EIMS itself keeps no copy.
+5. **Resilience.** Callers use the Part01 §8.5 defaults (timeout 2 s, two retries for reads, circuit breaker); if EIMS is unavailable, the caller's view or action fails with the flow reference (XF-08) rather than using an old reporting line.
+
+###### 3.2.17.5.3 Sequence & orchestration
+
+```mermaid
+sequenceDiagram
+  participant X as AMS / LMS / SMS / shell
+  participant E as EIMS service
+  participant DB as eims database
+  alt On behalf of a user
+    X->>E: GET details or employee-details (relayed user token, X-Flow-Ref)
+    E->>E: Scope from role and Employee Id
+  else As the system
+    X->>E: GET details or employee-details (service token, X-Flow-Ref)
+    E->>E: Any employee, INT-03 fields only
+  end
+  E->>DB: Read employees within scope
+  alt Single employee outside scope or unknown
+    E-->>X: 404 EIMS-ACC-001
+  else Found
+    E-->>X: 200 INT-03 fields (list: ids outside scope left out)
+  end
+```
+
+| Step | Type (sync call / event / job / workflow) | Producer → consumer | Event / API | Consistency (local tx / outbox / saga / compensation) |
+| --- | --- | --- | --- | --- |
+| 1 | Sync call | AMS, LMS, SMS, shell → EIMS | API-EIMS-22, API-EIMS-23 (INT-03) | Read only; fresh on every call |
+
+**Text version of the diagram**
+
+| Step | From → to | Message | Result |
+| --- | --- | --- | --- |
+| 1a | Caller → EIMS | GET with the relayed user token | Caller's data scope applied |
+| 1b | Caller → EIMS | GET with a service token | Any employee, INT-03 fields only |
+| 2 | EIMS → database | Read within scope | – |
+| 3 | EIMS → caller | 200 with the fields, or 404 EIMS-ACC-001 for a single employee outside scope | List: ids outside scope left out |
+
+###### 3.2.17.5.4 Frontend
+
+None (the EIMS admin form calls API-EIMS-22 as described in §3.2.4).
+
+###### 3.2.17.5.5 Backend
+
+| API id | API name | Method & endpoint | Purpose | Request (key fields) | Response (key fields) | Roles |
+| --- | --- | --- | --- | --- | --- | --- |
+| API-EIMS-22 | Employee details | GET /api/eims/v1/employees/{employeeId}/details | INT-03 details of one employee | – | employeeId, firstName, middleName, lastName, dateOfJoining, managerId, profileStatus, isActive, version; Admin only: email, role, hourlyWageRate | Employee, Manager, Admin (relayed); service token |
+| API-EIMS-23 | Employee details list | GET /api/eims/v1/employee-details | INT-03 details of up to 100 employees | Query: employeeIds (comma-separated, 1 to 100) | items[] with the INT-03 fields | As API-EIMS-22 |
+
+Read only; safe to retry.
+
+###### 3.2.17.5.6 Database
+
+| Entity | Operation (C / R / U / soft-D) | Purpose in this function |
+| --- | --- | --- |
+| EMPLOYEE | R | INT-03 fields within the caller's scope |
+
+No in-memory copy kept by EIMS.
+
+###### 3.2.17.5.7 Validation & error handling
+
+| Rule ref (BRD VR / BR) | Layer (UI / API / DB) | Error code | HTTP status | Message |
+| --- | --- | --- | --- | --- |
+| Neutral refused response | API | EIMS-ACC-001 | 404 | No record data |
+| More than 100 ids, malformed ids | API | EIMS-VAL-001 | 400 | Generic validation message |
+| – | API | EIMS-SYS-001 | 500 | Generic message with the reference |
+
+###### 3.2.17.5.8 Security & data privacy
+
+| Item | Detail |
+| --- | --- |
+| Authorization check per API | API-EIMS-22, 23: token validated; user token → caller's scope; service token → client of AMS, LMS or SMS with the EIMS read role (Part01 §9.2) |
+| Sensitive fields | None in the INT-03 fields; Admin-only fields (email, rate) only for an Admin user token |
+| Masking (UI / API response) | Fields limited per integration and role |
+| Encryption (in transit / at rest / field-level) | Inside the cluster behind the edge, network policies per service pair (Part01 §16.1, AR-04); encrypted storage |
+| Logging rule | Caller, token type, number of ids, result; never names |
+| Threat review – TB-2 gateway → EIMS (shell, admin form) | E / I: reading employees outside the scope – scope in the query, neutral 404 |
+| Threat review – TB-3 service → EIMS | S: a caller pretending to be AMS, LMS or SMS – service token of its own client, network policy per service pair (Part01 §9.9). E: user token relayed for someone else's data – scope of the user in the token. I: over-sharing – INT-03 fields only for service tokens |
+| Threat review – TB-5 EIMS → database | I: encrypted storage |
+
+###### 3.2.17.5.9 Notifications, audit & activity log
+
+| Trigger | Notification (NOT id) | Activity log entry | Audit fields captured |
+| --- | --- | --- | --- |
+| Details read | None (C-05) | `process` API-EIMS-22 or 23; steps `scope-applied`, `loaded` (count); the caller's flow reference is kept | None |
+
+###### 3.2.17.5.10 Scenarios
+
+| Scenario id | Scenario | Type | Requirement ref | Pre-condition | Expected result | Test level |
+| --- | --- | --- | --- | --- | --- | --- |
+| EIMS0170-S01 | AMS checks an approved profile | Positive | INT-03, BR-CMN-09 | Employee token relayed | Own details with profileStatus APPROVED | API (contract) |
+| EIMS0170-S02 | Open change request not visible | Positive | BR-CMN-11 | Address change Submitted | Details unchanged until approval | API |
+| EIMS0170-S03 | Manager reads another team | Negative | FR-UM-014 | Relayed manager token | 404 EIMS-ACC-001; list leaves the id out | API |
+| EIMS0170-S04 | SMS with service token | Positive | INT-03 | Event processing | Any employee, INT-03 fields only | API |
+| EIMS0170-S05 | Inactive direct report | Edge | BR-CMN-06 | Report deactivated | Returned to the manager with isActive false | API |
+| EIMS0170-S06 | 101 ids | Negative | Anchor §6.1 | – | 400 EIMS-VAL-001 | API |
+
+##### 3.2.17.6 Notes, issues & assumptions
+
+1. Note: OI-P03-03 (lifetime of the callers' in-memory copies) stays with PMS-HLD-Part02-M2-AMS; no EIMS function keeps such a copy.
+
+#### 3.2.18 EIMS0180 – Resolve the approver of a record (Module: EIMS, Approved)
+
+##### 3.2.18.1 Purpose, trigger and conditions
+
+EIMS tells other modules who decides an employee's records now: the employee's manager, or the Admin for the top-level employee, never the employee (INT-04, BR-CMN-01, 08).
+
+| Item | Detail |
+| --- | --- |
+| Delivery phase | POC |
+| Trigger | AMS, LMS or SMS: submit messages, approval views, inbox lists and the approver check at decision time (D-123 (5), XF-08) |
+| Pre-conditions | Relayed user token or service token |
+| Post-conditions | None – read only |
+
+##### 3.2.18.2 Actor & data scope
+
+| Role | Access (Read / Read-write / Approve / None) | Data scope (row-level) |
+| --- | --- | --- |
+| Employee (relayed token) | Read | Approver of the own record; no approvees |
+| Manager (relayed token) | Read | Approver of own and direct reports' records; own approvees |
+| Admin (relayed token) | Read | Any employee's approver; own approvees (the top-level employee) |
+| Service (service token) | Read | Approver of any employee |
+
+##### 3.2.18.3 Requirement traceability
+
+| Source | References |
+| --- | --- |
+| BRD functional requirements | INT-04; FR-EIMS-017; FR-CMN-010; FR-UM-014 |
+| BRD business / validation rules | BR-CMN-01, 06, 08 |
+| BRD NFRs | NFR-01, NFR-03 |
+| UX | – (used by SCR-SH-04 and the team views) |
+| Decisions | D-58, D-104, D-123, D-138 |
+| Related functions – depends on | UM0060, ADM0030, ADM0040 |
+| Related functions – used by | AMS0030, AMS0050 to AMS0080, LMS0020, LMS0040 to LMS0060, SMS0040 to SMS0070, AMS0130, LMS0090, SMS0120 (planned); XF-02, XF-05, XF-08; within EIMS the same rule serves EIMS0070, EIMS0090, EIMS0120, EIMS0140 to EIMS0160, EIMS0200 |
+
+##### 3.2.18.4 Navigation & prototype reference
+
+**Navigation:** None – API for other modules.
+
+**Prototype:** –
+
+##### 3.2.18.5 Solution approach
+
+###### 3.2.18.5.1 Design description
+
+The [Resolve the approver of a record] function offers two reads:
+
+1. Approver of one employee's records
+2. Employees whose records the caller decides
+
+**Approver of one employee's records**
+
+1. Returns approver type (MANAGER or ADMIN), the manager's Employee Id and name when type is MANAGER, and whether that manager is active.
+2. [API-EIMS-24 : GET /api/eims/v1/employees/{employeeId}/approver (Purpose : the current approver of the employee's records)]
+3. DB entity: [EMPLOYEE]
+4. Rule: Manager Id set → MANAGER; empty (top-level employee) → ADMIN (BR-CMN-01).
+
+**Employees whose records the caller decides**
+
+1. Returns the Employee Ids, names and active flags the caller approves now: for a manager all employees whose Manager Id is the caller (active and inactive, BR-CMN-06); for the Admin the top-level employee(s) without a manager, active or inactive; for an Employee an empty list.
+2. [API-EIMS-25 : GET /api/eims/v1/my-approvees (Purpose : the employees whose records the caller decides now)]
+3. DB entity: [EMPLOYEE]
+4. The caller is never in its own list (BR-CMN-08): no employee is their own manager, and the Admin is not an employee.
+
+###### 3.2.18.5.2 Design notes
+
+1. **One rule, one place (D-138).** Every module asks EIMS; none stores an approver on a waiting item (D-123 (5)). A module lists its inbox for the caller's approvees (API-EIMS-25) and, at decision time, checks that the record's owner is still among them – so a manager change moves waiting items at once (XF-08).
+2. **Inactive manager.** An inactive employee keeps the Manager Id; `approverActive` lets a caller show that the approver is inactive. Such items are the subject of OI-P02M1-03; EIMS0180 does not re-route them.
+3. **Fresh reads.** As EIMS0170: read on every call, no copy kept in EIMS.
+
+###### 3.2.18.5.3 Sequence & orchestration
+
+As EIMS0170 (§3.2.17.5.3) with API-EIMS-24 or API-EIMS-25. No asynchronous steps.
+
+###### 3.2.18.5.4 Frontend
+
+None.
+
+###### 3.2.18.5.5 Backend
+
+| API id | API name | Method & endpoint | Purpose | Request (key fields) | Response (key fields) | Roles |
+| --- | --- | --- | --- | --- | --- | --- |
+| API-EIMS-24 | Approver of an employee | GET /api/eims/v1/employees/{employeeId}/approver | The current approver of the employee's records | – | employeeId, approverType (MANAGER, ADMIN), approverEmployeeId, approverName, approverActive | Employee (own), Manager (own, reports), Admin (all) relayed; service token |
+| API-EIMS-25 | My approvees | GET /api/eims/v1/my-approvees | Employees whose records the caller decides now | – | items[]: employeeId, name, isActive | Employee, Manager, Admin (relayed user token only) |
+
+Read only; safe to retry.
+
+###### 3.2.18.5.6 Database
+
+| Entity | Operation (C / R / U / soft-D) | Purpose in this function |
+| --- | --- | --- |
+| EMPLOYEE | R | Manager Id and the manager's name and active flag; employees by Manager Id or without a manager |
+
+###### 3.2.18.5.7 Validation & error handling
+
+| Rule ref (BRD VR / BR) | Layer (UI / API / DB) | Error code | HTTP status | Message |
+| --- | --- | --- | --- | --- |
+| Neutral refused response | API | EIMS-ACC-001 | 404 | No record data |
+| API-EIMS-25 with a service token | API | EIMS-ACC-002 | 403 | Not allowed |
+| – | API | EIMS-SYS-001 | 500 | Generic message with the reference |
+
+###### 3.2.18.5.8 Security & data privacy
+
+| Item | Detail |
+| --- | --- |
+| Authorization check per API | API-EIMS-24: scope as EIMS0170; API-EIMS-25: user token only, list derived from the token's Employee Id or Admin role |
+| Sensitive fields | None |
+| Masking (UI / API response) | Not applicable |
+| Encryption (in transit / at rest / field-level) | As EIMS0170 |
+| Logging rule | Caller, result, count |
+| Threat review – TB-3 service → EIMS | S: caller impersonation – service token and network policy. E: a manager widening their approvees – list derived from the token, never from a parameter; owners re-checked at decision time in the deciding module |
+| Threat review – TB-5 EIMS → database | I: encrypted storage |
+
+###### 3.2.18.5.9 Notifications, audit & activity log
+
+| Trigger | Notification (NOT id) | Activity log entry | Audit fields captured |
+| --- | --- | --- | --- |
+| Approver or approvees read | None (C-05) | `process` API-EIMS-24 or 25; steps `scope-applied`, `approver-resolved` (count for approvees) | None |
+
+###### 3.2.18.5.10 Scenarios
+
+| Scenario id | Scenario | Type | Requirement ref | Pre-condition | Expected result | Test level |
+| --- | --- | --- | --- | --- | --- | --- |
+| EIMS0180-S01 | Employee with a manager | Positive | INT-04 | B reports to M1 | MANAGER, M1 | API (contract) |
+| EIMS0180-S02 | Top-level employee | Positive | BR-CMN-01 | C has no manager | ADMIN | API |
+| EIMS0180-S03 | Manager change | Positive | FR-EIMS-017, XF-08 | B moved to M2 | Approver M2; B in M2's approvees, not in M1's | API |
+| EIMS0180-S04 | Approvees include an inactive report | Edge | BR-CMN-06 | Report deactivated | Listed with isActive false | API |
+| EIMS0180-S05 | Admin approvees | Positive | D-58 | – | Only the employee(s) without a manager | API |
+
+##### 3.2.18.6 Notes, issues & assumptions
+
+1. Note: the deciding modules re-check the approver at decision time against API-EIMS-25 or API-EIMS-24 (XF-08 step 4); their designs are in the module documents (planned).
+
+#### 3.2.19 EIMS0190 – Provide the current hourly wage rate (Module: EIMS, Approved)
+
+##### 3.2.19.1 Purpose, trigger and conditions
+
+EIMS gives SMS the employee's current hourly wage rate when a salary record is generated; SMS copies it into the record (INT-05, BR-CMN-13).
+
+| Item | Detail |
+| --- | --- |
+| Delivery phase | POC |
+| Trigger | SMS0080 processing an attendance-approved event; SMS0100 nightly reconciliation creating a missing record (XF-02, XF-04) |
+| Pre-conditions | SMS service token |
+| Post-conditions | None – read only |
+
+##### 3.2.19.2 Actor & data scope
+
+| Role | Access (Read / Read-write / Approve / None) | Data scope (row-level) |
+| --- | --- | --- |
+| Employee, Manager, Admin | None – internal API, never routed by the gateway | – |
+| Service (SMS service token) | Read | Any employee, active or inactive |
+
+##### 3.2.19.3 Requirement traceability
+
+| Source | References |
+| --- | --- |
+| BRD functional requirements | INT-05; FR-EIMS-013; FR-SMS-040, 041 (planned module document) |
+| BRD business / validation rules | BR-CMN-13 |
+| BRD NFRs | NFR-01 (salary record within 1 minute), NFR-06 |
+| UX | – |
+| Decisions | D-05, D-71, D-124, D-138 |
+| Related functions – depends on | ADM0030, ADM0040 |
+| Related functions – used by | SMS0080, SMS0100 (planned); XF-02, XF-04 |
+
+##### 3.2.19.4 Navigation & prototype reference
+
+**Navigation:** None – internal API.
+
+**Prototype:** –
+
+##### 3.2.19.5 Solution approach
+
+###### 3.2.19.5.1 Design description
+
+The [Provide the current hourly wage rate] function offers one read:
+
+1. Current rate of one employee
+
+**Current rate of one employee**
+
+1. Returns the Employee Id and the current hourly wage rate (decimal string, 2 decimals, INR).
+2. [API-EIMS-26 : GET /api/eims/v1/internal/employees/{employeeId}/hourly-wage-rate (Purpose : current hourly wage rate for salary generation)]
+3. DB entity: [EMPLOYEE]
+4. Returned for inactive employees too: attendance approved before a deactivation still gets its salary record.
+
+###### 3.2.19.5.2 Design notes
+
+1. **Internal API (anchor §6.1).** Under `/internal/`, service token only, never routed by the gateway from the browser; only the SMS client holds the role for it (Part01 §9.2).
+2. **Rate at generation (BR-CMN-13).** EIMS returns the rate as it is now; SMS copies it into the record and never asks again for that record, so a later rate change (EIMS0040) affects only later records.
+3. **Failure.** If EIMS cannot answer, SMS does not acknowledge the event and the broker redelivers it (Part01 §8.2 row 6, anchor §6.2); EIMS keeps no state for the call.
+
+###### 3.2.19.5.3 Sequence & orchestration
+
+| Step | Type (sync call / event / job / workflow) | Producer → consumer | Event / API | Consistency (local tx / outbox / saga / compensation) |
+| --- | --- | --- | --- | --- |
+| 1 | Sync call | SMS → EIMS (service token) | API-EIMS-26 (INT-05) | Read only; SMS copies the rate in its own transaction (XF-02) |
+
+The flow is drawn in the Part02 anchor XF-02 and XF-04; no diagram of its own.
+
+###### 3.2.19.5.4 Frontend
+
+None.
+
+###### 3.2.19.5.5 Backend
+
+| API id | API name | Method & endpoint | Purpose | Request (key fields) | Response (key fields) | Roles |
+| --- | --- | --- | --- | --- | --- | --- |
+| API-EIMS-26 | Current hourly wage rate | GET /api/eims/v1/internal/employees/{employeeId}/hourly-wage-rate | Current rate for salary generation (INT-05) | – | employeeId, hourlyWageRate | Service token (SMS) |
+
+Read only; safe to retry.
+
+###### 3.2.19.5.6 Database
+
+| Entity | Operation (C / R / U / soft-D) | Purpose in this function |
+| --- | --- | --- |
+| EMPLOYEE | R | Current hourly wage rate |
+
+###### 3.2.19.5.7 Validation & error handling
+
+| Rule ref (BRD VR / BR) | Layer (UI / API / DB) | Error code | HTTP status | Message |
+| --- | --- | --- | --- | --- |
+| Unknown Employee Id | API | EIMS-ACC-001 | 404 | No record data |
+| Not the SMS service client | API | EIMS-ACC-002 | 403 | Not allowed |
+| – | API | EIMS-SYS-001 | 500 | Generic message with the reference |
+
+###### 3.2.19.5.8 Security & data privacy
+
+| Item | Detail |
+| --- | --- |
+| Authorization check per API | API-EIMS-26: service token of the SMS client with the rate role; user tokens refused |
+| Sensitive fields | Hourly wage rate (sensitive pay, D-71) |
+| Masking (UI / API response) | Only to SMS |
+| Encryption (in transit / at rest / field-level) | As EIMS0170 |
+| Logging rule | Employee Id and result only; never the rate (Part01 §10.8) |
+| Threat review – TB-1 / TB-2 | Not crossed: `/internal/` is never routed by the gateway (anchor §6.1) |
+| Threat review – TB-3 SMS → EIMS | S: another service reading pay data – SMS client only, network policy per service pair. I: rate in logs – never logged |
+| Threat review – TB-5 EIMS → database | I: encrypted storage |
+
+###### 3.2.19.5.9 Notifications, audit & activity log
+
+| Trigger | Notification (NOT id) | Activity log entry | Audit fields captured |
+| --- | --- | --- | --- |
+| Rate read | None (C-05) | `process` API-EIMS-26; step `loaded`; the event's flow reference is kept | None |
+
+###### 3.2.19.5.10 Scenarios
+
+| Scenario id | Scenario | Type | Requirement ref | Pre-condition | Expected result | Test level |
+| --- | --- | --- | --- | --- | --- | --- |
+| EIMS0190-S01 | SMS reads the rate | Positive | INT-05 | Rate 300.00 | 200 "300.00" | API (contract) |
+| EIMS0190-S02 | Rate changed after generation | Positive | BR-CMN-13 | Record generated at 250, then rate 300 | Next call returns 300; the existing record keeps 250 (SMS) | API, E2E |
+| EIMS0190-S03 | User token | Negative | Anchor §6.1 | Admin token | 403 EIMS-ACC-002; not reachable through the gateway | API |
+| EIMS0190-S04 | Inactive employee | Edge | BR-CMN-06 | Deactivated after approval | 200 with the rate | API |
+
+##### 3.2.19.6 Notes, issues & assumptions
+
+1. None.
+
+#### 3.2.20 EIMS0200 – Supply EIMS dashboard tiles, to-do items and inbox items (Module: EIMS, Approved)
+
+##### 3.2.20.1 Purpose, trigger and conditions
+
+EIMS supplies its dashboard card and its approvals-inbox items to the shell, one call per card (INT-07, XF-05).
+
+| Item | Detail |
+| --- | --- |
+| Delivery phase | POC |
+| Trigger | User opens Home (SCR-SH-03) or Approvals (SCR-SH-04); the shell's menu count on every page |
+| Pre-conditions | Signed in |
+| Post-conditions | None – read only |
+
+##### 3.2.20.2 Actor & data scope
+
+| Role | Access (Read / Read-write / Approve / None) | Data scope (row-level) |
+| --- | --- | --- |
+| Employee | Read | Own profile and change request |
+| Manager | Read | Own profile; direct reports' waiting items |
+| Admin | Read | Counts over all employees; the top-level employee's waiting items; recently onboarded employees |
+
+##### 3.2.20.3 Requirement traceability
+
+| Source | References |
+| --- | --- |
+| BRD functional requirements | FR-CMN-001 to 008, 010, 013; INT-07; RPT-EIMS-01 to 05; NOT-EIMS-01 to 05 |
+| BRD business / validation rules | BR-CMN-01, 08 |
+| BRD NFRs | NFR-01, NFR-02 |
+| UX | UJ-SH-03, UJ-SH-04; SCR-SH-03, SCR-SH-04 |
+| Decisions | D-24, D-58, D-70, D-104, D-122, D-123, D-137, D-138 |
+| Related functions – depends on | EIMS0180 rule (approvees); UM0060, ADM0030, ADM0040 |
+| Related functions – used by | SH0020, SH0030, SH0040 (anchor §5.5, §6.5); EIMS0140 to EIMS0160 (Open, Approve, Reject from the inbox) |
+
+##### 3.2.20.4 Navigation & prototype reference
+
+**Navigation:** Home (EIMS card) · Approvals > Profiles tab · menu Approvals count
+
+**Prototype:** `docs/01-ux/mockups/html/scr-sh-03-dashboard.html`, `scr-sh-04-approvals.html` · UX summaries `scr-sh-03-dashboard.md`, `scr-sh-04-approvals.md`
+
+##### 3.2.20.5 Solution approach
+
+###### 3.2.20.5.1 Design description
+
+The [Supply EIMS dashboard tiles, to-do items and inbox items] function offers two reads:
+
+1. EIMS dashboard card
+2. EIMS approval items
+
+**EIMS dashboard card**
+
+1. Role-shaped content (D-138):
+   - Employee and Manager: profile status tile with the open change request status (RPT-EIMS-01); the "complete your profile" banner flag while the profile is not Approved (FR-CMN-005, NOT-EIMS-01); to-do items "Profile not yet submitted" (Draft), "Profile returned – please correct" (Rejected, NOT-EIMS-04) and "Change request returned" (request Rejected) with links to My Profile (RPT-EIMS-02); a Manager also gets the count of EIMS items waiting for the manager (RPT-EIMS-03).
+   - Admin: active employees, profiles not yet approved (active employees in Draft, Submitted or Rejected), EIMS items waiting for the Admin, and the 5 most recently created employees with Employee Id, name, date of joining and profile status (RPT-EIMS-04, 05; FR-CMN-007).
+2. [API-EIMS-27 : GET /api/eims/v1/dashboard-card (Purpose : the EIMS card of the caller's dashboard)]
+3. DB entities: [EMPLOYEE], [PROFILE_CHANGE_REQUEST]
+4. The shell adds the other modules' counts for the cross-module tiles (FR-CMN-006, 007).
+
+**EIMS approval items**
+
+1. Submitted profiles and change requests the caller decides now, oldest first, with kind (PROFILE, CHANGE_REQUEST), id, Employee Id, name, summary ("New profile" / "Profile change request"), submission time and version (FR-CMN-010, RPT-EIMS-03); `totalItems` gives the Profiles tab count and the EIMS part of the menu count.
+2. [API-EIMS-28 : GET /api/eims/v1/approval-items (Purpose : EIMS items waiting for the caller's decision, paged)]
+3. DB entities: [EMPLOYEE], [PROFILE_CHANGE_REQUEST]
+4. Approvees by the EIMS0180 rule; never the caller's own items (BR-CMN-08). Decisions go to EIMS0150 / EIMS0160 (D-137).
+
+###### 3.2.20.5.2 Design notes
+
+1. **Two calls (D-138).** The dashboard calls only API-EIMS-27; the inbox and the menu count call API-EIMS-28 (the menu with `size=1`, reading `totalItems`). The card never carries the inbox list.
+2. **Fresh, scoped reads.** Each call reads eims with the caller's scope in the query; no cache (XF-05). If EIMS is unavailable only the EIMS card or tab fails with Retry (FR-CMN-008).
+3. **Waiting items move with the manager.** API-EIMS-28 is built from the current approvees, so items move at once after a manager change (XF-08).
+4. **Recently onboarded (D-138).** The 5 newest employees by creation time, newest first; "View all employees" leads to the directory (SCR-SH-03 §3).
+
+###### 3.2.20.5.3 Sequence & orchestration
+
+```mermaid
+sequenceDiagram
+  actor U as User
+  participant SH as Shell
+  participant GW as API gateway
+  participant E as EIMS service
+  participant DB as eims database
+  alt Home
+    U->>SH: Open Home
+    SH->>GW: GET dashboard-card (session cookie)
+    GW->>E: GET dashboard-card (access token, X-Flow-Ref)
+    E->>DB: Own profile and request, or approvee counts, or Admin counts and latest 5
+    E-->>SH: Card content for the role
+  else Approvals or menu count
+    U->>SH: Open Approvals
+    SH->>GW: GET approval-items (page, size)
+    GW->>E: GET approval-items (access token, X-Flow-Ref)
+    E->>DB: Submitted profiles and requests of the caller's approvees
+    E-->>SH: items, totalItems
+  end
+  alt EIMS unavailable
+    SH-->>U: EIMS card or tab shows Couldn't load with Retry
+  else OK
+    SH-->>U: Card or Profiles tab rendered
+  end
+```
+
+| Step | Type (sync call / event / job / workflow) | Producer → consumer | Event / API | Consistency (local tx / outbox / saga / compensation) |
+| --- | --- | --- | --- | --- |
+| 1 | Sync call, one per card | Shell → EIMS (gateway, user session) | API-EIMS-27, API-EIMS-28 (INT-07) | Read only, scope in the query |
+
+**Text version of the diagram**
+
+| Step | From → to | Message | Result |
+| --- | --- | --- | --- |
+| 1 | Shell → gateway → EIMS | GET dashboard-card on Home | Role-shaped card |
+| 2 | Shell → gateway → EIMS | GET approval-items on Approvals or for the menu count | Items and totalItems |
+| 3 | EIMS → database | Reads within the caller's scope | – |
+| 4 | Shell → user | Card or tab rendered; on failure only the EIMS part shows "Couldn't load" with Retry | FR-CMN-008 |
+
+###### 3.2.20.5.4 Frontend
+
+Only what is not already in the UX summaries:
+
+1. The EIMS package registers its dashboard card and its Profiles inbox tab with the shell (ADR-001, anchor §6.5); the card renders only the parts present for the caller's role.
+2. Inbox rows of kind PROFILE open SCR-EIMS-04 with API-EIMS-16, rows of kind CHANGE_REQUEST with API-EIMS-17; selected rows are approved by kind (EIMS0150).
+
+###### 3.2.20.5.5 Backend
+
+| API id | API name | Method & endpoint | Purpose | Request (key fields) | Response (key fields) | Roles |
+| --- | --- | --- | --- | --- | --- | --- |
+| API-EIMS-27 | EIMS dashboard card | GET /api/eims/v1/dashboard-card | The EIMS card of the caller's dashboard | – | Employee / Manager: profileStatus, openChangeRequestStatus, showCompleteProfileBanner, todos[] (type, link), waitingCount (Manager); Admin: activeEmployees, profilesNotApproved, waitingForAdmin, recentlyOnboarded[] (employeeId, name, dateOfJoining, profileStatus) | Employee, Manager, Admin |
+| API-EIMS-28 | EIMS approval items | GET /api/eims/v1/approval-items | EIMS items waiting for the caller's decision | Query: page, size | items[]: kind, id, employeeId, name, summary, submittedAt, version; page, size, totalItems | Manager, Admin (Employee: empty list) |
+
+Read only; safe to retry.
+
+###### 3.2.20.5.6 Database
+
+| Entity | Operation (C / R / U / soft-D) | Purpose in this function |
+| --- | --- | --- |
+| EMPLOYEE | R | Own status; approvees; Admin counts; recently created employees |
+| PROFILE_CHANGE_REQUEST | R | Open request status; submitted requests of approvees |
+
+###### 3.2.20.5.7 Validation & error handling
+
+| Rule ref (BRD VR / BR) | Layer (UI / API / DB) | Error code | HTTP status | Message |
+| --- | --- | --- | --- | --- |
+| Anchor §6.1 paging | API | EIMS-VAL-001 | 400 | Generic validation message |
+| FR-CMN-008 | API, UI | EIMS-SYS-001 (or gateway SYS) | 500 / 503 | "Couldn't load" with Retry and the reference on the EIMS card or tab only |
+
+###### 3.2.20.5.8 Security & data privacy
+
+| Item | Detail |
+| --- | --- |
+| Authorization check per API | API-EIMS-27, 28: any signed-in role; content and scope derived from the token's role and Employee Id |
+| Sensitive fields | None (names, Employee Ids, statuses, counts) |
+| Masking (UI / API response) | Role-shaped content |
+| Encryption (in transit / at rest / field-level) | TLS; encrypted storage |
+| Logging rule | Caller, counts and result |
+| Threat review – TB-1 browser → gateway | S: stolen session – HttpOnly cookie and idle timeout. D: frequent menu-count calls – gateway rate limit per user |
+| Threat review – TB-2 gateway → EIMS | E / I: seeing another team's waiting items – approvees derived from the token (EIMS0180 rule), never from a parameter |
+| Threat review – TB-5 EIMS → database | I: encrypted storage |
+
+###### 3.2.20.5.9 Notifications, audit & activity log
+
+| Trigger | Notification (NOT id) | Activity log entry | Audit fields captured |
+| --- | --- | --- | --- |
+| Card or items read | None (C-05); NOT-EIMS-01 to 05 are delivered as this card's banner, to-do items, tile and inbox items | `process` API-EIMS-27 or 28; steps `scope-applied`, `loaded` (counts) | None |
+
+###### 3.2.20.5.10 Scenarios
+
+| Scenario id | Scenario | Type | Requirement ref | Pre-condition | Expected result | Test level |
+| --- | --- | --- | --- | --- | --- | --- |
+| EIMS0200-S01 | New employee's first sign-in | Positive | FR-CMN-005, RPT-EIMS-01, 02 | Profile Draft | Banner flag true; to-do "Profile not yet submitted" | API, E2E |
+| EIMS0200-S02 | Rejected change request | Positive | RPT-EIMS-02 | Request Rejected | Tile shows Approved with request Rejected; to-do "Change request returned" | API |
+| EIMS0200-S03 | Manager waiting count and inbox | Positive | FR-CMN-006, 010 | 2 reports Submitted | waitingCount 2; approval-items 2 | API, E2E |
+| EIMS0200-S04 | Admin tiles | Positive | FR-CMN-007, RPT-EIMS-04, 05 | 30 active, 4 not approved | activeEmployees 30, profilesNotApproved 4, 5 recently onboarded | API, E2E |
+| EIMS0200-S05 | Items move after a manager change | Edge | FR-EIMS-017, XF-08 | Item moved M1 → M2 | Listed for M2, not for M1 | API |
+| EIMS0200-S06 | EIMS unavailable | Failure | FR-CMN-008 | EIMS down | Only the EIMS card shows "Couldn't load" with Retry | E2E |
+| EIMS0200-S07 | Response time | Performance | NFR-01, PT-01 | 200 employees | p95 ≤ 500 ms at the service | Performance |
+
+##### 3.2.20.6 Notes, issues & assumptions
+
+1. Note: the Admin tile "items waiting for the Admin" counts all modules (FR-CMN-007); EIMS supplies its own part and the shell adds the other modules' counts (anchor §5.5).
+
 
 ## 4. NFR summary & inventories
 
