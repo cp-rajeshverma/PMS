@@ -13,11 +13,12 @@ Date: November 2026
 | 1.0 | 0.2 | 23-Nov-2026 | Rajesh Verma | Draft of §4 groups A–F (GOV, XF, WA, SD, TF, FE); open items OI-P01a-01 to 03 |
 | 1.0 | 0.3 | 23-Nov-2026 | Rajesh Verma | Draft of §4 groups G–L (MS, CP, EIP, INT, DATA, SEC); open items OI-P01a-04 to 11; §2 Partial rule clarified |
 | 1.0 | 0.4 | 23-Nov-2026 | Rajesh Verma | Draft of §4 groups M–R (OBS, PERF, RES, DEV, QA, DG); all 330 rows assessed; §3 totals; open items OI-P01a-12 to 17 |
+| 1.0 | 0.5 | 23-Nov-2026 | Rajesh Verma | Draft of §5 (ADR register ADR-001 to ADR-006) and §6 (ADR record format); D-113 added to the Ref of AP-MS-29 and AP-CP-40; Part01 §4.1 counts recorded (Part01 rev 0.9) |
 
 | Role | Name | Date | Decision |
 | --- | --- | --- | --- |
-| Architect | Rajesh Verma (Enterprise Architect) | 23-Nov-2026 | §1–§3 approved (D-117); §4 A–F approved (D-118); §4 G–L approved (D-119); §4 M–R approved (D-120) |
-| Product owner | Rajesh Verma | 23-Nov-2026 | §1–§3 approved (D-117); §4 A–F approved (D-118); §4 G–L approved (D-119); §4 M–R approved (D-120) |
+| Architect | Rajesh Verma (Enterprise Architect) | 23-Nov-2026 | §1–§3 approved (D-117); §4 A–F approved (D-118); §4 G–L approved (D-119); §4 M–R approved (D-120); §5–§6 approved (D-121); all sections reviewed – final approval with the HLD set at the Stage 3 gate |
+| Product owner | Rajesh Verma | 23-Nov-2026 | §1–§3 approved (D-117); §4 A–F approved (D-118); §4 G–L approved (D-119); §4 M–R approved (D-120); §5–§6 approved (D-121); all sections reviewed – final approval with the HLD set at the Stage 3 gate |
 
 ## 2. How to use this document
 
@@ -226,7 +227,7 @@ Group R follows D-116: tool-neutral wording, ids AP-DG-01 to AP-DG-05, linked to
 | AP-MS-26 | Consumer-driven contract test | Consumers define contract tests the provider must pass | Partial | Providers and consumers verified against the shared contracts (schema-based); consumer-driven tests not yet decided | Part01 §15; D-117; OI-P01a-04 |
 | AP-MS-27 | Service component test | Service tested in isolation with test doubles | Applied | Component tests per service with test doubles and containerised database, broker and identity provider | Part01 §11.1, §15; D-16 |
 | AP-MS-28 | Service instance per container | Each service instance in its own container | Applied | One container image per component; each replica in its own container | Part01 §4.4, §7.2; ADR-002 |
-| AP-MS-29 | Sidecar | Cross-cutting concerns in a co-deployed process | Deferred | No sidecars; cross-cutting concerns in the service and a central collector; service mesh Future | Part01 §9.9, §20.3; AR-04 |
+| AP-MS-29 | Sidecar | Cross-cutting concerns in a co-deployed process | Deferred | No sidecars; cross-cutting concerns in the service and a central collector; service mesh Future | Part01 §9.9, §20.3; AR-04; D-113 |
 | AP-MS-30 | Microservice chassis / service template | Common framework and starter for all services | Partial | Same framework, security and observability set-up in every service; a service template is copied per service; no shared runtime library | Part01 §11; D-18, D-117; OI-P01a-05 |
 | AP-MS-31 | Strangler application | Incremental replacement of a legacy system | N/A | Greenfield; no legacy system | Part01 §13; D-109 |
 | AP-MS-32 | Anti-corruption layer | Translation layer between different domain models | Applied | Only EIMS translates employee records into identity-provider accounts; no other module uses the identity provider's model | Part01 §8.2 (row 9); INT-08; Part02 (planned) |
@@ -278,7 +279,7 @@ Source: Azure Architecture Center cloud design patterns catalogue.
 | AP-CP-37 | Scheduler Agent Supervisor | Coordinate actions across distributed services | Applied | Nightly reconciliation job with result logging, alerts and repair | Part01 §4.4, §8.2 (row 3); JOB-CMN-01 |
 | AP-CP-38 | Sequential Convoy | Ordered processing of related messages without blocking others | Partial | Events carry the attendance id as business key; the ordering rule for approved and reopened events of one attendance is not yet designed | Part01 §8.2; OI-P01a-06 |
 | AP-CP-39 | Sharding | Horizontal partitions of a data store | N/A | Total database size below 3 GB in year 5 | Part01 §17 |
-| AP-CP-40 | Sidecar | Components in a separate process or container | Deferred | No sidecars in the POC; service mesh Future | Part01 §20.3; AR-04 |
+| AP-CP-40 | Sidecar | Components in a separate process or container | Deferred | No sidecars in the POC; service mesh Future | Part01 §20.3; AR-04; D-113 |
 | AP-CP-41 | Static Content Hosting | Static content served from storage / CDN | Applied | Static web server serves the shell build; no CDN | Part01 §4.4, §6.1 |
 | AP-CP-42 | Strangler Fig | Incremental migration of a legacy system | N/A | Greenfield | Part01 §13 |
 | AP-CP-43 | Throttling | Control consumption by applications, tenants or services | Applied | Rate limits and payload limits at the gateway and edge | Part01 §9.8 |
@@ -512,11 +513,57 @@ Group R follows D-116: tool-neutral wording; linked to OBJ-05, KPI-05 and OBJ-06
 
 ## 5. Architecture decision register (ADRs)
 
-To be drafted.
+An ADR records a significant architecture decision: one that is hard to reverse, affects several components, or departs from a catalogue principle. Smaller decisions stay in the decision log (D-xx) only. Each ADR is kept as its own file, `docs/decisions/adr/ADR-<NNN>-<short-title>.md`, using the format in §6; this register is the index. PMS-HLD-Part01-Architecture-and-Design §18 lists the ADRs that shape its chapters and refers to this register.
+
+| ADR | Title | Status | Date | Related principles / patterns (catalogue ids) | Decision log ref | File |
+| --- | --- | --- | --- | --- | --- | --- |
+| ADR-001 | Frontend composition – build-time packages for the POC | Accepted | 2026-11-15 | AP-FE-03, AP-WA-04, AP-SD-09 | D-23 | `docs/decisions/adr/ADR-001-frontend-composition.md` |
+| ADR-002 | Hosting and runtime platform – on-premises Kubernetes for the POC, AWS as the cloud target | Accepted | 2026-11-22 | AP-XF-05, AP-WA-02, AP-WA-05, AP-WA-06, AP-MS-28, group E (TF) | D-109, D-110 (amends D-11 for hosting) | `docs/decisions/adr/ADR-002-hosting-and-runtime-platform.md` |
+| ADR-003 | Identity provider issues tokens and holds passwords | Accepted | 2026-11-22 | AP-XF-03, AP-GOV-09, AP-MS-25, AP-CP-17, AP-SEC-05 | D-109 | `docs/decisions/adr/ADR-003-identity-provider-tokens-and-passwords.md` |
+| ADR-004 | API gateway holds the user tokens – the browser gets only a session cookie | Accepted | 2026-11-22 | AP-XF-03, AP-MS-05, AP-MS-25, AP-CP-17, AP-CP-20, AP-FE-09, AP-SD-18, AP-TF-06 | D-110, D-111, D-113 | `docs/decisions/adr/ADR-004-gateway-holds-user-tokens.md` |
+| ADR-005 | Edge on the Kubernetes Gateway API with a WAF rule set | Accepted | 2026-11-22 | AP-WA-07, AP-GOV-07, AP-CP-18, AP-CP-20, AP-CP-21 | D-112, D-113 (amends D-110 (3)) | `docs/decisions/adr/ADR-005-edge-gateway-api-with-waf.md` |
+| ADR-006 | AMS → SMS hand-over by transactional outbox, idempotent consumer and nightly reconciliation | Accepted | 2026-11-22 | AP-WA-01, AP-MS-08, AP-MS-10, AP-MS-16, AP-CP-07, AP-CP-10, AP-CP-24, AP-CP-36, AP-CP-37, AP-EIP-10, AP-EIP-54, AP-EIP-55, AP-INT-07, AP-INT-12 | D-16, D-21, D-113 | `docs/decisions/adr/ADR-006-ams-sms-outbox-and-reconciliation.md` |
+
+Rules:
+
+- Numbers are never reused; an accepted ADR is not edited. A change of decision is a new ADR that supersedes the old one (old status → Superseded by ADR-<NNN>).
+- A catalogue row whose applicability is Deferred or N/A because of a decision references the ADR or decision id in its Ref column.
+- The catalogue assessment (§4) raised no new significant decision; its gaps are open items (§7) for the standards and the Part02 anchor.
 
 ## 6. ADR record format
 
-To be drafted.
+Each ADR file uses this structure:
+
+```markdown
+# ADR-<NNN>: <Short decision title>
+
+| Field | Value |
+| --- | --- |
+| Status | Proposed / Accepted / Superseded by ADR-<NNN> / Deprecated |
+| Date | <yyyy-mm-dd> |
+| Deciders | <names / roles> |
+| Decision log ref | D-<NN> |
+| Related principles / patterns | <catalogue ids, e.g. AP-FE-03, AP-MS-12> |
+
+## Context
+
+<The problem, forces and constraints that make a decision necessary.>
+
+## Decision
+
+<What was decided, stated in one or two sentences.>
+
+## Alternatives considered
+
+| Option | Pros | Cons | Why not chosen |
+| --- | --- | --- | --- |
+
+## Consequences
+
+- **Positive:** <…>
+- **Negative / trade-offs:** <…>
+- **Follow-ups:** <…>
+```
 
 ## 7. Open items
 

@@ -4,9 +4,9 @@
 | --- | --- |
 | Document | docs/03-hld/PMS-HLD-Part01a-Principles-Patterns-Decisions.md |
 | Template | templates/03-hld/hld-part01a-principles-patterns-decisions-template.md |
-| Used | – |
-| Outcome | – |
-| Status | Ready for the next session |
+| Used | 23 Nov 2026 |
+| Outcome | PMS-HLD-Part01a v1.0 rev 0.5, all sections reviewed (D-117 to D-121): 330 items – 230 Applied, 35 Partial, 3 Deferred, 62 N/A; ADR register ADR-001 to ADR-006 (no new ADR); open items OI-P01a-01 to 17; Part01 rev 0.9 (§4.1 counts, §4.2 reference, §18 link, OI-P01-01 closed) |
+| Status | Used – final approval with the HLD set at the Stage 3 gate |
 
 ## Prompt
 

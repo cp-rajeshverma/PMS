@@ -19,6 +19,7 @@ Date: November 2026
 | 1.0 | 0.6 | 22-Nov-2026 | Rajesh Verma | Open items: OI-P01-03, 05, 06 closed; OI-P01-04 rule added (D-114) |
 | 1.0 | 0.7 | 22-Nov-2026 | Rajesh Verma | PostgreSQL 18 in every environment (§11, AR-05); OI-P01-04 closed (D-115) |
 | 1.0 | 0.8 | 22-Nov-2026 | Rajesh Verma | §4.1 catalogue group R renamed "Delivery governance & knowledge management (DG)" (D-116) |
+| 1.0 | 0.9 | 23-Nov-2026 | Rajesh Verma | §4.1 counts from the Part01a assessment; §4.2 Cloud first reference corrected (D-109, ADR-002); §18 linked to the Part01a ADR register; OI-P01-01 closed (D-117 to D-121) |
 
 ### 1.2 Review and approval
 
@@ -120,28 +121,28 @@ The full catalogue (Part01a) assesses every principle and pattern. This chapter 
 
 ### 4.1 Compliance summary by group
 
-Counts are filled when Part01a is assessed (open item OI-P01-01). Key items are those already fixed by approved decisions.
+Counts from the Part01a assessment of all 330 catalogue items (PMS-HLD-Part01a §3; D-117 to D-120): 230 Applied, 35 Partial, 3 Deferred, 62 N/A; OI-P01-01 closed. Key items are those already fixed by approved decisions.
 
 | Group (Part01a) | Applied | Partial | Deferred | N/A | Key items |
 | --- | --- | --- | --- | --- | --- |
-| A. Architecture approach & governance (GOV) | Part01a | Part01a | Part01a | Part01a | BDUF gate per stage (§3.1, D-108); decision log and ADRs; BRD → HLD → code → test traceability (KPI-05) |
-| B. X-First principles (XF) | Part01a | Part01a | Part01a | Part01a | §4.2 |
-| C. Well-architected qualities (WA) | Part01a | Part01a | Part01a | Part01a | §4.3 |
-| D. Software design principles (SD) | Part01a | Part01a | Part01a | Part01a | Technology-neutral design (D-12) |
-| E. Twelve-Factor App (TF) | Part01a | Part01a | Part01a | Part01a | Containers; configuration by deployment setting (D-97); stateless services |
-| F. Frontend & experience architecture (FE) | Part01a | Part01a | Part01a | Part01a | Shell with build-time module packages (ADR-001); WCAG 2.1 AA (NFR-04) |
-| G. Microservice design patterns (MS) | Part01a | Part01a | Part01a | Part01a | §4.4 |
-| H. Cloud design patterns (CP) | Part01a | Part01a | Part01a | Part01a | §4.4 |
-| I. Enterprise integration patterns (EIP) | Part01a | Part01a | Part01a | Part01a | §4.4 |
-| J. Integration principles (INT) | Part01a | Part01a | Part01a | Part01a | Contract-first (AP-INT-02); correlation id (AP-INT-06); reconciliation (AP-INT-12) |
-| K. Data architecture (DATA) | Part01a | Part01a | Part01a | Part01a | Database per service, no cross-database keys; soft delete (BR-CMN-06) |
-| L. Security architecture (SEC) | Part01a | Part01a | Part01a | Part01a | Identity provider; role and data-scope check on every request (NFR-03, FR-UM-013) |
-| M. Logging & observability (OBS) | Part01a | Part01a | Part01a | Part01a | Activity log with flow reference; audit log (NFR-09, BR-CMN-19) |
-| N. Performance & scalability (PERF) | Part01a | Part01a | Part01a | Part01a | NFR-01, NFR-07; automated load tests (D-11) |
-| O. Resilience & availability (RES) | Part01a | Part01a | Part01a | Part01a | Outbox and nightly reconciliation; per-card dashboard loading (FR-CMN-008) |
-| P. DevOps & continuous delivery (DEV) | Part01a | Part01a | Part01a | Part01a | Path-filtered pipelines per service (D-18) |
-| Q. Testing & quality (QA) | Part01a | Part01a | Part01a | Part01a | Unit, component and container-based integration tests; end-to-end UI tests; load tests (D-11, D-16) |
-| R. Delivery governance & knowledge management (DG) | Part01a | Part01a | Part01a | Part01a | Every artifact reviewed and approved by an accountable person; traceable inputs and decisions (OBJ-05, KPI-05); approved documents only as delivery inputs (D-116) |
+| A. Architecture approach & governance (GOV) | 10 | 1 | 0 | 0 | BDUF gate per stage (§3.1, D-108); decision log and ADRs; BRD → HLD → code → test traceability (KPI-05) |
+| B. X-First principles (XF) | 11 | 1 | 0 | 1 | §4.2 |
+| C. Well-architected qualities (WA) | 13 | 2 | 0 | 0 | §4.3 |
+| D. Software design principles (SD) | 17 | 2 | 0 | 0 | Technology-neutral design (D-12) |
+| E. Twelve-Factor App (TF) | 11 | 1 | 0 | 0 | Containers; configuration by deployment setting (D-97); stateless services |
+| F. Frontend & experience architecture (FE) | 5 | 3 | 0 | 2 | Shell with build-time module packages (ADR-001); WCAG 2.1 AA (NFR-04) |
+| G. Microservice design patterns (MS) | 25 | 3 | 1 | 5 | §4.4 |
+| H. Cloud design patterns (CP) | 24 | 2 | 1 | 17 | §4.4 |
+| I. Enterprise integration patterns (EIP) | 28 | 1 | 0 | 35 | §4.4 |
+| J. Integration principles (INT) | 11 | 2 | 0 | 0 | Contract-first (AP-INT-02); correlation id (AP-INT-06); reconciliation (AP-INT-12) |
+| K. Data architecture (DATA) | 14 | 2 | 0 | 1 | Database per service, no cross-database keys; soft delete (BR-CMN-06) |
+| L. Security architecture (SEC) | 13 | 6 | 1 | 0 | Identity provider; role and data-scope check on every request (NFR-03, FR-UM-013) |
+| M. Logging & observability (OBS) | 12 | 0 | 0 | 0 | Activity log with flow reference; audit log (NFR-09, BR-CMN-19) |
+| N. Performance & scalability (PERF) | 8 | 1 | 0 | 1 | NFR-01, NFR-07; automated load tests (D-11) |
+| O. Resilience & availability (RES) | 7 | 3 | 0 | 0 | Outbox and nightly reconciliation; per-card dashboard loading (FR-CMN-008) |
+| P. DevOps & continuous delivery (DEV) | 7 | 4 | 0 | 0 | Path-filtered pipelines per service (D-18) |
+| Q. Testing & quality (QA) | 9 | 1 | 0 | 0 | Unit, component and container-based integration tests; end-to-end UI tests; load tests (D-11, D-16) |
+| R. Delivery governance & knowledge management (DG) | 5 | 0 | 0 | 0 | Every artifact reviewed and approved by an accountable person; traceable inputs and decisions (OBJ-05, KPI-05); approved documents only as delivery inputs (D-116) |
 
 ### 4.2 X-First principles
 
@@ -151,7 +152,7 @@ Counts are filled when Part01a is assessed (open item OI-P01-01). Key items are 
 | API first / contract first (AP-XF-02) | Every service capability is an OpenAPI 3 contract and every event a versioned schema, kept in `contracts/` and written before implementation; services share contracts only | D-16, D-18 |
 | Security first (AP-XF-03) | Sign-in, passwords, lockout and sessions at the identity provider; tokens validated at the gateway and again in each service; role and data scope checked on every request, never by hiding menu items alone; least-privilege Admin scope; sensitive data masked in logs | NFR-03, FR-UM-013, FR-UM-015, D-58, D-101; §9, §16 |
 | Performance first (AP-XF-04) | Response, hand-over and batch targets fixed before design; performance test strategy and plan in this document; load profile from the BRD volumetrics | NFR-01, NFR-07, BRD §8.1; §14, §17 |
-| Cloud first (AP-XF-05) – adapted: cloud-ready | The POC runs on-premises; the design stays cloud-ready: containers on a container orchestration platform, configuration outside the images, no on-premises-only products, and every component mapped to an AWS service in §6.2 | Proposed D-109; NFR-08 |
+| Cloud first (AP-XF-05) – adapted: cloud-ready | The POC runs on-premises; the design stays cloud-ready: containers on a container orchestration platform, configuration outside the images, no on-premises-only products, and every component mapped to an AWS service in §6.2 | D-109, ADR-002; NFR-08 |
 | Data first (AP-XF-06) | Data ownership is fixed per module before services are built; one database per service; entities modelled in Part03 before code | D-10, C-02, D-43 |
 | Privacy by design (AP-XF-11) | Sensitive attributes classified (D-71, D-93); visible only within the role's data scope; masked in the activity log; synthetic test data only | NFR-EIMS-01, FR-ADM-115, R-04 |
 | Observability first (AP-XF-07) | Activity log for every operation, job and event with one flow reference across modules, shown in system error messages; audit log for every data change | NFR-09, BR-CMN-19, FR-ADM-111 to 117; §10 |
@@ -1207,7 +1208,7 @@ Architecture decisions are registered in PMS-HLD-Part01a-Principles-Patterns-Dec
 | ADR-005 | Edge on the Kubernetes Gateway API with a WAF rule set (D-112) | §6.2, §7, §11, §16 |
 | ADR-006 | AMS → SMS hand-over by transactional outbox, idempotent consumer and nightly reconciliation (D-16) | §5.2, §8, §12 |
 
-Part01a §5 registers all six (D-113).
+The full register with the related catalogue ids is PMS-HLD-Part01a-Principles-Patterns-Decisions §5 (`docs/03-hld/PMS-HLD-Part01a-Principles-Patterns-Decisions.md`); it registers all six (D-113, D-121).
 
 ## 19. Risks and technical debt
 
@@ -1231,7 +1232,7 @@ BRD risks with an architecture response: R-01 and R-03 (outbox, idempotent consu
 
 | Id | Open item | Owner | Due |
 | --- | --- | --- | --- |
-| OI-P01-01 | Part01a assessment: counts per group in §4.1 and confirmation of the catalogue ids in §4.2 to §4.4 | Enterprise Architect | Part01a |
+| OI-P01-01 | Part01a assessment: counts per group in §4.1 and confirmation of the catalogue ids in §4.2 to §4.4 – closed: counts recorded in §4.1 from PMS-HLD-Part01a §3; the ids and readings in §4.2 to §4.4 are confirmed by the Part01a catalogue (D-117 to D-121) | Enterprise Architect | Closed 23 Nov 2026 |
 | OI-P01-02 | Provisioning approach (infrastructure and environments as code) – closed by D-110: deployment charts for PMS, infrastructure code for AWS (§11) | Enterprise Architect | Closed 22 Nov 2026 |
 | OI-P01-03 | Capacity of the local workstation (CPU, memory, disk) for three namespaces, the observability stack and the local container platform; at least 32 GB memory – confirmed by the product owner | Product owner | Closed 22 Nov 2026 |
 | OI-P01-04 | Database version available on the AWS managed database service – closed by D-115: version 18 is offered there, so every environment uses PostgreSQL 18; all move to 19 together once the managed service offers it | Enterprise Architect | Closed 22 Nov 2026 |
