@@ -1,5 +1,14 @@
 # SMD changelog
 
+## 2026-11-23 13:20 IST – refresh (HLD Part01a all sections approved)
+
+- Refreshed from commit `9b0ead9` (9 commits since `3efd265`: `09f23ac` to `9b0ead9`); clean working tree.
+- **Stage 3 Solution Design In Progress, 10% → 15%**: PMS-HLD-Part01a-Principles-Patterns-Decisions drafted and reviewed section by section (D-117 to D-121), v1.0 rev 0.5 – 330 catalogue items assessed (230 Applied, 35 Partial, 3 Deferred, 62 N/A), ADR register ADR-001 to ADR-006; HLD Part01 rev 0.7 → 0.9 (group R renamed, D-116; §4.1 counts, D-121). Step S3.1 completed; final approval of both at the Stage 3 gate.
+- Health **Green** (unchanged): no Critical or High findings open; Stage 3 on plan.
+- Findings: OI-P01-01 closed; OI-P01a-01 to 17 added (Low, for the standards and the HLD Part02 anchor). New review RV-13; milestone M3.0c completed.
+- Data: 54 artifacts (46 approved, 2 in review), 127 decisions / ADRs (+6), 39 open items / findings (17 open), 13 reviews (+RV-13), 8 risks, 88 linked repository files (+1), 0 broken links.
+- Warnings: Stage 7 step S7.2 still names the former cloud target (renaming proposed). Customer-facing filtering: 37 texts neutralised (+2).
+
 ## 2026-11-22 23:30 IST – correction (configuration fixes; D-115)
 
 - Configuration: HLD open items now feed the findings list (`docs/03-hld/*.md#Open items`); the neutral pattern is limited to usage-logging wording, so security terms in the HLD and ADR titles are shown as written; internal prompt and screenshot folders excluded.
